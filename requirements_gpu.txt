@@ -1,0 +1,15 @@
+## GPU packages
+
+# Torch package source
+# see command generator at https://pytorch.org/, and https://pytorch.org/get-started/previous-versions/, and match it up to cudatoolkit version in earlier steps of install
+# to uninstall and reinstall different cpu/gpu version, first: conda remove --force pytorch torchvision torchaudio && pip uninstall torch && pip cache purge
+--find-links https://download.pytorch.org/whl/torch_stable.html
+
+# Jaxlib package source
+# see https://github.com/google/jax#installation and https://github.com/ElArkk/jax-unirep/blob/b8048db1c12014c815d1b53e7b55cff8d2f688d8/install_jaxgpu.sh#L6
+--find-links https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+
+jax [cuda11_cudnn82] == 0.3.14
+torch==1.11.0+cu115 # cuda suffix must match cudatoolkit version in rapidgenomics_cuda.yml and in environment variables (see README)
+torchaudio==0.11.0
+torchvision==0.12.0+cu115 # cuda suffix must match cudatoolkit version in rapidgenomics_cuda.yml and in environment variables (see README)

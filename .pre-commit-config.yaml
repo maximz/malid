@@ -1,0 +1,63 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+# # stop running hooks after the first failure
+# fail_fast: true
+
+repos:
+# jupytext mirrors notebooks to source-only python files (two-way sync)
+
+# this Jupytext step is very slow in CI. consider parallelizing and only running on notebooks (not notebooks_src):
+# 1. test whether all notebooks_src/ entries are present in notebooks/
+#   e.g. `find notebooks_src | grep '.py$' | sed 's/^notebooks_src\//notebooks\//g' | sed 's/.py$/.ipynb/g' | xargs ls | echo $?`
+# 2. run jupytext on notebooks/ only, and parallelize the command
+
+-   repo: https://github.com/mwouts/jupytext
+    rev: v1.11.5 # should match requirements.txt
+    hooks:
+    - id: jupytext
+      args: [--sync, --pipe, black]
+      # limit search directories and file types to make this run faster
+      # must be in one of these directories
+      files: ^notebooks/|^notebooks_src/
+      # and must be one of these types
+      types_or: [jupyter, python]
+      additional_dependencies:
+        - black==22.3.0 # Matches hook version below
+
+# # clean notebook metadata
+# # see IM-475
+# -   repo: local
+#     hooks:
+#     -   id: clean-notebook-metadata
+#         name: clean-notebook-metadata
+#         # Pre-commit will pass all file names as arguments.
+#         # Process each file one-by-one. (This would be more efficient if nbdev_clean_nbs could take a list of filenames.)
+#         # If fail on any file, print file name before exiting loop
+#         entry: bash -c 'for x in "$@"; do nbdev_clean_nbs --fname "$x" || { echo "Error in $x";  exit 1; }; done' --
+#         additional_dependencies: [nbdev>=1.1.20]
+#         files: .ipynb
+#         language: python
+
+# cosmetic changes
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+    -   id: trailing-whitespace
+        exclude: .ipynb
+    -   id: end-of-file-fixer
+        exclude: .ipynb
+    -   id: check-yaml
+    -   id: check-added-large-files
+        args: ['--maxkb=3000']
+        exclude: .ipynb
+    -   id: requirements-txt-fixer
+    -   id: check-merge-conflict
+
+# python code formatting
+-   repo: https://github.com/psf/black
+    rev: 22.3.0 # should match requirements.txt and black dependency version above
+    hooks:
+      - id: black-jupyter
+        language_version: python # Should be a command that runs python3.6+, like python3
+        exclude: ^(archive/|pipeline_run_notes/) # Exclude directories: https://stackoverflow.com/a/61046953/130164

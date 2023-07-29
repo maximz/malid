@@ -1,0 +1,718 @@
+participant_label	specimen_label	disease	disease_subtype	specimen_time_point_override	participant_label_override	hiv_run_filter	age	sex	study_name	has_BCR	has_TCR	ethnicity_condensed	age_group
+BFI-0009122	M418-S001	Covid19	Covid19 - ICU	10 days			63.0	M	Covid19-Stanford	True	True	Hispanic/Latino	60-70
+BFI-0009127	M418-S007	Covid19	Covid19 - ICU	14 days			48.0	M	Covid19-Stanford	True	True	Asian	40-50
+BFI-0009127	M418-S008	Covid19	Covid19 - ICU	42 days			48.0	M	Covid19-Stanford	True	True	Asian	40-50
+BFI-0009128	M418-S009	Covid19	Covid19 - Admit	9 days			43.0	M	Covid19-Stanford	True	True	Caucasian	40-50
+BFI-0009129	M418-S010	Covid19	Covid19 - Admit	7 days			41.0	F	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009131	M418-S012	Covid19	Covid19 - ICU	8 days			61.0	M	Covid19-Stanford	True	True	Hispanic/Latino	60-70
+BFI-0009131	M418-S013	Covid19	Covid19 - ICU	37 days			61.0	M	Covid19-Stanford	True	True	Hispanic/Latino	60-70
+BFI-0009132	M418-S014	Covid19	Covid19 - Admit	10 days			33.0	M	Covid19-Stanford	True	True	Asian	30-40
+BFI-0009134	M418-S016	Covid19	Covid19 - Admit	11 days			24.0	F	Covid19-Stanford	True	True	Hispanic/Latino	20-30
+BFI-0009139	M418-S021	Covid19	Covid19 - ICU	9 days			48.0	F	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009140	M418-S022	Covid19	Covid19 - Admit	14 days			54.0	F	Covid19-Stanford	True	True		50-60
+BFI-0009140	M418-S023	Covid19	Covid19 - Admit	43 days			54.0	F	Covid19-Stanford	True	True		50-60
+BFI-0009141	M418-S024	Covid19	Covid19 - Admit	35 days			58.0	F	Covid19-Stanford	True	True	Caucasian	50-60
+BFI-0009142	M418-S025	Covid19	Covid19 - Admit	8 days			71.0	M	Covid19-Stanford	True	True	Caucasian	70-80
+BFI-0009143	M418-S026	Covid19	Covid19 - ICU	11 days			40.0	F	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009144	M418-S027	Covid19	Covid19 - Admit	8 days			58.0	F	Covid19-Stanford	True	True	Hispanic/Latino	50-60
+BFI-0009147	M418-S031	Covid19	Covid19 - Admit	7 days			83.0	M	Covid19-Stanford	True	True	Caucasian
+BFI-0009148	M418-S032	Covid19	Covid19 - Admit	12 days			79.0	M	Covid19-Stanford	True	True	Asian	70-80
+BFI-0009149	M418-S033	Covid19	Covid19 - Admit	14 days			71.0	F	Covid19-Stanford	True	True	Caucasian	70-80
+BFI-0009151	M418-S035	Covid19	Covid19 - ICU	8 days			69.0	F	Covid19-Stanford	True	True	Asian	60-70
+BFI-0009153	M418-S037	Covid19	Covid19 - Admit	66 days			41.0	M	Covid19-Stanford	True	True	Caucasian	40-50
+BFI-0009154	M418-S038	Covid19	Covid19 - ICU	10 days			50.0	M	Covid19-Stanford	True	True	Hispanic/Latino	50-60
+BFI-0009154	M418-S039	Covid19	Covid19 - ICU	39 days			50.0	M	Covid19-Stanford	True	True	Hispanic/Latino	50-60
+BFI-0009155	M418-S040	Covid19	Covid19 - Admit	8 days			33.0	M	Covid19-Stanford	True	True	Hispanic/Latino	30-40
+BFI-0009158	M418-S043	Covid19	Covid19 - ICU	7 days			34.0	F	Covid19-Stanford	True	True	Hispanic/Latino	30-40
+BFI-0009159	M418-S044	Covid19	Covid19 - Admit	7 days			40.0	F	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009161	M418-S046	Covid19	Covid19 - ICU	8 days			61.0	M	Covid19-Stanford	True	True	Hispanic/Latino	60-70
+BFI-0009162	M418-S047	Covid19	Covid19 - Admit	7 days			30.0	M	Covid19-Stanford	True	True	Caucasian	30-40
+BFI-0009164	M418-S049	Covid19	Covid19 - Admit	10 days			45.0	F	Covid19-Stanford	True	True	Asian	40-50
+BFI-0009165	M418-S050	Covid19	Covid19 - Admit	8 days			54.0	M	Covid19-Stanford	True	True	Hispanic/Latino	50-60
+BFI-0009169	M418-S054	Covid19	Covid19 - ICU	7 days			67.0	M	Covid19-Stanford	True	True	Asian	60-70
+BFI-0009047	M418-S094	Covid19	Covid19 - ICU	17 days			25.0	F	Covid19-Stanford	True	True	Hispanic/Latino	20-30
+BFI-0009048	M418-S095	Covid19	Covid19 - Admit	15 days			33.0	M	Covid19-Stanford	True	True	Hispanic/Latino	30-40
+BFI-0009048	M418-S096	Covid19	Covid19 - Admit	40 days			33.0	M	Covid19-Stanford	True	True	Hispanic/Latino	30-40
+BFI-0009051	M418-S101	Covid19	Covid19 - Admit	31 days			43.0	M	Covid19-Stanford	True	True		40-50
+BFI-0009051	M418-S102	Covid19	Covid19 - Admit	7 days			43.0	M	Covid19-Stanford	True	True		40-50
+BFI-0009052	M418-S104	Covid19	Covid19 - Admit	17 days			24.0	F	Covid19-Stanford	True	True	Hispanic/Latino	20-30
+BFI-0009052	M418-S105	Covid19	Covid19 - Admit	24 days			24.0	F	Covid19-Stanford	True	True	Hispanic/Latino	20-30
+BFI-0009052	M418-S106	Covid19	Covid19 - Admit	41 days			24.0	F	Covid19-Stanford	True	True	Hispanic/Latino	20-30
+BFI-0009056	M418-S110	Covid19	Covid19 - Admit	13 days			25.0	M	Covid19-Stanford	True	True	Hispanic/Latino	20-30
+BFI-0009056	M418-S112	Covid19	Covid19 - Admit	29 days			25.0	M	Covid19-Stanford	True	True	Hispanic/Latino	20-30
+BFI-0009057	M418-S113	Covid19	Covid19 - Admit	9 days			44.0	M	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009057	M418-S114	Covid19	Covid19 - Admit	16 days			44.0	M	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009059	M418-S118	Covid19	Covid19 - ICU	8 days			68.0	M	Covid19-Stanford	True	True	Hispanic/Latino	60-70
+BFI-0009076	M418-S139	Covid19	Covid19 - Admit	8 days			34.0	F	Covid19-Stanford	True	True	Hispanic/Latino	30-40
+BFI-0009080	M418-S144	Covid19	Covid19 - ICU	8 days			43.0	M	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009083	M418-S148	Covid19	Covid19 - Admit	14 days			43.0	F	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009083	M418-S149	Covid19	Covid19 - Admit	27 days			43.0	F	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009083	M418-S150	Covid19	Covid19 - Admit	7 days			43.0	F	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009093	M418-S162	Covid19	Covid19 - Admit	12 days			31.0	F	Covid19-Stanford	True	True	Hispanic/Latino	30-40
+BFI-0009094	M418-S163	Covid19	Covid19 - Admit	37 days			21.0	M	Covid19-Stanford	True	True	Hispanic/Latino	20-30
+BFI-0009098	M418-S169	Covid19	Covid19 - ICU	12 days			37.0	F	Covid19-Stanford	True	True	African	30-40
+BFI-0009102	M418-S174	Covid19	Covid19 - Admit	7 days			57.0	F	Covid19-Stanford	True	True	Hispanic/Latino	50-60
+BFI-0009108	M418-S180	Covid19	Covid19 - Admit	10 days			31.0	F	Covid19-Stanford	True	True	Hispanic/Latino	30-40
+BFI-0009110	M418-S182	Covid19	Covid19 - Admit	21 days			55.0	M	Covid19-Stanford	True	True	Hispanic/Latino	50-60
+BFI-0009112	M418-S184	Covid19	Covid19 - Admit	11 days			86.0	F	Covid19-Stanford	True	True	Hispanic/Latino
+BFI-0009120	M418-S192	Covid19	Covid19 - Admit	12 days			25.0	F	Covid19-Stanford	True	True	Hispanic/Latino	20-30
+BFI-0009121	M418-S193	Covid19	Covid19 - Admit	11 days			43.0	M	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009005	M418-S198	Covid19	Covid19 - ICU	11 days			68.0	M	Covid19-Stanford	True	True	Caucasian	60-70
+BFI-0009012	M418-S205	Covid19	Covid19 - Admit	21 days			55.0	F	Covid19-Stanford	True	True	Asian	50-60
+BFI-0009023	M418-S217	Covid19	Covid19 - Admit	7 days			63.0	F	Covid19-Stanford	True	True	Asian	60-70
+BFI-0009025	M418-S219	Covid19	Covid19 - Admit	28 days			63.0	M	Covid19-Stanford	True	True		60-70
+BFI-0009029	M418-S223	Covid19	Covid19 - Admit	21 days			51.0	F	Covid19-Stanford	True	True	Caucasian	50-60
+BFI-0009031	M418-S225	Covid19	Covid19 - Admit	7 days			39.0	F	Covid19-Stanford	True	True	Caucasian	30-40
+BFI-0009034	M418-S228	Covid19	Covid19 - Admit	46 days			46.0	F	Covid19-Stanford	True	True	Hispanic/Latino	40-50
+BFI-0009035	M418-S229	Covid19	Covid19 - Admit	7 days			74.0	F	Covid19-Stanford	True	True	Caucasian	70-80
+BFI-0009036	M418-S230	Covid19	Covid19 - Admit	8 days			34.0	F	Covid19-Stanford	True	True	Asian	30-40
+BFI-0009036	M418-S231	Covid19	Covid19 - Admit	15 days			34.0	F	Covid19-Stanford	True	True	Asian	30-40
+BFI-0009036	M418-S232	Covid19	Covid19 - Admit	39 days			34.0	F	Covid19-Stanford	True	True	Asian	30-40
+BFI-0009038	M418-S234	Covid19	Covid19 - Admit	7 days			90.0	M	Covid19-Stanford	True	True	Asian
+BFI-0007780	M404-S001	Covid19	Covid19 - Acute 1				26.0	M	Covid19-Seattle	True	False		20-30
+BFI-0007780	M404-S002	Covid19	Covid19 - Acute 2				26.0	M	Covid19-Seattle	True	False		20-30
+BFI-0007780	M404-S003	Covid19	Covid19 - Convalescence				26.0	M	Covid19-Seattle	True	False		20-30
+BFI-0007781	M404-S004	Covid19	Covid19 - Acute 1				57.0	M	Covid19-Seattle	True	False	Caucasian	50-60
+BFI-0007781	M404-S005	Covid19	Covid19 - Acute 2				57.0	M	Covid19-Seattle	True	False	Caucasian	50-60
+BFI-0007781	M404-S006	Covid19	Covid19 - Convalescence				57.0	M	Covid19-Seattle	True	False	Caucasian	50-60
+BFI-0007782	M404-S007	Covid19	Covid19 - Acute 1				73.0	F	Covid19-Seattle	True	False	Caucasian	70-80
+BFI-0007782	M404-S008	Covid19	Covid19 - Acute 2				73.0	F	Covid19-Seattle	True	False	Caucasian	70-80
+BFI-0007782	M404-S009	Covid19	Covid19 - Convalescence				73.0	F	Covid19-Seattle	True	False	Caucasian	70-80
+BFI-0007783	M404-S010	Covid19	Covid19 - Acute 1				57.0	M	Covid19-Seattle	True	False	Asian	50-60
+BFI-0007783	M404-S011	Covid19	Covid19 - Acute 2				57.0	M	Covid19-Seattle	True	False	Asian	50-60
+BFI-0007783	M404-S012	Covid19	Covid19 - Convalescence				57.0	M	Covid19-Seattle	True	False	Asian	50-60
+BFI-0007784	M404-S013	Covid19	Covid19 - Acute 1				71.0	F	Covid19-Seattle	True	False	African	70-80
+BFI-0007784	M404-S014	Covid19	Covid19 - Acute 2				71.0	F	Covid19-Seattle	True	False	African	70-80
+BFI-0007784	M404-S015	Covid19	Covid19 - Convalescence				71.0	F	Covid19-Seattle	True	False	African	70-80
+BFI-0007450	M369-S001	Covid19	Covid19 - Sero-positive (ICU)	9 days			73.0	F	Covid19-buffycoat	True	True		70-80
+BFI-0007450	M371-S003	Covid19	Covid19 - Sero-positive (ICU)	22 days			73.0	F	Covid19-buffycoat	True	True		70-80
+BFI-0007450	M371-S014	Covid19	Covid19 - Sero-positive (ICU)	27 days			73.0	F	Covid19-buffycoat	True	True		70-80
+BFI-0007453	M369-S004	Covid19	Covid19 - Sero-negative (ICU)	8 days			64.0	M	Covid19-buffycoat	True	True		60-70
+BFI-0007453	M369-S005	Covid19	Covid19 - Sero-negative (ICU)	11 days			64.0	M	Covid19-buffycoat	True	True		60-70
+BFI-0007453	M371-S004	Covid19	Covid19 - Sero-positive (ICU)	15 days			64.0	M	Covid19-buffycoat	True	True		60-70
+BFI-0007453	M371-S017	Covid19	Covid19 - Sero-positive (ICU)	18 days			64.0	M	Covid19-buffycoat	True	True		60-70
+BFI-0007455	M369-S007	Covid19	Covid19 - Sero-positive (ICU)	9 days			36.0	M	Covid19-buffycoat	True	True		30-40
+BFI-0007455	M371-S002	Covid19	Covid19 - Sero-positive (ICU)	11 days			36.0	M	Covid19-buffycoat	True	True		30-40
+BFI-0007455	M371-S031	Covid19	Covid19 - Sero-positive (ICU)	12 days			36.0	M	Covid19-buffycoat	True	True		30-40
+BFI-0007455	M371-S032	Covid19	Covid19 - Sero-positive (ICU)	16 days			36.0	M	Covid19-buffycoat	True	True		30-40
+BFI-0007455	M371-S033	Covid19	Covid19 - Sero-positive (ICU)	19 days			36.0	M	Covid19-buffycoat	True	True		30-40
+BFI-0007480	M371-S001	Covid19	Covid19 - Sero-positive (ICU)	11 days			40.0	F	Covid19-buffycoat	True	True		40-50
+BFI-0007480	M371-S015	Covid19	Covid19 - Sero-positive (ICU)	14 days			40.0	F	Covid19-buffycoat	True	True		40-50
+BFI-0007481	M371-S005	Covid19	Covid19 - Sero-positive (ICU)	32 days			66.0	M	Covid19-buffycoat	True	True		60-70
+BFI-0007483	M371-S008	Covid19	Covid19 - Sero-positive (Admit)	40 days			77.0	F	Covid19-buffycoat	True	True		70-80
+BFI-0007483	M371-S024	Covid19	Covid19 - Sero-positive (Admit)	35 days			77.0	F	Covid19-buffycoat	True	True		70-80
+BFI-0007484	M371-S009	Covid19	Covid19 - Sero-positive (ICU)	14 days			36.0	M	Covid19-buffycoat	True	True		30-40
+BFI-0007484	M371-S010	Covid19	Covid19 - Sero-positive (ICU)	17 days			36.0	M	Covid19-buffycoat	True	True		30-40
+BFI-0007484	M371-S025	Covid19	Covid19 - Sero-positive (ICU)	11 days			36.0	M	Covid19-buffycoat	True	True		30-40
+BFI-0007485	M371-S011	Covid19	Covid19 - Sero-positive (ICU)	12 days			45.0	F	Covid19-buffycoat	True	True		40-50
+BFI-0007485	M371-S027	Covid19	Covid19 - Sero-positive (ICU)	10 days			45.0	F	Covid19-buffycoat	True	True		40-50
+BFI-0007482	M371-S020	Covid19	Covid19 - Sero-negative (Admit)	5 days			88.0	F	Covid19-buffycoat	True	True
+BFI-0007482	M371-S021	Covid19	Covid19 - Sero-negative (Admit)	8 days			88.0	F	Covid19-buffycoat	True	True
+BFI-0007482	M371-S022	Covid19	Covid19 - Sero-negative (Admit)	10 days			88.0	F	Covid19-buffycoat	True	True
+BFI-0007482	M371-S023	Covid19	Covid19 - Sero-positive (Admit)	12 days			88.0	F	Covid19-buffycoat	True	True
+BFI-0007486	M371-S028	Covid19	Covid19 - Sero-positive (Admit)	14 days			69.0	F	Covid19-buffycoat	True	True		60-70
+BFI-0007486	M371-S029	Covid19	Covid19 - Sero-positive (Admit)	17 days			69.0	F	Covid19-buffycoat	True	True		60-70
+BFI-0007486	M371-S030	Covid19	Covid19 - Sero-positive (Admit)	19 days			69.0	F	Covid19-buffycoat	True	True		60-70
+BFI-0000234	M124-S014	Healthy/Background	Healthy/Background - HIV Negative			True	27.0	M	HIV	True	True		20-30
+BFI-0000234	M132-S014	Healthy/Background	Healthy/Background - HIV Negative			True	27.0	M	HIV	True	True		20-30
+BFI-0000254	M111-S037	HIV	HIV Broad Neutralizing			True	48.0	F	HIV	True	True	African	40-50
+BFI-0000254	M114-S037	HIV	HIV Broad Neutralizing			True	48.0	F	HIV	True	True	African	40-50
+BFI-0000255	M111-S033	HIV	HIV Broad Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0000255	M114-S033	HIV	HIV Broad Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0000256	M111-S038	HIV	HIV Broad Neutralizing			True	31.0	F	HIV	True	True	African	30-40
+BFI-0000256	M114-S038	HIV	HIV Broad Neutralizing			True	31.0	F	HIV	True	True	African	30-40
+BFI-0000258	M111-S055	HIV	HIV Non Neutralizing			True	49.0	F	HIV	True	True	African	40-50
+BFI-0000258	M114-S055	HIV	HIV Non Neutralizing			True	49.0	F	HIV	True	True	African	40-50
+BFI-0000258	M124-S070	HIV	HIV Non Neutralizing			True	49.0	F	HIV	True	True	African	40-50
+BFI-0000258	M132-S070	HIV	HIV Non Neutralizing			True	49.0	F	HIV	True	True	African	40-50
+BFI-0002850	M124-S042	Healthy/Background	Healthy/Background - HIV Negative			True	26.0	F	HIV	True	True		20-30
+BFI-0002850	M132-S040	Healthy/Background	Healthy/Background - HIV Negative			True	26.0	F	HIV	True	True		20-30
+BFI-0002851	M124-S041	Healthy/Background	Healthy/Background - HIV Negative			True	27.0	F	HIV	True	True		20-30
+BFI-0002851	M132-S039	Healthy/Background	Healthy/Background - HIV Negative			True	27.0	F	HIV	True	True		20-30
+BFI-0002852	M124-S012	Healthy/Background	Healthy/Background - HIV Negative			True	26.0	F	HIV	True	True		20-30
+BFI-0002852	M132-S012	Healthy/Background	Healthy/Background - HIV Negative			True	26.0	F	HIV	True	True		20-30
+BFI-0002854	M111-S042	HIV	HIV Non Neutralizing			True	25.0	F	HIV	True	True	African	20-30
+BFI-0002854	M114-S042	HIV	HIV Non Neutralizing			True	25.0	F	HIV	True	True	African	20-30
+BFI-0002855	M111-S016	HIV	HIV Broad Neutralizing			True	22.0	F	HIV	True	True	African	20-30
+BFI-0002855	M114-S016	HIV	HIV Broad Neutralizing			True	22.0	F	HIV	True	True	African	20-30
+BFI-0002856	M111-S043	HIV	HIV Non Neutralizing			True	23.0	F	HIV	True	True	African	20-30
+BFI-0002856	M114-S043	HIV	HIV Non Neutralizing			True	23.0	F	HIV	True	True	African	20-30
+BFI-0002857	M111-S018	HIV	HIV Broad Neutralizing			True	36.0	F	HIV	True	True	African	30-40
+BFI-0002857	M114-S018	HIV	HIV Broad Neutralizing			True	36.0	F	HIV	True	True	African	30-40
+BFI-0002859	M111-S034	HIV	HIV Broad Neutralizing			True	41.0	M	HIV	True	True	African	40-50
+BFI-0002859	M114-S034	HIV	HIV Broad Neutralizing			True	41.0	M	HIV	True	True	African	40-50
+BFI-0002861	M124-S037	Healthy/Background	Healthy/Background - HIV Negative			True	34.0	F	HIV	True	True	African	30-40
+BFI-0002861	M132-S037	Healthy/Background	Healthy/Background - HIV Negative			True	34.0	F	HIV	True	True	African	30-40
+BFI-0002862	M124-S036	Healthy/Background	Healthy/Background - HIV Negative			True	29.0	F	HIV	True	True	African	20-30
+BFI-0002862	M132-S036	Healthy/Background	Healthy/Background - HIV Negative			True	29.0	F	HIV	True	True	African	20-30
+BFI-0002863	M124-S035	Healthy/Background	Healthy/Background - HIV Negative			True	42.0	F	HIV	True	True	African	40-50
+BFI-0002863	M132-S035	Healthy/Background	Healthy/Background - HIV Negative			True	42.0	F	HIV	True	True	African	40-50
+BFI-0002864	M111-S040	HIV	HIV Broad Neutralizing			True	24.0	F	HIV	True	True	African	20-30
+BFI-0002864	M114-S040	HIV	HIV Broad Neutralizing			True	24.0	F	HIV	True	True	African	20-30
+BFI-0002865	M111-S041	HIV	HIV Broad Neutralizing			True	44.0	M	HIV	True	True	African	40-50
+BFI-0002865	M114-S041	HIV	HIV Broad Neutralizing			True	44.0	M	HIV	True	True	African	40-50
+BFI-0002866	M124-S038	Healthy/Background	Healthy/Background - HIV Negative			True	36.0	F	HIV	True	True	African	30-40
+BFI-0002866	M132-S042	Healthy/Background	Healthy/Background - HIV Negative			True	36.0	F	HIV	True	True	African	30-40
+BFI-0002867	M124-S039	Healthy/Background	Healthy/Background - HIV Negative			True	35.0	F	HIV	True	True	African	30-40
+BFI-0002867	M132-S043	Healthy/Background	Healthy/Background - HIV Negative			True	35.0	F	HIV	True	True	African	30-40
+BFI-0002868	M124-S040	Healthy/Background	Healthy/Background - HIV Negative			True	47.0	F	HIV	True	True	African	40-50
+BFI-0002868	M132-S038	Healthy/Background	Healthy/Background - HIV Negative			True	47.0	F	HIV	True	True	African	40-50
+BFI-0002870	M111-S035	HIV	HIV Broad Neutralizing			True	29.0	F	HIV	True	True	African	20-30
+BFI-0002870	M114-S035	HIV	HIV Broad Neutralizing			True	29.0	F	HIV	True	True	African	20-30
+BFI-0002871	M111-S025	HIV	HIV Broad Neutralizing			True	30.0	M	HIV	True	True	African	30-40
+BFI-0002871	M114-S025	HIV	HIV Broad Neutralizing			True	30.0	M	HIV	True	True	African	30-40
+BFI-0002875	M111-S011	HIV	HIV Broad Neutralizing			True	24.0	F	HIV	True	True	African	20-30
+BFI-0002875	M114-S011	HIV	HIV Broad Neutralizing			True	24.0	F	HIV	True	True	African	20-30
+BFI-0002877	M111-S036	HIV	HIV Broad Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0002877	M114-S036	HIV	HIV Broad Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0002879	M111-S039	HIV	HIV Broad Neutralizing			True	41.0	F	HIV	True	True	African	40-50
+BFI-0002879	M114-S039	HIV	HIV Broad Neutralizing			True	41.0	F	HIV	True	True	African	40-50
+BFI-0003450	M111-S022	HIV	HIV Broad Neutralizing			True	29.0	F	HIV	True	True	African	20-30
+BFI-0003450	M114-S022	HIV	HIV Broad Neutralizing			True	29.0	F	HIV	True	True	African	20-30
+BFI-0003451	M111-S019	HIV	HIV Broad Neutralizing			True	25.0	F	HIV	True	True	African	20-30
+BFI-0003451	M114-S019	HIV	HIV Broad Neutralizing			True	25.0	F	HIV	True	True	African	20-30
+BFI-0003452	M111-S013	HIV	HIV Broad Neutralizing			True	24.0	F	HIV	True	True		20-30
+BFI-0003452	M114-S013	HIV	HIV Broad Neutralizing			True	24.0	F	HIV	True	True		20-30
+BFI-0003453	M111-S009	HIV	HIV Broad Neutralizing			True	47.0	M	HIV	True	True		40-50
+BFI-0003453	M114-S009	HIV	HIV Broad Neutralizing			True	47.0	M	HIV	True	True		40-50
+BFI-0003454	M111-S030	HIV	HIV Broad Neutralizing			True	21.0	F	HIV	True	True	African	20-30
+BFI-0003454	M114-S030	HIV	HIV Broad Neutralizing			True	21.0	F	HIV	True	True	African	20-30
+BFI-0003455	M111-S026	HIV	HIV Broad Neutralizing			True	41.0	F	HIV	True	True	African	40-50
+BFI-0003455	M114-S026	HIV	HIV Broad Neutralizing			True	41.0	F	HIV	True	True	African	40-50
+BFI-0003456	M111-S032	HIV	HIV Broad Neutralizing			True	19.0	F	HIV	True	True	African	<20
+BFI-0003456	M114-S032	HIV	HIV Broad Neutralizing			True	19.0	F	HIV	True	True	African	<20
+BFI-0003457	M111-S031	HIV	HIV Broad Neutralizing			True	28.0	F	HIV	True	True	African	20-30
+BFI-0003457	M114-S031	HIV	HIV Broad Neutralizing			True	28.0	F	HIV	True	True	African	20-30
+BFI-0003458	M111-S020	HIV	HIV Broad Neutralizing			True	34.0	M	HIV	True	True	African	30-40
+BFI-0003458	M114-S020	HIV	HIV Broad Neutralizing			True	34.0	M	HIV	True	True	African	30-40
+BFI-0003459	M111-S027	HIV	HIV Broad Neutralizing			True	22.0	F	HIV	True	True	African	20-30
+BFI-0003459	M114-S027	HIV	HIV Broad Neutralizing			True	22.0	F	HIV	True	True	African	20-30
+BFI-0003460	M111-S004	HIV	HIV Broad Neutralizing			True	39.0	M	HIV	True	True	African	30-40
+BFI-0003460	M114-S004	HIV	HIV Broad Neutralizing			True	39.0	M	HIV	True	True	African	30-40
+BFI-0003461	M111-S008	HIV	HIV Broad Neutralizing			True	40.0	F	HIV	True	True	African	40-50
+BFI-0003461	M114-S008	HIV	HIV Broad Neutralizing			True	40.0	F	HIV	True	True	African	40-50
+BFI-0003462	M111-S001	HIV	HIV Broad Neutralizing			True	48.0	F	HIV	True	True	African	40-50
+BFI-0003462	M114-S001	HIV	HIV Broad Neutralizing			True	48.0	F	HIV	True	True	African	40-50
+BFI-0003463	M111-S005	HIV	HIV Broad Neutralizing			True	32.0	M	HIV	True	True	African	30-40
+BFI-0003463	M114-S005	HIV	HIV Broad Neutralizing			True	32.0	M	HIV	True	True	African	30-40
+BFI-0003464	M111-S014	HIV	HIV Broad Neutralizing			True	21.0	M	HIV	True	True		20-30
+BFI-0003464	M114-S014	HIV	HIV Broad Neutralizing			True	21.0	M	HIV	True	True		20-30
+BFI-0003465	M111-S024	HIV	HIV Broad Neutralizing			True	29.0	M	HIV	True	True	African	20-30
+BFI-0003465	M114-S024	HIV	HIV Broad Neutralizing			True	29.0	M	HIV	True	True	African	20-30
+BFI-0003466	M111-S003	HIV	HIV Broad Neutralizing			True	49.0	M	HIV	True	True	African	40-50
+BFI-0003466	M114-S003	HIV	HIV Broad Neutralizing			True	49.0	M	HIV	True	True	African	40-50
+BFI-0003467	M111-S053	HIV	HIV Broad Neutralizing			True	30.0	M	HIV	True	True	African	30-40
+BFI-0003467	M114-S053	HIV	HIV Broad Neutralizing			True	30.0	M	HIV	True	True	African	30-40
+BFI-0003468	M111-S023	HIV	HIV Broad Neutralizing			True	56.0	F	HIV	True	True	African	50-60
+BFI-0003468	M114-S023	HIV	HIV Broad Neutralizing			True	56.0	F	HIV	True	True	African	50-60
+BFI-0003469	M111-S007	HIV	HIV Broad Neutralizing			True	48.0	M	HIV	True	True	African	40-50
+BFI-0003469	M114-S007	HIV	HIV Broad Neutralizing			True	48.0	M	HIV	True	True	African	40-50
+BFI-0003470	M111-S045	HIV	HIV Broad Neutralizing			True	25.0	F	HIV	True	True	African	20-30
+BFI-0003470	M114-S045	HIV	HIV Broad Neutralizing			True	25.0	F	HIV	True	True	African	20-30
+BFI-0003471	M111-S044	HIV	HIV Broad Neutralizing			True	35.0	F	HIV	True	True	African	30-40
+BFI-0003471	M114-S044	HIV	HIV Broad Neutralizing			True	35.0	F	HIV	True	True	African	30-40
+BFI-0003472	M111-S006	HIV	HIV Broad Neutralizing			True	35.0	F	HIV	True	True	African	30-40
+BFI-0003472	M114-S006	HIV	HIV Broad Neutralizing			True	35.0	F	HIV	True	True	African	30-40
+BFI-0003473	M111-S021	HIV	HIV Non Neutralizing			True	28.0	M	HIV	True	True	African	20-30
+BFI-0003473	M114-S021	HIV	HIV Non Neutralizing			True	28.0	M	HIV	True	True	African	20-30
+BFI-0003474	M111-S046	HIV	HIV Non Neutralizing			True	36.0	M	HIV	True	True	African	30-40
+BFI-0003474	M114-S046	HIV	HIV Non Neutralizing			True	36.0	M	HIV	True	True	African	30-40
+BFI-0003475	M111-S054	HIV	HIV Non Neutralizing			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003475	M114-S054	HIV	HIV Non Neutralizing			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003476	M111-S047	HIV	HIV Non Neutralizing			True	20.0	F	HIV	True	True	African	20-30
+BFI-0003476	M114-S047	HIV	HIV Non Neutralizing			True	20.0	F	HIV	True	True	African	20-30
+BFI-0003477	M111-S050	HIV	HIV Non Neutralizing			True	39.0	F	HIV	True	True	African	30-40
+BFI-0003477	M114-S050	HIV	HIV Non Neutralizing			True	39.0	F	HIV	True	True	African	30-40
+BFI-0003478	M111-S017	HIV	HIV Non Neutralizing			True	28.0	F	HIV	True	True	African	20-30
+BFI-0003478	M114-S017	HIV	HIV Non Neutralizing			True	28.0	F	HIV	True	True	African	20-30
+BFI-0003479	M111-S015	HIV	HIV Non Neutralizing			True	24.0	M	HIV	True	True	African	20-30
+BFI-0003479	M114-S015	HIV	HIV Non Neutralizing			True	24.0	M	HIV	True	True	African	20-30
+BFI-0003480	M111-S010	HIV	HIV Non Neutralizing			True	43.0	M	HIV	True	True	African	40-50
+BFI-0003480	M114-S010	HIV	HIV Non Neutralizing			True	43.0	M	HIV	True	True	African	40-50
+BFI-0003481	M111-S002	HIV	HIV Non Neutralizing			True	58.0	F	HIV	True	True	African	50-60
+BFI-0003481	M114-S002	HIV	HIV Non Neutralizing			True	58.0	F	HIV	True	True	African	50-60
+BFI-0003482	M111-S048	HIV	HIV Non Neutralizing			True	44.0	M	HIV	True	True	African	40-50
+BFI-0003482	M114-S048	HIV	HIV Non Neutralizing			True	44.0	M	HIV	True	True	African	40-50
+BFI-0003483	M111-S012	HIV	HIV Non Neutralizing			True	21.0	F	HIV	True	True		20-30
+BFI-0003483	M114-S012	HIV	HIV Non Neutralizing			True	21.0	F	HIV	True	True		20-30
+BFI-0003484	M111-S028	HIV	HIV Non Neutralizing			True	44.0	F	HIV	True	True	African	40-50
+BFI-0003484	M114-S028	HIV	HIV Non Neutralizing			True	44.0	F	HIV	True	True	African	40-50
+BFI-0003485	M111-S051	HIV	HIV Non Neutralizing			True	42.0	F	HIV	True	True	African	40-50
+BFI-0003485	M114-S051	HIV	HIV Non Neutralizing			True	42.0	F	HIV	True	True	African	40-50
+BFI-0003486	M111-S052	HIV	HIV Non Neutralizing			True	22.0	F	HIV	True	True	African	20-30
+BFI-0003486	M114-S052	HIV	HIV Non Neutralizing			True	22.0	F	HIV	True	True	African	20-30
+BFI-0003487	M111-S049	HIV	HIV Non Neutralizing			True	26.0	F	HIV	True	True	African	20-30
+BFI-0003487	M114-S049	HIV	HIV Non Neutralizing			True	26.0	F	HIV	True	True	African	20-30
+BFI-0003488	M111-S029	HIV	HIV Non Neutralizing			True	31.0	M	HIV	True	True	African	30-40
+BFI-0003488	M114-S029	HIV	HIV Non Neutralizing			True	31.0	M	HIV	True	True	African	30-40
+BFI-0003700	M124-S001	Healthy/Background	Healthy/Background - HIV Negative			True	25.0	M	HIV	True	True	African	20-30
+BFI-0003700	M132-S001	Healthy/Background	Healthy/Background - HIV Negative			True	25.0	M	HIV	True	True	African	20-30
+BFI-0003701	M124-S002	Healthy/Background	Healthy/Background - HIV Negative			True	29.0	M	HIV	True	True	African	20-30
+BFI-0003701	M132-S002	Healthy/Background	Healthy/Background - HIV Negative			True	29.0	M	HIV	True	True	African	20-30
+BFI-0003702	M124-S003	Healthy/Background	Healthy/Background - HIV Negative			True	21.0	F	HIV	True	True	African	20-30
+BFI-0003702	M132-S003	Healthy/Background	Healthy/Background - HIV Negative			True	21.0	F	HIV	True	True	African	20-30
+BFI-0003703	M124-S004	Healthy/Background	Healthy/Background - HIV Negative			True	21.0	F	HIV	True	True	African	20-30
+BFI-0003703	M132-S004	Healthy/Background	Healthy/Background - HIV Negative			True	21.0	F	HIV	True	True	African	20-30
+BFI-0003704	M124-S005	Healthy/Background	Healthy/Background - HIV Negative			True	20.0	M	HIV	True	True	African	20-30
+BFI-0003704	M132-S005	Healthy/Background	Healthy/Background - HIV Negative			True	20.0	M	HIV	True	True	African	20-30
+BFI-0003705	M124-S006	Healthy/Background	Healthy/Background - HIV Negative			True	32.0	M	HIV	True	True		30-40
+BFI-0003705	M132-S006	Healthy/Background	Healthy/Background - HIV Negative			True	32.0	M	HIV	True	True		30-40
+BFI-0003706	M124-S007	Healthy/Background	Healthy/Background - HIV Negative			True	21.0	M	HIV	True	True		20-30
+BFI-0003706	M132-S007	Healthy/Background	Healthy/Background - HIV Negative			True	21.0	M	HIV	True	True		20-30
+BFI-0003707	M124-S008	Healthy/Background	Healthy/Background - HIV Negative			True	46.0	M	HIV	True	True		40-50
+BFI-0003707	M132-S008	Healthy/Background	Healthy/Background - HIV Negative			True	46.0	M	HIV	True	True		40-50
+BFI-0003708	M124-S009	Healthy/Background	Healthy/Background - HIV Negative			True	30.0	M	HIV	True	True		30-40
+BFI-0003708	M132-S009	Healthy/Background	Healthy/Background - HIV Negative			True	30.0	M	HIV	True	True		30-40
+BFI-0003709	M124-S010	Healthy/Background	Healthy/Background - HIV Negative			True	22.0	F	HIV	True	True		20-30
+BFI-0003709	M132-S010	Healthy/Background	Healthy/Background - HIV Negative			True	22.0	F	HIV	True	True		20-30
+BFI-0003710	M124-S011	Healthy/Background	Healthy/Background - HIV Negative			True	24.0	F	HIV	True	True		20-30
+BFI-0003710	M132-S011	Healthy/Background	Healthy/Background - HIV Negative			True	24.0	F	HIV	True	True		20-30
+BFI-0003711	M124-S013	Healthy/Background	Healthy/Background - HIV Negative			True	29.0	M	HIV	True	True		20-30
+BFI-0003711	M132-S013	Healthy/Background	Healthy/Background - HIV Negative			True	29.0	M	HIV	True	True		20-30
+BFI-0003712	M124-S015	Healthy/Background	Healthy/Background - HIV Negative			True	51.0	M	HIV	True	True		50-60
+BFI-0003712	M132-S015	Healthy/Background	Healthy/Background - HIV Negative			True	51.0	M	HIV	True	True		50-60
+BFI-0003713	M124-S016	Healthy/Background	Healthy/Background - HIV Negative			True	26.0	M	HIV	True	True	African	20-30
+BFI-0003713	M132-S016	Healthy/Background	Healthy/Background - HIV Negative			True	26.0	M	HIV	True	True	African	20-30
+BFI-0003714	M124-S017	Healthy/Background	Healthy/Background - HIV Negative			True	34.0	M	HIV	True	True	African	30-40
+BFI-0003714	M132-S017	Healthy/Background	Healthy/Background - HIV Negative			True	34.0	M	HIV	True	True	African	30-40
+BFI-0003715	M124-S018	Healthy/Background	Healthy/Background - HIV Negative			True	26.0	M	HIV	True	True	African	20-30
+BFI-0003715	M132-S018	Healthy/Background	Healthy/Background - HIV Negative			True	26.0	M	HIV	True	True	African	20-30
+BFI-0003716	M124-S019	Healthy/Background	Healthy/Background - HIV Negative			True	28.0	F	HIV	True	True	African	20-30
+BFI-0003716	M132-S019	Healthy/Background	Healthy/Background - HIV Negative			True	28.0	F	HIV	True	True	African	20-30
+BFI-0003717	M124-S020	Healthy/Background	Healthy/Background - HIV Negative			True	34.0	M	HIV	True	True	African	30-40
+BFI-0003717	M132-S020	Healthy/Background	Healthy/Background - HIV Negative			True	34.0	M	HIV	True	True	African	30-40
+BFI-0003718	M124-S021	Healthy/Background	Healthy/Background - HIV Negative			True	23.0	M	HIV	True	True	African	20-30
+BFI-0003718	M132-S021	Healthy/Background	Healthy/Background - HIV Negative			True	23.0	M	HIV	True	True	African	20-30
+BFI-0003719	M124-S022	Healthy/Background	Healthy/Background - HIV Negative			True	31.0	M	HIV	True	True	African	30-40
+BFI-0003719	M132-S022	Healthy/Background	Healthy/Background - HIV Negative			True	31.0	M	HIV	True	True	African	30-40
+BFI-0003720	M124-S023	Healthy/Background	Healthy/Background - HIV Negative			True	25.0	M	HIV	True	True	African	20-30
+BFI-0003720	M132-S023	Healthy/Background	Healthy/Background - HIV Negative			True	25.0	M	HIV	True	True	African	20-30
+BFI-0003721	M124-S024	Healthy/Background	Healthy/Background - HIV Negative			True	25.0	F	HIV	True	True	African	20-30
+BFI-0003721	M132-S024	Healthy/Background	Healthy/Background - HIV Negative			True	25.0	F	HIV	True	True	African	20-30
+BFI-0003722	M124-S025	Healthy/Background	Healthy/Background - HIV Negative			True	31.0	F	HIV	True	True	African	30-40
+BFI-0003722	M132-S025	Healthy/Background	Healthy/Background - HIV Negative			True	31.0	F	HIV	True	True	African	30-40
+BFI-0003723	M124-S026	Healthy/Background	Healthy/Background - HIV Negative			True	23.0	M	HIV	True	True	African	20-30
+BFI-0003723	M132-S026	Healthy/Background	Healthy/Background - HIV Negative			True	23.0	M	HIV	True	True	African	20-30
+BFI-0003724	M124-S027	Healthy/Background	Healthy/Background - HIV Negative			True	28.0	M	HIV	True	True	African	20-30
+BFI-0003724	M132-S027	Healthy/Background	Healthy/Background - HIV Negative			True	28.0	M	HIV	True	True	African	20-30
+BFI-0003725	M124-S028	Healthy/Background	Healthy/Background - HIV Negative			True	24.0	F	HIV	True	True	African	20-30
+BFI-0003725	M132-S028	Healthy/Background	Healthy/Background - HIV Negative			True	24.0	F	HIV	True	True	African	20-30
+BFI-0003726	M124-S029	Healthy/Background	Healthy/Background - HIV Negative			True	37.0	F	HIV	True	True		30-40
+BFI-0003726	M132-S029	Healthy/Background	Healthy/Background - HIV Negative			True	37.0	F	HIV	True	True		30-40
+BFI-0003727	M124-S030	Healthy/Background	Healthy/Background - HIV Negative			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003727	M132-S030	Healthy/Background	Healthy/Background - HIV Negative			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003728	M124-S031	Healthy/Background	Healthy/Background - HIV Negative			True	21.0	F	HIV	True	True		20-30
+BFI-0003728	M132-S031	Healthy/Background	Healthy/Background - HIV Negative			True	21.0	F	HIV	True	True		20-30
+BFI-0003729	M124-S032	Healthy/Background	Healthy/Background - HIV Negative			True	29.0	M	HIV	True	True	African	20-30
+BFI-0003729	M132-S032	Healthy/Background	Healthy/Background - HIV Negative			True	29.0	M	HIV	True	True	African	20-30
+BFI-0003730	M124-S033	Healthy/Background	Healthy/Background - HIV Negative			True	28.0	M	HIV	True	True	African	20-30
+BFI-0003730	M132-S033	Healthy/Background	Healthy/Background - HIV Negative			True	28.0	M	HIV	True	True	African	20-30
+BFI-0003731	M124-S034	Healthy/Background	Healthy/Background - HIV Negative			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003731	M132-S034	Healthy/Background	Healthy/Background - HIV Negative			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003732	M124-S043	Healthy/Background	Healthy/Background - HIV Negative			True	21.0	F	HIV	True	True		20-30
+BFI-0003732	M132-S041	Healthy/Background	Healthy/Background - HIV Negative			True	21.0	F	HIV	True	True		20-30
+BFI-0003733	M124-S044	HIV	HIV Broad Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0003733	M132-S044	HIV	HIV Broad Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0003734	M124-S045	HIV	HIV Non Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0003734	M132-S045	HIV	HIV Non Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0003735	M124-S046	HIV	HIV Broad Neutralizing			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003735	M132-S046	HIV	HIV Broad Neutralizing			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003736	M124-S047	HIV	HIV Broad Neutralizing			True	27.0	M	HIV	True	True	African	20-30
+BFI-0003736	M132-S047	HIV	HIV Broad Neutralizing			True	27.0	M	HIV	True	True	African	20-30
+BFI-0003737	M124-S048	HIV	HIV Non Neutralizing			True	28.0	M	HIV	True	True	African	20-30
+BFI-0003737	M132-S048	HIV	HIV Non Neutralizing			True	28.0	M	HIV	True	True	African	20-30
+BFI-0003738	M124-S049	HIV	HIV Broad Neutralizing			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003738	M132-S049	HIV	HIV Broad Neutralizing			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003739	M124-S050	HIV	HIV Broad Neutralizing			True	32.0	M	HIV	True	True	African	30-40
+BFI-0003739	M132-S050	HIV	HIV Broad Neutralizing			True	32.0	M	HIV	True	True	African	30-40
+BFI-0003740	M124-S051	HIV	HIV Broad Neutralizing			True	34.0	F	HIV	True	True	African	30-40
+BFI-0003740	M132-S051	HIV	HIV Broad Neutralizing			True	34.0	F	HIV	True	True	African	30-40
+BFI-0003741	M124-S052	HIV	HIV Broad Neutralizing			True	23.0	F	HIV	True	True	African	20-30
+BFI-0003741	M132-S052	HIV	HIV Broad Neutralizing			True	23.0	F	HIV	True	True	African	20-30
+BFI-0003742	M124-S053	HIV	HIV Broad Neutralizing			True	37.0	F	HIV	True	True	African	30-40
+BFI-0003742	M132-S053	HIV	HIV Broad Neutralizing			True	37.0	F	HIV	True	True	African	30-40
+BFI-0003743	M124-S054	HIV	HIV Non Neutralizing			True	31.0	F	HIV	True	True	African	30-40
+BFI-0003743	M132-S054	HIV	HIV Non Neutralizing			True	31.0	F	HIV	True	True	African	30-40
+BFI-0003745	M124-S056	HIV	HIV Non Neutralizing			True	21.0	F	HIV	True	True	African	20-30
+BFI-0003745	M132-S056	HIV	HIV Non Neutralizing			True	21.0	F	HIV	True	True	African	20-30
+BFI-0003746	M124-S057	HIV	HIV Non Neutralizing			True	19.0	F	HIV	True	True	African	<20
+BFI-0003746	M132-S057	HIV	HIV Non Neutralizing			True	19.0	F	HIV	True	True	African	<20
+BFI-0003747	M124-S058	HIV	HIV Non Neutralizing			True	22.0	M	HIV	True	True	African	20-30
+BFI-0003747	M132-S058	HIV	HIV Non Neutralizing			True	22.0	M	HIV	True	True	African	20-30
+BFI-0003748	M124-S059	HIV	HIV Non Neutralizing			True	28.0	F	HIV	True	True	African	20-30
+BFI-0003748	M132-S059	HIV	HIV Non Neutralizing			True	28.0	F	HIV	True	True	African	20-30
+BFI-0003749	M124-S060	HIV	HIV Non Neutralizing			True	26.0	F	HIV	True	True	African	20-30
+BFI-0003749	M132-S060	HIV	HIV Non Neutralizing			True	26.0	F	HIV	True	True	African	20-30
+BFI-0003750	M124-S061	HIV	HIV Non Neutralizing			True	41.0	F	HIV	True	True	African	40-50
+BFI-0003750	M132-S061	HIV	HIV Non Neutralizing			True	41.0	F	HIV	True	True	African	40-50
+BFI-0003751	M124-S062	HIV	HIV Non Neutralizing			True	36.0	F	HIV	True	True	African	30-40
+BFI-0003751	M132-S062	HIV	HIV Non Neutralizing			True	36.0	F	HIV	True	True	African	30-40
+BFI-0003752	M124-S063	HIV	HIV Non Neutralizing			True	44.0	F	HIV	True	True	African	40-50
+BFI-0003752	M132-S063	HIV	HIV Non Neutralizing			True	44.0	F	HIV	True	True	African	40-50
+BFI-0003754	M124-S065	HIV	HIV Non Neutralizing			True	25.0	F	HIV	True	True	African	20-30
+BFI-0003754	M132-S065	HIV	HIV Non Neutralizing			True	25.0	F	HIV	True	True	African	20-30
+BFI-0003755	M124-S066	HIV	HIV Non Neutralizing			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003755	M132-S066	HIV	HIV Non Neutralizing			True	27.0	F	HIV	True	True	African	20-30
+BFI-0003756	M124-S067	HIV	HIV Non Neutralizing			True	22.0	M	HIV	True	True	African	20-30
+BFI-0003756	M132-S067	HIV	HIV Non Neutralizing			True	22.0	M	HIV	True	True	African	20-30
+BFI-0003757	M124-S068	HIV	HIV Non Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0003757	M132-S068	HIV	HIV Non Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0003758	M124-S069	HIV	HIV Non Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0003758	M132-S069	HIV	HIV Non Neutralizing			True	33.0	F	HIV	True	True	African	30-40
+BFI-0003759	M124-S071	HIV	HIV Non Neutralizing			True	22.0	M	HIV	True	True	African	20-30
+BFI-0003759	M132-S071	HIV	HIV Non Neutralizing			True	22.0	M	HIV	True	True	African	20-30
+BFI-0003760	M124-S072	HIV	HIV Non Neutralizing			True	21.0	F	HIV	True	True	African	20-30
+BFI-0003760	M132-S072	HIV	HIV Non Neutralizing			True	21.0	F	HIV	True	True	African	20-30
+BFI-0003761	M124-S073	HIV	HIV Non Neutralizing			True	35.0	M	HIV	True	True	African	30-40
+BFI-0003761	M132-S073	HIV	HIV Non Neutralizing			True	35.0	M	HIV	True	True	African	30-40
+BFI-0003762	M124-S074	HIV	HIV Non Neutralizing			True	33.0	M	HIV	True	True	African	30-40
+BFI-0003762	M132-S074	HIV	HIV Non Neutralizing			True	33.0	M	HIV	True	True	African	30-40
+BFI-0003763	M124-S075	HIV	HIV Non Neutralizing			True	34.0	F	HIV	True	True	African	30-40
+BFI-0003763	M132-S075	HIV	HIV Non Neutralizing			True	34.0	F	HIV	True	True	African	30-40
+BFI-0003764	M124-S076	HIV	HIV Non Neutralizing			True	45.0	F	HIV	True	True	African	40-50
+BFI-0003764	M132-S076	HIV	HIV Non Neutralizing			True	45.0	F	HIV	True	True	African	40-50
+BFI-0003765	M124-S077	HIV	HIV Non Neutralizing			True	27.0	M	HIV	True	True		20-30
+BFI-0003765	M132-S077	HIV	HIV Non Neutralizing			True	27.0	M	HIV	True	True		20-30
+BFI-0003766	M124-S078	HIV	HIV Broad Neutralizing			True	47.0	M	HIV	True	True		40-50
+BFI-0003766	M132-S078	HIV	HIV Broad Neutralizing			True	47.0	M	HIV	True	True		40-50
+BFI-0003767	M124-S079	HIV	HIV Non Neutralizing			True	37.0	M	HIV	True	True		30-40
+BFI-0003767	M132-S079	HIV	HIV Non Neutralizing			True	37.0	M	HIV	True	True		30-40
+BFI-0003768	M124-S080	HIV	HIV Broad Neutralizing			True	64.0	M	HIV	True	True		60-70
+BFI-0003768	M132-S080	HIV	HIV Broad Neutralizing			True	64.0	M	HIV	True	True		60-70
+BFI-0003769	M124-S081	HIV	HIV Non Neutralizing			True	28.0	M	HIV	True	True		20-30
+BFI-0003769	M132-S081	HIV	HIV Non Neutralizing			True	28.0	M	HIV	True	True		20-30
+BFI-0003770	M124-S082	HIV	HIV Non Neutralizing			True	24.0	M	HIV	True	True		20-30
+BFI-0003770	M132-S082	HIV	HIV Non Neutralizing			True	24.0	M	HIV	True	True		20-30
+BFI-0003771	M124-S083	HIV	HIV Non Neutralizing			True	24.0	F	HIV	True	True	African	20-30
+BFI-0003771	M132-S083	HIV	HIV Non Neutralizing			True	24.0	F	HIV	True	True	African	20-30
+BFI-0003772	M124-S084	HIV	HIV Non Neutralizing			True	57.0	M	HIV	True	True	African	50-60
+BFI-0003772	M132-S084	HIV	HIV Non Neutralizing			True	57.0	M	HIV	True	True	African	50-60
+BFI-0003773	M124-S064	HIV	HIV Non Neutralizing			True	20.0	M	HIV	True	True		20-30
+BFI-0003773	M124-S085	HIV	HIV Non Neutralizing			True	20.0	M	HIV	True	True		20-30
+BFI-0003773	M132-S064	HIV	HIV Non Neutralizing			True	20.0	M	HIV	True	True		20-30
+BFI-0003774	M124-S055	HIV	HIV Non Neutralizing			True	22.0	M	HIV	True	True	African	20-30
+BFI-0003774	M124-S086	HIV	HIV Non Neutralizing			True	22.0	M	HIV	True	True	African	20-30
+BFI-0003774	M132-S055	HIV	HIV Non Neutralizing			True	22.0	M	HIV	True	True	African	20-30
+BFI-0003775	M124-S087	HIV	HIV Non Neutralizing			True	35.0	F	HIV	True	True	African	30-40
+BFI-0003775	M132-S085	HIV	HIV Non Neutralizing			True	35.0	F	HIV	True	True	African	30-40
+BFI-0003775	M132-S086	HIV	HIV Non Neutralizing			True	35.0	F	HIV	True	True	African	30-40
+BFI-0003050	M64-001	Healthy/Background	Healthy/Background - CMV Negative				59.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003051	M64-002	Healthy/Background	Healthy/Background - CMV Negative				60.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003052	M64-003	Healthy/Background	Healthy/Background - CMV Negative				44.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003053	M64-004	Healthy/Background	Healthy/Background - CMV Positive				68.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003054	M64-005	Healthy/Background	Healthy/Background - CMV Positive				59.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003055	M64-006	Healthy/Background	Healthy/Background - CMV Positive				58.0	M	Healthy-StanfordBloodCenter	True	True	African	50-60
+BFI-0003056	M64-007	Healthy/Background	Healthy/Background - CMV Positive				30.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	30-40
+BFI-0003057	M64-008	Healthy/Background	Healthy/Background - CMV Negative				19.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	<20
+BFI-0003058	M64-009	Healthy/Background	Healthy/Background - CMV Negative				60.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003059	M64-010	Healthy/Background	Healthy/Background - CMV Positive				50.0	M	Healthy-StanfordBloodCenter	True	True	Asian	50-60
+BFI-0003060	M64-011	Healthy/Background	Healthy/Background - CMV Positive				29.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	20-30
+BFI-0003061	M64-012	Healthy/Background	Healthy/Background - CMV Negative				25.0	F	Healthy-StanfordBloodCenter	True	True	Asian	20-30
+BFI-0003062	M64-013	Healthy/Background	Healthy/Background - CMV Positive				53.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003063	M64-014	Healthy/Background	Healthy/Background - CMV Positive				81.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian
+BFI-0003064	M64-015	Healthy/Background	Healthy/Background - CMV Negative				56.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003065	M64-016	Healthy/Background	Healthy/Background - CMV Negative				56.0	M	Healthy-StanfordBloodCenter	True	True	Asian	50-60
+BFI-0003066	M64-017	Healthy/Background	Healthy/Background - CMV Negative				47.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003067	M64-018	Healthy/Background	Healthy/Background - CMV Negative				52.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003068	M64-019	Healthy/Background	Healthy/Background - CMV Negative				52.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003069	M64-020	Healthy/Background	Healthy/Background - CMV Negative				17.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	<20
+BFI-0003070	M64-021	Healthy/Background	Healthy/Background - CMV Negative				34.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	30-40
+BFI-0003071	M64-022	Healthy/Background	Healthy/Background - CMV Negative				40.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003072	M64-023	Healthy/Background	Healthy/Background - CMV Negative				60.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003073	M64-024	Healthy/Background	Healthy/Background - CMV Negative				61.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003074	M64-025	Healthy/Background	Healthy/Background - CMV Positive				35.0	F	Healthy-StanfordBloodCenter	True	True	Asian	30-40
+BFI-0003075	M64-026	Healthy/Background	Healthy/Background - CMV Positive				68.0	M	Healthy-StanfordBloodCenter	True	True	Asian	60-70
+BFI-0003076	M64-027	Healthy/Background	Healthy/Background - CMV Positive				25.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	20-30
+BFI-0003077	M64-028	Healthy/Background	Healthy/Background - CMV Negative				54.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003078	M64-029	Healthy/Background	Healthy/Background - CMV Negative				66.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003079	M64-030	Healthy/Background	Healthy/Background - CMV Negative				37.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	30-40
+BFI-0003080	M64-031	Healthy/Background	Healthy/Background - CMV Negative				55.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003081	M64-032	Healthy/Background	Healthy/Background - CMV Positive				43.0	F	Healthy-StanfordBloodCenter	True	True	Asian	40-50
+BFI-0003082	M64-033	Healthy/Background	Healthy/Background - CMV Positive				63.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003083	M64-034	Healthy/Background	Healthy/Background - CMV Negative				45.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003084	M64-035	Healthy/Background	Healthy/Background - CMV Positive				56.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003085	M64-036	Healthy/Background	Healthy/Background - CMV Positive				58.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003086	M64-037	Healthy/Background	Healthy/Background - CMV Negative				43.0	M	Healthy-StanfordBloodCenter	True	True	Asian	40-50
+BFI-0003087	M64-038	Healthy/Background	Healthy/Background - CMV Negative				61.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003088	M64-039	Healthy/Background	Healthy/Background - CMV Negative				17.0	F	Healthy-StanfordBloodCenter	True	True	Asian	<20
+BFI-0003089	M64-040	Healthy/Background	Healthy/Background - CMV Negative				63.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003090	M64-041	Healthy/Background	Healthy/Background - CMV Negative				61.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003091	M64-042	Healthy/Background	Healthy/Background - CMV Negative				50.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003092	M64-043	Healthy/Background	Healthy/Background - CMV Negative				57.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003093	M64-044	Healthy/Background	Healthy/Background - CMV Positive				22.0	M	Healthy-StanfordBloodCenter	True	True	Asian	20-30
+BFI-0003094	M64-045	Healthy/Background	Healthy/Background - CMV Negative				71.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	70-80
+BFI-0003095	M64-046	Healthy/Background	Healthy/Background - CMV Negative				60.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003096	M64-047	Healthy/Background	Healthy/Background - CMV Negative				20.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	20-30
+BFI-0003097	M64-048	Healthy/Background	Healthy/Background - CMV Negative				48.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003098	M64-049	Healthy/Background	Healthy/Background - CMV Negative				65.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003099	M64-050	Healthy/Background	Healthy/Background - CMV Positive				41.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003100	M64-051	Healthy/Background	Healthy/Background - CMV Negative				65.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003101	M64-052	Healthy/Background	Healthy/Background - CMV Positive				45.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003102	M64-053	Healthy/Background	Healthy/Background - CMV Positive				66.0	M	Healthy-StanfordBloodCenter	True	True	Asian	60-70
+BFI-0003103	M64-054	Healthy/Background	Healthy/Background - CMV Positive				63.0	F	Healthy-StanfordBloodCenter	True	True	Asian	60-70
+BFI-0003104	M64-055	Healthy/Background	Healthy/Background - CMV Negative				61.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003105	M64-056	Healthy/Background	Healthy/Background - CMV Negative				87.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian
+BFI-0003106	M64-057	Healthy/Background	Healthy/Background - CMV Positive				65.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003107	M64-058	Healthy/Background	Healthy/Background - CMV Positive				54.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003108	M64-059	Healthy/Background	Healthy/Background - CMV Negative				35.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	30-40
+BFI-0003109	M64-060	Healthy/Background	Healthy/Background - CMV Positive				48.0	M	Healthy-StanfordBloodCenter	True	True	Asian	40-50
+BFI-0003110	M64-061	Healthy/Background	Healthy/Background - CMV Positive				63.0	F	Healthy-StanfordBloodCenter	True	True	Asian	60-70
+BFI-0003111	M64-062	Healthy/Background	Healthy/Background - CMV Positive				39.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	30-40
+BFI-0003112	M64-063	Healthy/Background	Healthy/Background - CMV Positive				53.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003113	M64-064	Healthy/Background	Healthy/Background - CMV Negative				65.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003114	M64-065	Healthy/Background	Healthy/Background - CMV Negative				26.0	M	Healthy-StanfordBloodCenter	True	True	Asian	20-30
+BFI-0003115	M64-066	Healthy/Background	Healthy/Background - CMV Negative				55.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003116	M64-067	Healthy/Background	Healthy/Background - CMV Negative				74.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	70-80
+BFI-0003117	M64-068	Healthy/Background	Healthy/Background - CMV Positive				54.0	M	Healthy-StanfordBloodCenter	True	True	Asian	50-60
+BFI-0003118	M64-069	Healthy/Background	Healthy/Background - CMV Negative				55.0	M	Healthy-StanfordBloodCenter	True	True	Asian	50-60
+BFI-0003119	M64-070	Healthy/Background	Healthy/Background - CMV Negative				43.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003120	M64-071	Healthy/Background	Healthy/Background - CMV Positive				78.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	70-80
+BFI-0003121	M64-072	Healthy/Background	Healthy/Background - CMV Negative				60.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003122	M64-073	Healthy/Background	Healthy/Background - CMV Negative				37.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	30-40
+BFI-0003123	M64-074	Healthy/Background	Healthy/Background - CMV Negative				69.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	60-70
+BFI-0003124	M64-075	Healthy/Background	Healthy/Background - CMV Positive				48.0	F	Healthy-StanfordBloodCenter	True	True	Asian	40-50
+BFI-0003125	M64-076	Healthy/Background	Healthy/Background - CMV Positive				52.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003126	M64-077	Healthy/Background	Healthy/Background - CMV Positive				62.0	M	Healthy-StanfordBloodCenter	True	True	Asian	60-70
+BFI-0003127	M64-078	Healthy/Background	Healthy/Background - CMV Negative				52.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003128	M64-079	Healthy/Background	Healthy/Background - CMV Negative				63.0	F	Healthy-StanfordBloodCenter	True	True	Asian	60-70
+BFI-0003129	M64-080	Healthy/Background	Healthy/Background - CMV Positive				59.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003130	M64-081	Healthy/Background	Healthy/Background - CMV Negative				67.0	M	Healthy-StanfordBloodCenter	True	True	Hispanic/Latino	60-70
+BFI-0003131	M64-082	Healthy/Background	Healthy/Background - CMV Negative				49.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003132	M64-083	Healthy/Background	Healthy/Background - CMV Positive				34.0	M	Healthy-StanfordBloodCenter	True	True	Asian	30-40
+BFI-0003133	M64-084	Healthy/Background	Healthy/Background - CMV Negative				52.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003134	M64-085	Healthy/Background	Healthy/Background - CMV Positive				55.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003135	M64-086	Healthy/Background	Healthy/Background - CMV Positive				57.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003136	M64-087	Healthy/Background	Healthy/Background - CMV Positive				49.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003137	M64-088	Healthy/Background	Healthy/Background - CMV Positive				44.0	F	Healthy-StanfordBloodCenter	True	True	Hispanic/Latino	40-50
+BFI-0003138	M64-089	Healthy/Background	Healthy/Background - CMV Negative				46.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003139	M64-090	Healthy/Background	Healthy/Background - CMV Negative				50.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003140	M64-091	Healthy/Background	Healthy/Background - CMV Positive				44.0	M	Healthy-StanfordBloodCenter	True	True	Asian	40-50
+BFI-0003141	M64-092	Healthy/Background	Healthy/Background - CMV Negative				59.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003142	M64-093	Healthy/Background	Healthy/Background - CMV Negative				50.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003143	M64-094	Healthy/Background	Healthy/Background - CMV Negative				27.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	20-30
+BFI-0003144	M64-095	Healthy/Background	Healthy/Background - CMV Unknown				22.0	M	Healthy-StanfordBloodCenter	True	True		20-30
+BFI-0003145	M64-096	Healthy/Background	Healthy/Background - CMV Positive				29.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	20-30
+BFI-0003146	M64-097	Healthy/Background	Healthy/Background - CMV Positive				26.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	20-30
+BFI-0003147	M64-098	Healthy/Background	Healthy/Background - CMV Positive				27.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	20-30
+BFI-0003148	M64-099	Healthy/Background	Healthy/Background - CMV Negative				54.0	M	Healthy-StanfordBloodCenter	True	True	Hispanic/Latino	50-60
+BFI-0003149	M64-100	Healthy/Background	Healthy/Background - CMV Positive				30.0	F	Healthy-StanfordBloodCenter	True	True	Hispanic/Latino	30-40
+BFI-0003150	M64-101	Healthy/Background	Healthy/Background - CMV Positive				38.0	F	Healthy-StanfordBloodCenter	True	True	Asian	30-40
+BFI-0003151	M64-102	Healthy/Background	Healthy/Background - CMV Positive				52.0	F	Healthy-StanfordBloodCenter	True	True	Hispanic/Latino	50-60
+BFI-0003152	M64-103	Healthy/Background	Healthy/Background - CMV Positive				50.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003153	M64-104	Healthy/Background	Healthy/Background - CMV Positive				45.0	M	Healthy-StanfordBloodCenter	True	True	Asian	40-50
+BFI-0003154	M64-105	Healthy/Background	Healthy/Background - CMV Positive				38.0	M	Healthy-StanfordBloodCenter	True	True	Asian	30-40
+BFI-0003155	M64-106	Healthy/Background	Healthy/Background - CMV Positive				51.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003156	M64-107	Healthy/Background	Healthy/Background - CMV Positive				39.0	F	Healthy-StanfordBloodCenter	True	True	Hispanic/Latino	30-40
+BFI-0003157	M64-108	Healthy/Background	Healthy/Background - CMV Negative				49.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	40-50
+BFI-0003158	M64-109	Healthy/Background	Healthy/Background - CMV Negative				19.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	<20
+BFI-0003159	M64-110	Healthy/Background	Healthy/Background - CMV Positive				28.0	F	Healthy-StanfordBloodCenter	True	True	Asian	20-30
+BFI-0003160	M64-111	Healthy/Background	Healthy/Background - CMV Positive				57.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003161	M64-112	Healthy/Background	Healthy/Background - CMV Negative				18.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	<20
+BFI-0003162	M64-113	Healthy/Background	Healthy/Background - CMV Positive				54.0	F	Healthy-StanfordBloodCenter	True	True	Caucasian	50-60
+BFI-0003163	M64-114	Healthy/Background	Healthy/Background - CMV Negative				27.0	M	Healthy-StanfordBloodCenter	True	True	Caucasian	20-30
+BFI-0005400	M281redo-S001	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis				51.0	F	Lupus	True	False	African	50-60
+BFI-0005400	M281redo-S002	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis				51.0	F	Lupus	True	False	African	50-60
+BFI-0005400	M281redo-S027	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis				51.0	F	Lupus	True	False	African	50-60
+BFI-0005400	M281redo-S028	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis				51.0	F	Lupus	True	False	African	50-60
+BFI-0005402	M281redo-S003	Lupus	SLE Multiple aAbs				39.0	F	Lupus	True	False	African	30-40
+BFI-0005403	M281redo-S004	Lupus	SLE Multiple aAbs				37.0	F	Lupus	True	False	African	30-40
+BFI-0005404	M281redo-S005	Lupus	SLE Multiple aAbs				37.0	F	Lupus	True	False	African	30-40
+BFI-0005405	M281redo-S006	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis				21.0	F	Lupus	True	False	African	20-30
+BFI-0005405	M281redo-S009	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis				21.0	F	Lupus	True	False	African	20-30
+BFI-0005405	M281redo-S036	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis				21.0	F	Lupus	True	False	African	20-30
+BFI-0005406	M281redo-S007	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis				55.0	F	Lupus	True	False	African	50-60
+BFI-0005406	M281redo-S008	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis				55.0	F	Lupus	True	False	African	50-60
+BFI-0005406	M281redo-S034	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis				55.0	F	Lupus	True	False	African	50-60
+BFI-0005409	M281redo-S010	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis				24.0	F	Lupus	True	False	African	20-30
+BFI-0005409	M281redo-S030	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis				24.0	F	Lupus	True	False	African	20-30
+BFI-0005409	M281redo-S031	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis				24.0	F	Lupus	True	False	African	20-30
+BFI-0005410	M281redo-S011	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis				36.0	F	Lupus	True	False	Caucasian	30-40
+BFI-0005411	M281redo-S012	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis				35.0	F	Lupus	True	False	Caucasian	30-40
+BFI-0005412	M281redo-S013	Lupus	SLE Multiple aAbs						Lupus	True	False
+BFI-0005413	M281redo-S014	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis				34.0	F	Lupus	True	False	Caucasian	30-40
+BFI-0005414	M281redo-S015	Lupus	SLE Multiple aAbs				47.0	M	Lupus	True	False	Caucasian	40-50
+BFI-0005414	M281redo-S016	Lupus	SLE Multiple aAbs				47.0	M	Lupus	True	False	Caucasian	40-50
+BFI-0005416	M281redo-S017	Lupus	SLE Multiple aAbs				71.0	F	Lupus	True	False	Caucasian	70-80
+BFI-0005416	M281redo-S018	Lupus	SLE Multiple aAbs				71.0	F	Lupus	True	False	Caucasian	70-80
+BFI-0005418	M281redo-S019	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis				31.0	F	Lupus	True	False	Caucasian	30-40
+BFI-0005419	M281redo-S020	Lupus	SLE Multiple aAbs						Lupus	True	False
+BFI-0005420	M281redo-S021	Lupus	SLE One aAbs				55.0	F	Lupus	True	False	African	50-60
+BFI-0005421	M281redo-S022	Lupus	SLE One aAbs / SLE dsDNA WITHOUT Nephritis				30.0	F	Lupus	True	False	Caucasian	30-40
+BFI-0005422	M281redo-S023	Lupus	SLE One aAbs / SLE dsDNA WITH Nephritis				23.0	F	Lupus	True	False	Caucasian	20-30
+BFI-0005423	M281redo-S024	Lupus	SLE One aAbs				28.0	F	Lupus	True	False	Caucasian	20-30
+BFI-0005423	M281redo-S025	Lupus	SLE One aAbs				28.0	F	Lupus	True	False	Caucasian	20-30
+BFI-0005425	M281redo-S026	Lupus	SLE One aAbs				32.0	F	Lupus	True	False	Caucasian	30-40
+BFI-0005428	M281redo-S029	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis				26.0	F	Lupus	True	False	African	20-30
+BFI-0005431	M281redo-S032	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis				47.0	F	Lupus	True	False	African	40-50
+BFI-0005432	M281redo-S033	Lupus	SLE One aAbs / SLE dsDNA WITHOUT Nephritis				41.0	F	Lupus	True	False	African	40-50
+BFI-0005434	M281redo-S035	Lupus	SLE One aAbs / SLE dsDNA WITHOUT Nephritis				50.0	F	Lupus	True	False	Caucasian	50-60
+BFI-0005436	M281redo-S037	Lupus	SLE One aAbs / SLE dsDNA WITHOUT Nephritis				48.0	F	Lupus	True	False	Caucasian	40-50
+BFI-0005437	M281redo-S038	Healthy/Background	Healthy/Background - SLE Negative				40.0	F	Lupus	True	False	African	40-50
+BFI-0005438	M281redo-S039	Healthy/Background	Healthy/Background - SLE Negative				25.0	M	Lupus	True	False	African	20-30
+BFI-0005439	M281redo-S040	Healthy/Background	Healthy/Background - SLE Negative				55.0	F	Lupus	True	False	African	50-60
+BFI-0005439	M281redo-S048	Healthy/Background	Healthy/Background - SLE Negative				55.0	F	Lupus	True	False	African	50-60
+BFI-0005440	M281redo-S041	Healthy/Background	Healthy/Background - SLE Negative				45.0	F	Lupus	True	False	African	40-50
+BFI-0005441	M281redo-S042	Healthy/Background	Healthy/Background - SLE Negative				30.0	F	Lupus	True	False	African	30-40
+BFI-0005442	M281redo-S043	Healthy/Background	Healthy/Background - SLE Negative				40.0	M	Lupus	True	False	African	40-50
+BFI-0005442	M281redo-S044	Healthy/Background	Healthy/Background - SLE Negative				40.0	M	Lupus	True	False	African	40-50
+BFI-0005444	M281redo-S045	Healthy/Background	Healthy/Background - SLE Negative				32.0	F	Lupus	True	False	African	30-40
+BFI-0005445	M281redo-S046	Healthy/Background	Healthy/Background - SLE Negative				59.0	F	Lupus	True	False	African	50-60
+BFI-0005445	M281redo-S047	Healthy/Background	Healthy/Background - SLE Negative				59.0	F	Lupus	True	False	African	50-60
+BFI-0005448	M281redo-S049	Healthy/Background	Healthy/Background - SLE Negative				31.0	F	Lupus	True	False	African	30-40
+BFI-0005448	M281redo-S053	Healthy/Background	Healthy/Background - SLE Negative				31.0	F	Lupus	True	False	African	30-40
+BFI-0005449	M281redo-S050	Healthy/Background	Healthy/Background - SLE Negative				61.0	F	Lupus	True	False	African	60-70
+BFI-0005450	M281redo-S051	Healthy/Background	Healthy/Background - SLE Negative				31.0	F	Lupus	True	False	African	30-40
+BFI-0005451	M281redo-S052	Healthy/Background	Healthy/Background - SLE Negative				47.0	F	Lupus	True	False	African	40-50
+BFI-0005453	M281redo-S054	Healthy/Background	Healthy/Background - SLE Negative				64.0	F	Lupus	True	False	Caucasian	60-70
+BFI-0005453	M281redo-S055	Healthy/Background	Healthy/Background - SLE Negative				64.0	F	Lupus	True	False	Caucasian	60-70
+BFI-0005455	M281redo-S056	Healthy/Background	Healthy/Background - SLE Negative				25.0	F	Lupus	True	False	Caucasian	20-30
+BFI-0005455	M281redo-S057	Healthy/Background	Healthy/Background - SLE Negative				25.0	F	Lupus	True	False	Caucasian	20-30
+BFI-0005457	M281redo-S058	Healthy/Background	Healthy/Background - SLE Negative				24.0	F	Lupus	True	False	Caucasian	20-30
+BFI-0005458	M281redo-S059	Healthy/Background	Healthy/Background - SLE Negative				26.0	F	Lupus	True	False	Caucasian	20-30
+BFI-0005459	M281redo-S060	Healthy/Background	Healthy/Background - SLE Negative				61.0	F	Lupus	True	False	Caucasian	60-70
+BFI-0005460	M281redo-S061	Healthy/Background	Healthy/Background - SLE Negative				30.0	F	Lupus	True	False	Caucasian	30-40
+BFI-0005461	M281redo-S062	Healthy/Background	Healthy/Background - SLE Negative				52.0	F	Lupus	True	False	Caucasian	50-60
+BFI-0005462	M281redo-S063	Healthy/Background	Healthy/Background - SLE Negative				70.0	M	Lupus	True	False	Caucasian	70-80
+BFI-0005463	M281redo-S064	Healthy/Background	Healthy/Background - SLE Negative				70.0	F	Lupus	True	False	Caucasian	70-80
+BFI-0005464	M281redo-S065	Healthy/Background	Healthy/Background - SLE Negative				53.0	F	Lupus	True	False	Caucasian	50-60
+BFI-0005464	M281redo-S066	Healthy/Background	Healthy/Background - SLE Negative				53.0	F	Lupus	True	False	Caucasian	50-60
+BFI-0005466	M281redo-S067	Healthy/Background	Healthy/Background - SLE Negative				32.0	F	Lupus	True	False	Caucasian	30-40
+BFI-0005467	M281redo-S068	Healthy/Background	Healthy/Background - SLE Negative						Lupus	True	False
+BFI-0009800	M447-S031	Lupus	Pediatric SLE - no nephritis				16.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0009801	M447-S032	Lupus	Pediatric SLE - nephritis				11.0	F	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009802	M447-S033	Lupus	Pediatric SLE - nephritis				18.0	F	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009803	M447-S034	Lupus	Pediatric SLE - nephritis				15.0	M	Lupus Pediatric	True	True	Asian	<20
+BFI-0009804	M447-S035	Lupus	Pediatric SLE - nephritis				14.0	F	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009805	M447-S036	Lupus	Pediatric SLE - nephritis				14.0	M	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009806	M447-S037	Lupus	Pediatric SLE - no nephritis				13.0	M	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009807	M447-S038	Lupus	Pediatric SLE - no nephritis				12.0	F	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009808	M447-S039	Lupus	Pediatric SLE - no nephritis				11.0	F	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009809	M447-S040	Lupus	Pediatric SLE - nephritis				15.0	F	Lupus Pediatric	True	True	African	<20
+BFI-0009810	M447-S041	Lupus	Pediatric SLE - nephritis				11.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0009811	M447-S042	Lupus	Pediatric SLE - no nephritis				15.0	F	Lupus Pediatric	True	True	African	<20
+BFI-0009812	M447-S043	Lupus	Pediatric SLE - no nephritis				17.0	M	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009813	M447-S001	Lupus	Pediatric SLE - no nephritis				16.0	F	Lupus Pediatric	True	True	African	<20
+BFI-0009814	M447-S002	Lupus	Pediatric SLE - nephritis				13.0	F	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009815	M447-S003	Lupus	Pediatric SLE - no nephritis				18.0	F	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009816	M447-S004	Lupus	Pediatric SLE - no nephritis				14.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0009817	M447-S005	Lupus	Pediatric SLE - nephritis				11.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0009818	M447-S006	Lupus	Pediatric SLE - nephritis				8.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0009819	M447-S007	Lupus	Pediatric SLE - nephritis				13.0	M	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009820	M447-S008	Lupus	Pediatric SLE - no nephritis				10.0	F	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009821	M447-S009	Lupus	Pediatric SLE - no nephritis				15.0	F	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009822	M447-S010	Lupus	Pediatric SLE - nephritis				14.0	F	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009823	M447-S011	Lupus	Pediatric SLE - no nephritis				13.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0009824	M447-S012	Lupus	Pediatric SLE - nephritis				11.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0009825	M447-S013	Lupus	Pediatric SLE - nephritis				16.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0009826	M447-S014	Lupus	Pediatric SLE - no nephritis				12.0	F	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009827	M447-S015	Lupus	Pediatric SLE - nephritis				10.0	F	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009828	M447-S016	Lupus	Pediatric SLE - no nephritis				13.0	M	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009829	M447-S017	Lupus	Pediatric SLE - no nephritis				16.0	F	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009830	M447-S018	Lupus	Pediatric SLE - no nephritis				15.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0009831	M447-S019	Lupus	Pediatric SLE - no nephritis				14.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0009832	M447-S020	Lupus	Pediatric SLE - nephritis				11.0	M	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009833	M447-S021	Lupus	Pediatric SLE - nephritis				15.0	F	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009834	M447-S022	Lupus	Pediatric SLE - nephritis				14.0	M	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009835	M447-S023	Lupus	Pediatric SLE - no nephritis				11.0	F	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009836	M447-S024	Lupus	Pediatric SLE - no nephritis				12.0	F	Lupus Pediatric	True	True	Caucasian	<20
+BFI-0009837	M447-S025	Lupus	Pediatric SLE - nephritis				13.0	M	Lupus Pediatric	True	True	Asian	<20
+BFI-0009838	M447-S026	Lupus	Pediatric SLE - nephritis				13.0	F	Lupus Pediatric	True	True		<20
+BFI-0009839	M447-S027	Lupus	Pediatric SLE - nephritis				7.0	M	Lupus Pediatric	True	True	Asian	<20
+BFI-0009840	M447-S028	Lupus	Pediatric SLE - no nephritis				17.0	M	Lupus Pediatric	True	True	Asian	<20
+BFI-0009841	M447-S029	Lupus	Pediatric SLE - nephritis				16.0	F	Lupus Pediatric	True	True	Hispanic/Latino	<20
+BFI-0009842	M447-S030	Lupus	Pediatric SLE - nephritis				12.0	F	Lupus Pediatric	True	True	Asian	<20
+BFI-0010003	M454-S004	Lupus	SLE Patient				58.0	F	New Lupus RNA	True	True	Caucasian	50-60
+BFI-0010004	M454-S005	Lupus	SLE Patient				56.0	F	New Lupus RNA	True	True	Caucasian	50-60
+BFI-0010005	M454-S006	Lupus	SLE Patient				31.0	F	New Lupus RNA	True	True	Caucasian	30-40
+BFI-0010006	M454-S007	Lupus	SLE Patient				53.0	F	New Lupus RNA	True	True	African	50-60
+BFI-0010007	M454-S008	Lupus	SLE Patient				35.0	F	New Lupus RNA	True	True	Caucasian	30-40
+BFI-0010008	M454-S009	Lupus	SLE Patient				37.0	F	New Lupus RNA	True	True	Hispanic/Latino	30-40
+BFI-0010009	M454-S010	Lupus	SLE Patient				45.0	M	New Lupus RNA	True	True	African	40-50
+BFI-0010010	M454-S011	Lupus	SLE Patient				29.0	F	New Lupus RNA	True	True	Caucasian	20-30
+BFI-0010011	M454-S012	Lupus	SLE Patient				22.0	F	New Lupus RNA	True	True	Hispanic/Latino	20-30
+BFI-0010014	M454-S015	Lupus	SLE Patient				45.0	F	New Lupus RNA	True	True	Caucasian	40-50
+BFI-0010015	M454-S016	Lupus	SLE Patient				33.0	F	New Lupus RNA	True	True	Caucasian	30-40
+BFI-0010016	M454-S018	Lupus	SLE Patient				21.0	F	New Lupus RNA	True	True	African	20-30
+BFI-0010017	M454-S019	Lupus	SLE Patient				38.0	F	New Lupus RNA	True	True	Caucasian	30-40
+BFI-0010018	M454-S020	Lupus	SLE Patient				24.0	F	New Lupus RNA	True	True	Caucasian	20-30
+BFI-0010019	M454-S021	Lupus	SLE Patient				39.0	F	New Lupus RNA	True	True	Asian	30-40
+BFI-0010024	M454-S028	Healthy/Background	Unaffected Control				40.0	F	New Lupus RNA	True	True	Caucasian	40-50
+BFI-0010025	M454-S029	Healthy/Background	Unaffected Control				58.0	F	New Lupus RNA	True	True	Caucasian	50-60
+BFI-0010026	M454-S030	Healthy/Background	Unaffected Control				33.0	M	New Lupus RNA	True	True	Caucasian	30-40
+BFI-0010027	M454-S031	Lupus	SLE Patient				34.0	F	New Lupus RNA	True	True	Caucasian	30-40
+BFI-0010028	M454-S032	Healthy/Background	Unaffected Control				67.0	F	New Lupus RNA	True	True	Caucasian	60-70
+BFI-0010029	M454-S033	Lupus	SLE Patient				47.0	M	New Lupus RNA	True	True	Caucasian	40-50
+BFI-0010030	M454-S034	Lupus	SLE Patient				24.0	M	New Lupus RNA	True	True	Caucasian	20-30
+BFI-0010031	M454-S035	Lupus	SLE Patient				58.0	F	New Lupus RNA	True	True	Caucasian	50-60
+BFI-0010032	M454-S036	Lupus	SLE Patient				71.0	M	New Lupus RNA	True	True	Caucasian	70-80
+BFI-0010033	M454-S037	Lupus	SLE Patient				26.0	F	New Lupus RNA	True	True	African	20-30
+BFI-0010033	M454-S038	Lupus	SLE Patient				26.0	F	New Lupus RNA	True	True	African	20-30
+BFI-0010033	M454-S039	Lupus	SLE Patient				26.0	F	New Lupus RNA	True	True	African	20-30
+BFI-0010034	M454-S040	Lupus	SLE Patient				64.0	F	New Lupus RNA	True	True	Caucasian	60-70
+BFI-0010034	M454-S047	Lupus	SLE Patient				64.0	F	New Lupus RNA	True	True	Caucasian	60-70
+BFI-0010035	M454-S041	Lupus	SLE Patient				51.0	F	New Lupus RNA	True	True	African	50-60
+BFI-0010036	M454-S042	Lupus	SLE Patient				38.0	F	New Lupus RNA	True	True	African	30-40
+BFI-0010040	M454-S046	Lupus	SLE Patient				68.0	F	New Lupus RNA	True	True	Caucasian	60-70
+BFI-0010040	M454-S059	Lupus	SLE Patient				68.0	F	New Lupus RNA	True	True	Caucasian	60-70
+BFI-0010041	M454-S048	Lupus	SLE Patient				35.0	F	New Lupus RNA	True	True	Caucasian	30-40
+BFI-0010042	M454-S049	Lupus	SLE Patient				42.0	F	New Lupus RNA	True	True	Caucasian	40-50
+BFI-0010042	M454-S050	Lupus	SLE Patient				42.0	F	New Lupus RNA	True	True	Caucasian	40-50
+BFI-0010043	M454-S051	Lupus	SLE Patient				65.0	F	New Lupus RNA	True	True	Caucasian	60-70
+BFI-0010044	M454-S052	Lupus	SLE Patient				68.0	F	New Lupus RNA	True	True	Hispanic/Latino	60-70
+BFI-0010046	M454-S055	Lupus	SLE Patient				43.0	F	New Lupus RNA	True	True	Caucasian	40-50
+BFI-0010049	M454-S058	Lupus	SLE Patient				51.0	F	New Lupus RNA	True	True	Caucasian	50-60
+BFI-0010050	M454-S060	Lupus	SLE Patient				46.0	F	New Lupus RNA	True	True	Caucasian	40-50
+BFI-0010051	M454-S017	Lupus	SLE Patient				29.0	F	New Lupus RNA	True	True	Caucasian	20-30
+BFI-0010060	M456-S001	Lupus	SLE Patient				51.0	F	New Lupus Paxgene	True	True	Caucasian	50-60
+BFI-0010061	M456-S002	Lupus	SLE Patient				34.0	F	New Lupus Paxgene	True	True	African	30-40
+BFI-0010064	M456-S005	Healthy/Background	Unaffected Control				48.0	M	New Lupus Paxgene	True	True	Caucasian	40-50
+BFI-0010065	M456-S006	Lupus	SLE Patient				46.0	F	New Lupus Paxgene	True	True	Asian	40-50
+BFI-0010066	M456-S007	Healthy/Background	Unaffected Control				47.0	M	New Lupus Paxgene	True	True	African	40-50
+BFI-0010067	M456-S008	Lupus	SLE Patient				49.0	F	New Lupus Paxgene	True	True	African	40-50
+BFI-0010068	M456-S009	Lupus	SLE Patient				42.0	F	New Lupus Paxgene	True	True	African	40-50
+BFI-0010200	M464-S001	Healthy/Background	Healthy/Background (children)				10.0	M	healthy_children	True	True	Asian	<20
+BFI-0010201	M464-S002	Healthy/Background	Healthy/Background (children)				13.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010202	M464-S003	Healthy/Background	Healthy/Background (children)				16.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010203	M464-S004	Healthy/Background	Healthy/Background (children)				15.0	M	healthy_children	True	True	Caucasian	<20
+BFI-0010204	M464-S005	Healthy/Background	Healthy/Background (children)				15.0	F	healthy_children	True	True		<20
+BFI-0010205	M464-S006	Healthy/Background	Healthy/Background (children)				11.0	M	healthy_children	True	True	Asian	<20
+BFI-0010206	M464-S007	Healthy/Background	Healthy/Background (children)				9.0	M	healthy_children	True	True	Caucasian	<20
+BFI-0010207	M464-S008	Healthy/Background	Healthy/Background (children)				13.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010208	M464-S009	Healthy/Background	Healthy/Background (children)				18.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010209	M464-S010	Healthy/Background	Healthy/Background (children)				15.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010210	M464-S011	Healthy/Background	Healthy/Background (children)				13.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010211	M464-S012	Healthy/Background	Healthy/Background (children)				18.0	M	healthy_children	True	True	Caucasian	<20
+BFI-0010212	M464-S013	Healthy/Background	Healthy/Background (children)				17.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010213	M464-S014	Healthy/Background	Healthy/Background (children)				16.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010214	M464-S015	Healthy/Background	Healthy/Background (children)				11.0	M	healthy_children	True	True	Caucasian	<20
+BFI-0010215	M464-S016	Healthy/Background	Healthy/Background (children)				17.0	M	healthy_children	True	True	Caucasian	<20
+BFI-0010216	M464-S017	Healthy/Background	Healthy/Background (children)				12.0	M	healthy_children	True	True		<20
+BFI-0010217	M464-S018	Healthy/Background	Healthy/Background (children)				11.0	M	healthy_children	True	True	Caucasian	<20
+BFI-0010218	M464-S019	Healthy/Background	Healthy/Background (children)				8.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010219	M464-S020	Healthy/Background	Healthy/Background (children)				15.0	M	healthy_children	True	True	Asian	<20
+BFI-0010220	M464-S021	Healthy/Background	Healthy/Background (children)				11.0	F	healthy_children	True	True	Asian	<20
+BFI-0010221	M464-S022	Healthy/Background	Healthy/Background (children)				11.0	F	healthy_children	True	True		<20
+BFI-0010222	M464-S023	Healthy/Background	Healthy/Background (children)				13.0	F	healthy_children	True	True		<20
+BFI-0010223	M464-S024	Healthy/Background	Healthy/Background (children)				15.0	M	healthy_children	True	True	Caucasian	<20
+BFI-0010224	M464-S025	Healthy/Background	Healthy/Background (children)				9.0	M	healthy_children	True	True		<20
+BFI-0010225	M464-S026	Healthy/Background	Healthy/Background (children)				16.0	F	healthy_children	True	True	Hispanic/Latino	<20
+BFI-0010226	M464-S027	Healthy/Background	Healthy/Background (children)				13.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010227	M464-S028	Healthy/Background	Healthy/Background (children)				16.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010228	M464-S029	Healthy/Background	Healthy/Background (children)				11.0	M	healthy_children	True	True	Caucasian	<20
+BFI-0010229	M464-S030	Healthy/Background	Healthy/Background (children)				14.0	M	healthy_children	True	True	Asian	<20
+BFI-0010230	M464-S031	Healthy/Background	Healthy/Background (children)				11.0	F	healthy_children	True	True	Asian	<20
+BFI-0010231	M464-S032	Healthy/Background	Healthy/Background (children)				12.0	M	healthy_children	True	True	Asian	<20
+BFI-0010232	M464-S033	Healthy/Background	Healthy/Background (children)				14.0	M	healthy_children	True	True	Caucasian	<20
+BFI-0010233	M464-S034	Healthy/Background	Healthy/Background (children)				13.0	M	healthy_children	True	True		<20
+BFI-0010234	M464-S035	Healthy/Background	Healthy/Background (children)				9.0	M	healthy_children	True	True		<20
+BFI-0010235	M464-S036	Healthy/Background	Healthy/Background (children)				16.0	M	healthy_children	True	True	Asian	<20
+BFI-0010236	M464-S037	Healthy/Background	Healthy/Background (children)				8.0	M	healthy_children	True	True	Caucasian	<20
+BFI-0010237	M464-S038	Healthy/Background	Healthy/Background (children)				16.0	M	healthy_children	True	True		<20
+BFI-0010238	M464-S039	Healthy/Background	Healthy/Background (children)				14.0	M	healthy_children	True	True		<20
+BFI-0010239	M464-S040	Healthy/Background	Healthy/Background (children)				14.0	F	healthy_children	True	True		<20
+BFI-0010240	M464-S041	Healthy/Background	Healthy/Background (children)				14.0	F	healthy_children	True	True		<20
+BFI-0010241	M464-S042	Healthy/Background	Healthy/Background (children)				15.0	M	healthy_children	True	True		<20
+BFI-0010242	M464-S043	Healthy/Background	Healthy/Background (children)				14.0	M	healthy_children	True	True		<20
+BFI-0010243	M464-S044	Healthy/Background	Healthy/Background (children)				13.0	F	healthy_children	True	True		<20
+BFI-0010244	M464-S045	Healthy/Background	Healthy/Background (children)				12.0	F	healthy_children	True	True	Caucasian	<20
+BFI-0010245	M464-S046	Healthy/Background	Healthy/Background (children)				13.0	F	healthy_children	True	True	Caucasian	<20

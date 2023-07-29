@@ -1,0 +1,94 @@
+participant_label	specimen_label	disease	disease_subtype	age	sex	ethnicity_condensed
+ImmuneCode-190921	860011232_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	53	F	Hispanic/Latino
+ImmuneCode-026	INCOV026-AC-3_TCRB	Covid19	COVID-19-ISB	33	M	Hispanic/Latino
+ImmuneCode-321977	860011116_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	52	F	Caucasian
+ImmuneCode-087	INCOV087-BL-3_TCRB	Covid19	COVID-19-ISB	56	M	Hispanic/Latino
+ImmuneCode-0000051	BS-EQ-0014-T2-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	55	M	Caucasian
+ImmuneCode-0000074	BS-EQ-0026-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	52	M	Caucasian
+ImmuneCode-712578	860011123_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized - ICU	52	M	Hispanic/Latino
+ImmuneCode-ADIRP0000093	ADIR0000093_TCRB	Covid19	COVID-19-Adaptive	38	F	Caucasian
+ImmuneCode-0000391	BS-EQ-29-T1-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	66	M	Caucasian
+ImmuneCode-696163	860011130_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	59	M	Caucasian
+ImmuneCode-0000495	BS-GIGI_96-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	76	F	Caucasian
+ImmuneCode-0000430	BS-EQ-44-T1-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized - ICU	77	M	Caucasian
+ImmuneCode-0000078	BS-GN-0010-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized - ICU	40	F	Caucasian
+ImmuneCode-006	INCOV006-BL-5_TCRB	Covid19	COVID-19-ISB	26	M
+ImmuneCode-286053	860011131_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized - ICU	71	M	Caucasian
+ImmuneCode-034	INCOV034-AC-3_TCRB	Covid19	COVID-19-ISB	30	M	Asian
+ImmuneCode-0000441	BS-GIGI_05-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	71	M	Caucasian
+ImmuneCode-0000490	BS-GIGI_91-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	85	F	Caucasian
+ImmuneCode-351635	860011112_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized - ICU	66	M	Caucasian
+ImmuneCode-0000423	BS-EQ-38-T2-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	59	M	Caucasian
+ImmuneCode-635695	860011121_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	59	M	Caucasian
+ImmuneCode-0000098	BS-EQ-0009-T2-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	60	M	Caucasian
+ImmuneCode-491531	860011242_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	61	F	Caucasian
+ImmuneCode-0000392	BS-EQ-33-T2-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	52	M	Caucasian
+ImmuneCode-0000083	BS-EQ-0002-T1-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	55	M	Caucasian
+ImmuneCode-0000458	BS-GIGI_23-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	85	M	Caucasian
+ImmuneCode-854938	860011129_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	78	F	Caucasian
+ImmuneCode-0000136	BS-EQ-19-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	57	F	Caucasian
+ImmuneCode-0000102	BS-EQ-10-T1-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	58	M	Caucasian
+ImmuneCode-566820	860011277_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized - ICU	08	M	Caucasian
+ImmuneCode-002	INCOV002-AC-5_TCRB	Covid19	COVID-19-ISB	39	M	Caucasian
+ImmuneCode-051	INCOV051-AC-3_TCRB	Covid19	COVID-19-ISB	34	M	Hispanic/Latino
+ImmuneCode-0000135	BS-EQ-18-T2-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	59	M	Caucasian
+ImmuneCode-0000141	BS-EQ-0022-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	76	M	Caucasian
+ImmuneCode-0000144	BS-EQ-0028-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	84	F	Caucasian
+ImmuneCode-354617	860011227_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	70	M	Caucasian
+ImmuneCode-0000101	BS-EQ-0011-T1-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	79	M	Caucasian
+ImmuneCode-085	INCOV085-BL-3_TCRB	Covid19	COVID-19-ISB	36	F	Caucasian
+ImmuneCode-0000400	BS-GIGI_41-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	50	M	Caucasian
+ImmuneCode-0000069	BS-GN-0005-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	54	M	Caucasian
+ImmuneCode-351469	860011499_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	58	M	Caucasian
+ImmuneCode-0000093	BS-GN-0003-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	70	M	Caucasian
+ImmuneCode-0000456	BS-GIGI_21-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	60	F	Caucasian
+ImmuneCode-0000066	BS-GIGI_55-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized - ICU	54	M	Caucasian
+ImmuneCode-0000103	BS-EQ-30-T1-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	53	M	Caucasian
+ImmuneCode-376904	860011115_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized - ICU	63	M	Caucasian
+ImmuneCode-0000090	BS-EQ-16-T2-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	66	M	Caucasian
+ImmuneCode-659607	860011325_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	88	F	Caucasian
+ImmuneCode-679547	860011340_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	23	M	Hispanic/Latino
+ImmuneCode-0000108	BS-EQ-31-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	56	M	Caucasian
+ImmuneCode-073	INCOV073-BL-3_TCRB	Covid19	COVID-19-ISB	55	F	Hispanic/Latino
+ImmuneCode-294925	860011489_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	67	M	Caucasian
+ImmuneCode-723143	860011223_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	53	F	Hispanic/Latino
+ImmuneCode-121157	860011310_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	88	F	Caucasian
+ImmuneCode-147304	860011110_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	48	F	Caucasian
+ImmuneCode-0000115	BS-EQ-32-T1-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	24	M	Caucasian
+ImmuneCode-0000142	BS-EQ-23-T1-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	49	M	Caucasian
+ImmuneCode-0000470	BS-GIGI_35-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	80	M	Caucasian
+ImmuneCode-ADIRP0002436	ADIRP0002436_TCRB	Covid19	COVID-19-Adaptive	40	M	Hispanic/Latino
+ImmuneCode-0000429	BS-EQ-43-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	54	M	Caucasian
+ImmuneCode-310581	860011124_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	75	M	Hispanic/Latino
+ImmuneCode-0000463	BS-GIGI_28-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	89	M	Caucasian
+ImmuneCode-339526	860011388_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	77	F	Caucasian
+ImmuneCode-0000480	BS-GIGI_81-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	89	M	Caucasian
+ImmuneCode-0000479	BS-GIGI_80-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	82	M	Caucasian
+ImmuneCode-0000395	BS-EQ-34-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	50	M	Caucasian
+ImmuneCode-100828	860011496_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	59	F	Caucasian
+ImmuneCode-462527	860011354_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	39	F	Caucasian
+ImmuneCode-036	INCOV036-BL-3_TCRB	Covid19	COVID-19-ISB	51	M	Caucasian
+ImmuneCode-210401	860011209_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	48	M
+ImmuneCode-0000143	BS-GIGI_44-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized - ICU	54	F	Caucasian
+ImmuneCode-ADIRP0000439	ADIRP0000439_TCRB	Covid19	COVID-19-Adaptive	29	M	Asian
+ImmuneCode-0000449	BS-GIGI_14-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	55	M	Caucasian
+ImmuneCode-0000469	BS-GIGI_34-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized - ICU	60	M	Caucasian
+ImmuneCode-0000462	BS-GIGI_27-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	62	F	Caucasian
+ImmuneCode-0000091	BS-GN-01-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	35	M	Caucasian
+ImmuneCode-796689	860011120_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	79	M	Caucasian
+ImmuneCode-0000092	BS-GN-0002-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	45	M	Caucasian
+ImmuneCode-0000042	BS-EQ-15-T1-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	53	M	Caucasian
+ImmuneCode-869115	860011132_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	84	M	Caucasian
+ImmuneCode-ADIRP0002464	ADIRP0002464_TCRB	Covid19	COVID-19-Adaptive	46	F	Hispanic/Latino
+ImmuneCode-773780	860011494_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	27	M	Hispanic/Latino
+ImmuneCode-588140	860011495_TCRB	Covid19	COVID-19-HUniv12Oct	34	F
+ImmuneCode-791336	860011497_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	42	F	Caucasian
+ImmuneCode-0000134	BS-EQ-0017-T0-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	53	M	Caucasian
+ImmuneCode-0000145	BS-GIGI_42-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized - ICU	49	M	Caucasian
+ImmuneCode-745617	860011133_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	56	F	Caucasian
+ImmuneCode-304752	860011117_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized - ICU	60	M	Caucasian
+ImmuneCode-ADIRP0001958	ADIRP0001958_TCRB	Covid19	COVID-19-Adaptive	49	M	Caucasian
+ImmuneCode-775827	860011106_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	57	F	Caucasian
+ImmuneCode-0000446	BS-GIGI_10-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized	75	M	Caucasian
+ImmuneCode-0000160	BS-EQ-25-T1_BS-GIGI-71-replacement_TCRB	Covid19	COVID-19-NIH/NIAID - Hospitalized - ICU	72	M	Caucasian
+ImmuneCode-506345	860011240_TCRB	Covid19	COVID-19-HUniv12Oct - Hospitalized	78	F	Caucasian

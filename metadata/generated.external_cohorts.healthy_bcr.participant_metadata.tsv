@@ -1,0 +1,8 @@
+participant_label	specimen_label	study_name	disease	is_peak	timepoint	age	sex	ethnicity	ethnicity_condensed
+D103	D103_1	Briney	Healthy/Background	True	0	25	M	Caucasian	Caucasian
+326797	326797_1	Briney	Healthy/Background	True	0	21	F	Caucasian	Caucasian
+327059	327059_1	Briney	Healthy/Background	True	0	26	M	African American / Caucasian
+326650	326650_1	Briney	Healthy/Background	True	0	18	F	Caucasian	Caucasian
+326737	326737_1	Briney	Healthy/Background	True	0	29	M	Caucasian	Caucasian
+326780	326780_1	Briney	Healthy/Background	True	0	29	M	Caucasian	Caucasian
+316188	316188_1	Briney	Healthy/Background	True	0	30	F	African American	African

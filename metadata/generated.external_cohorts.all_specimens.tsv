@@ -1,0 +1,1039 @@
+specimen_label	participant_label	timepoint	is_peak	study_id	patient_id_within_study	sex	age	ethnicity_condensed	disease_subtype	disease	study_name	gene_locus	ethnicity	different_platform	specimen_label_by_locus	age_group
+5f21e814e1adeb2edc12613c	Kim_A	11.0	False	PRJNA648677	A	M	55.0	Asian	Covid19 - Kim (non-peak)	Covid19	Kim	BCR		False	5f21e814e1adeb2edc12613c	50-60
+5f21e814e1adeb2edc12613d	Kim_A	17.0	True	PRJNA648677	A	M	55.0	Asian	Covid19 - Kim	Covid19	Kim	BCR		False	5f21e814e1adeb2edc12613d	50-60
+5f21e815e1adeb2edc12613e	Kim_A	45.0	False	PRJNA648677	A	M	55.0	Asian	Covid19 - Kim (non-peak)	Covid19	Kim	BCR		False	5f21e815e1adeb2edc12613e	50-60
+5f21e815e1adeb2edc12613f	Kim_B	10.0	False	PRJNA648677	B	M	55.0	Asian	Covid19 - Kim (non-peak)	Covid19	Kim	BCR		False	5f21e815e1adeb2edc12613f	50-60
+5f21e815e1adeb2edc126140	Kim_B	19.0	True	PRJNA648677	B	M	55.0	Asian	Covid19 - Kim	Covid19	Kim	BCR		False	5f21e815e1adeb2edc126140	50-60
+5f21e816e1adeb2edc126141	Kim_C	6.0	False	PRJNA648677	C	F	53.0	Asian	Covid19 - Kim (non-peak)	Covid19	Kim	BCR		False	5f21e816e1adeb2edc126141	50-60
+5f21e816e1adeb2edc126142	Kim_C	15.0	True	PRJNA648677	C	F	53.0	Asian	Covid19 - Kim	Covid19	Kim	BCR		False	5f21e816e1adeb2edc126142	50-60
+5f21e816e1adeb2edc126143	Kim_D	6.0	False	PRJNA648677	D	M	24.0	Asian	Covid19 - Kim (non-peak)	Covid19	Kim	BCR		False	5f21e816e1adeb2edc126143	20-30
+5f21e817e1adeb2edc126144	Kim_D	28.0	True	PRJNA648677	D	M	24.0	Asian	Covid19 - Kim	Covid19	Kim	BCR		False	5f21e817e1adeb2edc126144	20-30
+5f21e817e1adeb2edc126145	Kim_E	23.0	True	PRJNA648677	E	M	48.0	Asian	Covid19 - Kim	Covid19	Kim	BCR		False	5f21e817e1adeb2edc126145	40-50
+5f21e817e1adeb2edc126146	Kim_E	44.0	False	PRJNA648677	E	M	48.0	Asian	Covid19 - Kim (non-peak)	Covid19	Kim	BCR		False	5f21e817e1adeb2edc126146	40-50
+5f21e818e1adeb2edc126147	Kim_E	99.0	False	PRJNA648677	E	M	48.0	Asian	Covid19 - Kim (non-peak)	Covid19	Kim	BCR		False	5f21e818e1adeb2edc126147	40-50
+5f21e818e1adeb2edc126148	Kim_F	14.0	True	PRJNA648677	F	F	40.0	Asian	Covid19 - Kim	Covid19	Kim	BCR		False	5f21e818e1adeb2edc126148	40-50
+5f21e818e1adeb2edc126149	Kim_F	36.0	False	PRJNA648677	F	F	40.0	Asian	Covid19 - Kim (non-peak)	Covid19	Kim	BCR		False	5f21e818e1adeb2edc126149	40-50
+5f21e818e1adeb2edc12614a	Kim_G	9.0	False	PRJNA648677	G	F	59.0	Asian	Covid19 - Kim (non-peak)	Covid19	Kim	BCR		False	5f21e818e1adeb2edc12614a	50-60
+5f21e819e1adeb2edc12614b	Kim_G	22.0	True	PRJNA648677	G	F	59.0	Asian	Covid19 - Kim	Covid19	Kim	BCR		False	5f21e819e1adeb2edc12614b	50-60
+5578047616589173226-242ac116-0001-012	Montague_1	22.0	False	PRJNA645245	1	F	62.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5578047616589173226-242ac116-0001-012	60-70
+5594669140024693226-242ac116-0001-012	Montague_1	22.0	False	PRJNA645245	1	F	62.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5594669140024693226-242ac116-0001-012	60-70
+5549400184724853226-242ac116-0001-012	Montague_1	43.0	False	PRJNA645245	1	F	62.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5549400184724853226-242ac116-0001-012	60-70
+5563272929090933226-242ac116-0001-012	Montague_1	43.0	False	PRJNA645245	1	F	62.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5563272929090933226-242ac116-0001-012	60-70
+6199958881049973226-242ac116-0001-012	Montague_10	8.0	False	PRJNA645245	10	M	27.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6199958881049973226-242ac116-0001-012	20-30
+6219758680284533226-242ac116-0001-012	Montague_10	8.0	False	PRJNA645245	10	M	27.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6219758680284533226-242ac116-0001-012	20-30
+6162506766228853226-242ac116-0001-012	Montague_10	14.0	True	PRJNA645245	10	M	27.0		Covid19 - Montague	Covid19	Montague	BCR		False	6162506766228853226-242ac116-0001-012	20-30
+6180202031488373226-242ac116-0001-012	Montague_10	14.0	True	PRJNA645245	10	M	27.0		Covid19 - Montague	Covid19	Montague	BCR		False	6180202031488373226-242ac116-0001-012	20-30
+6272329079987573226-242ac116-0001-012	Montague_11	10.0	False	PRJNA645245	11	F	20.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6272329079987573226-242ac116-0001-012	20-30
+6286545421737333226-242ac116-0001-012	Montague_11	10.0	False	PRJNA645245	11	F	20.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6286545421737333226-242ac116-0001-012	20-30
+6235177612877173226-242ac116-0001-012	Montague_11	15.0	True	PRJNA645245	11	F	20.0		Covid19 - Montague	Covid19	Montague	BCR		False	6235177612877173226-242ac116-0001-012	20-30
+6255707556552053226-242ac116-0001-012	Montague_11	15.0	True	PRJNA645245	11	F	20.0		Covid19 - Montague	Covid19	Montague	BCR		False	6255707556552053226-242ac116-0001-012	20-30
+6333961860685173226-242ac116-0001-012	Montague_12	7.0	False	PRJNA645245	12	F	48.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6333961860685173226-242ac116-0001-012	40-50
+6347448057994613226-242ac116-0001-012	Montague_12	7.0	False	PRJNA645245	12	F	48.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6347448057994613226-242ac116-0001-012	40-50
+6301749605965173226-242ac116-0001-012	Montague_12	11.0	True	PRJNA645245	12	F	48.0		Covid19 - Montague	Covid19	Montague	BCR		False	6301749605965173226-242ac116-0001-012	40-50
+6318371129400693226-242ac116-0001-012	Montague_12	11.0	True	PRJNA645245	12	F	48.0		Covid19 - Montague	Covid19	Montague	BCR		False	6318371129400693226-242ac116-0001-012	40-50
+6392545214602613226-242ac116-0001-012	Montague_13	7.0	False	PRJNA645245	13	F	44.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6392545214602613226-242ac116-0001-012	40-50
+6410541127572853226-242ac116-0001-012	Montague_13	7.0	False	PRJNA645245	13	F	44.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6410541127572853226-242ac116-0001-012	40-50
+6361063104322933226-242ac116-0001-012	Montague_13	13.0	True	PRJNA645245	13	F	44.0		Covid19 - Montague	Covid19	Montague	BCR		False	6361063104322933226-242ac116-0001-012	40-50
+6374978798361973226-242ac116-0001-012	Montague_13	13.0	True	PRJNA645245	13	F	44.0		Covid19 - Montague	Covid19	Montague	BCR		False	6374978798361973226-242ac116-0001-012	40-50
+6458344113577333226-242ac116-0001-012	Montague_14	3.0	False	PRJNA645245	14	F	51.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6458344113577333226-242ac116-0001-012	50-60
+6472560455327093226-242ac116-0001-012	Montague_14	3.0	False	PRJNA645245	14	F	51.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6472560455327093226-242ac116-0001-012	50-60
+6428064594140533226-242ac116-0001-012	Montague_14	7.0	False	PRJNA645245	14	F	51.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6428064594140533226-242ac116-0001-012	50-60
+6445072664632693226-242ac116-0001-012	Montague_14	7.0	False	PRJNA645245	14	F	51.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6445072664632693226-242ac116-0001-012	50-60
+6592003495828853226-242ac116-0001-012	Montague_15	39.0	True	PRJNA645245	15	F	68.0		Covid19 - Montague	Covid19	Montague	BCR		False	6592003495828853226-242ac116-0001-012	60-70
+6606649334308213226-242ac116-0001-012	Montague_15	39.0	True	PRJNA645245	15	F	68.0		Covid19 - Montague	Covid19	Montague	BCR		False	6606649334308213226-242ac116-0001-012	60-70
+6543040868654453226-242ac116-0001-012	Montague_15	41.0	False	PRJNA645245	15	F	68.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6543040868654453226-242ac116-0001-012	60-70
+6563399013637493226-242ac116-0001-012	Montague_15	41.0	False	PRJNA645245	15	F	68.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6563399013637493226-242ac116-0001-012	60-70
+6577873053425013226-242ac116-0001-012	Montague_15	41.0	False	PRJNA645245	15	F	68.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6577873053425013226-242ac116-0001-012	60-70
+6486218451328373226-242ac116-0001-012	Montague_15	71.0	False	PRJNA645245	15	F	68.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6486218451328373226-242ac116-0001-012	60-70
+6500348893732213226-242ac116-0001-012	Montague_15	71.0	False	PRJNA645245	15	F	68.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6500348893732213226-242ac116-0001-012	60-70
+6514393436790133226-242ac116-0001-012	Montague_15	71.0	False	PRJNA645245	15	F	68.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6514393436790133226-242ac116-0001-012	60-70
+6528180281810293226-242ac116-0001-012	Montague_15	71.0	False	PRJNA645245	15	F	68.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6528180281810293226-242ac116-0001-012	60-70
+6654108722929013226-242ac116-0001-012	Montague_16	44.0	True	PRJNA645245	16	M	75.0		Covid19 - Montague	Covid19	Montague	BCR		False	6654108722929013226-242ac116-0001-012	70-80
+6667637869911413226-242ac116-0001-012	Montague_16	44.0	True	PRJNA645245	16	M	75.0		Covid19 - Montague	Covid19	Montague	BCR		False	6667637869911413226-242ac116-0001-012	70-80
+6625633089756533226-242ac116-0001-012	Montague_16	53.0	False	PRJNA645245	16	M	75.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6625633089756533226-242ac116-0001-012	70-80
+6639763532160373226-242ac116-0001-012	Montague_16	53.0	False	PRJNA645245	16	M	75.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6639763532160373226-242ac116-0001-012	70-80
+6724073740180853226-242ac116-0001-012	Montague_17	22.0	True	PRJNA645245	17	M	60.0		Covid19 - Montague	Covid19	Montague	BCR		False	6724073740180853226-242ac116-0001-012	60-70
+6738676628987253226-242ac116-0001-012	Montague_17	22.0	True	PRJNA645245	17	M	60.0		Covid19 - Montague	Covid19	Montague	BCR		False	6738676628987253226-242ac116-0001-012	60-70
+6680952268529013226-242ac116-0001-012	Montague_17	36.0	False	PRJNA645245	17	M	60.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6680952268529013226-242ac116-0001-012	60-70
+6696585949486453226-242ac116-0001-012	Montague_17	36.0	False	PRJNA645245	17	M	60.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6696585949486453226-242ac116-0001-012	60-70
+6710329844833653226-242ac116-0001-012	Montague_17	36.0	False	PRJNA645245	17	M	60.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6710329844833653226-242ac116-0001-012	60-70
+6795112499256693226-242ac116-0001-012	Montague_18	8.0	False	PRJNA645245	18	F	62.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6795112499256693226-242ac116-0001-012	60-70
+6821827195837813226-242ac116-0001-012	Montague_18	8.0	False	PRJNA645245	18	F	62.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6821827195837813226-242ac116-0001-012	60-70
+6753537215831413226-242ac116-0001-012	Montague_18	30.0	True	PRJNA645245	18	F	62.0		Covid19 - Montague	Covid19	Montague	BCR		False	6753537215831413226-242ac116-0001-012	60-70
+6768183054310773226-242ac116-0001-012	Montague_18	30.0	True	PRJNA645245	18	F	62.0		Covid19 - Montague	Covid19	Montague	BCR		False	6768183054310773226-242ac116-0001-012	60-70
+6781110905871733226-242ac116-0001-012	Montague_18	30.0	True	PRJNA645245	18	F	62.0		Covid19 - Montague	Covid19	Montague	BCR		False	6781110905871733226-242ac116-0001-012	60-70
+6835699940203893226-242ac116-0001-012	Montague_19	6.0	False	PRJNA645245	19	M	56.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6835699940203893226-242ac116-0001-012	50-60
+5609272028831093226-242ac116-0001-012	Montague_2	2.0	False	PRJNA645245	2	F	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5609272028831093226-242ac116-0001-012	30-40
+5665063654006133226-242ac116-0001-012	Montague_2	15.0	False	PRJNA645245	2	F	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5665063654006133226-242ac116-0001-012	30-40
+5692895042084213226-242ac116-0001-012	Montague_2	15.0	False	PRJNA645245	2	F	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5692895042084213226-242ac116-0001-012	30-40
+5705736994299253226-242ac116-0001-012	Montague_2	15.0	False	PRJNA645245	2	F	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5705736994299253226-242ac116-0001-012	30-40
+5624519162731893226-242ac116-0001-012	Montague_2	34.0	False	PRJNA645245	2	F	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5624519162731893226-242ac116-0001-012	30-40
+5638220108406133226-242ac116-0001-012	Montague_2	34.0	False	PRJNA645245	2	F	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5638220108406133226-242ac116-0001-012	30-40
+5651706305715573226-242ac116-0001-012	Montague_2	34.0	False	PRJNA645245	2	F	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5651706305715573226-242ac116-0001-012	30-40
+5718836644552053226-242ac116-0001-012	Montague_3	8.0	False	PRJNA645245	3	M	47.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5718836644552053226-242ac116-0001-012	40-50
+5731506798075253226-242ac116-0001-012	Montague_3	8.0	False	PRJNA645245	3	M	47.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5731506798075253226-242ac116-0001-012	40-50
+5744907096038773226-242ac116-0001-012	Montague_3	8.0	False	PRJNA645245	3	M	47.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5744907096038773226-242ac116-0001-012	40-50
+5758264444329333226-242ac116-0001-012	Montague_3	38.0	True	PRJNA645245	3	M	47.0		Covid19 - Montague	Covid19	Montague	BCR		False	5758264444329333226-242ac116-0001-012	40-50
+5771922440330613226-242ac116-0001-012	Montague_3	38.0	True	PRJNA645245	3	M	47.0		Covid19 - Montague	Covid19	Montague	BCR		False	5771922440330613226-242ac116-0001-012	40-50
+5786783027174773226-242ac116-0001-012	Montague_3	38.0	True	PRJNA645245	3	M	47.0		Covid19 - Montague	Covid19	Montague	BCR		False	5786783027174773226-242ac116-0001-012	40-50
+5828143562235253226-242ac116-0001-012	Montague_4	18.0	True	PRJNA645245	4	F	73.0		Covid19 - Montague	Covid19	Montague	BCR		False	5828143562235253226-242ac116-0001-012	70-80
+5842102205947253226-242ac116-0001-012	Montague_4	18.0	True	PRJNA645245	4	F	73.0		Covid19 - Montague	Covid19	Montague	BCR		False	5842102205947253226-242ac116-0001-012	70-80
+5801214117289333226-242ac116-0001-012	Montague_4	34.0	False	PRJNA645245	4	F	73.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5801214117289333226-242ac116-0001-012	70-80
+5814829163617653226-242ac116-0001-012	Montague_4	34.0	False	PRJNA645245	4	F	73.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5814829163617653226-242ac116-0001-012	70-80
+5856060849659253226-242ac116-0001-012	Montague_5	10.0	True	PRJNA645245	5	F	72.0		Covid19 - Montague	Covid19	Montague	BCR		False	5856060849659253226-242ac116-0001-012	70-80
+5869504097295733226-242ac116-0001-012	Montague_5	27.0	False	PRJNA645245	5	F	72.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5869504097295733226-242ac116-0001-012	70-80
+5884579432504693226-242ac116-0001-012	Montague_6	13.0	True	PRJNA645245	6	M	56.0		Covid19 - Montague	Covid19	Montague	BCR		False	5884579432504693226-242ac116-0001-012	50-60
+5907944054594933226-242ac116-0001-012	Montague_6	28.0	False	PRJNA645245	6	M	56.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5907944054594933226-242ac116-0001-012	50-60
+5962618988273013226-242ac116-0001-012	Montague_7	11.0	False	PRJNA645245	7	F	55.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5962618988273013226-242ac116-0001-012	50-60
+5946684659604853226-242ac116-0001-012	Montague_7	16.0	True	PRJNA645245	7	F	55.0		Covid19 - Montague	Covid19	Montague	BCR		False	5946684659604853226-242ac116-0001-012	50-60
+5928130400886133226-242ac116-0001-012	Montague_7	39.0	False	PRJNA645245	7	F	55.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5928130400886133226-242ac116-0001-012	50-60
+6045683655777653226-242ac116-0001-012	Montague_8	14.0	True	PRJNA645245	8	M	37.0		Covid19 - Montague	Covid19	Montague	BCR		False	6045683655777653226-242ac116-0001-012	30-40
+6059341651778933226-242ac116-0001-012	Montague_8	14.0	True	PRJNA645245	8	M	37.0		Covid19 - Montague	Covid19	Montague	BCR		False	6059341651778933226-242ac116-0001-012	30-40
+6009734779510133226-242ac116-0001-012	Montague_8	32.0	False	PRJNA645245	8	M	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6009734779510133226-242ac116-0001-012	30-40
+6028546736266613226-242ac116-0001-012	Montague_8	32.0	False	PRJNA645245	8	M	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6028546736266613226-242ac116-0001-012	30-40
+5977479575117173226-242ac116-0001-012	Montague_8	37.0	False	PRJNA645245	8	M	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5977479575117173226-242ac116-0001-012	30-40
+5994186997898613226-242ac116-0001-012	Montague_8	37.0	False	PRJNA645245	8	M	37.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	5994186997898613226-242ac116-0001-012	30-40
+6148719921208693226-242ac116-0001-012	Montague_9	5.0	False	PRJNA645245	9	F	52.0		Covid19 - Montague (non-peak)	Covid19	Montague	BCR		False	6148719921208693226-242ac116-0001-012	50-60
+6074502886333813226-242ac116-0001-012	Montague_9	18.0	True	PRJNA645245	9	F	52.0		Covid19 - Montague	Covid19	Montague	BCR		False	6074502886333813226-242ac116-0001-012	50-60
+D103_1	D103	0.0	True			M	25.0	Caucasian	Healthy/Background - Briney	Healthy/Background	Briney	BCR	Caucasian	False	D103_1	20-30
+326797_1	326797	0.0	True			F	21.0	Caucasian	Healthy/Background - Briney	Healthy/Background	Briney	BCR	Caucasian	False	326797_1	20-30
+327059_1	327059	0.0	True			M	26.0		Healthy/Background - Briney	Healthy/Background	Briney	BCR	African American / Caucasian	False	327059_1	20-30
+326650_1	326650	0.0	True			F	18.0	Caucasian	Healthy/Background - Briney	Healthy/Background	Briney	BCR	Caucasian	False	326650_1	<20
+326737_1	326737	0.0	True			M	29.0	Caucasian	Healthy/Background - Briney	Healthy/Background	Briney	BCR	Caucasian	False	326737_1	20-30
+326780_1	326780	0.0	True			M	29.0	Caucasian	Healthy/Background - Briney	Healthy/Background	Briney	BCR	Caucasian	False	326780_1	20-30
+316188_1	316188	0.0	True			F	30.0	African	Healthy/Background - Briney	Healthy/Background	Briney	BCR	African American	False	316188_1	30-40
+A3-i101	p1		True			F	36.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A3-i101	30-40
+A3-i102	p2		True			F	43.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A3-i102	40-50
+A3-i106	p3		True			F	43.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A3-i106	40-50
+A3-i107	p4		True			F	39.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A3-i107	30-40
+A3-i110	p5		True			F	34.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A3-i110	30-40
+A2-i138	p15		True			F	74.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A2-i138	70-80
+A2-i139	p16		True			M	75.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A2-i139	70-80
+A2-i140	p17		True			F	73.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A2-i140	70-80
+A2-i141	p18		True			M	71.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A2-i141	70-80
+A4-i101	p19		True			M	36.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i101	30-40
+A4-i102	p20		True			M	37.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i102	30-40
+A4-i106	p21		True			M	43.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i106	40-50
+A4-i107	p22		True			M	39.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i107	30-40
+A4-i110	p23		True			F	43.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i110	40-50
+A4-i124	p26		True			M	66.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i124	60-70
+A4-i125	p27		True			M	64.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i125	60-70
+A4-i128	p29		True			F	62.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i128	60-70
+A4-i184	p32		True			M	61.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i184	60-70
+A4-i185	p33		True			F	61.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i185	60-70
+A4-i186	p34		True			F	61.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i186	60-70
+A4-i188	p35		True			F	61.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i188	60-70
+A4-i189	p36		True			M	25.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i189	20-30
+A4-i190	p36		True			M	25.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i190	20-30
+A4-i191	p37		True			F	22.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i191	20-30
+A4-i192	p38		True			F	24.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i192	20-30
+A4-i194	p39		True			M	20.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i194	20-30
+A4-i195	p40		True			F	21.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A4-i195	20-30
+A5-S22	p41		True			M	51.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A5-S22	50-60
+A5-S20	p43		True			F	51.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A5-S20	50-60
+A5-S24	p52		True			F	50.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A5-S24	50-60
+A5-S23	p53		True			M	50.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A5-S23	50-60
+A5-S21	p54		True			F	51.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A5-S21	50-60
+A5-S19	p56		True			F	55.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A5-S19	50-60
+A6-I160	p70		True			F	51.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A6-I160	50-60
+A6-I215ob	p71		True			F	51.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A6-I215ob	50-60
+A6-I150	p72		True			M	51.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A6-I150	50-60
+A6-I200ob	p76		True			M	27.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A6-I200ob	20-30
+A6-I201ob	p76		True			M	30.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A6-I201ob	30-40
+A6-I202ob	p53		True			M	47.0	Caucasian	Healthy/Background - Britanova	Healthy/Background	Britanova	TCR		False	A6-I202ob	40-50
+5f07aa8839579433171763b4	p1437		True			M	28.0	Caucasian	Covid19 - mild	Covid19	Shomuradova	TCR		False	5f07aa8839579433171763b4	20-30
+5f07aa8939579433171763b7	p1445		True			M	32.0	Caucasian	Covid19 - mild	Covid19	Shomuradova	TCR		False	5f07aa8939579433171763b7	30-40
+5f07aa8a39579433171763ba	p1473		True			F	31.0	Caucasian	Covid19 - mild	Covid19	Shomuradova	TCR		False	5f07aa8a39579433171763ba	30-40
+5f07aa8c39579433171763c0	p1489		True			M	27.0	Caucasian	Covid19 - mild	Covid19	Shomuradova	TCR		False	5f07aa8c39579433171763c0	20-30
+6047f702136a6d924982945c	p1434		True			M	28.0	Caucasian	Covid19 - mild	Covid19	Shomuradova	TCR		False	6047f702136a6d924982945c	20-30
+6047f703136a6d924982945f	p1448		True			M	37.0	Caucasian	Covid19 - moderate/severe	Covid19	Shomuradova	TCR		False	6047f703136a6d924982945f	30-40
+6047f704136a6d9249829462	p1449		True			F	34.0	Caucasian	Covid19 - mild	Covid19	Shomuradova	TCR		False	6047f704136a6d9249829462	30-40
+6047f704136a6d9249829465	p1465		True			M	19.0	Caucasian	Covid19 - moderate/severe	Covid19	Shomuradova	TCR		False	6047f704136a6d9249829465	<20
+6047f706136a6d924982946b	p1480		True			M	29.0	Caucasian	Covid19 - moderate/severe	Covid19	Shomuradova	TCR		False	6047f706136a6d924982946b	20-30
+6047f707136a6d924982946e	p1481		True			F	30.0	Caucasian	Covid19 - moderate/severe	Covid19	Shomuradova	TCR		False	6047f707136a6d924982946e	30-40
+6047f708136a6d9249829471	p1482		True			F	36.0	Caucasian	Covid19 - mild	Covid19	Shomuradova	TCR		False	6047f708136a6d9249829471	30-40
+6047f709136a6d9249829474	p1486		True			F	46.0	Caucasian	Covid19 - moderate/severe	Covid19	Shomuradova	TCR		False	6047f709136a6d9249829474	40-50
+6047f70a136a6d9249829477	p1494		True			F	36.0	Caucasian	Covid19 - mild	Covid19	Shomuradova	TCR		False	6047f70a136a6d9249829477	30-40
+6047f70b136a6d924982947a	p1495		True			M	41.0	Caucasian	Covid19 - moderate/severe	Covid19	Shomuradova	TCR		False	6047f70b136a6d924982947a	40-50
+6047f70c136a6d924982947d	p1531		True			M	23.0	Caucasian	Covid19 - mild	Covid19	Shomuradova	TCR		False	6047f70c136a6d924982947d	20-30
+6047f70c136a6d924982947f	p1545		True			F	44.0	Caucasian	Covid19 - moderate/severe	Covid19	Shomuradova	TCR		False	6047f70c136a6d924982947f	40-50
+6047f70d136a6d9249829482	p1551		True			M	24.0	Caucasian	Covid19 - mild	Covid19	Shomuradova	TCR		False	6047f70d136a6d9249829482	20-30
+P00311	P00311		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00311
+Keck0119_MC1	Keck0119_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0119_MC1
+P00104	P00104		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00104
+P00511	P00511		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00511
+Keck0013_MC1	Keck0013_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0013_MC1
+P00599	P00599		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00599
+P00130	P00130		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00130
+Keck0099_MC1	Keck0099_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0099_MC1
+P00466	P00466		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00466
+P00415	P00415		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00415
+P00583	P00583		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00583
+P00534	P00534		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00534
+P00407	P00407		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00407
+P00513	P00513		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00513
+P00388	P00388		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00388
+Keck0081_MC1	Keck0081_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0081_MC1
+P00644	P00644		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00644
+P00174	P00174		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00174
+P00432	P00432		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00432
+P00381	P00381		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00381
+Keck0082_MC1	Keck0082_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0082_MC1
+P00167	P00167		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00167
+P00554	P00554		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00554
+P00606	P00606		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00606
+P00368	P00368		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00368
+P00203	P00203		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00203
+Keck0007_MC1	Keck0007_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0007_MC1
+P00158	P00158		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00158
+P00414	P00414		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00414
+Keck0036_MC1	Keck0036_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0036_MC1
+P00530	P00530		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00530
+P00401	P00401		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00401
+P00030	P00030		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00030
+Keck0088_MC1	Keck0088_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0088_MC1
+P00334	P00334		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00334
+P00587	P00587		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00587
+P00395	P00395		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00395
+Keck0015_MC1	Keck0015_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0015_MC1
+P00056	P00056		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00056
+P00095	P00095		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00095
+P00542	P00542		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00542
+P00156	P00156		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00156
+P00032	P00032		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00032
+P00520	P00520		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00520
+P00387	P00387		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00387
+P00299	P00299		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00299
+P00384	P00384		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00384
+P00548	P00548		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00548
+P00422	P00422		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00422
+P00198	P00198		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00198
+P00085	P00085		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00085
+P00596	P00596		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00596
+P00400	P00400		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00400
+P00039	P00039		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00039
+P00128	P00128		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00128
+P00498	P00498		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00498
+P00589	P00589		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00589
+P00592	P00592		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00592
+P00172	P00172		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00172
+P00161	P00161		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00161
+P00102	P00102		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00102
+P00425	P00425		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00425
+P00537	P00537		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00537
+P00458	P00458		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00458
+P00624	P00624		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00624
+Keck0011_MC1	Keck0011_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0011_MC1
+P00551	P00551		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00551
+P00569	P00569		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00569
+P00036	P00036		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00036
+Keck0083_MC1	Keck0083_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0083_MC1
+P00642	P00642		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00642
+P00107	P00107		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00107
+P00223	P00223		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00223
+P00159	P00159		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00159
+P00047	P00047		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00047
+P00282	P00282		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00282
+Keck0070_MC1	Keck0070_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0070_MC1
+Keck0074_MC1	Keck0074_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0074_MC1
+P00046	P00046		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00046
+P00175	P00175		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00175
+P00126	P00126		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00126
+P00631	P00631		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00631
+P00597	P00597		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00597
+P00616	P00616		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00616
+P00471	P00471		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00471
+P00660	P00660		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00660
+P00224	P00224		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00224
+P00075	P00075		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00075
+P00539	P00539		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00539
+Keck0040_MC1	Keck0040_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0040_MC1
+P00433	P00433		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00433
+Keck0017_MC1	Keck0017_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0017_MC1
+P00178	P00178		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00178
+P00037	P00037		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00037
+Keck0003_MC1	Keck0003_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0003_MC1
+P00197	P00197		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00197
+P00324	P00324		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00324
+P00268	P00268		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00268
+P00310	P00310		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00310
+P00295	P00295		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00295
+P00412	P00412		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00412
+P00021	P00021		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00021
+Keck0090_MC1	Keck0090_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0090_MC1
+Keck0044_MC1	Keck0044_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0044_MC1
+P00263	P00263		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00263
+P00014	P00014		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00014
+P00610	P00610		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00610
+P00261	P00261		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00261
+P00069	P00069		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00069
+Keck0064_MC1	Keck0064_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0064_MC1
+P00140	P00140		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00140
+P00031	P00031		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00031
+P00163	P00163		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00163
+P00189	P00189		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00189
+P00157	P00157		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00157
+P00284	P00284		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00284
+P00636	P00636		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00636
+P00150	P00150		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00150
+P00369	P00369		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00369
+P00447	P00447		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00447
+P00496	P00496		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00496
+P00410	P00410		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00410
+P00233	P00233		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00233
+P00561	P00561		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00561
+P00566	P00566		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00566
+P00022	P00022		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00022
+P00211	P00211		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00211
+P00536	P00536		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00536
+P00423	P00423		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00423
+P00265	P00265		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00265
+P00327	P00327		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00327
+P00440	P00440		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00440
+P00242	P00242		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00242
+P00590	P00590		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00590
+P00363	P00363		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00363
+P00353	P00353		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00353
+Keck0032_MC1	Keck0032_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0032_MC1
+P00386	P00386		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00386
+P00372	P00372		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00372
+P00335	P00335		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00335
+P00351	P00351		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00351
+P00302	P00302		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00302
+P00617	P00617		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00617
+P00374	P00374		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00374
+P00016	P00016		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00016
+P00267	P00267		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00267
+Keck0056_MC1	Keck0056_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0056_MC1
+Keck0008_MC1	Keck0008_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0008_MC1
+P00482	P00482		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00482
+P00453	P00453		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00453
+P00053	P00053		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00053
+P00505	P00505		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00505
+P00194	P00194		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00194
+P00089	P00089		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00089
+P00594	P00594		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00594
+P00640	P00640		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00640
+Keck0065_MC1	Keck0065_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0065_MC1
+P00649	P00649		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00649
+P00595	P00595		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00595
+P00449	P00449		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00449
+P00527	P00527		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00527
+P00619	P00619		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00619
+P00080	P00080		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00080
+P00495	P00495		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00495
+P00643	P00643		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00643
+P00441	P00441		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00441
+P00469	P00469		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00469
+P00054	P00054		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00054
+P00186	P00186		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00186
+P00526	P00526		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00526
+P00658	P00658		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00658
+P00068	P00068		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00068
+P00549	P00549		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00549
+P00012	P00012		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00012
+Keck0026_MC1	Keck0026_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0026_MC1
+P00593	P00593		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00593
+P00426	P00426		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00426
+P00614	P00614		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00614
+Keck0012_MC1	Keck0012_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0012_MC1
+P00528	P00528		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00528
+P00494	P00494		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00494
+P00559	P00559		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00559
+Keck0101_MC1	Keck0101_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0101_MC1
+P00153	P00153		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00153
+P00151	P00151		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00151
+P00232	P00232		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00232
+P00306	P00306		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00306
+P00451	P00451		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00451
+P00297	P00297		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00297
+P00305	P00305		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00305
+P00245	P00245		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00245
+P00613	P00613		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00613
+P00448	P00448		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00448
+P00013	P00013		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00013
+P00252	P00252		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00252
+P00394	P00394		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00394
+P00117	P00117		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00117
+P00101	P00101		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00101
+P00057	P00057		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00057
+P00648	P00648		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00648
+P00485	P00485		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00485
+P00028	P00028		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00028
+P00668	P00668		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00668
+Keck0077_MC1	Keck0077_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0077_MC1
+P00508	P00508		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00508
+P00546	P00546		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00546
+Keck0045_MC1	Keck0045_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0045_MC1
+P00226	P00226		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00226
+P00212	P00212		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00212
+P00343	P00343		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00343
+P00417	P00417		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00417
+P00572	P00572		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00572
+P00340	P00340		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00340
+Keck0042_MC1	Keck0042_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0042_MC1
+P00506	P00506		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00506
+P00486	P00486		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00486
+P00201	P00201		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00201
+P00370	P00370		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00370
+P00454	P00454		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00454
+P00502	P00502		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00502
+P00427	P00427		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00427
+P00474	P00474		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00474
+P00222	P00222		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00222
+Keck0096_MC1	Keck0096_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0096_MC1
+P00098	P00098		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00098
+Keck0097_MC1	Keck0097_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0097_MC1
+Keck0039_MC1	Keck0039_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0039_MC1
+P00638	P00638		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00638
+Keck0057_MC1	Keck0057_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0057_MC1
+P00553	P00553		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00553
+P00240	P00240		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00240
+P00573	P00573		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00573
+P00544	P00544		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00544
+P00632	P00632		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00632
+P00518	P00518		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00518
+P00634	P00634		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00634
+P00575	P00575		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00575
+P00571	P00571		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00571
+P00342	P00342		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00342
+P00048	P00048		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00048
+P00250	P00250		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00250
+P00074	P00074		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00074
+P00287	P00287		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00287
+Keck0089_MC1	Keck0089_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0089_MC1
+P00096	P00096		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00096
+Keck0010_MC1	Keck0010_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0010_MC1
+Keck0109_MC1	Keck0109_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0109_MC1
+Keck0116_MC1	Keck0116_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0116_MC1
+P00560	P00560		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00560
+P00586	P00586		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00586
+P00115	P00115		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00115
+Keck0075_MC1	Keck0075_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0075_MC1
+P00304	P00304		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00304
+P00213	P00213		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00213
+P00625	P00625		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00625
+Keck0022_MC1	Keck0022_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0022_MC1
+P00100	P00100		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00100
+P00406	P00406		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00406
+Keck0058_MC1	Keck0058_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0058_MC1
+P00389	P00389		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00389
+P00051	P00051		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00051
+P00254	P00254		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00254
+Keck0117_MC1	Keck0117_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0117_MC1
+P00399	P00399		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00399
+P00229	P00229		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00229
+P00360	P00360		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00360
+P00357	P00357		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00357
+P00218	P00218		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00218
+Keck0030_MC1	Keck0030_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0030_MC1
+P00207	P00207		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00207
+P00316	P00316		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00316
+P00091	P00091		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00091
+P00081	P00081		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00081
+P00524	P00524		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00524
+P00601	P00601		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00601
+P00519	P00519		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00519
+P00110	P00110		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00110
+P00501	P00501		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00501
+P00132	P00132		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00132
+P00428	P00428		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00428
+P00430	P00430		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00430
+P00507	P00507		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00507
+Keck0095_MC1	Keck0095_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0095_MC1
+P00481	P00481		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00481
+P00568	P00568		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00568
+P00148	P00148		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00148
+P00659	P00659		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00659
+P00144	P00144		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00144
+P00418	P00418		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00418
+P00190	P00190		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00190
+P00042	P00042		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00042
+P00411	P00411		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00411
+Keck0060_MC1	Keck0060_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0060_MC1
+P00651	P00651		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00651
+P00612	P00612		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00612
+Keck0118_MC1	Keck0118_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0118_MC1
+P00281	P00281		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00281
+P00227	P00227		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00227
+P00375	P00375		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00375
+P00491	P00491		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00491
+P00416	P00416		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00416
+P00221	P00221		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00221
+P00152	P00152		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00152
+P00500	P00500		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00500
+Keck0100_MC1	Keck0100_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0100_MC1
+P00195	P00195		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00195
+P00570	P00570		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00570
+P00608	P00608		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00608
+P00362	P00362		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00362
+P00584	P00584		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00584
+P00077	P00077		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00077
+P00666	P00666		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00666
+P00062	P00062		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00062
+P00239	P00239		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00239
+Keck0033_MC1	Keck0033_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0033_MC1
+P00188	P00188		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00188
+Keck0027_MC1	Keck0027_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0027_MC1
+P00090	P00090		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00090
+P00462	P00462		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00462
+Keck0084_MC1	Keck0084_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0084_MC1
+P00011	P00011		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00011
+P00034	P00034		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00034
+P00149	P00149		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00149
+P00492	P00492		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00492
+Keck0094_MC1	Keck0094_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0094_MC1
+P00504	P00504		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00504
+Keck0009_MC1	Keck0009_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0009_MC1
+P00249	P00249		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00249
+Keck0112_MC1	Keck0112_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0112_MC1
+P00329	P00329		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00329
+Keck0021_MC1	Keck0021_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0021_MC1
+P00635	P00635		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00635
+P00345	P00345		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00345
+P00303	P00303		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00303
+P00044	P00044		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00044
+P00581	P00581		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00581
+Keck0087_MC1	Keck0087_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0087_MC1
+Keck0107_MC1	Keck0107_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0107_MC1
+P00467	P00467		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00467
+Keck0050_MC1	Keck0050_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0050_MC1
+P00055	P00055		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00055
+P00655	P00655		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00655
+Keck0114_MC1	Keck0114_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0114_MC1
+P00216	P00216		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00216
+Keck0069_MC1	Keck0069_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0069_MC1
+P00125	P00125		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00125
+P00385	P00385		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00385
+P00512	P00512		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00512
+P00138	P00138		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00138
+P00018	P00018		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00018
+P00119	P00119		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00119
+P00346	P00346		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00346
+P00397	P00397		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00397
+P00358	P00358		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00358
+P00314	P00314		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00314
+P00349	P00349		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00349
+P00038	P00038		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00038
+P00413	P00413		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00413
+P00105	P00105		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00105
+Keck0059_MC1	Keck0059_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0059_MC1
+P00093	P00093		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00093
+P00002	P00002		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00002
+P00588	P00588		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00588
+P00168	P00168		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00168
+P00446	P00446		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00446
+P00087	P00087		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00087
+Keck0016_MC1	Keck0016_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0016_MC1
+P00146	P00146		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00146
+P00135	P00135		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00135
+P00457	P00457		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00457
+Keck0001_MC1	Keck0001_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0001_MC1
+P00402	P00402		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00402
+P00550	P00550		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00550
+P00269	P00269		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00269
+P00320	P00320		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00320
+P00086	P00086		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00086
+P00063	P00063		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00063
+P00356	P00356		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00356
+P00204	P00204		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00204
+P00521	P00521		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00521
+Keck0091_MC1	Keck0091_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0091_MC1
+P00143	P00143		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00143
+P00202	P00202		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00202
+P00442	P00442		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00442
+P00479	P00479		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00479
+P00459	P00459		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00459
+P00435	P00435		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00435
+P00024	P00024		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00024
+P00623	P00623		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00623
+P00563	P00563		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00563
+P00231	P00231		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00231
+P00337	P00337		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00337
+P00059	P00059		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00059
+P00116	P00116		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00116
+P00380	P00380		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00380
+Keck0115_MC1	Keck0115_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0115_MC1
+P00627	P00627		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00627
+P00618	P00618		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00618
+P00118	P00118		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00118
+P00626	P00626		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00626
+P00271	P00271		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00271
+P00347	P00347		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00347
+P00662	P00662		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00662
+P00180	P00180		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00180
+P00209	P00209		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00209
+P00313	P00313		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00313
+P00309	P00309		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00309
+Keck0062_MC1	Keck0062_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0062_MC1
+P00341	P00341		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00341
+P00480	P00480		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00480
+P00235	P00235		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00235
+P00122	P00122		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00122
+Keck0098_MC1	Keck0098_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0098_MC1
+P00490	P00490		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00490
+Keck0106_MC1	Keck0106_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0106_MC1
+P00064	P00064		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00064
+Keck0085_MC1	Keck0085_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0085_MC1
+P00639	P00639		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00639
+P00251	P00251		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00251
+P00154	P00154		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00154
+P00258	P00258		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00258
+P00052	P00052		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00052
+Keck0067_MC1	Keck0067_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0067_MC1
+P00129	P00129		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00129
+Keck0055_MC1	Keck0055_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0055_MC1
+P00365	P00365		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00365
+P00205	P00205		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00205
+P00088	P00088		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00088
+P00645	P00645		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00645
+P00181	P00181		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00181
+P00187	P00187		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00187
+P00246	P00246		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00246
+P00165	P00165		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00165
+P00228	P00228		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00228
+P00193	P00193		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00193
+P00072	P00072		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00072
+P00084	P00084		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00084
+P00470	P00470		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00470
+P00532	P00532		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00532
+P00061	P00061		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00061
+P00641	P00641		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00641
+P00142	P00142		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00142
+Keck0004_MC1	Keck0004_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0004_MC1
+P00108	P00108		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00108
+P00621	P00621		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00621
+P00556	P00556		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00556
+P00010	P00010		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00010
+P00611	P00611		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00611
+P00317	P00317		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00317
+P00557	P00557		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00557
+P00600	P00600		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00600
+P00179	P00179		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00179
+P00185	P00185		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00185
+P00443	P00443		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00443
+P00543	P00543		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00543
+P00378	P00378		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00378
+P00279	P00279		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00279
+Keck0035_MC1	Keck0035_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0035_MC1
+P00562	P00562		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00562
+P00615	P00615		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00615
+P00291	P00291		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00291
+P00219	P00219		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00219
+P00472	P00472		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00472
+P00323	P00323		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00323
+P00280	P00280		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00280
+P00359	P00359		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00359
+P00392	P00392		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00392
+P00456	P00456		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00456
+P00371	P00371		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00371
+P00015	P00015		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00015
+Keck0093_MC1	Keck0093_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0093_MC1
+P00382	P00382		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00382
+P00035	P00035		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00035
+P00646	P00646		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00646
+P00468	P00468		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00468
+P00377	P00377		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00377
+Keck0037_MC1	Keck0037_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0037_MC1
+P00073	P00073		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00073
+P00663	P00663		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00663
+P00274	P00274		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00274
+P00450	P00450		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00450
+Keck0120_MC1	Keck0120_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0120_MC1
+P00023	P00023		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00023
+Keck0005_MC1	Keck0005_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0005_MC1
+P00005	P00005		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00005
+P00026	P00026		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00026
+P00276	P00276		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00276
+P00273	P00273		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00273
+Keck0103_MC1	Keck0103_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0103_MC1
+P00667	P00667		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00667
+P00134	P00134		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00134
+P00283	P00283		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00283
+P00049	P00049		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00049
+P00192	P00192		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00192
+P00598	P00598		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00598
+P00558	P00558		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00558
+P00354	P00354		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00354
+P00630	P00630		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00630
+P00292	P00292		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00292
+P00591	P00591		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00591
+P00574	P00574		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00574
+P00461	P00461		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00461
+P00367	P00367		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00367
+P00545	P00545		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00545
+P00208	P00208		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00208
+P00078	P00078		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00078
+P00540	P00540		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00540
+P00045	P00045		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00045
+P00253	P00253		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00253
+P00429	P00429		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00429
+P00585	P00585		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00585
+P00657	P00657		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00657
+Keck0046_MC1	Keck0046_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0046_MC1
+P00307	P00307		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00307
+P00247	P00247		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00247
+P00029	P00029		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00029
+P00391	P00391		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00391
+P00460	P00460		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00460
+P00465	P00465		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00465
+Keck0078_MC1	Keck0078_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0078_MC1
+P00019	P00019		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00019
+P00555	P00555		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00555
+P00431	P00431		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00431
+P00214	P00214		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00214
+P00326	P00326		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00326
+P00336	P00336		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00336
+P00236	P00236		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00236
+P00160	P00160		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00160
+P00355	P00355		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00355
+P00199	P00199		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00199
+Keck0105_MC1	Keck0105_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0105_MC1
+P00661	P00661		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00661
+P00290	P00290		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00290
+P00298	P00298		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00298
+Keck0063_MC1	Keck0063_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0063_MC1
+Keck0104_MC1	Keck0104_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0104_MC1
+P00315	P00315		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00315
+P00103	P00103		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00103
+P00083	P00083		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00083
+Keck0072_MC1	Keck0072_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0072_MC1
+P00361	P00361		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00361
+P00176	P00176		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00176
+P00312	P00312		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00312
+P00243	P00243		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00243
+P00652	P00652		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00652
+P00321	P00321		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00321
+P00220	P00220		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00220
+P00376	P00376		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00376
+P00043	P00043		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00043
+P00182	P00182		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00182
+P00629	P00629		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00629
+P00510	P00510		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00510
+P00060	P00060		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00060
+P00373	P00373		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00373
+P00656	P00656		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00656
+Keck0002_MC1	Keck0002_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0002_MC1
+P00344	P00344		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00344
+Keck0019_MC1	Keck0019_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0019_MC1
+P00325	P00325		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00325
+P00141	P00141		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00141
+Keck0047_MC1	Keck0047_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0047_MC1
+Keck0061_MC1	Keck0061_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0061_MC1
+P00565	P00565		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00565
+P00525	P00525		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00525
+P00285	P00285		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00285
+P00166	P00166		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00166
+Keck0029_MC1	Keck0029_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0029_MC1
+Keck0020_MC1	Keck0020_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0020_MC1
+P00419	P00419		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00419
+P00653	P00653		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00653
+Keck0034_MC1	Keck0034_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0034_MC1
+P00408	P00408		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00408
+Keck0049_MC1	Keck0049_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0049_MC1
+P00509	P00509		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00509
+P00318	P00318		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00318
+P00136	P00136		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00136
+P00177	P00177		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00177
+P00123	P00123		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00123
+P00009	P00009		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00009
+Keck0024_MC1	Keck0024_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0024_MC1
+P00164	P00164		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00164
+Keck0025_MC1	Keck0025_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0025_MC1
+P00237	P00237		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00237
+P00169	P00169		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00169
+P00332	P00332		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00332
+P00665	P00665		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00665
+P00577	P00577		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00577
+P00033	P00033		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00033
+Keck0041_MC1	Keck0041_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0041_MC1
+P00421	P00421		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00421
+P00278	P00278		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00278
+Keck0066_MC1	Keck0066_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0066_MC1
+P00338	P00338		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00338
+P00330	P00330		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00330
+P00296	P00296		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00296
+P00473	P00473		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00473
+P00628	P00628		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00628
+P00439	P00439		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00439
+P00522	P00522		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00522
+P00215	P00215		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00215
+Keck0111_MC1	Keck0111_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0111_MC1
+P00576	P00576		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00576
+P00580	P00580		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00580
+P00076	P00076		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00076
+Keck0076_MC1	Keck0076_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0076_MC1
+P00383	P00383		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00383
+P00133	P00133		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00133
+P00515	P00515		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00515
+Keck0038_MC1	Keck0038_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0038_MC1
+Keck0071_MC1	Keck0071_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0071_MC1
+P00434	P00434		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00434
+P00647	P00647		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00647
+P00257	P00257		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00257
+P00111	P00111		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00111
+P00070	P00070		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00070
+P00027	P00027		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00027
+P00552	P00552		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00552
+P00289	P00289		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00289
+P00256	P00256		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00256
+P00564	P00564		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00564
+P00514	P00514		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00514
+P00637	P00637		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00637
+Keck0080_MC1	Keck0080_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0080_MC1
+P00352	P00352		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00352
+P00567	P00567		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00567
+Keck0102_MC1	Keck0102_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0102_MC1
+P00523	P00523		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00523
+P00113	P00113		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00113
+P00319	P00319		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00319
+Keck0006_MC1	Keck0006_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0006_MC1
+P00438	P00438		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00438
+P00147	P00147		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00147
+P00529	P00529		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00529
+P00191	P00191		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00191
+P00230	P00230		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00230
+P00079	P00079		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00079
+P00200	P00200		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00200
+P00065	P00065		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00065
+Keck0068_MC1	Keck0068_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0068_MC1
+P00579	P00579		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00579
+P00445	P00445		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00445
+P00270	P00270		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00270
+P00409	P00409		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00409
+P00301	P00301		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00301
+P00071	P00071		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00071
+P00578	P00578		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00578
+P00366	P00366		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00366
+P00403	P00403		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00403
+P00217	P00217		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00217
+P00225	P00225		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00225
+P00503	P00503		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00503
+Keck0048_MC1	Keck0048_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0048_MC1
+P00463	P00463		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00463
+P00262	P00262		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00262
+Keck0110_MC1	Keck0110_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0110_MC1
+P00620	P00620		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00620
+P00094	P00094		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00094
+P00293	P00293		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00293
+P00475	P00475		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00475
+P00206	P00206		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00206
+P00531	P00531		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00531
+P00633	P00633		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00633
+P00499	P00499		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00499
+P00099	P00099		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00099
+Keck0073_MC1	Keck0073_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0073_MC1
+P00493	P00493		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00493
+P00058	P00058		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00058
+P00277	P00277		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00277
+P00112	P00112		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00112
+P00437	P00437		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00437
+P00139	P00139		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00139
+P00488	P00488		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00488
+P00067	P00067		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00067
+P00582	P00582		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00582
+P00420	P00420		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00420
+Keck0054_MC1	Keck0054_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0054_MC1
+P00339	P00339		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00339
+P00424	P00424		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00424
+P00264	P00264		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00264
+P00328	P00328		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00328
+P00609	P00609		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00609
+P00001	P00001		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00001
+P00155	P00155		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00155
+P00300	P00300		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00300
+P00517	P00517		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00517
+P00266	P00266		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00266
+P00650	P00650		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00650
+P00017	P00017		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00017
+P00003	P00003		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00003
+P00092	P00092		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00092
+P00004	P00004		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00004
+P00210	P00210		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00210
+P00259	P00259		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00259
+P00622	P00622		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00622
+P00476	P00476		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00476
+P00109	P00109		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00109
+P00535	P00535		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00535
+P00124	P00124		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00124
+P00436	P00436		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00436
+Keck0108_MC1	Keck0108_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0108_MC1
+Keck0053_MC1	Keck0053_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0053_MC1
+P00275	P00275		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00275
+P00478	P00478		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00478
+P00654	P00654		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00654
+Keck0028_MC1	Keck0028_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0028_MC1
+P00238	P00238		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00238
+P00322	P00322		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00322
+Keck0018_MC1	Keck0018_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0018_MC1
+P00364	P00364		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00364
+P00272	P00272		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00272
+P00452	P00452		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00452
+P00390	P00390		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00390
+P00020	P00020		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00020
+P00516	P00516		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00516
+P00260	P00260		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00260
+P00404	P00404		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00404
+P00025	P00025		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00025
+P00607	P00607		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00607
+P00131	P00131		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00131
+P00350	P00350		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00350
+P00234	P00234		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00234
+P00106	P00106		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00106
+Keck0014_MC1	Keck0014_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0014_MC1
+P00008	P00008		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00008
+P00171	P00171		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00171
+P00288	P00288		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00288
+Keck0092_MC1	Keck0092_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0092_MC1
+Keck0031_MC1	Keck0031_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0031_MC1
+P00244	P00244		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00244
+Keck0079_MC1	Keck0079_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0079_MC1
+P00405	P00405		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00405
+P00066	P00066		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00066
+P00533	P00533		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00533
+P00050	P00050		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00050
+P00333	P00333		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00333
+P00286	P00286		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00286
+P00604	P00604		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00604
+P00444	P00444		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00444
+Keck0051_MC1	Keck0051_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0051_MC1
+P00184	P00184		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00184
+P00477	P00477		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00477
+P00145	P00145		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00145
+P00455	P00455		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00455
+P00162	P00162		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00162
+P00393	P00393		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00393
+P00006	P00006		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00006
+P00241	P00241		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00241
+Keck0043_MC1	Keck0043_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0043_MC1
+Keck0113_MC1	Keck0113_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0113_MC1
+P00294	P00294		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00294
+P00464	P00464		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00464
+P00127	P00127		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00127
+Keck0023_MC1	Keck0023_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0023_MC1
+P00196	P00196		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00196
+P00497	P00497		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00497
+P00484	P00484		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00484
+P00547	P00547		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00547
+P00379	P00379		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00379
+P00603	P00603		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00603
+P00173	P00173		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00173
+P00489	P00489		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00489
+P00114	P00114		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00114
+P00248	P00248		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00248
+P00396	P00396		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00396
+P00483	P00483		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00483
+P00120	P00120		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00120
+Keck0052_MC1	Keck0052_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0052_MC1
+P00255	P00255		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00255
+P00137	P00137		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00137
+P00602	P00602		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00602
+P00097	P00097		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00097
+P00041	P00041		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00041
+P00007	P00007		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00007
+P00308	P00308		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00308
+P00348	P00348		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00348
+P00538	P00538		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00538
+P00040	P00040		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00040
+P00605	P00605		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00605
+P00487	P00487		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00487
+P00398	P00398		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00398
+P00541	P00541		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00541
+P00331	P00331		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00331
+Keck0086_MC1	Keck0086_MC1		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	Keck0086_MC1
+P00183	P00183		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00183
+P00121	P00121		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00121
+P00170	P00170		True						Healthy/Background - Emerson	Healthy/Background	Emerson	TCR		True	P00170
+860011232_TCRB	ImmuneCode-190921		True			F	53.0	Hispanic/Latino	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011232_TCRB	50-60
+INCOV026-AC-3_TCRB	ImmuneCode-026		True			M	33.0	Hispanic/Latino	COVID-19-ISB	Covid19	ImmuneCode	TCR		True	INCOV026-AC-3_TCRB	30-40
+860011116_TCRB	ImmuneCode-321977		True			F	52.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011116_TCRB	50-60
+INCOV087-BL-3_TCRB	ImmuneCode-087		True			M	56.0	Hispanic/Latino	COVID-19-ISB	Covid19	ImmuneCode	TCR		True	INCOV087-BL-3_TCRB	50-60
+BS-EQ-0014-T2-replacement_TCRB	ImmuneCode-0000051		True			M	55.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-0014-T2-replacement_TCRB	50-60
+BS-EQ-0026-T0-replacement_TCRB	ImmuneCode-0000074		True			M	52.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-0026-T0-replacement_TCRB	50-60
+860011123_TCRB	ImmuneCode-712578		True			M	52.0	Hispanic/Latino	COVID-19-HUniv12Oct - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	860011123_TCRB	50-60
+ADIR0000093_TCRB	ImmuneCode-ADIRP0000093		True			F	38.0	Caucasian	COVID-19-Adaptive	Covid19	ImmuneCode	TCR		True	ADIR0000093_TCRB	30-40
+BS-EQ-29-T1-replacement_TCRB	ImmuneCode-0000391		True			M	66.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-29-T1-replacement_TCRB	60-70
+860011130_TCRB	ImmuneCode-696163		True			M	59.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011130_TCRB	50-60
+BS-GIGI_96-replacement_TCRB	ImmuneCode-0000495		True			F	76.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_96-replacement_TCRB	70-80
+BS-EQ-44-T1-replacement_TCRB	ImmuneCode-0000430		True			M	77.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	BS-EQ-44-T1-replacement_TCRB	70-80
+BS-GN-0010-T0-replacement_TCRB	ImmuneCode-0000078		True			F	40.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	BS-GN-0010-T0-replacement_TCRB	40-50
+INCOV006-BL-5_TCRB	ImmuneCode-006		True			M	26.0		COVID-19-ISB	Covid19	ImmuneCode	TCR		True	INCOV006-BL-5_TCRB	20-30
+860011131_TCRB	ImmuneCode-286053		True			M	71.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	860011131_TCRB	70-80
+INCOV034-AC-3_TCRB	ImmuneCode-034		True			M	30.0	Asian	COVID-19-ISB	Covid19	ImmuneCode	TCR		True	INCOV034-AC-3_TCRB	30-40
+BS-GIGI_05-replacement_TCRB	ImmuneCode-0000441		True			M	71.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_05-replacement_TCRB	70-80
+BS-GIGI_91-replacement_TCRB	ImmuneCode-0000490		True			F	85.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_91-replacement_TCRB
+860011112_TCRB	ImmuneCode-351635		True			M	66.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	860011112_TCRB	60-70
+BS-EQ-38-T2-replacement_TCRB	ImmuneCode-0000423		True			M	59.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-38-T2-replacement_TCRB	50-60
+860011121_TCRB	ImmuneCode-635695		True			M	59.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011121_TCRB	50-60
+BS-EQ-0009-T2-replacement_TCRB	ImmuneCode-0000098		True			M	60.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-0009-T2-replacement_TCRB	60-70
+860011242_TCRB	ImmuneCode-491531		True			F	61.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011242_TCRB	60-70
+BS-EQ-33-T2-replacement_TCRB	ImmuneCode-0000392		True			M	52.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-33-T2-replacement_TCRB	50-60
+BS-EQ-0002-T1-replacement_TCRB	ImmuneCode-0000083		True			M	55.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-0002-T1-replacement_TCRB	50-60
+BS-GIGI_23-replacement_TCRB	ImmuneCode-0000458		True			M	85.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_23-replacement_TCRB
+860011129_TCRB	ImmuneCode-854938		True			F	78.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011129_TCRB	70-80
+BS-EQ-19-T0-replacement_TCRB	ImmuneCode-0000136		True			F	57.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-19-T0-replacement_TCRB	50-60
+BS-EQ-10-T1-replacement_TCRB	ImmuneCode-0000102		True			M	58.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-10-T1-replacement_TCRB	50-60
+860011277_TCRB	ImmuneCode-566820		True			M	8.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	860011277_TCRB	<20
+INCOV002-AC-5_TCRB	ImmuneCode-002		True			M	39.0	Caucasian	COVID-19-ISB	Covid19	ImmuneCode	TCR		True	INCOV002-AC-5_TCRB	30-40
+INCOV051-AC-3_TCRB	ImmuneCode-051		True			M	34.0	Hispanic/Latino	COVID-19-ISB	Covid19	ImmuneCode	TCR		True	INCOV051-AC-3_TCRB	30-40
+BS-EQ-18-T2-replacement_TCRB	ImmuneCode-0000135		True			M	59.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-18-T2-replacement_TCRB	50-60
+BS-EQ-0022-T0-replacement_TCRB	ImmuneCode-0000141		True			M	76.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-0022-T0-replacement_TCRB	70-80
+BS-EQ-0028-T0-replacement_TCRB	ImmuneCode-0000144		True			F	84.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-0028-T0-replacement_TCRB
+860011227_TCRB	ImmuneCode-354617		True			M	70.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011227_TCRB	70-80
+BS-EQ-0011-T1-replacement_TCRB	ImmuneCode-0000101		True			M	79.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-0011-T1-replacement_TCRB	70-80
+INCOV085-BL-3_TCRB	ImmuneCode-085		True			F	36.0	Caucasian	COVID-19-ISB	Covid19	ImmuneCode	TCR		True	INCOV085-BL-3_TCRB	30-40
+BS-GIGI_41-replacement_TCRB	ImmuneCode-0000400		True			M	50.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_41-replacement_TCRB	50-60
+BS-GN-0005-T0-replacement_TCRB	ImmuneCode-0000069		True			M	54.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GN-0005-T0-replacement_TCRB	50-60
+860011499_TCRB	ImmuneCode-351469		True			M	58.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011499_TCRB	50-60
+BS-GN-0003-T0-replacement_TCRB	ImmuneCode-0000093		True			M	70.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GN-0003-T0-replacement_TCRB	70-80
+BS-GIGI_21-replacement_TCRB	ImmuneCode-0000456		True			F	60.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_21-replacement_TCRB	60-70
+BS-GIGI_55-replacement_TCRB	ImmuneCode-0000066		True			M	54.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	BS-GIGI_55-replacement_TCRB	50-60
+BS-EQ-30-T1-replacement_TCRB	ImmuneCode-0000103		True			M	53.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-30-T1-replacement_TCRB	50-60
+860011115_TCRB	ImmuneCode-376904		True			M	63.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	860011115_TCRB	60-70
+BS-EQ-16-T2-replacement_TCRB	ImmuneCode-0000090		True			M	66.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-16-T2-replacement_TCRB	60-70
+860011325_TCRB	ImmuneCode-659607		True			F	88.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011325_TCRB
+860011340_TCRB	ImmuneCode-679547		True			M	23.0	Hispanic/Latino	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011340_TCRB	20-30
+BS-EQ-31-T0-replacement_TCRB	ImmuneCode-0000108		True			M	56.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-31-T0-replacement_TCRB	50-60
+INCOV073-BL-3_TCRB	ImmuneCode-073		True			F	55.0	Hispanic/Latino	COVID-19-ISB	Covid19	ImmuneCode	TCR		True	INCOV073-BL-3_TCRB	50-60
+860011489_TCRB	ImmuneCode-294925		True			M	67.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011489_TCRB	60-70
+860011223_TCRB	ImmuneCode-723143		True			F	53.0	Hispanic/Latino	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011223_TCRB	50-60
+860011310_TCRB	ImmuneCode-121157		True			F	88.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011310_TCRB
+860011110_TCRB	ImmuneCode-147304		True			F	48.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011110_TCRB	40-50
+BS-EQ-32-T1-replacement_TCRB	ImmuneCode-0000115		True			M	24.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-32-T1-replacement_TCRB	20-30
+BS-EQ-23-T1-replacement_TCRB	ImmuneCode-0000142		True			M	49.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-23-T1-replacement_TCRB	40-50
+BS-GIGI_35-replacement_TCRB	ImmuneCode-0000470		True			M	80.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_35-replacement_TCRB
+ADIRP0002436_TCRB	ImmuneCode-ADIRP0002436		True			M	40.0	Hispanic/Latino	COVID-19-Adaptive	Covid19	ImmuneCode	TCR		True	ADIRP0002436_TCRB	40-50
+BS-EQ-43-T0-replacement_TCRB	ImmuneCode-0000429		True			M	54.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-43-T0-replacement_TCRB	50-60
+860011124_TCRB	ImmuneCode-310581		True			M	75.0	Hispanic/Latino	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011124_TCRB	70-80
+BS-GIGI_28-replacement_TCRB	ImmuneCode-0000463		True			M	89.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_28-replacement_TCRB
+860011388_TCRB	ImmuneCode-339526		True			F	77.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011388_TCRB	70-80
+BS-GIGI_81-replacement_TCRB	ImmuneCode-0000480		True			M	89.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_81-replacement_TCRB
+BS-GIGI_80-replacement_TCRB	ImmuneCode-0000479		True			M	82.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_80-replacement_TCRB
+BS-EQ-34-T0-replacement_TCRB	ImmuneCode-0000395		True			M	50.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-34-T0-replacement_TCRB	50-60
+860011496_TCRB	ImmuneCode-100828		True			F	59.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011496_TCRB	50-60
+860011354_TCRB	ImmuneCode-462527		True			F	39.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011354_TCRB	30-40
+INCOV036-BL-3_TCRB	ImmuneCode-036		True			M	51.0	Caucasian	COVID-19-ISB	Covid19	ImmuneCode	TCR		True	INCOV036-BL-3_TCRB	50-60
+860011209_TCRB	ImmuneCode-210401		True			M	48.0		COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011209_TCRB	40-50
+BS-GIGI_44-replacement_TCRB	ImmuneCode-0000143		True			F	54.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	BS-GIGI_44-replacement_TCRB	50-60
+ADIRP0000439_TCRB	ImmuneCode-ADIRP0000439		True			M	29.0	Asian	COVID-19-Adaptive	Covid19	ImmuneCode	TCR		True	ADIRP0000439_TCRB	20-30
+BS-GIGI_14-replacement_TCRB	ImmuneCode-0000449		True			M	55.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_14-replacement_TCRB	50-60
+BS-GIGI_34-replacement_TCRB	ImmuneCode-0000469		True			M	60.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	BS-GIGI_34-replacement_TCRB	60-70
+BS-GIGI_27-replacement_TCRB	ImmuneCode-0000462		True			F	62.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_27-replacement_TCRB	60-70
+BS-GN-01-T0-replacement_TCRB	ImmuneCode-0000091		True			M	35.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GN-01-T0-replacement_TCRB	30-40
+860011120_TCRB	ImmuneCode-796689		True			M	79.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011120_TCRB	70-80
+BS-GN-0002-T0-replacement_TCRB	ImmuneCode-0000092		True			M	45.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GN-0002-T0-replacement_TCRB	40-50
+BS-EQ-15-T1-replacement_TCRB	ImmuneCode-0000042		True			M	53.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-15-T1-replacement_TCRB	50-60
+860011132_TCRB	ImmuneCode-869115		True			M	84.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011132_TCRB
+ADIRP0002464_TCRB	ImmuneCode-ADIRP0002464		True			F	46.0	Hispanic/Latino	COVID-19-Adaptive	Covid19	ImmuneCode	TCR		True	ADIRP0002464_TCRB	40-50
+860011494_TCRB	ImmuneCode-773780		True			M	27.0	Hispanic/Latino	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011494_TCRB	20-30
+860011495_TCRB	ImmuneCode-588140		True			F	34.0		COVID-19-HUniv12Oct	Covid19	ImmuneCode	TCR		True	860011495_TCRB	30-40
+860011497_TCRB	ImmuneCode-791336		True			F	42.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011497_TCRB	40-50
+BS-EQ-0017-T0-replacement_TCRB	ImmuneCode-0000134		True			M	53.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-EQ-0017-T0-replacement_TCRB	50-60
+BS-GIGI_42-replacement_TCRB	ImmuneCode-0000145		True			M	49.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	BS-GIGI_42-replacement_TCRB	40-50
+860011133_TCRB	ImmuneCode-745617		True			F	56.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011133_TCRB	50-60
+860011117_TCRB	ImmuneCode-304752		True			M	60.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	860011117_TCRB	60-70
+ADIRP0001958_TCRB	ImmuneCode-ADIRP0001958		True			M	49.0	Caucasian	COVID-19-Adaptive	Covid19	ImmuneCode	TCR		True	ADIRP0001958_TCRB	40-50
+860011106_TCRB	ImmuneCode-775827		True			F	57.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011106_TCRB	50-60
+BS-GIGI_10-replacement_TCRB	ImmuneCode-0000446		True			M	75.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized	Covid19	ImmuneCode	TCR		True	BS-GIGI_10-replacement_TCRB	70-80
+BS-EQ-25-T1_BS-GIGI-71-replacement_TCRB	ImmuneCode-0000160		True			M	72.0	Caucasian	COVID-19-NIH/NIAID - Hospitalized - ICU	Covid19	ImmuneCode	TCR		True	BS-EQ-25-T1_BS-GIGI-71-replacement_TCRB	70-80
+860011240_TCRB	ImmuneCode-506345		True			F	78.0	Caucasian	COVID-19-HUniv12Oct - Hospitalized	Covid19	ImmuneCode	TCR		True	860011240_TCRB	70-80

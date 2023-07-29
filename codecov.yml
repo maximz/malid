@@ -1,0 +1,14 @@
+coverage:
+  ignore:
+    - "tests"
+    - "setup.py"
+  status:
+    project:
+      default:
+        # allow a 10% drop from the previous base commit coverage
+        target: auto
+        threshold: 10%
+        informational: true # non-blocking (https://docs.codecov.com/docs/common-recipe-list#set-non-blocking-status-checks)
+    patch:
+      default:
+        informational: true # non-blocking (https://docs.codecov.com/docs/common-recipe-list#set-non-blocking-status-checks)

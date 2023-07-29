@@ -1,0 +1,7 @@
+# numpy must already be installed before we install glmnet
+# https://github.com/civisanalytics/python-glmnet
+glmnet >= 2.2.1
+
+# install jax first before installing jax-unirep
+# jax-unirep==2.1.0
+-e git+https://github.com/maximz/jax-unirep.git@validation-loss-improvements#egg=jax-unirep

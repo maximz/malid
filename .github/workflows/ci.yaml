@@ -1,0 +1,83 @@
+# Checkout or python install don't carry between jobs. In fresh job, will default to empty directory and python 3.8
+# Env variables are all strings
+
+name: CI
+
+# Consider making this on pull_request or on push-to-master, rather than on-pr-or-push-to-any-branch: https://github.com/simonw/til/blob/main/github-actions/only-master.md
+on: [push, pull_request]
+
+jobs:
+  tests:
+    # Internal: run on self-hosted runner as opposed to ubuntu-latest
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      # don't abort all other jobs
+      fail-fast: false
+      matrix:
+        python-version: [3.9.12]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Get Python version
+        run: python --version
+
+      ## Github Actions caching does not make sense when using a self-hosted runner,
+      # because the cache lives on Github's servers, not locally.
+      # https://github.com/github/docs/issues/2271#issuecomment-1069373652
+      # https://github.com/orgs/community/discussions/18549
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          # This path is specific to Ubuntu
+          path: ~/.cache/pip
+          # Look to see if there is a cache hit for the corresponding requirements file
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt', 'requirements_cpu.txt', 'requirements_extra.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+      - name: Cache precommit
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit
+          # Look to see if there is a cache hit for the corresponding file
+          # TODO: see https://pre-commit.com/#github-actions-example - is there a better way to do this
+          key: ${{ runner.os }}-precommit-${{matrix.python-version}}-${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Install dependencies
+        run: |
+          # Fortran compiler required for Glmnet
+          sudo apt-get update
+          sudo apt-get install gcc gfortran -y
+          python -m pip install --upgrade pip wheel
+          pip install -r requirements.txt
+          pip install -r requirements_cpu.txt
+          pip install -r requirements_extra.txt
+          pyir setup
+        # TODO: install cuda toolkit, despite cpu only?
+      - name: Print out pip freeze
+        run: pip freeze
+      - name: Lint
+        run: |
+            pre-commit install
+            pre-commit run --all-files --show-diff-on-failure
+        timeout-minutes: 10
+      - name: Run tests, excluding slow tests, in CPU mode
+        # make logs dir as specified in malid/config.py
+        # also configure a temporary directory cleaned up after every job
+        run: mkdir -p data/logs && pytest --basetemp=${{ runner.temp }} --cov=./ --cov-report xml -m "not slow"
+        # TODO: Cache transformers
+        # TODO: bring slow tests back now that we are using self-hosted runner.
+        # TODO: add another run with pytest --gpu if on a GPU self-hosted runner.
+        timeout-minutes: 40
+      - name: Upload coverage on success
+        uses: codecov/codecov-action@v3
+        if: ${{ success() }}
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # https://github.com/marketplace/actions/codecov
+          fail_ci_if_error: true
+          verbose: true

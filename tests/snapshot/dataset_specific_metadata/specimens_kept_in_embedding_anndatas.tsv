@@ -1,0 +1,523 @@
+participant_label	specimen_label	disease	disease_subtype	total_sequence_count
+BFI-0000234	M124-S014	Healthy/Background	Healthy/Background - HIV Negative	67633
+BFI-0000254	M111-S037	HIV	HIV Broad Neutralizing	74154
+BFI-0000255	M111-S033	HIV	HIV Broad Neutralizing	69548
+BFI-0000256	M111-S038	HIV	HIV Broad Neutralizing	100340
+BFI-0000258	M111-S055	HIV	HIV Non Neutralizing	106270
+BFI-0000258	M124-S070	HIV	HIV Non Neutralizing	37574
+BFI-0002850	M124-S042	Healthy/Background	Healthy/Background - HIV Negative	50516
+BFI-0002851	M124-S041	Healthy/Background	Healthy/Background - HIV Negative	61762
+BFI-0002852	M124-S012	Healthy/Background	Healthy/Background - HIV Negative	53499
+BFI-0002854	M111-S042	HIV	HIV Non Neutralizing	39514
+BFI-0002855	M111-S016	HIV	HIV Broad Neutralizing	65904
+BFI-0002856	M111-S043	HIV	HIV Non Neutralizing	72053
+BFI-0002857	M111-S018	HIV	HIV Broad Neutralizing	91538
+BFI-0002859	M111-S034	HIV	HIV Broad Neutralizing	47137
+BFI-0002861	M124-S037	Healthy/Background	Healthy/Background - HIV Negative	19009
+BFI-0002862	M124-S036	Healthy/Background	Healthy/Background - HIV Negative	52934
+BFI-0002863	M124-S035	Healthy/Background	Healthy/Background - HIV Negative	44052
+BFI-0002864	M111-S040	HIV	HIV Broad Neutralizing	105458
+BFI-0002865	M111-S041	HIV	HIV Broad Neutralizing	76737
+BFI-0002866	M124-S038	Healthy/Background	Healthy/Background - HIV Negative	35184
+BFI-0002867	M124-S039	Healthy/Background	Healthy/Background - HIV Negative	55656
+BFI-0002868	M124-S040	Healthy/Background	Healthy/Background - HIV Negative	49285
+BFI-0002870	M111-S035	HIV	HIV Broad Neutralizing	73769
+BFI-0002871	M111-S025	HIV	HIV Broad Neutralizing	74236
+BFI-0002875	M111-S011	HIV	HIV Broad Neutralizing	78447
+BFI-0002877	M111-S036	HIV	HIV Broad Neutralizing	71933
+BFI-0002879	M111-S039	HIV	HIV Broad Neutralizing	70623
+BFI-0003051	M64-002	Healthy/Background	Healthy/Background - CMV Negative	197943
+BFI-0003052	M64-003	Healthy/Background	Healthy/Background - CMV Negative	4079
+BFI-0003053	M64-004	Healthy/Background	Healthy/Background - CMV Positive	65001
+BFI-0003054	M64-005	Healthy/Background	Healthy/Background - CMV Positive	68501
+BFI-0003055	M64-006	Healthy/Background	Healthy/Background - CMV Positive	69565
+BFI-0003057	M64-008	Healthy/Background	Healthy/Background - CMV Negative	35187
+BFI-0003058	M64-009	Healthy/Background	Healthy/Background - CMV Negative	56356
+BFI-0003059	M64-010	Healthy/Background	Healthy/Background - CMV Positive	72550
+BFI-0003061	M64-012	Healthy/Background	Healthy/Background - CMV Negative	124372
+BFI-0003062	M64-013	Healthy/Background	Healthy/Background - CMV Positive	22054
+BFI-0003063	M64-014	Healthy/Background	Healthy/Background - CMV Positive	82653
+BFI-0003065	M64-016	Healthy/Background	Healthy/Background - CMV Negative	47482
+BFI-0003066	M64-017	Healthy/Background	Healthy/Background - CMV Negative	197030
+BFI-0003067	M64-018	Healthy/Background	Healthy/Background - CMV Negative	70748
+BFI-0003068	M64-019	Healthy/Background	Healthy/Background - CMV Negative	89655
+BFI-0003070	M64-021	Healthy/Background	Healthy/Background - CMV Negative	89891
+BFI-0003071	M64-022	Healthy/Background	Healthy/Background - CMV Negative	108413
+BFI-0003075	M64-026	Healthy/Background	Healthy/Background - CMV Positive	97879
+BFI-0003076	M64-027	Healthy/Background	Healthy/Background - CMV Positive	75451
+BFI-0003077	M64-028	Healthy/Background	Healthy/Background - CMV Negative	95154
+BFI-0003078	M64-029	Healthy/Background	Healthy/Background - CMV Negative	109991
+BFI-0003079	M64-030	Healthy/Background	Healthy/Background - CMV Negative	84070
+BFI-0003080	M64-031	Healthy/Background	Healthy/Background - CMV Negative	72876
+BFI-0003081	M64-032	Healthy/Background	Healthy/Background - CMV Positive	178005
+BFI-0003082	M64-033	Healthy/Background	Healthy/Background - CMV Positive	76162
+BFI-0003083	M64-034	Healthy/Background	Healthy/Background - CMV Negative	18832
+BFI-0003084	M64-035	Healthy/Background	Healthy/Background - CMV Positive	76387
+BFI-0003085	M64-036	Healthy/Background	Healthy/Background - CMV Positive	74525
+BFI-0003086	M64-037	Healthy/Background	Healthy/Background - CMV Negative	36913
+BFI-0003087	M64-038	Healthy/Background	Healthy/Background - CMV Negative	166745
+BFI-0003088	M64-039	Healthy/Background	Healthy/Background - CMV Negative	114805
+BFI-0003089	M64-040	Healthy/Background	Healthy/Background - CMV Negative	47641
+BFI-0003090	M64-041	Healthy/Background	Healthy/Background - CMV Negative	56942
+BFI-0003091	M64-042	Healthy/Background	Healthy/Background - CMV Negative	10652
+BFI-0003092	M64-043	Healthy/Background	Healthy/Background - CMV Negative	107497
+BFI-0003093	M64-044	Healthy/Background	Healthy/Background - CMV Positive	101813
+BFI-0003095	M64-046	Healthy/Background	Healthy/Background - CMV Negative	167278
+BFI-0003096	M64-047	Healthy/Background	Healthy/Background - CMV Negative	82876
+BFI-0003097	M64-048	Healthy/Background	Healthy/Background - CMV Negative	69568
+BFI-0003098	M64-049	Healthy/Background	Healthy/Background - CMV Negative	90528
+BFI-0003099	M64-050	Healthy/Background	Healthy/Background - CMV Positive	53459
+BFI-0003100	M64-051	Healthy/Background	Healthy/Background - CMV Negative	83370
+BFI-0003101	M64-052	Healthy/Background	Healthy/Background - CMV Positive	117893
+BFI-0003102	M64-053	Healthy/Background	Healthy/Background - CMV Positive	101234
+BFI-0003103	M64-054	Healthy/Background	Healthy/Background - CMV Positive	131329
+BFI-0003104	M64-055	Healthy/Background	Healthy/Background - CMV Negative	82443
+BFI-0003106	M64-057	Healthy/Background	Healthy/Background - CMV Positive	33475
+BFI-0003107	M64-058	Healthy/Background	Healthy/Background - CMV Positive	68324
+BFI-0003108	M64-059	Healthy/Background	Healthy/Background - CMV Negative	18844
+BFI-0003109	M64-060	Healthy/Background	Healthy/Background - CMV Positive	52767
+BFI-0003110	M64-061	Healthy/Background	Healthy/Background - CMV Positive	59297
+BFI-0003111	M64-062	Healthy/Background	Healthy/Background - CMV Positive	96338
+BFI-0003112	M64-063	Healthy/Background	Healthy/Background - CMV Positive	6234
+BFI-0003113	M64-064	Healthy/Background	Healthy/Background - CMV Negative	75180
+BFI-0003114	M64-065	Healthy/Background	Healthy/Background - CMV Negative	78641
+BFI-0003116	M64-067	Healthy/Background	Healthy/Background - CMV Negative	67401
+BFI-0003117	M64-068	Healthy/Background	Healthy/Background - CMV Positive	140322
+BFI-0003118	M64-069	Healthy/Background	Healthy/Background - CMV Negative	128922
+BFI-0003119	M64-070	Healthy/Background	Healthy/Background - CMV Negative	167100
+BFI-0003120	M64-071	Healthy/Background	Healthy/Background - CMV Positive	65492
+BFI-0003121	M64-072	Healthy/Background	Healthy/Background - CMV Negative	88721
+BFI-0003122	M64-073	Healthy/Background	Healthy/Background - CMV Negative	124309
+BFI-0003123	M64-074	Healthy/Background	Healthy/Background - CMV Negative	136226
+BFI-0003124	M64-075	Healthy/Background	Healthy/Background - CMV Positive	56988
+BFI-0003125	M64-076	Healthy/Background	Healthy/Background - CMV Positive	85560
+BFI-0003126	M64-077	Healthy/Background	Healthy/Background - CMV Positive	76897
+BFI-0003127	M64-078	Healthy/Background	Healthy/Background - CMV Negative	116513
+BFI-0003128	M64-079	Healthy/Background	Healthy/Background - CMV Negative	104264
+BFI-0003129	M64-080	Healthy/Background	Healthy/Background - CMV Positive	168241
+BFI-0003130	M64-081	Healthy/Background	Healthy/Background - CMV Negative	186276
+BFI-0003131	M64-082	Healthy/Background	Healthy/Background - CMV Negative	163599
+BFI-0003132	M64-083	Healthy/Background	Healthy/Background - CMV Positive	203605
+BFI-0003133	M64-084	Healthy/Background	Healthy/Background - CMV Negative	123913
+BFI-0003134	M64-085	Healthy/Background	Healthy/Background - CMV Positive	142368
+BFI-0003135	M64-086	Healthy/Background	Healthy/Background - CMV Positive	191536
+BFI-0003136	M64-087	Healthy/Background	Healthy/Background - CMV Positive	128064
+BFI-0003137	M64-088	Healthy/Background	Healthy/Background - CMV Positive	153863
+BFI-0003138	M64-089	Healthy/Background	Healthy/Background - CMV Negative	174397
+BFI-0003139	M64-090	Healthy/Background	Healthy/Background - CMV Negative	223782
+BFI-0003140	M64-091	Healthy/Background	Healthy/Background - CMV Positive	157452
+BFI-0003141	M64-092	Healthy/Background	Healthy/Background - CMV Negative	73432
+BFI-0003142	M64-093	Healthy/Background	Healthy/Background - CMV Negative	132072
+BFI-0003143	M64-094	Healthy/Background	Healthy/Background - CMV Negative	7962
+BFI-0003144	M64-095	Healthy/Background	Healthy/Background - CMV Unknown	21512
+BFI-0003145	M64-096	Healthy/Background	Healthy/Background - CMV Positive	40740
+BFI-0003146	M64-097	Healthy/Background	Healthy/Background - CMV Positive	162392
+BFI-0003147	M64-098	Healthy/Background	Healthy/Background - CMV Positive	134428
+BFI-0003148	M64-099	Healthy/Background	Healthy/Background - CMV Negative	151392
+BFI-0003149	M64-100	Healthy/Background	Healthy/Background - CMV Positive	112992
+BFI-0003150	M64-101	Healthy/Background	Healthy/Background - CMV Positive	97654
+BFI-0003152	M64-103	Healthy/Background	Healthy/Background - CMV Positive	252643
+BFI-0003153	M64-104	Healthy/Background	Healthy/Background - CMV Positive	75298
+BFI-0003154	M64-105	Healthy/Background	Healthy/Background - CMV Positive	272973
+BFI-0003155	M64-106	Healthy/Background	Healthy/Background - CMV Positive	88992
+BFI-0003156	M64-107	Healthy/Background	Healthy/Background - CMV Positive	117339
+BFI-0003157	M64-108	Healthy/Background	Healthy/Background - CMV Negative	149374
+BFI-0003158	M64-109	Healthy/Background	Healthy/Background - CMV Negative	113776
+BFI-0003159	M64-110	Healthy/Background	Healthy/Background - CMV Positive	113092
+BFI-0003160	M64-111	Healthy/Background	Healthy/Background - CMV Positive	46592
+BFI-0003161	M64-112	Healthy/Background	Healthy/Background - CMV Negative	62029
+BFI-0003162	M64-113	Healthy/Background	Healthy/Background - CMV Positive	219164
+BFI-0003163	M64-114	Healthy/Background	Healthy/Background - CMV Negative	222865
+BFI-0003450	M111-S022	HIV	HIV Broad Neutralizing	77712
+BFI-0003451	M111-S019	HIV	HIV Broad Neutralizing	73412
+BFI-0003452	M111-S013	HIV	HIV Broad Neutralizing	101172
+BFI-0003453	M111-S009	HIV	HIV Broad Neutralizing	137651
+BFI-0003454	M111-S030	HIV	HIV Broad Neutralizing	86625
+BFI-0003455	M111-S026	HIV	HIV Broad Neutralizing	53431
+BFI-0003456	M111-S032	HIV	HIV Broad Neutralizing	71043
+BFI-0003457	M111-S031	HIV	HIV Broad Neutralizing	53231
+BFI-0003458	M111-S020	HIV	HIV Broad Neutralizing	43908
+BFI-0003459	M111-S027	HIV	HIV Broad Neutralizing	57598
+BFI-0003460	M111-S004	HIV	HIV Broad Neutralizing	102690
+BFI-0003461	M111-S008	HIV	HIV Broad Neutralizing	76613
+BFI-0003462	M111-S001	HIV	HIV Broad Neutralizing	98018
+BFI-0003463	M111-S005	HIV	HIV Broad Neutralizing	92065
+BFI-0003465	M111-S024	HIV	HIV Broad Neutralizing	59106
+BFI-0003466	M111-S003	HIV	HIV Broad Neutralizing	122672
+BFI-0003467	M111-S053	HIV	HIV Broad Neutralizing	70846
+BFI-0003468	M111-S023	HIV	HIV Broad Neutralizing	76787
+BFI-0003469	M111-S007	HIV	HIV Broad Neutralizing	63626
+BFI-0003470	M111-S045	HIV	HIV Broad Neutralizing	62083
+BFI-0003471	M111-S044	HIV	HIV Broad Neutralizing	84555
+BFI-0003472	M111-S006	HIV	HIV Broad Neutralizing	76961
+BFI-0003473	M111-S021	HIV	HIV Non Neutralizing	98545
+BFI-0003474	M111-S046	HIV	HIV Non Neutralizing	94983
+BFI-0003475	M111-S054	HIV	HIV Non Neutralizing	85357
+BFI-0003476	M111-S047	HIV	HIV Non Neutralizing	85285
+BFI-0003477	M111-S050	HIV	HIV Non Neutralizing	97471
+BFI-0003478	M111-S017	HIV	HIV Non Neutralizing	57849
+BFI-0003479	M111-S015	HIV	HIV Non Neutralizing	100528
+BFI-0003480	M111-S010	HIV	HIV Non Neutralizing	91757
+BFI-0003481	M111-S002	HIV	HIV Non Neutralizing	129873
+BFI-0003482	M111-S048	HIV	HIV Non Neutralizing	66520
+BFI-0003483	M111-S012	HIV	HIV Non Neutralizing	71069
+BFI-0003484	M111-S028	HIV	HIV Non Neutralizing	42376
+BFI-0003485	M111-S051	HIV	HIV Non Neutralizing	70704
+BFI-0003486	M111-S052	HIV	HIV Non Neutralizing	98983
+BFI-0003487	M111-S049	HIV	HIV Non Neutralizing	85261
+BFI-0003488	M111-S029	HIV	HIV Non Neutralizing	121044
+BFI-0003700	M124-S001	Healthy/Background	Healthy/Background - HIV Negative	45096
+BFI-0003701	M124-S002	Healthy/Background	Healthy/Background - HIV Negative	26814
+BFI-0003702	M124-S003	Healthy/Background	Healthy/Background - HIV Negative	50484
+BFI-0003703	M124-S004	Healthy/Background	Healthy/Background - HIV Negative	48649
+BFI-0003704	M124-S005	Healthy/Background	Healthy/Background - HIV Negative	45201
+BFI-0003705	M124-S006	Healthy/Background	Healthy/Background - HIV Negative	55480
+BFI-0003706	M124-S007	Healthy/Background	Healthy/Background - HIV Negative	54707
+BFI-0003707	M124-S008	Healthy/Background	Healthy/Background - HIV Negative	48402
+BFI-0003708	M124-S009	Healthy/Background	Healthy/Background - HIV Negative	51747
+BFI-0003709	M124-S010	Healthy/Background	Healthy/Background - HIV Negative	69520
+BFI-0003710	M124-S011	Healthy/Background	Healthy/Background - HIV Negative	53472
+BFI-0003711	M124-S013	Healthy/Background	Healthy/Background - HIV Negative	80723
+BFI-0003712	M124-S015	Healthy/Background	Healthy/Background - HIV Negative	69495
+BFI-0003713	M124-S016	Healthy/Background	Healthy/Background - HIV Negative	79761
+BFI-0003714	M124-S017	Healthy/Background	Healthy/Background - HIV Negative	73769
+BFI-0003715	M124-S018	Healthy/Background	Healthy/Background - HIV Negative	68638
+BFI-0003716	M124-S019	Healthy/Background	Healthy/Background - HIV Negative	62157
+BFI-0003717	M124-S020	Healthy/Background	Healthy/Background - HIV Negative	74048
+BFI-0003718	M124-S021	Healthy/Background	Healthy/Background - HIV Negative	86520
+BFI-0003719	M124-S022	Healthy/Background	Healthy/Background - HIV Negative	67970
+BFI-0003720	M124-S023	Healthy/Background	Healthy/Background - HIV Negative	79312
+BFI-0003721	M124-S024	Healthy/Background	Healthy/Background - HIV Negative	79581
+BFI-0003722	M124-S025	Healthy/Background	Healthy/Background - HIV Negative	4514
+BFI-0003723	M124-S026	Healthy/Background	Healthy/Background - HIV Negative	45603
+BFI-0003724	M124-S027	Healthy/Background	Healthy/Background - HIV Negative	39400
+BFI-0003725	M124-S028	Healthy/Background	Healthy/Background - HIV Negative	42169
+BFI-0003726	M124-S029	Healthy/Background	Healthy/Background - HIV Negative	39829
+BFI-0003727	M124-S030	Healthy/Background	Healthy/Background - HIV Negative	50209
+BFI-0003728	M124-S031	Healthy/Background	Healthy/Background - HIV Negative	58490
+BFI-0003729	M124-S032	Healthy/Background	Healthy/Background - HIV Negative	38437
+BFI-0003730	M124-S033	Healthy/Background	Healthy/Background - HIV Negative	34542
+BFI-0003731	M124-S034	Healthy/Background	Healthy/Background - HIV Negative	37449
+BFI-0003732	M124-S043	Healthy/Background	Healthy/Background - HIV Negative	50683
+BFI-0003733	M124-S044	HIV	HIV Broad Neutralizing	18977
+BFI-0003734	M124-S045	HIV	HIV Non Neutralizing	31393
+BFI-0003735	M124-S046	HIV	HIV Broad Neutralizing	33584
+BFI-0003736	M124-S047	HIV	HIV Broad Neutralizing	33116
+BFI-0003737	M124-S048	HIV	HIV Non Neutralizing	42476
+BFI-0003738	M124-S049	HIV	HIV Broad Neutralizing	30550
+BFI-0003739	M124-S050	HIV	HIV Broad Neutralizing	37709
+BFI-0003740	M124-S051	HIV	HIV Broad Neutralizing	50024
+BFI-0003741	M124-S052	HIV	HIV Broad Neutralizing	49866
+BFI-0003742	M124-S053	HIV	HIV Broad Neutralizing	34503
+BFI-0003743	M124-S054	HIV	HIV Non Neutralizing	27278
+BFI-0003745	M124-S056	HIV	HIV Non Neutralizing	32338
+BFI-0003746	M124-S057	HIV	HIV Non Neutralizing	45362
+BFI-0003747	M124-S058	HIV	HIV Non Neutralizing	8391
+BFI-0003748	M124-S059	HIV	HIV Non Neutralizing	37078
+BFI-0003749	M124-S060	HIV	HIV Non Neutralizing	46738
+BFI-0003750	M124-S061	HIV	HIV Non Neutralizing	12922
+BFI-0003751	M124-S062	HIV	HIV Non Neutralizing	34541
+BFI-0003752	M124-S063	HIV	HIV Non Neutralizing	39517
+BFI-0003754	M124-S065	HIV	HIV Non Neutralizing	42013
+BFI-0003755	M124-S066	HIV	HIV Non Neutralizing	36554
+BFI-0003756	M124-S067	HIV	HIV Non Neutralizing	25764
+BFI-0003757	M124-S068	HIV	HIV Non Neutralizing	38210
+BFI-0003758	M124-S069	HIV	HIV Non Neutralizing	28189
+BFI-0003759	M124-S071	HIV	HIV Non Neutralizing	32888
+BFI-0003760	M124-S072	HIV	HIV Non Neutralizing	24752
+BFI-0003761	M124-S073	HIV	HIV Non Neutralizing	30328
+BFI-0003762	M124-S074	HIV	HIV Non Neutralizing	40415
+BFI-0003763	M124-S075	HIV	HIV Non Neutralizing	42688
+BFI-0003764	M124-S076	HIV	HIV Non Neutralizing	58515
+BFI-0003765	M124-S077	HIV	HIV Non Neutralizing	42966
+BFI-0003766	M124-S078	HIV	HIV Broad Neutralizing	40446
+BFI-0003767	M124-S079	HIV	HIV Non Neutralizing	50837
+BFI-0003768	M124-S080	HIV	HIV Broad Neutralizing	39425
+BFI-0003769	M124-S081	HIV	HIV Non Neutralizing	46364
+BFI-0003770	M124-S082	HIV	HIV Non Neutralizing	44260
+BFI-0003771	M124-S083	HIV	HIV Non Neutralizing	29073
+BFI-0003772	M124-S084	HIV	HIV Non Neutralizing	37891
+BFI-0003773	M124-S064	HIV	HIV Non Neutralizing	30062
+BFI-0003773	M124-S085	HIV	HIV Non Neutralizing	37180
+BFI-0003774	M124-S055	HIV	HIV Non Neutralizing	20468
+BFI-0003774	M124-S086	HIV	HIV Non Neutralizing	21031
+BFI-0003775	M124-S087	HIV	HIV Non Neutralizing	39384
+BFI-0005400	M281redo-S001	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	6748
+BFI-0005400	M281redo-S002	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	5283
+BFI-0005400	M281redo-S027	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	22438
+BFI-0005400	M281redo-S028	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	31416
+BFI-0005402	M281redo-S003	Lupus	SLE Multiple aAbs	14555
+BFI-0005403	M281redo-S004	Lupus	SLE Multiple aAbs	10394
+BFI-0005404	M281redo-S005	Lupus	SLE Multiple aAbs	10912
+BFI-0005405	M281redo-S006	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	14972
+BFI-0005405	M281redo-S009	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	12646
+BFI-0005405	M281redo-S036	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	21941
+BFI-0005406	M281redo-S007	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	15225
+BFI-0005406	M281redo-S008	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	17238
+BFI-0005406	M281redo-S034	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	10602
+BFI-0005409	M281redo-S010	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	12117
+BFI-0005409	M281redo-S030	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	22595
+BFI-0005409	M281redo-S031	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	33322
+BFI-0005410	M281redo-S011	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	7324
+BFI-0005411	M281redo-S012	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	5039
+BFI-0005412	M281redo-S013	Lupus	SLE Multiple aAbs	22756
+BFI-0005413	M281redo-S014	Lupus	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	21682
+BFI-0005414	M281redo-S016	Lupus	SLE Multiple aAbs	3155
+BFI-0005416	M281redo-S017	Lupus	SLE Multiple aAbs	10171
+BFI-0005416	M281redo-S018	Lupus	SLE Multiple aAbs	13974
+BFI-0005418	M281redo-S019	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	18085
+BFI-0005419	M281redo-S020	Lupus	SLE Multiple aAbs	11616
+BFI-0005420	M281redo-S021	Lupus	SLE One aAbs	12253
+BFI-0005421	M281redo-S022	Lupus	SLE One aAbs / SLE dsDNA WITHOUT Nephritis	10255
+BFI-0005422	M281redo-S023	Lupus	SLE One aAbs / SLE dsDNA WITH Nephritis	7294
+BFI-0005423	M281redo-S024	Lupus	SLE One aAbs	27900
+BFI-0005423	M281redo-S025	Lupus	SLE One aAbs	13217
+BFI-0005425	M281redo-S026	Lupus	SLE One aAbs	14850
+BFI-0005428	M281redo-S029	Lupus	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	28820
+BFI-0005434	M281redo-S035	Lupus	SLE One aAbs / SLE dsDNA WITHOUT Nephritis	14284
+BFI-0005436	M281redo-S037	Lupus	SLE One aAbs / SLE dsDNA WITHOUT Nephritis	15276
+BFI-0005437	M281redo-S038	Healthy/Background	Healthy/Background - SLE Negative	14632
+BFI-0005438	M281redo-S039	Healthy/Background	Healthy/Background - SLE Negative	15660
+BFI-0005439	M281redo-S040	Healthy/Background	Healthy/Background - SLE Negative	11994
+BFI-0005439	M281redo-S048	Healthy/Background	Healthy/Background - SLE Negative	11445
+BFI-0005440	M281redo-S041	Healthy/Background	Healthy/Background - SLE Negative	10036
+BFI-0005441	M281redo-S042	Healthy/Background	Healthy/Background - SLE Negative	17701
+BFI-0005442	M281redo-S044	Healthy/Background	Healthy/Background - SLE Negative	13082
+BFI-0005444	M281redo-S045	Healthy/Background	Healthy/Background - SLE Negative	15094
+BFI-0005445	M281redo-S046	Healthy/Background	Healthy/Background - SLE Negative	12079
+BFI-0005445	M281redo-S047	Healthy/Background	Healthy/Background - SLE Negative	18736
+BFI-0005448	M281redo-S053	Healthy/Background	Healthy/Background - SLE Negative	20150
+BFI-0005449	M281redo-S050	Healthy/Background	Healthy/Background - SLE Negative	12127
+BFI-0005450	M281redo-S051	Healthy/Background	Healthy/Background - SLE Negative	18533
+BFI-0005451	M281redo-S052	Healthy/Background	Healthy/Background - SLE Negative	13425
+BFI-0005453	M281redo-S054	Healthy/Background	Healthy/Background - SLE Negative	14407
+BFI-0005455	M281redo-S056	Healthy/Background	Healthy/Background - SLE Negative	11478
+BFI-0005455	M281redo-S057	Healthy/Background	Healthy/Background - SLE Negative	15990
+BFI-0005457	M281redo-S058	Healthy/Background	Healthy/Background - SLE Negative	22981
+BFI-0005458	M281redo-S059	Healthy/Background	Healthy/Background - SLE Negative	19302
+BFI-0005459	M281redo-S060	Healthy/Background	Healthy/Background - SLE Negative	10515
+BFI-0005460	M281redo-S061	Healthy/Background	Healthy/Background - SLE Negative	8062
+BFI-0005461	M281redo-S062	Healthy/Background	Healthy/Background - SLE Negative	9610
+BFI-0005462	M281redo-S063	Healthy/Background	Healthy/Background - SLE Negative	6970
+BFI-0005463	M281redo-S064	Healthy/Background	Healthy/Background - SLE Negative	6118
+BFI-0005464	M281redo-S065	Healthy/Background	Healthy/Background - SLE Negative	10606
+BFI-0005464	M281redo-S066	Healthy/Background	Healthy/Background - SLE Negative	11620
+BFI-0005467	M281redo-S068	Healthy/Background	Healthy/Background - SLE Negative	13078
+BFI-0007450	M369-S001	Covid19	Covid19 - Sero-positive (ICU)	153807
+BFI-0007450	M371-S003	Covid19	Covid19 - Sero-positive (ICU)	10977
+BFI-0007450	M371-S014	Covid19	Covid19 - Sero-positive (ICU)	15873
+BFI-0007453	M369-S004	Covid19	Covid19 - Sero-negative (ICU)	38823
+BFI-0007453	M369-S005	Covid19	Covid19 - Sero-negative (ICU)	248653
+BFI-0007453	M371-S004	Covid19	Covid19 - Sero-positive (ICU)	16889
+BFI-0007453	M371-S017	Covid19	Covid19 - Sero-positive (ICU)	32621
+BFI-0007455	M369-S007	Covid19	Covid19 - Sero-positive (ICU)	338488
+BFI-0007455	M371-S002	Covid19	Covid19 - Sero-positive (ICU)	14136
+BFI-0007455	M371-S031	Covid19	Covid19 - Sero-positive (ICU)	46082
+BFI-0007455	M371-S033	Covid19	Covid19 - Sero-positive (ICU)	11144
+BFI-0007480	M371-S001	Covid19	Covid19 - Sero-positive (ICU)	25396
+BFI-0007480	M371-S015	Covid19	Covid19 - Sero-positive (ICU)	47419
+BFI-0007481	M371-S005	Covid19	Covid19 - Sero-positive (ICU)	23515
+BFI-0007482	M371-S021	Covid19	Covid19 - Sero-negative (Admit)	19978
+BFI-0007482	M371-S022	Covid19	Covid19 - Sero-negative (Admit)	26105
+BFI-0007482	M371-S023	Covid19	Covid19 - Sero-positive (Admit)	30360
+BFI-0007483	M371-S008	Covid19	Covid19 - Sero-positive (Admit)	25092
+BFI-0007483	M371-S024	Covid19	Covid19 - Sero-positive (Admit)	65243
+BFI-0007484	M371-S009	Covid19	Covid19 - Sero-positive (ICU)	14899
+BFI-0007484	M371-S010	Covid19	Covid19 - Sero-positive (ICU)	30277
+BFI-0007484	M371-S025	Covid19	Covid19 - Sero-positive (ICU)	20050
+BFI-0007485	M371-S011	Covid19	Covid19 - Sero-positive (ICU)	29074
+BFI-0007485	M371-S027	Covid19	Covid19 - Sero-positive (ICU)	11864
+BFI-0007486	M371-S028	Covid19	Covid19 - Sero-positive (Admit)	22305
+BFI-0007486	M371-S029	Covid19	Covid19 - Sero-positive (Admit)	18340
+BFI-0007486	M371-S030	Covid19	Covid19 - Sero-positive (Admit)	31672
+BFI-0007780	M404-S001	Covid19	Covid19 - Acute 1	62050
+BFI-0007780	M404-S002	Covid19	Covid19 - Acute 2	57194
+BFI-0007780	M404-S003	Covid19	Covid19 - Convalescence	61724
+BFI-0007781	M404-S004	Covid19	Covid19 - Acute 1	56154
+BFI-0007781	M404-S005	Covid19	Covid19 - Acute 2	56246
+BFI-0007781	M404-S006	Covid19	Covid19 - Convalescence	65532
+BFI-0007782	M404-S007	Covid19	Covid19 - Acute 1	77049
+BFI-0007782	M404-S008	Covid19	Covid19 - Acute 2	69789
+BFI-0007782	M404-S009	Covid19	Covid19 - Convalescence	67776
+BFI-0007783	M404-S010	Covid19	Covid19 - Acute 1	49002
+BFI-0007783	M404-S011	Covid19	Covid19 - Acute 2	51472
+BFI-0007783	M404-S012	Covid19	Covid19 - Convalescence	43581
+BFI-0007784	M404-S013	Covid19	Covid19 - Acute 1	27691
+BFI-0007784	M404-S014	Covid19	Covid19 - Acute 2	41375
+BFI-0007784	M404-S015	Covid19	Covid19 - Convalescence	49658
+BFI-0009005	M418-S198	Covid19	Covid19 - ICU	21441
+BFI-0009012	M418-S205	Covid19	Covid19 - Admit	11861
+BFI-0009025	M418-S219	Covid19	Covid19 - Admit	7801
+BFI-0009034	M418-S228	Covid19	Covid19 - Admit	17601
+BFI-0009035	M418-S229	Covid19	Covid19 - Admit	17464
+BFI-0009036	M418-S230	Covid19	Covid19 - Admit	17985
+BFI-0009036	M418-S231	Covid19	Covid19 - Admit	17967
+BFI-0009036	M418-S232	Covid19	Covid19 - Admit	17593
+BFI-0009047	M418-S094	Covid19	Covid19 - ICU	20975
+BFI-0009048	M418-S095	Covid19	Covid19 - Admit	28910
+BFI-0009048	M418-S096	Covid19	Covid19 - Admit	32667
+BFI-0009051	M418-S101	Covid19	Covid19 - Admit	16636
+BFI-0009051	M418-S102	Covid19	Covid19 - Admit	6291
+BFI-0009052	M418-S105	Covid19	Covid19 - Admit	15780
+BFI-0009052	M418-S106	Covid19	Covid19 - Admit	25756
+BFI-0009056	M418-S110	Covid19	Covid19 - Admit	18744
+BFI-0009056	M418-S112	Covid19	Covid19 - Admit	32397
+BFI-0009057	M418-S113	Covid19	Covid19 - Admit	5922
+BFI-0009057	M418-S114	Covid19	Covid19 - Admit	19648
+BFI-0009059	M418-S118	Covid19	Covid19 - ICU	4446
+BFI-0009076	M418-S139	Covid19	Covid19 - Admit	29112
+BFI-0009080	M418-S144	Covid19	Covid19 - ICU	26492
+BFI-0009083	M418-S148	Covid19	Covid19 - Admit	25958
+BFI-0009083	M418-S149	Covid19	Covid19 - Admit	21201
+BFI-0009083	M418-S150	Covid19	Covid19 - Admit	26922
+BFI-0009093	M418-S162	Covid19	Covid19 - Admit	30385
+BFI-0009094	M418-S163	Covid19	Covid19 - Admit	30638
+BFI-0009098	M418-S169	Covid19	Covid19 - ICU	21730
+BFI-0009102	M418-S174	Covid19	Covid19 - Admit	17551
+BFI-0009108	M418-S180	Covid19	Covid19 - Admit	14706
+BFI-0009110	M418-S182	Covid19	Covid19 - Admit	8617
+BFI-0009112	M418-S184	Covid19	Covid19 - Admit	18293
+BFI-0009120	M418-S192	Covid19	Covid19 - Admit	33037
+BFI-0009121	M418-S193	Covid19	Covid19 - Admit	24003
+BFI-0009122	M418-S001	Covid19	Covid19 - ICU	24630
+BFI-0009127	M418-S007	Covid19	Covid19 - ICU	15912
+BFI-0009127	M418-S008	Covid19	Covid19 - ICU	26940
+BFI-0009128	M418-S009	Covid19	Covid19 - Admit	20551
+BFI-0009129	M418-S010	Covid19	Covid19 - Admit	19843
+BFI-0009131	M418-S012	Covid19	Covid19 - ICU	5635
+BFI-0009131	M418-S013	Covid19	Covid19 - ICU	35842
+BFI-0009132	M418-S014	Covid19	Covid19 - Admit	34872
+BFI-0009134	M418-S016	Covid19	Covid19 - Admit	36495
+BFI-0009139	M418-S021	Covid19	Covid19 - ICU	21474
+BFI-0009140	M418-S022	Covid19	Covid19 - Admit	32295
+BFI-0009140	M418-S023	Covid19	Covid19 - Admit	29765
+BFI-0009141	M418-S024	Covid19	Covid19 - Admit	23803
+BFI-0009142	M418-S025	Covid19	Covid19 - Admit	32945
+BFI-0009143	M418-S026	Covid19	Covid19 - ICU	25155
+BFI-0009144	M418-S027	Covid19	Covid19 - Admit	22565
+BFI-0009147	M418-S031	Covid19	Covid19 - Admit	23805
+BFI-0009148	M418-S032	Covid19	Covid19 - Admit	8510
+BFI-0009149	M418-S033	Covid19	Covid19 - Admit	25870
+BFI-0009151	M418-S035	Covid19	Covid19 - ICU	28675
+BFI-0009153	M418-S037	Covid19	Covid19 - Admit	24694
+BFI-0009154	M418-S038	Covid19	Covid19 - ICU	35097
+BFI-0009154	M418-S039	Covid19	Covid19 - ICU	31069
+BFI-0009158	M418-S043	Covid19	Covid19 - ICU	22147
+BFI-0009159	M418-S044	Covid19	Covid19 - Admit	30668
+BFI-0009161	M418-S046	Covid19	Covid19 - ICU	10912
+BFI-0009162	M418-S047	Covid19	Covid19 - Admit	31545
+BFI-0009164	M418-S049	Covid19	Covid19 - Admit	26791
+BFI-0009169	M418-S054	Covid19	Covid19 - ICU	23374
+BFI-0009800	M447-S031	Lupus	Pediatric SLE - no nephritis	102571
+BFI-0009801	M447-S032	Lupus	Pediatric SLE - nephritis	148377
+BFI-0009802	M447-S033	Lupus	Pediatric SLE - nephritis	105050
+BFI-0009803	M447-S034	Lupus	Pediatric SLE - nephritis	86888
+BFI-0009804	M447-S035	Lupus	Pediatric SLE - nephritis	112874
+BFI-0009805	M447-S036	Lupus	Pediatric SLE - nephritis	103550
+BFI-0009806	M447-S037	Lupus	Pediatric SLE - no nephritis	120269
+BFI-0009807	M447-S038	Lupus	Pediatric SLE - no nephritis	94306
+BFI-0009808	M447-S039	Lupus	Pediatric SLE - no nephritis	103852
+BFI-0009809	M447-S040	Lupus	Pediatric SLE - nephritis	93651
+BFI-0009810	M447-S041	Lupus	Pediatric SLE - nephritis	87368
+BFI-0009811	M447-S042	Lupus	Pediatric SLE - no nephritis	52618
+BFI-0009812	M447-S043	Lupus	Pediatric SLE - no nephritis	75075
+BFI-0009813	M447-S001	Lupus	Pediatric SLE - no nephritis	124205
+BFI-0009814	M447-S002	Lupus	Pediatric SLE - nephritis	136325
+BFI-0009815	M447-S003	Lupus	Pediatric SLE - no nephritis	75964
+BFI-0009816	M447-S004	Lupus	Pediatric SLE - no nephritis	87689
+BFI-0009817	M447-S005	Lupus	Pediatric SLE - nephritis	75329
+BFI-0009818	M447-S006	Lupus	Pediatric SLE - nephritis	141006
+BFI-0009819	M447-S007	Lupus	Pediatric SLE - nephritis	111925
+BFI-0009820	M447-S008	Lupus	Pediatric SLE - no nephritis	141894
+BFI-0009821	M447-S009	Lupus	Pediatric SLE - no nephritis	71925
+BFI-0009822	M447-S010	Lupus	Pediatric SLE - nephritis	105376
+BFI-0009823	M447-S011	Lupus	Pediatric SLE - no nephritis	95684
+BFI-0009824	M447-S012	Lupus	Pediatric SLE - nephritis	130326
+BFI-0009825	M447-S013	Lupus	Pediatric SLE - nephritis	125953
+BFI-0009826	M447-S014	Lupus	Pediatric SLE - no nephritis	139467
+BFI-0009827	M447-S015	Lupus	Pediatric SLE - nephritis	128302
+BFI-0009828	M447-S016	Lupus	Pediatric SLE - no nephritis	104918
+BFI-0009829	M447-S017	Lupus	Pediatric SLE - no nephritis	114903
+BFI-0009830	M447-S018	Lupus	Pediatric SLE - no nephritis	105235
+BFI-0009831	M447-S019	Lupus	Pediatric SLE - no nephritis	144942
+BFI-0009832	M447-S020	Lupus	Pediatric SLE - nephritis	123138
+BFI-0009833	M447-S021	Lupus	Pediatric SLE - nephritis	109369
+BFI-0009834	M447-S022	Lupus	Pediatric SLE - nephritis	110149
+BFI-0009835	M447-S023	Lupus	Pediatric SLE - no nephritis	131194
+BFI-0009836	M447-S024	Lupus	Pediatric SLE - no nephritis	101590
+BFI-0009837	M447-S025	Lupus	Pediatric SLE - nephritis	103798
+BFI-0009838	M447-S026	Lupus	Pediatric SLE - nephritis	85116
+BFI-0009839	M447-S027	Lupus	Pediatric SLE - nephritis	81829
+BFI-0009840	M447-S028	Lupus	Pediatric SLE - no nephritis	108591
+BFI-0009841	M447-S029	Lupus	Pediatric SLE - nephritis	89730
+BFI-0009842	M447-S030	Lupus	Pediatric SLE - nephritis	122686
+BFI-0010010	M454-S011	Lupus	SLE Patient	10903
+BFI-0010014	M454-S015	Lupus	SLE Patient	78281
+BFI-0010016	M454-S018	Lupus	SLE Patient	75054
+BFI-0010017	M454-S019	Lupus	SLE Patient	12874
+BFI-0010018	M454-S020	Lupus	SLE Patient	60734
+BFI-0010019	M454-S021	Lupus	SLE Patient	10522
+BFI-0010024	M454-S028	Healthy/Background	Unaffected Control	120087
+BFI-0010025	M454-S029	Healthy/Background	Unaffected Control	26715
+BFI-0010026	M454-S030	Healthy/Background	Unaffected Control	43747
+BFI-0010027	M454-S031	Lupus	SLE Patient	58500
+BFI-0010028	M454-S032	Healthy/Background	Unaffected Control	42237
+BFI-0010029	M454-S033	Lupus	SLE Patient	70003
+BFI-0010031	M454-S035	Lupus	SLE Patient	87690
+BFI-0010040	M454-S059	Lupus	SLE Patient	48815
+BFI-0010042	M454-S049	Lupus	SLE Patient	78553
+BFI-0010042	M454-S050	Lupus	SLE Patient	6706
+BFI-0010044	M454-S052	Lupus	SLE Patient	31693
+BFI-0010049	M454-S058	Lupus	SLE Patient	58565
+BFI-0010050	M454-S060	Lupus	SLE Patient	77637
+BFI-0010051	M454-S017	Lupus	SLE Patient	48482
+BFI-0010060	M456-S001	Lupus	SLE Patient	117339
+BFI-0010061	M456-S002	Lupus	SLE Patient	120515
+BFI-0010064	M456-S005	Healthy/Background	Unaffected Control	302686
+BFI-0010065	M456-S006	Lupus	SLE Patient	113857
+BFI-0010066	M456-S007	Healthy/Background	Unaffected Control	191298
+BFI-0010067	M456-S008	Lupus	SLE Patient	477688
+BFI-0010068	M456-S009	Lupus	SLE Patient	193602
+BFI-0010200	M464-S001	Healthy/Background	Healthy/Background (children)	138742
+BFI-0010201	M464-S002	Healthy/Background	Healthy/Background (children)	169351
+BFI-0010203	M464-S004	Healthy/Background	Healthy/Background (children)	147340
+BFI-0010204	M464-S005	Healthy/Background	Healthy/Background (children)	150954
+BFI-0010205	M464-S006	Healthy/Background	Healthy/Background (children)	175961
+BFI-0010206	M464-S007	Healthy/Background	Healthy/Background (children)	132260
+BFI-0010207	M464-S008	Healthy/Background	Healthy/Background (children)	135102
+BFI-0010208	M464-S009	Healthy/Background	Healthy/Background (children)	36980
+BFI-0010209	M464-S010	Healthy/Background	Healthy/Background (children)	153135
+BFI-0010210	M464-S011	Healthy/Background	Healthy/Background (children)	105723
+BFI-0010211	M464-S012	Healthy/Background	Healthy/Background (children)	55751
+BFI-0010212	M464-S013	Healthy/Background	Healthy/Background (children)	177407
+BFI-0010213	M464-S014	Healthy/Background	Healthy/Background (children)	123526
+BFI-0010214	M464-S015	Healthy/Background	Healthy/Background (children)	153650
+BFI-0010215	M464-S016	Healthy/Background	Healthy/Background (children)	165250
+BFI-0010216	M464-S017	Healthy/Background	Healthy/Background (children)	175153
+BFI-0010217	M464-S018	Healthy/Background	Healthy/Background (children)	137100
+BFI-0010218	M464-S019	Healthy/Background	Healthy/Background (children)	187061
+BFI-0010219	M464-S020	Healthy/Background	Healthy/Background (children)	78037
+BFI-0010220	M464-S021	Healthy/Background	Healthy/Background (children)	72751
+BFI-0010221	M464-S022	Healthy/Background	Healthy/Background (children)	138537
+BFI-0010222	M464-S023	Healthy/Background	Healthy/Background (children)	40642
+BFI-0010223	M464-S024	Healthy/Background	Healthy/Background (children)	160703
+BFI-0010224	M464-S025	Healthy/Background	Healthy/Background (children)	84821
+BFI-0010225	M464-S026	Healthy/Background	Healthy/Background (children)	88261
+BFI-0010226	M464-S027	Healthy/Background	Healthy/Background (children)	99032
+BFI-0010227	M464-S028	Healthy/Background	Healthy/Background (children)	116287
+BFI-0010228	M464-S029	Healthy/Background	Healthy/Background (children)	103519
+BFI-0010229	M464-S030	Healthy/Background	Healthy/Background (children)	114462
+BFI-0010230	M464-S031	Healthy/Background	Healthy/Background (children)	106251
+BFI-0010231	M464-S032	Healthy/Background	Healthy/Background (children)	120068
+BFI-0010232	M464-S033	Healthy/Background	Healthy/Background (children)	19174
+BFI-0010233	M464-S034	Healthy/Background	Healthy/Background (children)	77998
+BFI-0010234	M464-S035	Healthy/Background	Healthy/Background (children)	133577
+BFI-0010235	M464-S036	Healthy/Background	Healthy/Background (children)	129475
+BFI-0010236	M464-S037	Healthy/Background	Healthy/Background (children)	173932
+BFI-0010238	M464-S039	Healthy/Background	Healthy/Background (children)	132464
+BFI-0010239	M464-S040	Healthy/Background	Healthy/Background (children)	106259
+BFI-0010240	M464-S041	Healthy/Background	Healthy/Background (children)	16518
+BFI-0010241	M464-S042	Healthy/Background	Healthy/Background (children)	92181
+BFI-0010243	M464-S044	Healthy/Background	Healthy/Background (children)	132934
+BFI-0010244	M464-S045	Healthy/Background	Healthy/Background (children)	62354
+BFI-0010245	M464-S046	Healthy/Background	Healthy/Background (children)	48979
