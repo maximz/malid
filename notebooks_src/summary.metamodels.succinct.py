@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # %%
 
 # %%
@@ -8,6 +7,7 @@ from malid.train import train_metamodel
 from malid.datamodels import (
     GeneLocus,
     TargetObsColumnEnum,
+    map_cross_validation_split_strategy_to_default_target_obs_column,
 )
 import pandas as pd
 from IPython.display import display, Markdown
@@ -20,17 +20,17 @@ base_model_train_fold_name = "train_smaller"
 metamodel_fold_label_train = "validation"
 
 # %%
-models_of_interest = [
-    "rf_multiclass",
-    "xgboost",
-    "lasso_multiclass",
-    "lasso_cv",
-    "ridge_cv",
-    "elasticnet_cv",
-    "linearsvm_ovr",
-]
+models_of_interest = config.model_names_to_train
 models_of_interest
 
+# %%
+# We only support split strategies with default target obs column == TargetObsColumnEnum.disease
+assert (
+    map_cross_validation_split_strategy_to_default_target_obs_column[
+        config.cross_validation_split_strategy
+    ]
+    == TargetObsColumnEnum.disease
+)
 
 # %%
 def choose(gene_locus: GeneLocus, classification_targets: List[TargetObsColumnEnum]):
@@ -41,6 +41,7 @@ def choose(gene_locus: GeneLocus, classification_targets: List[TargetObsColumnEn
                 target_obs_column=target_obs_column,
                 fold_id=config.all_fold_ids[0],
                 base_model_train_fold_name=base_model_train_fold_name,
+                use_stubs_instead_of_submodels=True,
             )
         except Exception as err:
             logger.warning(

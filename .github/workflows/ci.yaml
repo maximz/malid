@@ -9,14 +9,19 @@ on: [push, pull_request]
 jobs:
   tests:
     # Internal: run on self-hosted runner as opposed to ubuntu-latest
+    # runs-on: self-hosted
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     strategy:
       # don't abort all other jobs
       fail-fast: false
       matrix:
         python-version: [3.9.12]
     steps:
+      - name: Echo Docker Host Hostname
+        # We launched the self-hosted runner with the --hostname flag set to the hostname of the host machine:
+        # docker run --hostname $(hostname) ...
+        run: echo "Docker host hostname is $(hostname)"
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -30,6 +35,8 @@ jobs:
       # because the cache lives on Github's servers, not locally.
       # https://github.com/github/docs/issues/2271#issuecomment-1069373652
       # https://github.com/orgs/community/discussions/18549
+      #
+      # Uncomment this when using a Github-hosted runner:
       - name: Cache pip
         uses: actions/cache@v3
         with:
@@ -73,9 +80,12 @@ jobs:
         # TODO: Cache transformers
         # TODO: bring slow tests back now that we are using self-hosted runner.
         # TODO: add another run with pytest --gpu if on a GPU self-hosted runner.
-        timeout-minutes: 40
+        timeout-minutes: 90
       - name: Upload coverage on success
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v3.1.4
+        # Note: v3.1.5 changed to Node 20: https://github.com/codecov/codecov-action/issues/1230 and https://github.com/codecov/codecov-action/pull/1228
+        # Our self-hosted runner does not seem to support Node 20: "/lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.28' not found (required by /actions-runner/externals/node20/bin/node)"
+        # TODO: Fix Node 20 install on our self-hosted runner. For now we are pinning v3.1.4
         if: ${{ success() }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # https://github.com/marketplace/actions/codecov

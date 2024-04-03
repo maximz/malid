@@ -8,6 +8,13 @@ from malid import helpers
 
 logger = logging.getLogger(__name__)
 
+REQUIRED_CLONE_COUNTS_BY_ISOTYPE = {
+    "IGHG": 100,
+    "IGHA": 100,
+    "IGHD-M": 500,
+    "TCRB": 500,
+}
+
 
 def sample_sequences(
     df: pd.DataFrame, required_gene_loci: Union[GeneLocus, Dict[str, GeneLocus]]
@@ -63,19 +70,23 @@ def sample_sequences(
     if (
         (
             GeneLocus.BCR in required_gene_loci
-            and clone_count_by_isotype.loc["IGHG"] < 100
+            and clone_count_by_isotype.loc["IGHG"]
+            < REQUIRED_CLONE_COUNTS_BY_ISOTYPE["IGHG"]
         )
         or (
             GeneLocus.BCR in required_gene_loci
-            and clone_count_by_isotype.loc["IGHA"] < 100
+            and clone_count_by_isotype.loc["IGHA"]
+            < REQUIRED_CLONE_COUNTS_BY_ISOTYPE["IGHA"]
         )
         or (
             GeneLocus.BCR in required_gene_loci
-            and clone_count_by_isotype.loc["IGHD-M"] < 500
+            and clone_count_by_isotype.loc["IGHD-M"]
+            < REQUIRED_CLONE_COUNTS_BY_ISOTYPE["IGHD-M"]
         )
         or (
             GeneLocus.TCR in required_gene_loci
-            and clone_count_by_isotype.loc["TCRB"] < 500
+            and clone_count_by_isotype.loc["TCRB"]
+            < REQUIRED_CLONE_COUNTS_BY_ISOTYPE["TCRB"]
         )
     ):
         # return blank
@@ -97,8 +108,22 @@ def sample_sequences(
         )
         return pd.DataFrame()  # or: return df.head(0)
 
-    # sample one sequence per clone per isotype-supergroup
-    grouping_keys = ["igh_or_tcrb_clone_id", "specimen_label", "isotype_supergroup"]
+    # Sample one sequence per clone, per isotype-supergroup, per amplification, of a specimen
+    # Clarification on the amplification_label, which can subdivide a specimen:
+    # We may have a specimen processed multiple times from the same biological sample. This can allow evaluation of batch effects, for example. So we will sample from all copies of this specimen separately.
+    # For example, our healthy controls in M64 were processed twice for cDNA, with two amplifications: M66-M64-cDNA amd M477-M64-cDNA.
+
+    # However, there's also the concept of the replicate_label. This is for splitting a sample into IgM, IgG, IgA, etc., for example. Different replicate labels from the same amplification get combined/merged, effectively.
+
+    # Clone IDs were created *across* all sequences for a single person (i.e. all specimens from this participant), so we don't need to change them when consolidating specimen fractions.
+
+    # So to summarize, each amplification_label within a specimen_label is preserved in the sampling, but all replicate_labels from each amplification_label are merged together.
+    grouping_keys = [
+        "specimen_label",
+        "amplification_label",
+        "igh_or_tcrb_clone_id",
+        "isotype_supergroup",
+    ]
     # to be safe before using idxmax, we first need to make sure index is entirely unique:
     df = df.reset_index(drop=True)
     grpby = df.groupby(grouping_keys, observed=True, sort=False)

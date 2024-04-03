@@ -1,12 +1,14 @@
 # %% [markdown]
-# # Filter to peak timepoints + Make cv divisions.
+# # Filter to selected samples (e.g. peak timepoints) and make cross validation divisions, based on active CrossValidationSplitStrategy
 #
-# Already removed specimens with very few sequences or without all isotypes. Already sampled one sequence per clone per isotype per specimen.
+# We've already removed specimens with very few sequences or without all isotypes. And we've already sampled one sequence per clone per isotype per specimen.
+#
+# If you're editing `config.py`'s active CrossValidationSplitStrategy, make sure to run `python scripts/make_dirs.py`.
 
 # %%
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold, train_test_split
 from malid import config, helpers, logger
 
 # %%
@@ -19,11 +21,11 @@ import dask.dataframe as dd
 from dask.distributed import Client
 
 # multi-processing backend
-# access dashbaord at http://127.0.0.1:61083
+# if already opened from another notebook, see https://stackoverflow.com/questions/60115736/dask-how-to-connect-to-running-cluster-scheduler-and-access-total-occupancy
 client = Client(
-    scheduler_port=61084,
-    dashboard_address=":61083",
-    n_workers=4,
+    scheduler_port=config.dask_scheduler_port,
+    dashboard_address=config.dask_dashboard_address,
+    n_workers=config.dask_n_workers,
     processes=True,
     threads_per_worker=8,
     memory_limit="125GB",  # per worker
@@ -45,11 +47,16 @@ df.columns
 
 # %%
 
+# %% [markdown]
+# # Get all specimens available from ETL - meaning the ones that passed `sample_sequences` filters
+
+# %%
+
 # %%
 # groupby participant, specimen, disease - get total sequence count
 specimens = (
     df.groupby(
-        ["participant_label", "specimen_label", "disease", "disease_subtype"],
+        ["participant_label", "specimen_label", "disease"],
         observed=True,
     )
     .size()
@@ -71,30 +78,37 @@ assert specimens.shape[0] == df.npartitions
 assert not specimens["specimen_label"].duplicated().any()
 
 # %%
-# export list of specimens included in this full anndata
-# not all specimens survived to this step - some are thrown out in the run_embedding notebooks for not having enough sequences or not having all isotypes
-# but these aren't yet filtered to is_peak timepoints
+# Export list of specimens remaining after QC filtering in sample_sequences.ipynb.
+# Not all specimens survived to this step - some are thrown out for not having enough sequences or not having all isotypes.
+# However, these aren't yet filtered to is_selected_for_cv_strategy specimens that are particular to the selected cross validation strategy.
 specimens.to_csv(
-    config.paths.dataset_specific_metadata / "specimens_kept_in_embedding_anndatas.tsv",
+    config.paths.dataset_specific_metadata
+    / "specimens_that_survived_qc_filters_in_sample_sequences_notebook.tsv",
     sep="\t",
     index=None,
 )
 
 # %%
+# TODO: Split the notebooks here. All the above should be run once after sample_sequences.ipynb. All the below gets run separately for each cross validation split strategy.
+
+# %% [markdown]
+# # Apply `is_selected_for_cv_strategy` filter using currently active `config.cross_validation_split_strategy`
+
+# %%
+config.cross_validation_split_strategy
 
 # %%
 
 # %%
-# filter to is_peak timepoints, in addition to the is_valid / survived_filters filter already here
+# filter to is_selected_for_cv_strategy specimens, in addition to the is_valid / survived_filters filter already here
 specimen_metadata = helpers.get_all_specimen_info(
     # CV fold is not available yet, so must set this to False
     add_cv_fold_information=False
 ).sort_values("disease")
-specimen_metadata = specimen_metadata[specimen_metadata["cohort"] == "Boydlab"]
 specimen_metadata = specimen_metadata[specimen_metadata["in_training_set"]]
 
 # sanity check the definitions
-assert specimen_metadata["is_peak"].all()
+assert specimen_metadata["is_selected_for_cv_strategy"].all()
 assert specimen_metadata["survived_filters"].all()
 
 specimen_metadata
@@ -104,7 +118,7 @@ specimen_metadata
 specimens_merged = pd.merge(
     specimens,
     specimen_metadata,
-    on=["participant_label", "specimen_label", "disease", "disease_subtype"],
+    on=["participant_label", "specimen_label", "disease"],
     how="inner",
     validate="1:1",
 )
@@ -112,11 +126,16 @@ assert specimens_merged.shape[0] == specimen_metadata.shape[0] <= specimens.shap
 specimens_merged
 
 # %%
-specimens_merged = specimens_merged.assign(cohort="Boydlab")
+specimens_merged["data_source"].value_counts()
 
 # %%
 
 # %%
+(
+    specimens_merged.drop_duplicates(["participant_label", "disease"])["disease"]
+    .value_counts()
+    .rename("number of participants")
+)
 
 # %%
 tmp = (
@@ -128,7 +147,8 @@ tmp = (
 )
 
 tmp.to_csv(
-    f"{config.paths.base_output_dir}/all_data_combined.participants_by_disease_subtype.tsv",
+    config.paths.base_output_dir_for_selected_cross_validation_strategy
+    / "all_data_combined.participants_by_disease_subtype.tsv",
     sep="\t",
 )
 
@@ -136,7 +156,7 @@ tmp
 
 # %%
 tmp = (
-    specimens_merged.groupby(["disease", "cohort"], observed=True)[
+    specimens_merged.groupby(["disease", "data_source"], observed=True)[
         "total_sequence_count"
     ]
     .sum()
@@ -144,12 +164,13 @@ tmp = (
 )
 
 tmp.to_csv(
-    f"{config.paths.base_output_dir}/all_data_combined.sequences_by_disease_and_cohort.tsv",
+    config.paths.base_output_dir_for_selected_cross_validation_strategy
+    / "all_data_combined.sequences_by_disease_and_cohort.tsv",
     sep="\t",
     index=None,
 )
 
-tmp
+tmp.sort_values("number of sequences")
 
 # %%
 
@@ -158,10 +179,19 @@ tmp
 #
 # **Strategy:**
 #
+# ```
+# Full data →  [Test | Rest] x 3, producing 3 folds
+#
+# In each fold:
+# Rest →  [ Train | Validation]
+# Train → [Train1 | Train2]
+# ```
+#
 # - Split on patients.
-# - Split into (train+validation) / test first with a 2:1 ratio (because 3 folds total). Every patient is in 1 test fold. Then split (train+validation) into train (4/5) and validation (1/5).
-# - Also create a "global fold" that has no test set, but has the same 4:1 train/validation ratio.
-# - Stratified by disease label
+# - Split into (train+validation) / test first with a 2:1 ratio (because 3 folds total). Every patient is in 1 test fold. Then split (train+validation) into train (2/3) and validation (1/3).
+# - Also create a "global fold" that has no test set, but has the same 2:1 train/validation ratio.
+# - Each train set is further subdivided into Train1 and Train2 (used for training model 3 rollup step)
+# - All splits are stratified by disease label
 #
 # **How to handle varying gene loci:**
 #
@@ -199,7 +229,7 @@ tmp
 # BCR only     2 train/1 test      2 train/1 test      2 train/1 test
 # ```
 #
-#
+# **Note: we need to respect `study_names_for_held_out_set` on the CrossValidationSplitStrategy**. If set, that reduces us to a single fold with a pre-determined test set. (We still need to make a random train/validation split that keeps each patient's data segregated to one or the other)
 
 # %%
 
@@ -209,19 +239,21 @@ unique_participants_all = (
         [
             "participant_label",
             "disease",
-            "cohort",
+            "data_source",
             "past_exposure",
             "disease.separate_past_exposures",
             "available_gene_loci",
+            "study_name",
         ]
     ]
-    .drop_duplicates()
+    .drop_duplicates(subset=["participant_label"])
     .reset_index(drop=True)
 )
 unique_participants_all
 
 
 # %%
+
 
 # %%
 def make_splits(participants, n_splits):
@@ -240,6 +272,17 @@ def make_splits(participants, n_splits):
 
 
 # %%
+def make_splits_single(participants: pd.DataFrame, test_proportion: float):
+    # Single separation. Returns train and test integer indices into the participants dataframe.
+    return train_test_split(
+        np.arange(participants.shape[0]),
+        test_size=test_proportion,
+        random_state=0,
+        shuffle=True,
+        # preserve imbalanced class distribution in each fold
+        stratify=participants["disease"],
+    )
+
 
 # %%
 
@@ -254,7 +297,18 @@ for gene_locus, unique_participants in unique_participants_all.groupby(
         f"{gene_locus}: total number of unique participants {unique_participants.shape[0]}"
     )
 
-    trainbig_test_splits = make_splits(unique_participants, n_splits=config.n_folds)
+    if not config.cross_validation_split_strategy.value.is_single_fold_only:
+        # Default case
+        trainbig_test_splits = make_splits(unique_participants, n_splits=config.n_folds)
+    else:
+        # Special case: single fold with a pre-determined held-out test set (see study_names_for_held_out_set docs).
+        held_out_bool_array = unique_participants["study_name"].isin(
+            config.cross_validation_split_strategy.value.study_names_for_held_out_set
+        )
+        trainbig_test_splits = [
+            (0, (np.where(~held_out_bool_array)[0], np.where(held_out_bool_array)[0]))
+        ]
+
     assert len(trainbig_test_splits) == config.n_folds
 
     for (
@@ -271,18 +325,17 @@ for gene_locus, unique_participants in unique_participants_all.groupby(
         # confirm each patient is entirely on one or the other side of the train-big vs test divide
         assert (
             len(
-                set(trainbig_participants["participant_label"].unique()).intersection(
-                    set(test_participants["participant_label"].unique())
+                set(trainbig_participants["participant_label"]).intersection(
+                    set(test_participants["participant_label"])
                 )
             )
             == 0
         )
 
         # split trainbig into trainsmaller + validation
-        mini_folds = make_splits(trainbig_participants, n_splits=3)
-        # unpack first of the splits
-        _, (train_smaller_index, validation_index) = mini_folds[0]
-
+        train_smaller_index, validation_index = make_splits_single(
+            trainbig_participants, test_proportion=1 / 3
+        )
         train_smaller_participants = trainbig_participants.iloc[
             train_smaller_index
         ].reset_index(drop=True)
@@ -293,10 +346,28 @@ for gene_locus, unique_participants in unique_participants_all.groupby(
         # confirm each patient is entirely on one or the other side of the train-smaller vs validation divide
         assert (
             len(
-                set(
-                    train_smaller_participants["participant_label"].unique()
-                ).intersection(
-                    set(validation_participants["participant_label"].unique())
+                set(train_smaller_participants["participant_label"]).intersection(
+                    set(validation_participants["participant_label"])
+                )
+            )
+            == 0
+        )
+
+        # split train-smaller into train-smaller1 and train-smaller2
+        train_smaller1_indices, train_smaller2_indices = make_splits_single(
+            train_smaller_participants, test_proportion=1 / 3
+        )
+        train_smaller1_participants = train_smaller_participants.iloc[
+            train_smaller1_indices
+        ]
+        train_smaller2_participants = train_smaller_participants.iloc[
+            train_smaller2_indices
+        ]
+        # confirm each patient is entirely on one or the other side of the train-smaller1 vs train-smaller2 divide
+        assert (
+            len(
+                set(train_smaller1_participants["participant_label"]).intersection(
+                    set(train_smaller2_participants["participant_label"])
                 )
             )
             == 0
@@ -304,8 +375,14 @@ for gene_locus, unique_participants in unique_participants_all.groupby(
 
         # get list of participant labels
         for participants, fold_label in zip(
-            [train_smaller_participants, validation_participants, test_participants],
-            ["train_smaller", "validation", "test"],
+            [
+                train_smaller_participants,
+                train_smaller1_participants,
+                train_smaller2_participants,
+                validation_participants,
+                test_participants,
+            ],
+            ["train_smaller", "train_smaller1", "train_smaller2", "validation", "test"],
         ):
             fold_participants.append(
                 pd.DataFrame(
@@ -314,38 +391,63 @@ for gene_locus, unique_participants in unique_participants_all.groupby(
             )
 
     # also create global fold
-    # split entire set into train_smaller + validation, aiming for same % split of those as we did when carving up train_big
-    mini_folds = make_splits(unique_participants, n_splits=3)
-    # unpack first of the splits
-    _, (train_smaller_index, validation_index) = mini_folds[0]
+    if config.use_global_fold:
+        # split entire set into train_smaller + validation, aiming for same % split of those as we did when carving up train_big
+        train_smaller_index, validation_index = make_splits_single(
+            unique_participants, test_proportion=1 / 3
+        )
+        train_smaller_participants = unique_participants.iloc[
+            train_smaller_index
+        ].reset_index(drop=True)
+        validation_participants = unique_participants.iloc[
+            validation_index
+        ].reset_index(drop=True)
 
-    train_smaller_participants = unique_participants.iloc[
-        train_smaller_index
-    ].reset_index(drop=True)
-    validation_participants = unique_participants.iloc[validation_index].reset_index(
-        drop=True
-    )
-
-    # confirm each patient is entirely on one or the other side of the train-smaller vs validation divide
-    assert (
-        len(
-            set(train_smaller_participants["participant_label"].unique()).intersection(
-                set(validation_participants["participant_label"].unique())
+        # confirm each patient is entirely on one or the other side of the train-smaller vs validation divide
+        assert (
+            len(
+                set(train_smaller_participants["participant_label"]).intersection(
+                    set(validation_participants["participant_label"])
+                )
             )
+            == 0
         )
-        == 0
-    )
 
-    # get list of participant labels
-    for participants, fold_label in zip(
-        [train_smaller_participants, validation_participants],
-        ["train_smaller", "validation"],
-    ):
-        fold_participants.append(
-            pd.DataFrame(
-                {"participant_label": participants["participant_label"].unique()}
-            ).assign(fold_id=-1, fold_label=fold_label)
+        # split train-smaller into train-smaller1 and train-smaller2
+        train_smaller1_indices, train_smaller2_indices = make_splits_single(
+            train_smaller_participants, test_proportion=1 / 3
         )
+        train_smaller1_participants = train_smaller_participants.iloc[
+            train_smaller1_indices
+        ]
+        train_smaller2_participants = train_smaller_participants.iloc[
+            train_smaller2_indices
+        ]
+        # confirm each patient is entirely on one or the other side of the train-smaller1 vs train-smaller2 divide
+        assert (
+            len(
+                set(train_smaller1_participants["participant_label"]).intersection(
+                    set(train_smaller2_participants["participant_label"])
+                )
+            )
+            == 0
+        )
+
+        # get list of participant labels
+        for participants, fold_label in zip(
+            [
+                train_smaller_participants,
+                train_smaller1_participants,
+                train_smaller2_participants,
+                validation_participants,
+            ],
+            ["train_smaller", "train_smaller1", "train_smaller2", "validation"],
+        ):
+            fold_participants.append(
+                pd.DataFrame(
+                    {"participant_label": participants["participant_label"].unique()}
+                ).assign(fold_id=-1, fold_label=fold_label)
+            )
 
 
 fold_participants = pd.concat(fold_participants, axis=0)
@@ -354,18 +456,32 @@ fold_participants
 # %%
 # sanity checks:
 
-# each participant is in each fold, in one group or another
-assert all(fold_participants.groupby("participant_label").size() == config.n_folds + 1)
-
-# within the cross validation scheme, each participant is in two non-test sets
+# each participant is in each fold (either in train_smaller, validation, or test - ignore the further subdivisions of train_smaller)
 assert all(
     fold_participants[
-        (fold_participants["fold_id"] != -1)
-        & (fold_participants["fold_label"] != "test")
+        ~(fold_participants["fold_label"].isin(["train_smaller1", "train_smaller2"]))
     ]
     .groupby("participant_label")
     .size()
-    == config.n_folds - 1
+    == config.n_folds_including_global_fold
+)
+
+# within the cross validation scheme, each participant is in two non-test sets
+# (i.e. shows up either in train_smaller or validation twice).
+# ignore the further subdivisions of train_smaller for this check.
+assert all(
+    fold_participants[
+        (fold_participants["fold_id"] != -1)
+        & ~(
+            fold_participants["fold_label"].isin(
+                ["test", "train_smaller1", "train_smaller2"]
+            )
+        )
+    ]
+    .groupby("participant_label")
+    .size()
+    # special case for single fold due to study_names_for_held_out_set restriction
+    == (config.n_folds - 1 if config.n_folds > 1 else 1)
 )
 
 # within the cross validation scheme, each participant is in one test set
@@ -396,23 +512,44 @@ specimens_by_fold = pd.merge(
 specimens_by_fold
 
 # %%
-assert specimens_by_fold.shape[0] == specimens_merged.shape[0] * (config.n_folds + 1)
+# sanity check:
+# one entry per specimen per fold (either in train_smaller, validation, or test - ignore the further subdivisions of train_smaller)
+assert (
+    specimens_by_fold[
+        ~(specimens_by_fold["fold_label"].isin(["train_smaller1", "train_smaller2"]))
+    ].shape[0]
+    == specimens_merged.shape[0] * config.n_folds_including_global_fold
+)
 
 # %%
 # sanity checks:
 
-# each specimen is in each fold, in one group or another
-assert all(specimens_by_fold.groupby("specimen_label").size() == config.n_folds + 1)
-
-# within the cross validation scheme, each specimen is in two non-test sets
+# each specimen is in each fold, either in train_smaller, validation, or test (ignore the further subdivisions of train_smaller)
 assert all(
     specimens_by_fold[
-        (specimens_by_fold["fold_id"] != -1)
-        & (specimens_by_fold["fold_label"] != "test")
+        ~(specimens_by_fold["fold_label"].isin(["train_smaller1", "train_smaller2"]))
     ]
     .groupby("specimen_label")
     .size()
-    == config.n_folds - 1
+    == config.n_folds_including_global_fold
+)
+
+# within the cross validation scheme, each specimen is in two non-test sets
+# (i.e. shows up either in train_smaller or validation twice).
+# ignore the further subdivisions of train_smaller for this check.
+assert all(
+    specimens_by_fold[
+        (specimens_by_fold["fold_id"] != -1)
+        & ~(
+            specimens_by_fold["fold_label"].isin(
+                ["test", "train_smaller1", "train_smaller2"]
+            )
+        )
+    ]
+    .groupby("specimen_label")
+    .size()
+    # special case for single fold due to study_names_for_held_out_set restriction
+    == (config.n_folds - 1 if config.n_folds > 1 else 1)
 )
 
 # within the cross validation scheme, each specimen is in one test set
@@ -432,7 +569,7 @@ assert all(
 # each participant is in each fold, in one group or another
 assert all(
     specimens_by_fold.groupby("participant_label")["fold_id"].nunique()
-    == config.n_folds + 1
+    == config.n_folds_including_global_fold
 )
 
 # within the cross validation scheme, each participant is in two non-test sets
@@ -443,7 +580,8 @@ assert all(
     ]
     .groupby("participant_label")["fold_id"]
     .nunique()
-    == config.n_folds - 1
+    # special case for single fold due to study_names_for_held_out_set restriction
+    == (config.n_folds - 1 if config.n_folds > 1 else 1)
 )
 
 # within the cross validation scheme, each participant is in one test set
@@ -488,7 +626,7 @@ for (fold_id, fold_label), _grp in specimens_by_fold.groupby(
     ["fold_id", "fold_label"], observed=True
 ):
     for gene_locus, grp in _grp.groupby(
-        ["available_gene_loci"], observed=True, sort=False
+        "available_gene_loci", observed=True, sort=False
     ):
         print(f"Fold {fold_id}-{fold_label}-{gene_locus}:")
 
@@ -511,7 +649,7 @@ for (fold_id, fold_label), _grp in specimens_by_fold.groupby(
 
 # %%
 fold_participants.to_csv(
-    config.paths.dataset_specific_metadata
+    config.paths.dataset_specific_metadata_for_selected_cross_validation_strategy
     / "cross_validation_divisions.participants.tsv",
     sep="\t",
     index=None,
@@ -519,7 +657,8 @@ fold_participants.to_csv(
 
 # %%
 specimens_by_fold.to_csv(
-    config.paths.dataset_specific_metadata / "cross_validation_divisions.specimens.tsv",
+    config.paths.dataset_specific_metadata_for_selected_cross_validation_strategy
+    / "cross_validation_divisions.specimens.tsv.gz",
     sep="\t",
     index=None,
 )

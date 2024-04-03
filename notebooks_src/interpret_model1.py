@@ -12,9 +12,13 @@ import seaborn as sns
 import joblib
 import gc
 
-from malid.datamodels import GeneLocus, TargetObsColumnEnum
+from malid.datamodels import (
+    GeneLocus,
+    TargetObsColumnEnum,
+    map_cross_validation_split_strategy_to_default_target_obs_column,
+)
 from malid.trained_model_wrappers import RepertoireClassifier
-from malid import helpers, io
+from malid import config, helpers, io
 
 
 # %%
@@ -25,10 +29,11 @@ def interpret(
 ):
     clf_rep = RepertoireClassifier(
         fold_id=fold_id,
-        model_name="lasso_multiclass",
+        model_name="elasticnet_cv",
         fold_label_train="train_smaller",
         gene_locus=gene_locus,
         target_obs_column=target_obs_column,
+        sample_weight_strategy=config.sample_weight_strategy,
     )
     train_count_matrix_columns = joblib.load(
         clf_rep.models_base_dir
@@ -90,6 +95,8 @@ def interpret(
         fold_label="train_smaller",
         gene_locus=gene_locus,
         target_obs_column=target_obs_column,
+        # Model 1 does not require the embedding .X, so take the fast path and just load .obs:
+        load_obs_only=True,
     )
     featurized = clf_rep.featurize(adata)
 
@@ -134,25 +141,28 @@ def interpret(
 # %%
 
 # %%
-# also try TargetObsColumnEnum.covid_vs_healthy
-interpret(
-    gene_locus=GeneLocus.BCR, target_obs_column=TargetObsColumnEnum.disease, fold_id=-1
-)
+# Choose fold:
+# Prefer global fold (fold -1), unless the cross validation split strategy is restricted to a single fold.
+fold_id = 0 if config.cross_validation_split_strategy.value.is_single_fold_only else -1
 
-# %%
-io.clear_cached_fold_embeddings()
-gc.collect()
 
-# %%
+# Choose classification target:
+target_obs_column = map_cross_validation_split_strategy_to_default_target_obs_column[
+    config.cross_validation_split_strategy
+]
 
-# %%
-interpret(
-    gene_locus=GeneLocus.TCR, target_obs_column=TargetObsColumnEnum.disease, fold_id=-1
-)
-
-# %%
-io.clear_cached_fold_embeddings()
-gc.collect()
+for gene_locus in config.gene_loci_used:
+    print(
+        f"{gene_locus}, {target_obs_column}, fold {fold_id} ({config.cross_validation_split_strategy})"
+    )
+    interpret(
+        gene_locus=gene_locus,
+        target_obs_column=target_obs_column,
+        fold_id=fold_id,
+    )
+    io.clear_cached_fold_embeddings()
+    gc.collect()
+    print()
 
 # %%
 

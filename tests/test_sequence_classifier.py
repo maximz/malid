@@ -28,6 +28,8 @@ def test_add_dummy_variables_respects_X_dtype(X):
             isotype_groups=isotype_groups,
             v_genes=v_genes,
             gene_locus=GeneLocus.BCR,
+            include_v_gene_as_dummy_variable=True,
+            include_isotype_as_dummy_variable=True,
         )
         assert X_added.dtype == dtype
         assert X_added.shape == (

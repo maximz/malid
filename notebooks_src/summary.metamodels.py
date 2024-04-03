@@ -26,6 +26,7 @@ from malid.train import train_metamodel
 from malid.datamodels import (
     GeneLocus,
     TargetObsColumnEnum,
+    map_cross_validation_split_strategy_to_default_target_obs_column,
 )
 import pandas as pd
 from IPython.display import display, Markdown
@@ -37,6 +38,12 @@ from typing import Optional, List
 # %%
 
 # %%
+default_target_obs_column = (
+    map_cross_validation_split_strategy_to_default_target_obs_column[
+        config.cross_validation_split_strategy
+    ]
+)
+default_target_obs_column
 
 # %%
 
@@ -54,6 +61,7 @@ def run_summary(
             target_obs_column=target_obs_column,
             fold_id=config.all_fold_ids[0],
             base_model_train_fold_name=base_model_train_fold_name,
+            use_stubs_instead_of_submodels=True,
         )
     except Exception as err:
         logger.warning(
@@ -179,9 +187,10 @@ def run_summary(
                 for model_name in [
                     "linearsvm_ovr",
                     "lasso_cv",
-                    "ridge_cv",
+                    "elasticnet_cv0.75",
                     "elasticnet_cv",
-                    "lasso_multiclass",
+                    "elasticnet_cv0.25",
+                    "ridge_cv",
                 ]:
                     if Path(
                         f"{highres_results_output_prefix}.{fname}.{model_name}.raw_coefs.mean.png"
@@ -255,8 +264,10 @@ def run_summary(
 
             for model_name in [
                 "lasso_cv",
-                "ridge_cv",
+                "elasticnet_cv0.75",
                 "elasticnet_cv",
+                "elasticnet_cv0.25",
+                "ridge_cv",
             ]:
                 display(
                     Markdown(f"### Hyperparameter tuning diagnostics: {model_name}")
@@ -267,6 +278,20 @@ def run_summary(
                         for fold_id in config.all_fold_ids
                     ],
                     headers=[f"Fold {fold_id}" for fold_id in config.all_fold_ids],
+                    max_width=500,
+                )
+
+            if target_obs_column == default_target_obs_column:
+                # Pairwise OvO scores only available for primary target
+                display(Markdown("---"))
+                display(Markdown(f"### Pairwise OvO scores"))
+                model_names = config.model_names_to_train
+                show(
+                    [
+                        f"{highres_results_output_prefix}.pairwise_roc_auc_scores.{model_name}.png"
+                        for model_name in model_names
+                    ],
+                    headers=model_names,
                     max_width=500,
                 )
 
@@ -305,12 +330,12 @@ if len(config.gene_loci_used) > 1:
 for gene_locus in config.gene_loci_used:
     run_summary(
         gene_locus=gene_locus,
-        target_obs_column=TargetObsColumnEnum.disease,
+        target_obs_column=default_target_obs_column,
         metamodel_flavor_filter=["default"],
     )
 run_summary(
     gene_locus=config.gene_loci_used,
-    target_obs_column=TargetObsColumnEnum.disease,
+    target_obs_column=default_target_obs_column,
     metamodel_flavor_filter=["default"],
 )
 

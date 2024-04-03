@@ -6,12 +6,11 @@
 # Recall that we have a separate fine-tuned language model for each train-smaller set. So treat this as an extension of the test set. For each test fold ID, and apply the language model, scaling, and PCA transformations trained on that fold's train-smaller set.
 
 # %%
-import numpy as np
-import pandas as pd
+from slugify import slugify
 import joblib
 import choosegpu
 from malid import config, apply_embedding, interpretation
-from malid.datamodels import GeneLocus
+from malid.datamodels import GeneLocus, healthy_label
 
 # %%
 # Embed with GPU
@@ -24,11 +23,17 @@ config.embedder.name
 # %%
 
 # %%
-def process(gene_locus):
-    print(gene_locus)
+def process(gene_locus: GeneLocus, disease: str, known_binder: bool):
+    status = "binders" if known_binder else "nonbinders"
+    print(gene_locus, disease, status)
+
     GeneLocus.validate_single_value(gene_locus)
-    df, cluster_centroids_by_supergroup = interpretation.load_reference_dataset(
-        gene_locus
+    (
+        df,
+        cluster_centroids_by_supergroup,
+        reference_dataset_name,
+    ) = interpretation.load_reference_dataset(
+        gene_locus=gene_locus, disease=disease, known_binder=known_binder
     )
     print(df.shape)
 
@@ -43,16 +48,21 @@ def process(gene_locus):
     df = df.groupby("global_resulting_cluster_ID").head(n=1).copy()
     print(df.shape)
 
-    # Note: we don't have v_mut or isotype for CoV-AbDab
+    # We don't have v_mut or isotype for some known binder datasets
+    # Set defaults
     if "isotype_supergroup" not in df.columns:
         df["isotype_supergroup"] = "IGHG"
     if "v_mut" not in df.columns:
         df["v_mut"] = 0.0
 
-    df["participant_label"] = interpretation.reference_dataset_name[gene_locus]
-    df["specimen_label"] = interpretation.reference_dataset_name[gene_locus]
-    df["disease"] = "Covid19"
-    df["disease_subtype"] = "Covid19 - known binder"
+    df["participant_label"] = reference_dataset_name
+    df["specimen_label"] = reference_dataset_name
+    if known_binder:
+        df["disease"] = disease
+        df["disease_subtype"] = f"{disease} - known {status}"
+    else:
+        df["disease"] = healthy_label
+        df["disease_subtype"] = f"{healthy_label} - known {status} to {disease}"
 
     embedded = {}
     for fold_id in config.all_fold_ids:
@@ -66,8 +76,6 @@ def process(gene_locus):
                 gene_locus=gene_locus, fold_id=fold_id
             ),
             df=fold_df,
-            gene_locus=gene_locus,
-            fold_id=fold_id,
         )
         adata = apply_embedding.transform_embedded_anndata(
             transformations_to_apply=apply_embedding.load_transformations(
@@ -83,15 +91,21 @@ def process(gene_locus):
         embedded,
         config.paths.scaled_anndatas_dir
         / gene_locus.name
-        / "known_binders.embedded.in.all.folds.joblib",
+        / f"known_{status}.{slugify(disease)}.embedded.in.all.folds.joblib",
     )
 
 
 # %%
 
 # %%
-for gene_locus in config.gene_loci_used:
-    process(gene_locus)
+if GeneLocus.BCR in config.gene_loci_used:
+    process(gene_locus=GeneLocus.BCR, disease="Covid19", known_binder=True)
+    process(gene_locus=GeneLocus.BCR, disease="Covid19", known_binder=False)
+
+    process(gene_locus=GeneLocus.BCR, disease="Influenza", known_binder=True)
+
+if GeneLocus.TCR in config.gene_loci_used:
+    process(gene_locus=GeneLocus.TCR, disease="Covid19", known_binder=True)
 
 # %%
 

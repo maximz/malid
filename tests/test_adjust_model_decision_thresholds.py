@@ -8,7 +8,7 @@ import sklearn.base
 from numpy.testing import assert_array_equal
 from sklearn.dummy import DummyClassifier
 from sklearn.metrics import accuracy_score
-from malid.external.model_evaluation_scores import roc_auc_score
+from multiclass_metrics import roc_auc_score
 
 from malid.external.adjust_model_decision_thresholds import (
     AdjustedProbabilitiesDerivedModel,

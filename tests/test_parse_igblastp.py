@@ -55,33 +55,36 @@ def test_igblastp_parsing():
         file_handle_fasta=file_handle_fasta, file_handle_parse=file_handle_parse
     )
     print(results)
-    print(results.iloc[0].to_dict())
-    assert results.equals(
-        pd.DataFrame.from_dict(
-            {
-                0: {
-                    "type": "V",
-                    "query_id": "testsequence",
-                    "v_gene": "IGHV1-8*01",
-                    "FR1-IMGT": "QVQLVQSGAEVKKPGASVKVSCKAS",
-                    "CDR1-IMGT": "GYTFTSYD",
-                    "FR2-IMGT": "INWVRQASGQGLEWMGW",
-                    "CDR2-IMGT": "MNPNSANP",
-                    "FR3-IMGT": "GYAQKFQGRVTMTRNTSISTAFMELSSLRSDDTAVYYC",
-                    "CDR3-IMGT (germline)": "AR",
-                },
-                1: {
-                    "type": "V",
-                    "query_id": "testsequence2",
-                    "v_gene": "IGHV1-8*01",
-                    "FR1-IMGT": "QVQLVQSGAEVKKPGASVKVSCKAS",
-                    "CDR1-IMGT": "GYTFTSYD",
-                    "FR2-IMGT": "INWVRQASGQGLEWMGW",
-                    "CDR2-IMGT": "MNPNSANP",
-                    "FR3-IMGT": "GYAQKFQGRVTMTRNTSISTAFMELSSLRSDDTAVYYC",
-                    "CDR3-IMGT (germline)": "AR",
-                },
+    expected_df = pd.DataFrame.from_dict(
+        {
+            0: {
+                "type": "V",
+                "query_id": "testsequence",
+                "v_gene": "IGHV1-8*01",
+                "global_percent_identity": 94.88,
+                "FR1-IMGT": "QVQLVQSGAEVKKPGASVKVSCKAS",
+                "CDR1-IMGT": "GYTFTSYD",
+                "FR2-IMGT": "INWVRQASGQGLEWMGW",
+                "CDR2-IMGT": "MNPNSANP",
+                "FR3-IMGT": "GYAQKFQGRVTMTRNTSISTAFMELSSLRSDDTAVYYC",
+                "CDR3-IMGT (germline)": "AR",
             },
-            orient="index",
-        )
+            1: {
+                "type": "V",
+                "query_id": "testsequence2",
+                "v_gene": "IGHV1-8*01",
+                "global_percent_identity": 94.88,
+                "FR1-IMGT": "QVQLVQSGAEVKKPGASVKVSCKAS",
+                "CDR1-IMGT": "GYTFTSYD",
+                "FR2-IMGT": "INWVRQASGQGLEWMGW",
+                "CDR2-IMGT": "MNPNSANP",
+                "FR3-IMGT": "GYAQKFQGRVTMTRNTSISTAFMELSSLRSDDTAVYYC",
+                "CDR3-IMGT (germline)": "AR",
+            },
+        },
+        orient="index",
     )
+
+    # Compare the actual results with the expected dataframe
+    # Use pd.testing.assert_frame_equal with a tolerance level for the floating point comparison (check_less_precise=2 means compare only up to 2 decimal places).
+    pd.testing.assert_frame_equal(results, expected_df, check_less_precise=2)

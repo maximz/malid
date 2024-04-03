@@ -1,9 +1,9 @@
 # %%
 
 # %% [markdown]
-# # Compare V gene and J gene use in our cohorts versus some example Emerson/Immunecode repertoires
+# # Compare V gene and J gene use in in-house data versus Adaptive data
 #
-# Based on `vgene_usage_stats.ipynb`
+# We have already run `vgene_usage_stats.ipynb` for both datasets
 
 # %%
 
@@ -16,7 +16,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from malid import config, io, helpers
-from malid.datamodels import healthy_label, GeneLocus, TargetObsColumnEnum
+from malid.datamodels import (
+    healthy_label,
+    GeneLocus,
+    TargetObsColumnEnum,
+    CrossValidationSplitStrategy,
+    DataSource,
+)
 import gc
 import joblib
 from kdict import kdict
@@ -33,10 +39,22 @@ import anndata
 # %%
 
 # %%
-def get_dirs(gene_locus: GeneLocus):
-    output_dir = config.paths.model_interpretations_output_dir / gene_locus.name
+def get_dirs(
+    gene_locus: GeneLocus, cross_validation_split_strategy: CrossValidationSplitStrategy
+):
+    paths = config.make_paths(
+        embedder=config.embedder,
+        cross_validation_split_strategy=cross_validation_split_strategy,
+        dataset_version=config.dataset_version,
+    )
+    output_dir = (
+        paths.model_interpretations_for_selected_cross_validation_strategy_output_dir
+        / gene_locus.name
+    )
     highres_output_dir = (
-        config.paths.high_res_outputs_dir / "model_interpretations" / gene_locus.name
+        paths.high_res_outputs_dir_for_cross_validation_strategy
+        / "model_interpretations"
+        / gene_locus.name
     )
 
     # Create directories - though these directories should already have been created by sequence model interpretations notebooks
@@ -48,8 +66,12 @@ def get_dirs(gene_locus: GeneLocus):
 
 # %%
 # reimport (can resume here)
-def import_v_gene_counts(gene_locus: GeneLocus):
-    output_dir, highres_output_dir = get_dirs(gene_locus)
+def import_v_gene_counts(
+    gene_locus: GeneLocus, cross_validation_split_strategy: CrossValidationSplitStrategy
+):
+    output_dir, highres_output_dir = get_dirs(
+        gene_locus, cross_validation_split_strategy
+    )
 
     specimen_v_gene_counts_df = pd.read_csv(
         highres_output_dir / "v_gene_counts_by_specimen.tsv.gz", sep="\t"
@@ -85,9 +107,6 @@ def import_v_gene_counts(gene_locus: GeneLocus):
 
 # %%
 extra_specimen_metadata = helpers.get_all_specimen_info()
-extra_specimen_metadata = extra_specimen_metadata[
-    extra_specimen_metadata["in_training_set"]
-].copy()
 extra_specimen_metadata
 
 # %%
@@ -95,7 +114,10 @@ extra_specimen_metadata
     specimen_v_gene_counts_df_test_only,
     v_gene_cols,
     v_gene_cols_filtered,
-) = import_v_gene_counts(gene_locus=GeneLocus.TCR)
+) = import_v_gene_counts(
+    gene_locus=GeneLocus.TCR,
+    cross_validation_split_strategy=CrossValidationSplitStrategy.in_house_peak_disease_timepoints,
+)
 
 # Get V gene usage proportions per specimen
 v_gene_usage_proportions_by_specimen = pd.concat(
@@ -128,55 +150,48 @@ v_gene_usage_proportions_by_specimen_annot_melt = pd.melt(
 )
 v_gene_usage_proportions_by_specimen_annot_melt
 
-
 # %%
 
 # %%
-def make_counts(fname, disease, study_name):
-    external_df = pd.read_parquet(fname)
-    counts = (
-        external_df["v_gene"]
-        .cat.remove_unused_categories()
-        .value_counts(normalize=True)
-    )
-    return (
-        counts.rename_axis(index="V gene")
-        .reset_index(name="Proportion")
-        .assign(disease=disease, study_name=study_name)
-    )
-
-
-# %%
-
-# %%
-# TODO: switch this to exactly the same ones used in external cohort evaluation
-emerson_fnames = list(config.paths.external_processed_data.glob("P00*.parquet")) + list(
-    config.paths.external_processed_data.glob("Keck*.parquet")
+(
+    specimen_v_gene_counts_df_test_only_adaptive,
+    v_gene_cols_adaptive,
+    v_gene_cols_filtered_adaptive,
+) = import_v_gene_counts(
+    gene_locus=GeneLocus.TCR,
+    cross_validation_split_strategy=CrossValidationSplitStrategy.adaptive_peak_disease_timepoints,
 )
-np.random.shuffle(emerson_fnames)
-immunecode_fnames = list(
-    config.paths.external_processed_data.glob("ImmuneCode*.parquet")
+
+# Get V gene usage proportions per specimen
+v_gene_usage_proportions_by_specimen_adaptive = pd.concat(
+    [
+        genetools.stats.normalize_rows(
+            specimen_v_gene_counts_df_test_only_adaptive[v_gene_cols_adaptive]
+        ),
+        specimen_v_gene_counts_df_test_only_adaptive["disease"],
+    ],
+    axis=1,
 )
-len(emerson_fnames), len(immunecode_fnames)
 
-# %%
+v_gene_usage_proportions_by_specimen_annot_adaptive = genetools.helpers.merge_into_left(
+    v_gene_usage_proportions_by_specimen_adaptive[v_gene_cols_adaptive],
+    extra_specimen_metadata.set_index("specimen_label"),
+)
 
-# %%
-external_counts = []
 
-for fname in immunecode_fnames[: len(immunecode_fnames)]:
-    print(fname)
-    external_counts.append(
-        make_counts(fname=fname, disease="Covid19", study_name="Immunecode")
-    )
+# drop specimens with group N/A
+v_gene_usage_proportions_by_specimen_annot_adaptive = (
+    v_gene_usage_proportions_by_specimen_annot_adaptive.dropna(subset=["study_name"])
+)
 
-for fname in emerson_fnames[: len(immunecode_fnames)]:
-    print(fname)
-    external_counts.append(
-        make_counts(fname=fname, disease="Healthy/Background", study_name="Emerson")
-    )
-
-# %%
+v_gene_usage_proportions_by_specimen_annot_melt_adaptive = pd.melt(
+    v_gene_usage_proportions_by_specimen_annot_adaptive,
+    id_vars=["disease", "study_name"],
+    value_vars=v_gene_cols_adaptive,
+    var_name="V gene",
+    value_name="Proportion",
+)
+v_gene_usage_proportions_by_specimen_annot_melt_adaptive
 
 # %%
 
@@ -184,17 +199,22 @@ for fname in emerson_fnames[: len(immunecode_fnames)]:
 
 # %%
 v_gene_usage_proportions_by_specimen_annot_melt_combined = pd.concat(
-    [v_gene_usage_proportions_by_specimen_annot_melt] + external_counts,
+    [
+        v_gene_usage_proportions_by_specimen_annot_melt,
+        v_gene_usage_proportions_by_specimen_annot_melt_adaptive,
+    ],
     axis=0,
 )
 v_gene_usage_proportions_by_specimen_annot_melt_combined
+
+# %%
 
 # %%
 group_color_palette = {
     group: color
     for group, color in zip(
         v_gene_usage_proportions_by_specimen_annot_melt_combined["study_name"].unique(),
-        sc.plotting.palettes.default_20,
+        sc.plotting.palettes.default_102,
     )
 }
 
@@ -204,7 +224,7 @@ def plot_per_disease(
     disease: str,
     filtered=False,
 ):
-    height = 6 if filtered else 12
+    height = 7 if filtered else 13
     selected_v_gene_order = pd.Series(v_gene_cols_filtered if filtered else v_gene_cols)
 
     selected_v_gene_order = pd.Series(
@@ -257,8 +277,8 @@ def plot_per_disease(
             # sampling distribution of mean generated by repeated sampling and recording mean each time.
             # the standard error is basically the standard deviation of many sample means
             # we plot mean +/- 1.96*standard error. gives you average value +/- X at the 95% confidence level.
-            ci=95,
-            # ci="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
+            errorbar=("ci", 95),
+            # errorbar="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
             # capsize=.025
         )
 
@@ -297,27 +317,28 @@ fig = plot_per_disease(
 # # Embed on UMAP and see where it lands?
 
 # %%
-ec_combined = pd.concat(
+ec_data_c = pd.concat(
     [
-        ec.pivot(index=["study_name", "disease"], columns="V gene", values="Proportion")
-        for ec in external_counts
+        v_gene_usage_proportions_by_specimen_annot_adaptive[v_gene_cols_adaptive],
+        v_gene_usage_proportions_by_specimen_annot[v_gene_cols],
     ],
     axis=0,
 )
-ec_combined
+ec_data_c
 
 # %%
-ec_data = ec_combined.reset_index(drop=True)
-ec_obs = ec_combined.index.to_frame().reset_index(drop=True)
-
-# %%
-ec_data_c = pd.concat(
-    [ec_data, v_gene_usage_proportions_by_specimen_annot[v_gene_cols]], axis=0
-)
 ec_obs_c = pd.concat(
-    [ec_obs, v_gene_usage_proportions_by_specimen_annot[["study_name", "disease"]]],
+    [
+        v_gene_usage_proportions_by_specimen_annot_adaptive[
+            ["study_name", "disease", "data_source"]
+        ],
+        v_gene_usage_proportions_by_specimen_annot[
+            ["study_name", "disease", "data_source"]
+        ],
+    ],
     axis=0,
 )
+ec_obs_c
 
 # %%
 ec_data_c.isna().any()
@@ -328,13 +349,7 @@ ec_data_c = ec_data_c.dropna(axis=1)
 # %%
 
 # %%
-# TODO: switch to V genes from model1's choices?
-meaningful_v_genes = pd.read_csv(
-    config.paths.model_interpretations_output_dir
-    / GeneLocus.TCR.name
-    / "meaningful_v_genes.txt",
-    sep="\t",
-)["v_gene"].tolist()
+meaningful_v_genes = list(v_gene_cols_filtered)
 meaningful_v_genes
 
 # %%
@@ -356,12 +371,14 @@ adata_subset.obs["label"] = (
 adata_subset.obs.drop_duplicates()
 
 # %%
+adata_subset.obs["data_source"] = adata_subset.obs["data_source"].map(
+    {DataSource.adaptive: "Adaptive", DataSource.in_house: "Mal-ID"}
+)
+assert not adata_subset.obs["data_source"].isna().any()
+
+# %%
 adata_subset.obs["label2"] = (
-    adata_subset.obs["disease"].astype(str)
-    + " - "
-    + adata_subset.obs["study_name"]
-    .map({"Immunecode": "Adaptive", "Emerson": "Adaptive"})
-    .fillna("Mal-ID")
+    adata_subset.obs["disease"].astype(str) + " - " + adata_subset.obs["data_source"]
 )
 adata_subset.obs["label2"].value_counts()
 
@@ -385,19 +402,34 @@ sc.pl.pca(adata_subset, color="label", alpha=0.5)
 sc.pl.umap(adata_subset, color="label", alpha=0.5)
 
 # %%
+
+# %%
+sc.pl.pca(adata_subset, color="data_source", alpha=0.5)
+
+# %%
+sc.pl.umap(adata_subset, color="data_source", alpha=0.5)
+
+# %%
+
+# %%
 sc.pl.pca(adata_subset, color="label2", alpha=0.5)
+
+# %%
+sc.pl.umap(adata_subset, color="label2", alpha=0.5)
 
 # %%
 fig_umap = sc.pl.umap(
     adata_subset,
-    color="label2",
+    color=["data_source", "label2"],
     alpha=0.5,
     return_fig=True,
-    title="TRBV gene proportions UMAP",
+    title=["TRBV gene proportions UMAP", ""],
+    ncols=1,
 )
+sns.despine(fig=fig_umap)
 genetools.plots.savefig(
     fig_umap,
-    config.paths.model_interpretations_output_dir
+    config.paths.model_interpretations_for_selected_cross_validation_strategy_output_dir
     / GeneLocus.TCR.name
     / f"v_gene_proportions_by_specimen.adaptive_vs_malid.png",
     dpi=300,

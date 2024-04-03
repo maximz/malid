@@ -7,7 +7,7 @@ from malid import config
 
 
 def test_env_var_for_embedder(monkeypatch):
-    assert config.default_embedder != "unirep"
+    assert config._default_embedder != "unirep"
     monkeypatch.setenv("EMBEDDER_TYPE", "unirep")
     assert config.choose_embedder().name == "unirep"
 

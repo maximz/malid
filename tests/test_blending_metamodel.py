@@ -1,7 +1,14 @@
+from typing import Dict, List
 import numpy as np
 import pandas as pd
+from malid.datamodels import GeneLocus
+from crosseval import FeaturizedData
 from malid.trained_model_wrappers import BlendingMetamodel
-from malid.trained_model_wrappers.blending_metamodel import DemographicsFeaturizer
+from malid.trained_model_wrappers.blending_metamodel import (
+    DemographicsFeaturizer,
+    _combine_dfs,
+)
+import pytest
 
 
 def test_demographics_featurizer_respects_binary_ordered_categorical_column_order():
@@ -58,3 +65,280 @@ def test_convert_feature_name_to_friendly_name():
         assert (
             observed == expected
         ), f"Expected {input} to be converted to '{expected}', but got '{observed}'"
+
+
+def test_harmonize_submodels():
+    # Different abstentions in different loci. Each loci has two submodels, one of which produces abstentions.
+    featurized_by_single_locus: Dict[GeneLocus, List[FeaturizedData]] = {
+        GeneLocus.BCR: [
+            FeaturizedData(
+                X=pd.DataFrame(
+                    np.random.randn(4, 3),
+                    index=["sample1", "sample2", "sample3", "sample4"],
+                ),
+                y=["Covid19", "Covid19", "HIV", "HIV"],
+                sample_names=["sample1", "sample2", "sample3", "sample4"],
+                metadata=pd.DataFrame(
+                    {
+                        "name": ["sample1", "sample2", "sample3", "sample4"],
+                        "isotype_proportion:IGHG": [0.5, 0.5, 0.5, 0.5],
+                    },
+                    index=["sample1", "sample2", "sample3", "sample4"],
+                ),
+            ),
+            FeaturizedData(
+                X=pd.DataFrame(
+                    np.random.randn(3, 3), index=["sample1", "sample2", "sample3"]
+                ),
+                y=["Covid19", "Covid19", "HIV"],
+                sample_names=["sample1", "sample2", "sample3"],
+                metadata=pd.DataFrame(
+                    {
+                        "name": ["sample1", "sample2", "sample3"],
+                        "isotype_proportion:IGHG": [0.5, 0.5, 0.5],
+                    },
+                    index=["sample1", "sample2", "sample3"],
+                ),
+                abstained_sample_names=["sample4"],
+                abstained_sample_y=["HIV"],
+                abstained_sample_metadata=pd.DataFrame(
+                    {"name": ["sample4"], "isotype_proportion:IGHG": [0.5]},
+                    index=["sample4"],
+                ),
+            ),
+        ],
+        GeneLocus.TCR: [
+            FeaturizedData(
+                X=pd.DataFrame(
+                    np.random.randn(4, 3),
+                    index=["sample1", "sample2", "sample3", "sample4"],
+                ),
+                y=["Covid19", "Covid19", "HIV", "HIV"],
+                sample_names=["sample1", "sample2", "sample3", "sample4"],
+                metadata=pd.DataFrame(
+                    {
+                        "name": ["sample1", "sample2", "sample3", "sample4"],
+                        "tcr_specific_metadata": [1.0, 1.0, 1.0, 1.0],
+                    },
+                    index=["sample1", "sample2", "sample3", "sample4"],
+                ),
+            ),
+            FeaturizedData(
+                X=pd.DataFrame(np.random.randn(2, 3), index=["sample1", "sample2"]),
+                y=["Covid19", "Covid19"],
+                sample_names=["sample1", "sample2"],
+                metadata=pd.DataFrame(
+                    {
+                        "name": ["sample1", "sample2"],
+                        "tcr_specific_metadata": [1.0, 1.0],
+                    },
+                    index=["sample1", "sample2"],
+                ),
+                abstained_sample_names=["sample3", "sample4"],
+                abstained_sample_y=["HIV", "HIV"],
+                abstained_sample_metadata=pd.DataFrame(
+                    {
+                        "name": ["sample3", "sample4"],
+                        "tcr_specific_metadata": [1.0, 1.0],
+                    },
+                    index=["sample3", "sample4"],
+                ),
+            ),
+        ],
+    }
+    (
+        metadata_df,
+        specimens_with_full_predictions,
+        abstained_specimen_names,
+        X,
+    ) = BlendingMetamodel._harmonize_across_models_and_gene_loci(
+        featurized_by_single_locus
+    )
+
+    assert metadata_df.shape[0] == 4
+    assert set(metadata_df.index) == {"sample1", "sample2", "sample3", "sample4"}
+
+    assert specimens_with_full_predictions == {"sample1", "sample2"}
+    assert abstained_specimen_names == {"sample3", "sample4"}
+
+    assert X.shape[0] == 4
+    assert set(X.index) == {"sample1", "sample2", "sample3", "sample4"}
+
+    # isotype_proportion:IGHG was only defined for BCR samples, but should be kept in the merged metadata.
+    assert not metadata_df["isotype_proportion:IGHG"].isna().any()
+    assert (metadata_df["isotype_proportion:IGHG"] == 0.5).all()
+    # similarly, make sure the TCR-only metadata column is kept
+    assert not metadata_df["tcr_specific_metadata"].isna().any()
+    assert (metadata_df["tcr_specific_metadata"] == 1.0).all()
+
+
+def test_harmonize_one_submodel_per_locus_with_different_abstentions():
+    # Edge case: single submodel, so abstained samples will never get the chance to be seen in the main/not-abstained list produced by another submodel (because there are no other submodels).
+    featurized_by_single_locus: Dict[GeneLocus, List[FeaturizedData]] = {
+        GeneLocus.BCR: [
+            FeaturizedData(
+                X=pd.DataFrame(
+                    np.random.randn(3, 3),
+                    index=[
+                        "sample1_always_valid",
+                        "sample2_always_valid",
+                        "sample3_tcr_abstains",
+                    ],
+                ),
+                y=["Covid19", "Covid19", "HIV"],
+                sample_names=[
+                    "sample1_always_valid",
+                    "sample2_always_valid",
+                    "sample3_tcr_abstains",
+                ],
+                metadata=pd.DataFrame(
+                    {
+                        "name": [
+                            "sample1_always_valid",
+                            "sample2_always_valid",
+                            "sample3_tcr_abstains",
+                        ],
+                        "isotype_proportion:IGHG": [0.5, 0.5, 0.5],
+                    },
+                    index=[
+                        "sample1_always_valid",
+                        "sample2_always_valid",
+                        "sample3_tcr_abstains",
+                    ],
+                ),
+                abstained_sample_names=[
+                    "sample4_everyone_abstains",
+                    "sample5_bcr_abstains",
+                ],
+                abstained_sample_y=["HIV", "HIV"],
+                abstained_sample_metadata=pd.DataFrame(
+                    {
+                        "name": ["sample4_everyone_abstains", "sample5_bcr_abstains"],
+                        "isotype_proportion:IGHG": [0.5, 0.5],
+                    },
+                    index=["sample4_everyone_abstains", "sample5_bcr_abstains"],
+                ),
+            )
+        ],
+        GeneLocus.TCR: [
+            FeaturizedData(
+                X=pd.DataFrame(
+                    np.random.randn(3, 3),
+                    index=[
+                        "sample1_always_valid",
+                        "sample2_always_valid",
+                        "sample5_bcr_abstains",
+                    ],
+                ),
+                y=["Covid19", "Covid19", "HIV"],
+                sample_names=[
+                    "sample1_always_valid",
+                    "sample2_always_valid",
+                    "sample5_bcr_abstains",
+                ],
+                metadata=pd.DataFrame(
+                    {
+                        "name": [
+                            "sample1_always_valid",
+                            "sample2_always_valid",
+                            "sample5_bcr_abstains",
+                        ],
+                        "tcr_specific_metadata": [1.0, 1.0, 1.0],
+                    },
+                    index=[
+                        "sample1_always_valid",
+                        "sample2_always_valid",
+                        "sample5_bcr_abstains",
+                    ],
+                ),
+                abstained_sample_names=[
+                    "sample3_tcr_abstains",
+                    "sample4_everyone_abstains",
+                ],
+                abstained_sample_y=["HIV", "HIV"],
+                abstained_sample_metadata=pd.DataFrame(
+                    {
+                        "name": ["sample3_tcr_abstains", "sample4_everyone_abstains"],
+                        "tcr_specific_metadata": [1.0, 1.0],
+                    },
+                    index=["sample3_tcr_abstains", "sample4_everyone_abstains"],
+                ),
+            )
+        ],
+    }
+    (
+        metadata_df,
+        specimens_with_full_predictions,
+        abstained_specimen_names,
+        X,
+    ) = BlendingMetamodel._harmonize_across_models_and_gene_loci(
+        featurized_by_single_locus
+    )
+
+    assert metadata_df.shape[0] == 5
+    assert set(metadata_df.index) == {
+        "sample1_always_valid",
+        "sample2_always_valid",
+        "sample3_tcr_abstains",
+        "sample4_everyone_abstains",
+        "sample5_bcr_abstains",
+    }
+
+    assert specimens_with_full_predictions == {
+        "sample1_always_valid",
+        "sample2_always_valid",
+    }
+    assert abstained_specimen_names == {
+        "sample3_tcr_abstains",
+        "sample4_everyone_abstains",
+        "sample5_bcr_abstains",
+    }
+
+    assert X.shape[0] == 4
+    assert set(X.index) == {
+        "sample1_always_valid",
+        "sample2_always_valid",
+        "sample3_tcr_abstains",
+        "sample5_bcr_abstains",
+    }
+
+    # isotype_proportion:IGHG was only defined for BCR samples, but should be kept in the merged metadata.
+    assert not metadata_df["isotype_proportion:IGHG"].isna().any()
+    assert (metadata_df["isotype_proportion:IGHG"] == 0.5).all()
+    # similarly, make sure the TCR-only metadata column is kept
+    assert not metadata_df["tcr_specific_metadata"].isna().any()
+    assert (metadata_df["tcr_specific_metadata"] == 1.0).all()
+
+
+def test_combine_dfs():
+    combined = _combine_dfs(
+        pd.DataFrame({"col1": [1, 2, 3], "col2": [1, 2, 3]}, index=["a", "b", "c"]),
+        pd.DataFrame({"col1": [1, 2, 3], "col3": [1, 2, 1]}, index=["a", "b", "c"]),
+    )
+    pd.testing.assert_frame_equal(
+        combined,
+        pd.DataFrame(
+            {"col1": [1, 2, 3], "col2": [1, 2, 3], "col3": [1, 2, 1]},
+            index=["a", "b", "c"],
+        ),
+    )
+
+
+def test_combine_dfs_conflicting_column_values():
+    df1 = pd.DataFrame({"col1": [1, 2, 3], "col2": [1, 2, 3]}, index=["a", "b", "c"])
+    df2 = pd.DataFrame({"col1": [1, 2, 3], "col2": [1, 2, 1]}, index=["a", "b", "c"])
+    with pytest.raises(
+        ValueError,
+        match="Index changed in merge but allow_nonequal_indexes was set to False, suggesting conflicting values",
+    ):
+        # Conflicting values with allow_nonequal_indexes set to False -->
+        # inner merge -->
+        # index becomes ['a', 'b'] --> error
+        _combine_dfs(df1, df2, allow_nonequal_indexes=False)
+    with pytest.raises(
+        ValueError, match="Merged index has duplicates, suggesting conflicting values"
+    ):
+        # Conflicting values with allow_nonequal_indexes set to True -->
+        # outer merge -->
+        # index becomes ['a', 'b', 'c', 'c'] --> error
+        _combine_dfs(df1, df2, allow_nonequal_indexes=True)

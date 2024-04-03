@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Tuple, Union
 import warnings
 import anndata
 import joblib
@@ -11,7 +11,7 @@ import pandas as pd
 import scipy.stats
 from sklearn.base import BaseEstimator, ClassifierMixin
 
-import malid.external.genetools_arrays
+import genetools.arrays
 from malid import helpers
 from malid.datamodels import (
     GeneLocus,
@@ -21,8 +21,8 @@ from malid.datamodels import (
 from malid.external.adjust_model_decision_thresholds import (
     AdjustedProbabilitiesDerivedModel,
 )
-from malid.external.model_evaluation import FeaturizedData
-from malid.trained_model_wrappers import SequenceClassifier
+from crosseval import FeaturizedData
+from malid.trained_model_wrappers import AbstractSequenceClassifier, SequenceClassifier
 from malid.trained_model_wrappers.immune_classifier_mixin import (
     ImmuneClassifierMixin,
 )
@@ -34,6 +34,8 @@ def _trimmed_mean(
     sequence_class_prediction_probabilities: pd.DataFrame,
     sequence_weights: pd.Series,
     proportiontocut: float = 0.1,
+    # Normalize the final Series of aggregated class probabilities to sum to 1
+    normalize_final_probabilities_to_sum_to_1: bool = True,
 ) -> pd.Series:
     # take weighted trimmed mean, then rewrap as pandas series
     # that means trim off ends first, then take weighted mean of remainder
@@ -56,7 +58,7 @@ def _trimmed_mean(
         )
 
     # get trimming mask. the selected indices will be different for each column.
-    trimming_mask = malid.external.genetools_arrays.get_trim_both_sides_mask(
+    trimming_mask = genetools.arrays.get_trim_both_sides_mask(
         sequence_class_prediction_probabilities,
         proportiontocut=proportiontocut,
         axis=0,
@@ -87,52 +89,112 @@ def _trimmed_mean(
         column_averages,
         index=sequence_class_prediction_probabilities.columns,
     )
-    disease_probabilities = disease_probabilities / disease_probabilities.sum()
+    if normalize_final_probabilities_to_sum_to_1:
+        disease_probabilities = disease_probabilities / disease_probabilities.sum()
     return disease_probabilities
 
 
-def _weighted_median(seq_probs: pd.DataFrame, seq_weights: pd.Series):
+def _weighted_median(
+    seq_probs: pd.DataFrame,
+    seq_weights: pd.Series,
+    # Normalize the final Series of aggregated class probabilities to sum to 1
+    normalize_final_probabilities_to_sum_to_1: bool = True,
+) -> pd.Series:
     """
     Compute weighted median of sequence predictions.
     Note that the weighted median is not the same as "weighted trim-both-sides-by-50% mean". (Though unweighted median is the same as unweighted trim-both-by-50% mean.)
     Weighted median = factor in the weights when finding the center of the array.
     """
-    disease_probabilities = pd.Series(0, index=seq_probs.columns)
-    for i in seq_probs.columns:
-        disease_sorted = seq_probs[i].sort_values()
-        cumsum = seq_weights.loc[disease_sorted.index].cumsum()
-        cutoff = seq_weights.sum() / 2.0
-        disease_probabilities[i] = disease_sorted.loc[cumsum >= cutoff].iloc[0]
-    disease_probabilities = disease_probabilities / disease_probabilities.sum()
+    # calculate weighted median of each column
+    disease_probabilities = pd.Series(
+        {
+            disease: genetools.arrays.weighted_median(seq_probs[disease], seq_weights)
+            for disease in seq_probs.columns
+        }
+    )
+    if normalize_final_probabilities_to_sum_to_1:
+        # normalize "weighted median of each column" series to sum to 1
+        disease_probabilities = disease_probabilities / disease_probabilities.sum()
     return disease_probabilities
 
 
+def _compute_maximum_entropy_cutoff(n_classes: int) -> float:
+    """
+    Compute the maximum entropy cutoff for a n-dim vector of class probabilities.
+    This is the entropy of the n-dim vector of all [1/n] entries.
+    See _entropy_threshold docs.
+    """
+    return scipy.stats.entropy(np.ones(n_classes) / n_classes)
+
+
 def _entropy_threshold(
-    seq_probs: pd.DataFrame, seq_weights: pd.Series, max_entropy=1.4
-):
+    seq_probs: pd.DataFrame,
+    seq_weights: pd.Series,
+    max_entropy: float,
+    # Normalize the final Series of aggregated class probabilities to sum to 1
+    normalize_final_probabilities_to_sum_to_1: bool = True,
+) -> pd.Series:
     """
-    Filter sequence predictions with high entropy. This isolates sequences that are "opinionated."
+    Filter out sequence predictions with high entropy. This isolates (keeps) sequences that are "opinionated."
     (Note that high entropy means that the sequence is not very informative about the disease. The closer a n-dim vector is to being all [1/n], the higher its entropy.)
+
+    Note:
+    Above a certain entropy, the entropy threshold applies no filtering, acting as an untrimmed mean.
+    That maximum entropy threshold is the entropy of the n-dim vector of all [1/n] entries:
+        maximum_entropy_cutoff = scipy.stats.entropy(np.ones(n_classes) / n_classes)
+    Skip any entropy thresholds that are >= maximum_entropy_cutoff; they would apply no filtering.
+    Use _compute_maximum_entropy_cutoff() to calculate this value.
     """
+    # Calculate entropy row-wise (for each sequence)
     seq_prob_entropy = seq_probs.apply(scipy.stats.entropy, axis=1)
+    # Create mask to filter out sequences greater than or equal to the maximum entropy threshold
     mask = seq_prob_entropy < max_entropy
+
+    # Check if the mask has excluded every data point
+    if not mask.any():
+        # Handle the edge case when mask excludes all data points: return a uniform distribution
+        disease_probabilities = pd.Series(
+            np.ones(len(seq_probs.columns)) / len(seq_probs.columns),
+            index=seq_probs.columns,
+        )
+        return disease_probabilities
 
     disease_probabilities = pd.Series(0, index=seq_probs.columns)
 
     for i in seq_probs.columns:
         mutual_info_subset_of_disease_probabilities = seq_probs.loc[mask, i]
         mutual_info_subset_of_weights = seq_weights.loc[mask]
-        disease_probabilities[i] = (
-            mutual_info_subset_of_disease_probabilities * mutual_info_subset_of_weights
-        ).sum() / (mutual_info_subset_of_weights.sum())
+        sum_of_weights = mutual_info_subset_of_weights.sum()
+        if sum_of_weights > 0:
+            disease_probabilities[i] = (
+                mutual_info_subset_of_disease_probabilities
+                * mutual_info_subset_of_weights
+            ).sum() / sum_of_weights
+        else:
+            # Handle division by zero edge case: assign 0
+            disease_probabilities[i] = 0
 
-    disease_probabilities = disease_probabilities / disease_probabilities.sum()
+    if normalize_final_probabilities_to_sum_to_1:
+        total_prob_sum = disease_probabilities.sum()
+        if total_prob_sum > 0:
+            disease_probabilities = disease_probabilities / total_prob_sum
+        else:
+            # Handle division by zero edge case: assign equal probabilities to all classes
+            disease_probabilities = pd.Series(
+                np.ones(len(disease_probabilities)) / len(disease_probabilities),
+                index=disease_probabilities.index,
+            )
+
     return disease_probabilities
 
 
 def _trim_bottom_only(
-    seq_probs: pd.DataFrame, seq_weights: pd.Series, proportiontocut=0.1
-):
+    seq_probs: pd.DataFrame,
+    seq_weights: pd.Series,
+    proportiontocut=0.1,
+    # Normalize the final Series of aggregated class probabilities to sum to 1
+    normalize_final_probabilities_to_sum_to_1: bool = True,
+) -> pd.Series:
     # TODO: generalize _trimmed_mean to support trimming bottom only, top only, or both sides. i.e. accept trim_lower, trim_upper parameters.
     disease_probabilities = pd.Series(0, index=seq_probs.columns)
     for i in seq_probs.columns:
@@ -144,7 +206,8 @@ def _trim_bottom_only(
         disease_probabilities[i] = (disease_trimmed * weights_trimmed).sum() / (
             weights_trimmed.sum()
         )
-    disease_probabilities = disease_probabilities / disease_probabilities.sum()
+    if normalize_final_probabilities_to_sum_to_1:
+        disease_probabilities = disease_probabilities / disease_probabilities.sum()
     return disease_probabilities
 
 
@@ -156,6 +219,8 @@ class RollupSequenceClassifier(ImmuneClassifierMixin, BaseEstimator, ClassifierM
     Instead, pass an anndata to predict() or predict_proba() directly.
     """
 
+    sequence_classifier: AbstractSequenceClassifier
+
     def __init__(
         self,
         fold_id: int,
@@ -165,6 +230,8 @@ class RollupSequenceClassifier(ImmuneClassifierMixin, BaseEstimator, ClassifierM
         target_obs_column: TargetObsColumnEnum,
         sample_weight_strategy: SampleWeightStrategy,
         sequence_models_base_dir: Optional[Path] = None,
+        # Optionally provide the sequence classifier directly. Otherwise it will be loaded through the SequenceClassifier constructor.
+        sequence_classifier: Optional[AbstractSequenceClassifier] = None,
     ):
         """
         Create a RollupSequenceClassifier.
@@ -175,19 +242,23 @@ class RollupSequenceClassifier(ImmuneClassifierMixin, BaseEstimator, ClassifierM
         Don't overoptimize at the sequence classifier stage, since those ground truth labels are not accurate.
         Instead tune the decision thresholds *after* rolling up to specimen-level predictions, where we now do have accurate ground truth labels (patient diagnosis).
         """
+        # TODO: Rename model_name_sequence_disease to not include "disease"; we can have other classification targets.
 
-        self.clf_sequence_disease = SequenceClassifier(
-            fold_id=fold_id,
-            model_name_sequence_disease=model_name_sequence_disease,
-            fold_label_train=fold_label_train,
-            gene_locus=gene_locus,
-            target_obs_column=target_obs_column,
-            sample_weight_strategy=sample_weight_strategy,
-            models_base_dir=sequence_models_base_dir,
-        )
+        if sequence_classifier is not None:
+            self.sequence_classifier = sequence_classifier
+        else:
+            self.sequence_classifier = SequenceClassifier(
+                fold_id=fold_id,
+                model_name_sequence_disease=model_name_sequence_disease,
+                fold_label_train=fold_label_train,
+                gene_locus=gene_locus,
+                target_obs_column=target_obs_column,
+                sample_weight_strategy=sample_weight_strategy,
+                models_base_dir=sequence_models_base_dir,
+            )
 
         self.model_name_sequence_disease = model_name_sequence_disease
-        self.sequence_models_base_dir = self.clf_sequence_disease.models_base_dir
+        self.sequence_models_base_dir = self.sequence_classifier.models_base_dir
         # These will be validated and stored on self
         super().__init__(
             fold_id=fold_id,
@@ -195,19 +266,35 @@ class RollupSequenceClassifier(ImmuneClassifierMixin, BaseEstimator, ClassifierM
             gene_locus=gene_locus,
             target_obs_column=target_obs_column,
             sample_weight_strategy=sample_weight_strategy,
-            # directory containing rollup models
-            models_base_dir=self._get_model_base_dir(
-                sequence_models_base_dir=self.sequence_models_base_dir
-            ),
         )
 
+    # Directory containing rollup models:
     @staticmethod
     def _get_model_base_dir(sequence_models_base_dir: Path) -> Path:
         return sequence_models_base_dir / "rollup_models"
 
     @property
+    def models_base_dir(self):
+        # overrides default implementation on ImmuneClassifierMixin,
+        # because _get_model_base_dir signature is different,
+        # and because we don't allow user to pass in an override.
+        return self._get_model_base_dir(
+            sequence_models_base_dir=self.sequence_models_base_dir
+        )
+
+    @property
+    def output_base_dir(self) -> Path:
+        return self._get_output_base_dir(
+            sequence_model_output_base_dir=self.sequence_classifier.output_base_dir
+        )
+
+    @staticmethod
+    def _get_output_base_dir(sequence_model_output_base_dir: Path) -> Path:
+        return sequence_model_output_base_dir / "rollup_models"
+
+    @property
     def classes_(self):
-        return self.clf_sequence_disease.classes_
+        return self.sequence_classifier.classes_
 
     def featurize(self, dataset: anndata.AnnData) -> FeaturizedData:
         """Featurize.
@@ -221,6 +308,7 @@ class RollupSequenceClassifier(ImmuneClassifierMixin, BaseEstimator, ClassifierM
         )
 
         return FeaturizedData(
+            # TODO: Overload FeaturizedData to make X an AnnData, just like SubsetClassifierFeaturizedData child class
             X=dataset,  # Note: violates type
             y=specimen_metadata[self.target_obs_column.value.obs_column_name],
             metadata=specimen_metadata,
@@ -242,52 +330,148 @@ class RollupSequenceClassifier(ImmuneClassifierMixin, BaseEstimator, ClassifierM
         """
         # Run model on each specimen
         # Alternative considered: Run on full data set first, then groupby specimen_label and compute rollup.
-        specimen_results_proba: List[pd.Series] = []
+
+        # Refactored into two steps so we can try many rollup strategies quickly without redoing step 1 every time.
+
+        # Step 1: generate sequence predictions within each specimen
+        sequence_predictions_by_specimen = (
+            self._predict_sequence_probas_all_repertoires(dataset)
+        )
+
+        # Step 2: rollup the sequence predictions
+        return self._rollup_sequence_probas_all_repertoires(
+            sequence_predictions_by_specimen=sequence_predictions_by_specimen,
+            proportiontocut=proportiontocut,
+            strategy=strategy,
+        )
+
+    def _predict_sequence_probas_all_repertoires(
+        self, dataset: anndata.AnnData
+    ) -> Dict[
+        str,
+        Tuple[
+            pd.DataFrame,
+            Union[pd.Series, np.ndarray],
+            Optional[Union[pd.Series, np.ndarray]],
+        ],
+    ]:
+        sequence_predictions_by_specimen = {}
         for specimen_label, specimen_repertoire in helpers.anndata_groupby_obs(
             dataset, "specimen_label", observed=True, sort=False
         ):
-            specimen_results_proba.append(
-                self._predict_proba_single_repertoire(
-                    repertoire=specimen_repertoire,
-                    proportiontocut=proportiontocut,
-                    strategy=strategy,
-                ).rename(specimen_label)
+            sequence_predictions_by_specimen[
+                specimen_label
+            ] = self._predict_sequence_probas_single_repertoire(
+                repertoire=specimen_repertoire
             )
-        specimen_results_proba = pd.DataFrame(specimen_results_proba)
+        return sequence_predictions_by_specimen
 
-        # Return in expected column order
-        return specimen_results_proba[self.classes_]
-
-    def _predict_proba_single_repertoire(
+    def _predict_sequence_probas_single_repertoire(
         self,
         repertoire: anndata.AnnData,
-        proportiontocut: float = 0.1,
-        strategy: str = "trimmed_mean",
-    ) -> pd.Series:
+    ) -> Tuple[
+        pd.DataFrame,
+        Union[pd.Series, np.ndarray],
+        Optional[Union[pd.Series, np.ndarray]],
+    ]:
         """
-        rollup predictions (probabilistic). operates on one specimen only
+        return sequence predictions - operates on one specimen only
         """
-        featurized = self.clf_sequence_disease.featurize(repertoire)
+        featurized = self.sequence_classifier.featurize(repertoire)
 
         # one vector per sequence, of prediction *probabilities* for whether sequence is Covid, HIV, etc or Healthy
         # i.e. already softmaxed
         sequence_class_prediction_probabilities = pd.DataFrame(
-            self.clf_sequence_disease.predict_proba(
+            self.sequence_classifier.predict_proba(
                 featurized.X,
             ),
             index=featurized.sample_names,
-            columns=self.clf_sequence_disease.classes_,
+            columns=self.sequence_classifier.classes_,
+        )
+        sequence_y_labels = featurized.y
+        sequence_weights = featurized.sample_weights
+        return (
+            sequence_class_prediction_probabilities,
+            sequence_y_labels,
+            sequence_weights,
         )
 
-        sequence_weights = featurized.sample_weights
+    def _rollup_sequence_probas_all_repertoires(
+        self,
+        sequence_predictions_by_specimen: Dict[
+            str,
+            Tuple[
+                pd.DataFrame,
+                Union[pd.Series, np.ndarray],
+                Optional[Union[pd.Series, np.ndarray]],
+            ],
+        ],
+        proportiontocut: float,
+        strategy: str,
+    ) -> pd.DataFrame:
+        specimen_results_proba: List[pd.Series] = [
+            self._rollup_sequence_probas_for_single_repertoire(
+                sequence_class_prediction_probabilities=sequence_class_prediction_probabilities,
+                proportiontocut=proportiontocut,
+                strategy=strategy,
+                sequence_weights=sequence_weights,
+            ).rename(specimen_label)
+            for specimen_label, (
+                sequence_class_prediction_probabilities,
+                _,
+                sequence_weights,
+            ) in sequence_predictions_by_specimen.items()
+        ]
+
+        # Return in expected column order
+        specimen_results_proba_combined = pd.DataFrame(specimen_results_proba)
+        return specimen_results_proba_combined[self.classes_]
+
+    def _rollup_sequence_probas_for_single_repertoire(
+        self,
+        sequence_class_prediction_probabilities: pd.DataFrame,
+        proportiontocut: float,
+        strategy: str,
+        sequence_weights: Optional[Union[pd.Series, np.ndarray]],
+    ) -> pd.Series:
+        """
+        rollup predictions (probabilistic). operates on one specimen only
+        """
+
+        # Drop rows (sequences) with all NaN probas, then fill remaining NaNs with 0.
+        # This situation is possible if sequence_classifier is a VJGeneSpecificSequenceClassifier which does not necessarily have a model available for every V-J gene combination.
+        # (If we drop any rows, we also need to drop corresponding entries from sequence_weights if that was supplied.)
+
+        # Identify row indices with all NaN values
+        all_nan_rows = sequence_class_prediction_probabilities.isna().all(axis=1)
+
+        # Remove rows with all NaN values. This should be equivalent to sequence_class_prediction_probabilities.dropna(how="all", axis=0)
+        sequence_class_prediction_probabilities = (
+            sequence_class_prediction_probabilities.loc[~all_nan_rows]
+        )
+
+        # Fillna on the rest
+        sequence_class_prediction_probabilities = (
+            sequence_class_prediction_probabilities.fillna(0.0)
+        )
+
+        if sequence_class_prediction_probabilities.empty:
+            # No rows remaining
+            # Return no predictions
+            return pd.Series(
+                np.nan, index=sequence_class_prediction_probabilities.columns
+            )
+
         if sequence_weights is None:
             sequence_weights = pd.Series(
                 1, index=sequence_class_prediction_probabilities.index
             )
         else:
             # defensive cast to pd.Series
+            # also apply same no-NaN-rows filter
             sequence_weights = pd.Series(
-                sequence_weights, index=sequence_class_prediction_probabilities.index
+                sequence_weights[~all_nan_rows],
+                index=sequence_class_prediction_probabilities.index,
             )
 
         if strategy == "trimmed_mean":
@@ -309,9 +493,9 @@ class RollupSequenceClassifier(ImmuneClassifierMixin, BaseEstimator, ClassifierM
             )
         elif strategy == "entropy_threshold":
             disease_probabilities = _entropy_threshold(
-                sequence_class_prediction_probabilities,
-                sequence_weights,
-                proportiontocut,
+                seq_probs=sequence_class_prediction_probabilities,
+                seq_weights=sequence_weights,
+                max_entropy=proportiontocut,
             )
         else:
             raise ValueError("Invalid rollup strategy")

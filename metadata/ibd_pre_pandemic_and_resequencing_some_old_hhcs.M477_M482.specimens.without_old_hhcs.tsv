@@ -1,0 +1,172 @@
+participant_label	participant_alternative_label	disease	age	sex	ethnicity	participant_description	specimen_label	specimen_alternative_label	specimen_description
+BFI-0010530	Yoni IBD subject 117	Ulcerative colitis		F		IBD cohort from Yoni	M477-S001
+BFI-0010530	Yoni IBD subject 117	Ulcerative colitis		F		IBD cohort from Yoni	M477-S001_CD4
+BFI-0010530	Yoni IBD subject 117	Ulcerative colitis		F		IBD cohort from Yoni	M477-S001_CD8
+BFI-0010531	Yoni IBD subject 118	Crohn's disease		F		IBD cohort from Yoni	M477-S002
+BFI-0010531	Yoni IBD subject 118	Crohn's disease		F		IBD cohort from Yoni	M477-S002_CD4
+BFI-0010531	Yoni IBD subject 118	Crohn's disease		F		IBD cohort from Yoni	M477-S002_CD8
+BFI-0010532	Yoni IBD subject 119	Crohn's disease		F		IBD cohort from Yoni	M477-S003
+BFI-0010532	Yoni IBD subject 119	Crohn's disease		F		IBD cohort from Yoni	M477-S003_CD4
+BFI-0010532	Yoni IBD subject 119	Crohn's disease		F		IBD cohort from Yoni	M477-S003_CD8
+BFI-0010533	Yoni IBD subject 120	Ulcerative colitis		F		IBD cohort from Yoni	M477-S004
+BFI-0010533	Yoni IBD subject 120	Ulcerative colitis		F		IBD cohort from Yoni	M477-S004_CD4
+BFI-0010533	Yoni IBD subject 120	Ulcerative colitis		F		IBD cohort from Yoni	M477-S004_CD8
+BFI-0010534	Yoni IBD subject 121	Ulcerative colitis		F		IBD cohort from Yoni	M477-S005
+BFI-0010534	Yoni IBD subject 121	Ulcerative colitis		F		IBD cohort from Yoni	M477-S005_CD4
+BFI-0010534	Yoni IBD subject 121	Ulcerative colitis		F		IBD cohort from Yoni	M477-S005_CD8
+BFI-0010535	Yoni IBD subject 122	Ulcerative colitis		F		IBD cohort from Yoni	M477-S006
+BFI-0010535	Yoni IBD subject 122	Ulcerative colitis		F		IBD cohort from Yoni	M477-S006_CD4
+BFI-0010535	Yoni IBD subject 122	Ulcerative colitis		F		IBD cohort from Yoni	M477-S006_CD8
+BFI-0010536	Yoni IBD subject 123	Ulcerative colitis		M		IBD cohort from Yoni	M477-S007
+BFI-0010536	Yoni IBD subject 123	Ulcerative colitis		M		IBD cohort from Yoni	M477-S007_CD4
+BFI-0010536	Yoni IBD subject 123	Ulcerative colitis		M		IBD cohort from Yoni	M477-S007_CD8
+BFI-0010537	Yoni IBD subject 124	Crohn's disease		M		IBD cohort from Yoni	M477-S008
+BFI-0010537	Yoni IBD subject 124	Crohn's disease		M		IBD cohort from Yoni	M477-S008_CD4
+BFI-0010537	Yoni IBD subject 124	Crohn's disease		M		IBD cohort from Yoni	M477-S008_CD8
+BFI-0010538	Yoni IBD subject 127	Crohn's disease		M		IBD cohort from Yoni	M477-S009
+BFI-0010538	Yoni IBD subject 127	Crohn's disease		M		IBD cohort from Yoni	M477-S009_CD4
+BFI-0010538	Yoni IBD subject 127	Crohn's disease		M		IBD cohort from Yoni	M477-S009_CD8
+BFI-0010539	Yoni IBD subject 128	Crohn's disease		M		IBD cohort from Yoni	M477-S010
+BFI-0010539	Yoni IBD subject 128	Crohn's disease		M		IBD cohort from Yoni	M477-S010_CD4
+BFI-0010539	Yoni IBD subject 128	Crohn's disease		M		IBD cohort from Yoni	M477-S010_CD8
+BFI-0010540	Yoni IBD subject 129	Crohn's disease		M		IBD cohort from Yoni	M477-S011
+BFI-0010540	Yoni IBD subject 129	Crohn's disease		M		IBD cohort from Yoni	M477-S011_CD4
+BFI-0010540	Yoni IBD subject 129	Crohn's disease		M		IBD cohort from Yoni	M477-S011_CD8
+BFI-0010541	Yoni IBD subject 138	Crohn's disease		F		IBD cohort from Yoni	M477-S012
+BFI-0010541	Yoni IBD subject 138	Crohn's disease		F		IBD cohort from Yoni	M477-S012_CD4
+BFI-0010541	Yoni IBD subject 138	Crohn's disease		F		IBD cohort from Yoni	M477-S012_CD8
+BFI-0010542	Yoni IBD subject 139	Ulcerative colitis		F		IBD cohort from Yoni	M477-S013
+BFI-0010542	Yoni IBD subject 139	Ulcerative colitis		F		IBD cohort from Yoni	M477-S013_CD4
+BFI-0010542	Yoni IBD subject 139	Ulcerative colitis		F		IBD cohort from Yoni	M477-S013_CD8
+BFI-0010543	Yoni IBD subject 140	Ulcerative colitis		F		IBD cohort from Yoni	M477-S014
+BFI-0010543	Yoni IBD subject 140	Ulcerative colitis		F		IBD cohort from Yoni	M477-S014_CD4
+BFI-0010543	Yoni IBD subject 140	Ulcerative colitis		F		IBD cohort from Yoni	M477-S014_CD8
+BFI-0010544	Yoni IBD subject 141	Ulcerative colitis		F		IBD cohort from Yoni	M477-S015
+BFI-0010544	Yoni IBD subject 141	Ulcerative colitis		F		IBD cohort from Yoni	M477-S015_CD4
+BFI-0010544	Yoni IBD subject 141	Ulcerative colitis		F		IBD cohort from Yoni	M477-S015_CD8
+BFI-0010545	Yoni IBD subject 143	Crohn's disease		M		IBD cohort from Yoni	M477-S016
+BFI-0010545	Yoni IBD subject 143	Crohn's disease		M		IBD cohort from Yoni	M477-S016_CD4
+BFI-0010545	Yoni IBD subject 143	Crohn's disease		M		IBD cohort from Yoni	M477-S016_CD8
+BFI-0010546	Yoni IBD subject 145	Ulcerative colitis		F		IBD cohort from Yoni	M477-S017
+BFI-0010546	Yoni IBD subject 145	Ulcerative colitis		F		IBD cohort from Yoni	M477-S017_CD4
+BFI-0010546	Yoni IBD subject 145	Ulcerative colitis		F		IBD cohort from Yoni	M477-S017_CD8
+BFI-0010547	Yoni IBD subject 146	Crohn's disease		F		IBD cohort from Yoni	M477-S018
+BFI-0010547	Yoni IBD subject 146	Crohn's disease		F		IBD cohort from Yoni	M477-S018_CD4
+BFI-0010547	Yoni IBD subject 146	Crohn's disease		F		IBD cohort from Yoni	M477-S018_CD8
+BFI-0010548	Yoni IBD subject 152	Crohn's disease		M		IBD cohort from Yoni	M477-S019
+BFI-0010548	Yoni IBD subject 152	Crohn's disease		M		IBD cohort from Yoni	M477-S019_CD4
+BFI-0010548	Yoni IBD subject 152	Crohn's disease		M		IBD cohort from Yoni	M477-S019_CD8
+BFI-0010549	Yoni IBD subject 154	Healthy/Background		M		IBD cohort from Yoni	M477-S020
+BFI-0010549	Yoni IBD subject 154	Healthy/Background		M		IBD cohort from Yoni	M477-S020_CD4
+BFI-0010549	Yoni IBD subject 154	Healthy/Background		M		IBD cohort from Yoni	M477-S020_CD8
+BFI-0010550	Yoni IBD subject 155	Healthy/Background		M		IBD cohort from Yoni	M477-S021
+BFI-0010550	Yoni IBD subject 155	Healthy/Background		M		IBD cohort from Yoni	M477-S021_CD4
+BFI-0010550	Yoni IBD subject 155	Healthy/Background		M		IBD cohort from Yoni	M477-S021_CD8
+BFI-0010551	Yoni IBD subject 158	Crohn's disease		M		IBD cohort from Yoni	M477-S022
+BFI-0010551	Yoni IBD subject 158	Crohn's disease		M		IBD cohort from Yoni	M477-S022_CD4
+BFI-0010551	Yoni IBD subject 158	Crohn's disease		M		IBD cohort from Yoni	M477-S022_CD8
+BFI-0010552	Yoni IBD subject 159	Ulcerative colitis		M		IBD cohort from Yoni	M477-S023
+BFI-0010552	Yoni IBD subject 159	Ulcerative colitis		M		IBD cohort from Yoni	M477-S023_CD4
+BFI-0010552	Yoni IBD subject 159	Ulcerative colitis		M		IBD cohort from Yoni	M477-S023_CD8
+BFI-0010553	Yoni IBD subject 160	Crohn's disease		F		IBD cohort from Yoni	M477-S024
+BFI-0010553	Yoni IBD subject 160	Crohn's disease		F		IBD cohort from Yoni	M477-S024_CD4
+BFI-0010553	Yoni IBD subject 160	Crohn's disease		F		IBD cohort from Yoni	M477-S024_CD8
+BFI-0010554	Yoni IBD subject 161	Ulcerative colitis		M		IBD cohort from Yoni	M477-S025
+BFI-0010554	Yoni IBD subject 161	Ulcerative colitis		M		IBD cohort from Yoni	M477-S025_CD4
+BFI-0010554	Yoni IBD subject 161	Ulcerative colitis		M		IBD cohort from Yoni	M477-S025_CD8
+BFI-0010555	Yoni IBD subject 162	IND		F		IBD cohort from Yoni	M477-S026
+BFI-0010555	Yoni IBD subject 162	IND		F		IBD cohort from Yoni	M477-S026_CD4
+BFI-0010555	Yoni IBD subject 162	IND		F		IBD cohort from Yoni	M477-S026_CD8
+BFI-0010556	Yoni IBD subject 165	Healthy/Background		M		IBD cohort from Yoni	M477-S027
+BFI-0010556	Yoni IBD subject 165	Healthy/Background		M		IBD cohort from Yoni	M477-S027_CD4
+BFI-0010556	Yoni IBD subject 165	Healthy/Background		M		IBD cohort from Yoni	M477-S027_CD8
+BFI-0010557	Yoni IBD subject 167	Crohn's disease		F		IBD cohort from Yoni	M477-S028
+BFI-0010557	Yoni IBD subject 167	Crohn's disease		F		IBD cohort from Yoni	M477-S028_CD4
+BFI-0010557	Yoni IBD subject 167	Crohn's disease		F		IBD cohort from Yoni	M477-S028_CD8
+BFI-0010558	Yoni IBD subject 168	Ulcerative colitis		F		IBD cohort from Yoni	M477-S029
+BFI-0010558	Yoni IBD subject 168	Ulcerative colitis		F		IBD cohort from Yoni	M477-S029_CD4
+BFI-0010558	Yoni IBD subject 168	Ulcerative colitis		F		IBD cohort from Yoni	M477-S029_CD8
+BFI-0010559	Yoni IBD subject 170	Ulcerative colitis		M		IBD cohort from Yoni	M477-S030
+BFI-0010559	Yoni IBD subject 170	Ulcerative colitis		M		IBD cohort from Yoni	M477-S030_CD4
+BFI-0010559	Yoni IBD subject 170	Ulcerative colitis		M		IBD cohort from Yoni	M477-S030_CD8
+BFI-0010560	Yoni IBD subject 171	Crohn's disease		F		IBD cohort from Yoni	M477-S031
+BFI-0010560	Yoni IBD subject 171	Crohn's disease		F		IBD cohort from Yoni	M477-S031_CD4
+BFI-0010560	Yoni IBD subject 171	Crohn's disease		F		IBD cohort from Yoni	M477-S031_CD8
+BFI-0010561	Yoni IBD subject 172	Healthy/Background		M		IBD cohort from Yoni	M477-S032
+BFI-0010561	Yoni IBD subject 172	Healthy/Background		M		IBD cohort from Yoni	M477-S032_CD4
+BFI-0010561	Yoni IBD subject 172	Healthy/Background		M		IBD cohort from Yoni	M477-S032_CD8
+BFI-0010562	Yoni IBD subject 175	Ulcerative colitis		M		IBD cohort from Yoni	M477-S033
+BFI-0010562	Yoni IBD subject 175	Ulcerative colitis		M		IBD cohort from Yoni	M477-S033_CD4
+BFI-0010562	Yoni IBD subject 175	Ulcerative colitis		M		IBD cohort from Yoni	M477-S033_CD8
+BFI-0010563	Yoni IBD subject 177	Crohn's disease		F		IBD cohort from Yoni	M477-S034
+BFI-0010563	Yoni IBD subject 177	Crohn's disease		F		IBD cohort from Yoni	M477-S034_CD4
+BFI-0010563	Yoni IBD subject 177	Crohn's disease		F		IBD cohort from Yoni	M477-S034_CD8
+BFI-0010564	Yoni IBD subject 178	Crohn's disease		M		IBD cohort from Yoni	M477-S035
+BFI-0010564	Yoni IBD subject 178	Crohn's disease		M		IBD cohort from Yoni	M477-S035_CD4
+BFI-0010564	Yoni IBD subject 178	Crohn's disease		M		IBD cohort from Yoni	M477-S035_CD8
+BFI-0010565	Yoni IBD subject 180	Ulcerative colitis		M		IBD cohort from Yoni	M477-S036
+BFI-0010565	Yoni IBD subject 180	Ulcerative colitis		M		IBD cohort from Yoni	M477-S036_CD4
+BFI-0010565	Yoni IBD subject 180	Ulcerative colitis		M		IBD cohort from Yoni	M477-S036_CD8
+BFI-0010566	Yoni IBD subject 184	Crohn's disease		M		IBD cohort from Yoni	M477-S037
+BFI-0010566	Yoni IBD subject 184	Crohn's disease		M		IBD cohort from Yoni	M477-S037_CD4
+BFI-0010566	Yoni IBD subject 184	Crohn's disease		M		IBD cohort from Yoni	M477-S037_CD8
+BFI-0010567	Yoni IBD subject 185	Crohn's disease		F		IBD cohort from Yoni	M477-S038
+BFI-0010567	Yoni IBD subject 185	Crohn's disease		F		IBD cohort from Yoni	M477-S038_CD4
+BFI-0010567	Yoni IBD subject 185	Crohn's disease		F		IBD cohort from Yoni	M477-S038_CD8
+BFI-0010568	Yoni IBD subject 187	Crohn's disease		F		IBD cohort from Yoni	M477-S039
+BFI-0010568	Yoni IBD subject 187	Crohn's disease		F		IBD cohort from Yoni	M477-S039_CD4
+BFI-0010568	Yoni IBD subject 187	Crohn's disease		F		IBD cohort from Yoni	M477-S039_CD8
+BFI-0010569	Yoni IBD subject 188	Crohn's disease		F		IBD cohort from Yoni	M477-S040
+BFI-0010569	Yoni IBD subject 188	Crohn's disease		F		IBD cohort from Yoni	M477-S040_CD4
+BFI-0010569	Yoni IBD subject 188	Crohn's disease		F		IBD cohort from Yoni	M477-S040_CD8
+BFI-0010570	Yoni IBD subject 189	Crohn's disease		F		IBD cohort from Yoni	M477-S041
+BFI-0010570	Yoni IBD subject 189	Crohn's disease		F		IBD cohort from Yoni	M477-S041_CD4
+BFI-0010570	Yoni IBD subject 189	Crohn's disease		F		IBD cohort from Yoni	M477-S041_CD8
+BFI-0010571	Yoni IBD subject 190	Ulcerative colitis		F		IBD cohort from Yoni	M477-S042
+BFI-0010571	Yoni IBD subject 190	Ulcerative colitis		F		IBD cohort from Yoni	M477-S042_CD4
+BFI-0010571	Yoni IBD subject 190	Ulcerative colitis		F		IBD cohort from Yoni	M477-S042_CD8
+BFI-0010572	Yoni IBD subject 191	Ulcerative colitis		F		IBD cohort from Yoni	M477-S043
+BFI-0010572	Yoni IBD subject 191	Ulcerative colitis		F		IBD cohort from Yoni	M477-S043_CD4
+BFI-0010572	Yoni IBD subject 191	Ulcerative colitis		F		IBD cohort from Yoni	M477-S043_CD8
+BFI-0010573	Yoni IBD subject 192	Healthy/Background		M		IBD cohort from Yoni	M477-S044
+BFI-0010573	Yoni IBD subject 192	Healthy/Background		M		IBD cohort from Yoni	M477-S044_CD4
+BFI-0010573	Yoni IBD subject 192	Healthy/Background		M		IBD cohort from Yoni	M477-S044_CD8
+BFI-0010574	Yoni IBD subject 193	Healthy/Background		F		IBD cohort from Yoni	M477-S045
+BFI-0010574	Yoni IBD subject 193	Healthy/Background		F		IBD cohort from Yoni	M477-S045_CD4
+BFI-0010574	Yoni IBD subject 193	Healthy/Background		F		IBD cohort from Yoni	M477-S045_CD8
+BFI-0010575	Yoni IBD subject 196	Crohn's disease		M		IBD cohort from Yoni	M477-S046
+BFI-0010575	Yoni IBD subject 196	Crohn's disease		M		IBD cohort from Yoni	M477-S046_CD4
+BFI-0010575	Yoni IBD subject 196	Crohn's disease		M		IBD cohort from Yoni	M477-S046_CD8
+BFI-0010576	Yoni IBD subject 198	Ulcerative colitis		F		IBD cohort from Yoni	M477-S047
+BFI-0010576	Yoni IBD subject 198	Ulcerative colitis		F		IBD cohort from Yoni	M477-S047_CD4
+BFI-0010576	Yoni IBD subject 198	Ulcerative colitis		F		IBD cohort from Yoni	M477-S047_CD8
+BFI-0010577	Yoni IBD subject 199	Ulcerative colitis		M		IBD cohort from Yoni	M477-S048
+BFI-0010577	Yoni IBD subject 199	Ulcerative colitis		M		IBD cohort from Yoni	M477-S048_CD4
+BFI-0010577	Yoni IBD subject 199	Ulcerative colitis		M		IBD cohort from Yoni	M477-S048_CD8
+BFI-0010578	Yoni IBD subject 202	Crohn's disease		F		IBD cohort from Yoni	M477-S049
+BFI-0010578	Yoni IBD subject 202	Crohn's disease		F		IBD cohort from Yoni	M477-S049_CD4
+BFI-0010578	Yoni IBD subject 202	Crohn's disease		F		IBD cohort from Yoni	M477-S049_CD8
+BFI-0010579	Yoni IBD subject 204	Ulcerative colitis		F		IBD cohort from Yoni	M477-S050
+BFI-0010579	Yoni IBD subject 204	Ulcerative colitis		F		IBD cohort from Yoni	M477-S050_CD4
+BFI-0010579	Yoni IBD subject 204	Ulcerative colitis		F		IBD cohort from Yoni	M477-S050_CD8
+BFI-0010580	Yoni IBD subject 205	Crohn's disease		M		IBD cohort from Yoni	M477-S051
+BFI-0010580	Yoni IBD subject 205	Crohn's disease		M		IBD cohort from Yoni	M477-S051_CD4
+BFI-0010580	Yoni IBD subject 205	Crohn's disease		M		IBD cohort from Yoni	M477-S051_CD8
+BFI-0010581	Yoni IBD subject 206	Healthy/Background		M		IBD cohort from Yoni	M477-S052
+BFI-0010581	Yoni IBD subject 206	Healthy/Background		M		IBD cohort from Yoni	M477-S052_CD4
+BFI-0010581	Yoni IBD subject 206	Healthy/Background		M		IBD cohort from Yoni	M477-S052_CD8
+BFI-0010582	Yoni IBD subject 207	Healthy/Background		F		IBD cohort from Yoni	M477-S053
+BFI-0010582	Yoni IBD subject 207	Healthy/Background		F		IBD cohort from Yoni	M477-S053_CD4
+BFI-0010582	Yoni IBD subject 207	Healthy/Background		F		IBD cohort from Yoni	M477-S053_CD8
+BFI-0010583	Yoni IBD subject 208	Healthy/Background		M		IBD cohort from Yoni	M477-S054
+BFI-0010583	Yoni IBD subject 208	Healthy/Background		M		IBD cohort from Yoni	M477-S054_CD4
+BFI-0010583	Yoni IBD subject 208	Healthy/Background		M		IBD cohort from Yoni	M477-S054_CD8
+BFI-0010584	Yoni IBD subject 210	Healthy/Background		M		IBD cohort from Yoni	M477-S055
+BFI-0010584	Yoni IBD subject 210	Healthy/Background		M		IBD cohort from Yoni	M477-S055_CD4
+BFI-0010584	Yoni IBD subject 210	Healthy/Background		M		IBD cohort from Yoni	M477-S055_CD8
+BFI-0010585	Yoni IBD subject 211	Healthy/Background		F		IBD cohort from Yoni	M477-S056
+BFI-0010585	Yoni IBD subject 211	Healthy/Background		F		IBD cohort from Yoni	M477-S056_CD4
+BFI-0010585	Yoni IBD subject 211	Healthy/Background		F		IBD cohort from Yoni	M477-S056_CD8
+BFI-0010586	Yoni IBD subject 212	Healthy/Background		F		IBD cohort from Yoni	M477-S057
+BFI-0010586	Yoni IBD subject 212	Healthy/Background		F		IBD cohort from Yoni	M477-S057_CD4
+BFI-0010586	Yoni IBD subject 212	Healthy/Background		F		IBD cohort from Yoni	M477-S057_CD8

@@ -14,9 +14,7 @@ import numpy as np
 
 # %%
 df = pd.read_csv(
-    config.paths.external_raw_data
-    / "immunecode"
-    / "ImmuneCODE-Repertoire-Tags-002.2.tsv",
+    config.paths.metadata_dir / "adaptive" / "ImmuneCODE-Repertoire-Tags-002.2.tsv",
     sep="\t",
 )
 df.shape
@@ -141,7 +139,20 @@ df["Dataset"].value_counts()
 
 # %%
 # Maybe we should go further and guarantee that not HIV? We have that info for COVID-19-ISB only
-# But we can avoid that, because we are going to use Covid-vs-healthy model only.
+# Avoiding this for now.
+
+# %%
+# Per the preprint, the -Adaptive cohort may have cDNA in addition to gDNA: https://www.researchsquare.com/article/rs-51964/v1 table 2
+# (Although this might just mean that the samples were used for gDNA sequencing and also for cDNA MIRA?)
+# The other cohorts are all gDNA, I believe
+# To be consistent / safe, we will remove any possibility of cDNA by removing the (already very few) -Adaptive cohort entries
+df = df[df["Dataset"] != "COVID-19-Adaptive"].assign(
+    sequencing_type="gDNA", locus="TCRB"
+)
+df.shape
+
+# %%
+df["Dataset"].value_counts()
 
 # %%
 
@@ -161,6 +172,10 @@ df["disease_subtype"] = df[["Dataset", "hospitalized", "icu_admit"]].apply(
     lambda row: " - ".join(row.dropna()), axis=1
 )
 df["disease_subtype"]
+
+# %%
+
+# %%
 
 # %%
 
@@ -222,6 +237,8 @@ df = df[
         "age",
         "sex",
         "ethnicity_condensed",
+        "sequencing_type",
+        "locus",
     ]
 ]
 df
@@ -229,7 +246,8 @@ df
 # %%
 df.to_csv(
     config.paths.metadata_dir
-    / "generated.external_cohorts.adaptive_covid_tcr.specimens.tsv",
+    / "adaptive"
+    / "generated.immunecode_covid_tcr.specimens.tsv",
     sep="\t",
     index=None,
 )

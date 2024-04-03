@@ -31,10 +31,10 @@ from malid import config, helpers
 
 # %%
 client = Client(
-    scheduler_port=61084,
-    dashboard_address=":61083",
+    scheduler_port=config.dask_scheduler_port,
+    dashboard_address=config.dask_dashboard_address,
     processes=True,
-    n_workers=7,
+    n_workers=config.dask_n_workers,
     threads_per_worker=8,
     memory_limit="auto",  # TOTAL_MEMORY * min(1, nthreads / total_nthreads)
     worker_dashboard_address=":0",  # start worker dashboards on random ports

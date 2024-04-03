@@ -1,23 +1,85 @@
 # Mal-ID [![codecov](https://codecov.io/gh/maximz/malid/branch/master/graph/badge.svg)](https://codecov.io/gh/maximz/malid)
 
-**Preprint**: [Disease diagnostics using machine learning of immune receptors](https://www.biorxiv.org/content/10.1101/2022.04.26.489314v3)
+**Preprint**: [Disease diagnostics using machine learning of immune receptors](https://www.biorxiv.org/content/10.1101/2022.04.26.489314)
 
-## Install
+## Installation, part 1: base environment
 
-### GPU conda environment setup (skip if CPU virtualenv only)
+### Production: GPU conda environment (preferred)
+
+If you don't already have Conda installed:
+
+```bash
+# install Mambaforge (https://github.com/conda-forge/miniforge#mambaforge)
+curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
+bash "Mambaforge-$(uname)-$(uname -m).sh" -b -p "$HOME/miniconda"
+
+source ~/miniconda/bin/activate
+conda init
+# log out and log back in
+```
+
+If you do already have Conda installed, just install mamba:
 
 ```bash
 # Install mamba to replace conda
 conda install mamba -n base -c conda-forge
+```
 
+Now create a conda environment:
+
+```bash
 # Create env
-mamba create -f environment.yml
+# Based on https://docs.rapids.ai/install and https://github.com/rapidsai/cuml/blob/branch-23.06/conda/environments/all_cuda-118_arch-x86_64.yaml
+mamba create -n cuda-env-py39 -c conda-forge python=3.9 -y;
 
 # Activate env
-conda activate cuda-env-py39
-which nvcc # ~/anaconda3/envs/cuda-env-py39/bin/nvcc
-nvcc --version # Cuda compilation tools, release 11.5, V11.5.119
+conda activate cuda-env-py39;
 
+which nvcc # should be blank - confirms that systemwide cuda env isn't visible
+
+# Install environment.
+# Somehow, putting this in an `environment.yml` and running `mamba env create -f environment.yml` breaks the solver.
+# Based on https://docs.rapids.ai/install and https://github.com/rapidsai/cuml/blob/branch-23.06/conda/environments/all_cuda-118_arch-x86_64.yaml
+# Install cudatoolkit along with cuda and cudnn libraries (don't use system ones)
+# cudnn: Find cudnn version based on tensorflow GPU compatibility chart https://www.tensorflow.org/install/source#gpu and what's available at conda-forge (https://anaconda.org/conda-forge/cudnn/files). See also these docs: https://docs.nvidia.com/deeplearning/cudnn/support-matrix/index.html
+# hdf5: version requirement comes from libgdal
+# graphviz, scanpy also installed
+mamba install \
+    -c rapidsai \
+    -c conda-forge \
+    -c nvidia \
+    cuda=11.8 \
+    cuda-nvcc=11.8 \
+    cuda-python=11.8 \
+    'conda-forge::cupy=12.1*' \
+    cuda-version=11.8 \
+    'conda-forge::cudnn=8.8*' \
+    cudatoolkit=11.8 \
+    rapids=23.06 \
+    'gcc_linux-64=13.1.0' \
+    'librmm==23.6.*' \
+    c-compiler \
+    cxx-compiler \
+    'dask-cuda==23.6.*' \
+    'dask-cudf==23.6.*' \
+    'conda-forge::h5py=3.7.0' \
+    'conda-forge::hdf5=1.12.1' \
+    'conda-forge::python-graphviz' 'conda-forge::graphviz' \
+    'conda-forge::python-snappy' 'conda-forge::snappy' \
+    'bioconda::seqkit' \
+    -y;
+
+# We also need a specific Fortran compiler version for glmnet (but looks like we can have libgfortran5 installed simultaneously). Specifically, we need libgfortran.so.4.
+# Including this package above breaks the solver, so we have to install separately. This will also downgrade libgfortran-ng to 7.5.0.
+# mamba install -c conda-forge 'libgfortran4=7.5.0' -y;
+
+# Update: the above line no longer works on its own either. We have to install directly. URL pulled from https://anaconda.org/conda-forge/libgfortran4/files:
+mamba install 'https://anaconda.org/conda-forge/libgfortran4/7.5.0/download/linux-64/libgfortran4-7.5.0-h14aa051_20.tar.bz2'
+
+
+# Check again
+which nvcc # ~/anaconda3/envs/cuda-env-py39/bin/nvcc
+nvcc --version # Cuda compilation tools, release 11.8, V11.8.89
 ```
 
 Add this to `~/.bashrc`:
@@ -44,12 +106,53 @@ source ~/.bashrc
 conda activate cuda-env-py39
 ```
 
-### Install requirements
+### Production: CPU-only conda environment (alternative)
+
+This is for alternative production environments without GPUs. We still use conda though, to avoid reliance on system-wide dependencies. Otherwise it's basically the same as the local development environment below.
 
 ```bash
+# see instructions above to install mamba
+mamba create -n cuda-env-py39 -c conda-forge python=3.9 gcc gxx gfortran -y;
+
+conda activate cuda-env-py39;
+
+# see notes above about why this command is necessary:
+mamba install 'https://anaconda.org/conda-forge/libgfortran4/7.5.0/download/linux-64/libgfortran4-7.5.0-h14aa051_20.tar.bz2';
+```
+
+### Local development: CPU-only virtualenv through pyenv
+
+```bash
+brew update && brew install pyenv; # on Mac
+
+pyenv install 3.9
+pyenv global 3.9
+git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+
+echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+# eval "$(pyenv virtualenv-init -)"
+# the above makes every shell command very slow
+# instead, try this (https://github.com/pyenv/pyenv-virtualenv/issues/259#issuecomment-1007432346):
+echo 'eval "$(pyenv virtualenv-init - | sed s/precmd/chpwd/g)"' >> ~/.zshrc
+exec "$SHELL" # restart shell
+
+pyenv virtualenv 3.9 malid-3.9
+echo 'malid-3.9' > .python-version
+pyenv version # malid-3.9
+```
+
+## Installation, part two: core requirements
+
+Run this on both CPU and GPU environments -- i.e. regardless of whether you used Conda or Pyenv above.
+
+**If using CPU, uncomment the `requirements_cpu.txt` line, and comment out the `requirements_gpu.txt` line.**
+
+```bash
+which pip # make sure this points where you expect it: either your conda or pyenv environment
 pip install --upgrade pip wheel
 
 # General requirements (clone github repos into a sibling directory):
+rm -r ../cuda-env-py39-pkgs
 mkdir -p ../cuda-env-py39-pkgs
 pip install -r requirements.txt --src ../cuda-env-py39-pkgs
 
@@ -63,31 +166,49 @@ pip install -r requirements_gpu.txt --src ../cuda-env-py39-pkgs
 pip install -r requirements_extra.txt --src ../cuda-env-py39-pkgs
 
 pip check
-## Ignore cupy-cuda115 - handled by cupy conda:
-# dask-cudf 22.4.0 requires cupy-cuda115, which is not installed.
-# cudf 22.4.0 requires cupy-cuda115, which is not installed.
-## Not sure if this is going to be an issue:
-# dask-cudf 22.4.0 has requirement pandas<1.4.0dev0,>=1.0, but you have pandas 1.4.3.
-# cudf 22.4.0 has requirement pandas<1.4.0dev0,>=1.0, but you have pandas 1.4.3.
-## Ignore this one - we deliberately upgraded dask version in pip beyond what was installed through conda with rapidsai (rapidsai overall version is constrained by protobuf version, which is constrained by tensorflow):
-# dask-cudf 22.4.0 has requirement dask==2022.03.0, but you have dask 2022.6.1.
-# dask-cudf 22.4.0 has requirement distributed==2022.03.0, but you have distributed 2022.6.1.
-# dask-cuda 22.4.0 has requirement dask==2022.03.0, but you have dask 2022.6.1.
-# dask-cuda 22.4.0 has requirement distributed==2022.03.0, but you have distributed 2022.6.1.
+# In the preferred production GPU environment, we expect:
+# cudf 23.6.1 requires cupy-cuda11x>=12.0.0, which is not installed.
+# cugraph 23.6.2 requires cupy-cuda11x>=12.0.0, which is not installed.
+# cuml 23.6.0 requires cupy-cuda11x>=12.0.0, which is not installed.
+# dask-cudf 23.6.1 requires cupy-cuda11x>=12.0.0, which is not installed.
+# referencing 0.30.0 requires attrs>=22.2.0, but you have attrs 21.4.0 which is incompatible.
+
+# The first four are expected errors (cupy 12.0 is already installed via conda, but pip isn't aware of that), but the attrs error is unexpected -- TODO: look into this.
 
 # Add kernel to system-wide jupyter notebook
 ipython kernel install --name py39-cuda-env --user
 # Installed kernelspec py39-cuda-env in ~/.local/share/jupyter/kernels/py39-cuda-env
+```
 
-# download PyIR reference data
-pyir setup
+## Installation, part three: Mal-ID package
 
-# install local package
-pip install -e .
+```bash
+# Setup data dir
+# on cluster:
+ln -s /mnt/lab_data/kundaje/projects/malid data
+# or locally:
+# mkdir -p data
 
-# install local fonts
-cp /mnt/lab_data/kundaje/projects/malid/fonts/*.ttf $HOME/anaconda3/envs/cuda-env-py39/lib/python3.9/site-packages/matplotlib/mpl-data/fonts/ttf
+# Download PyIR reference data
+# The first time we do this, we can fetch the data from IMGT - which is slow and has frequent timeouts:
+# pyir setup
+# rm -r data/pyir_cache
+# mkdir -p data/pyir_cache/germlines
+# cp -r "$(python -c 'import site; print(site.getsitepackages()[0])')/crowelab_pyir/data" data/pyir_cache
+
+# But in practice, let's copy our saved version of the PyIR reference data
+# (make sure to have the conda environment cuda-env-py39 active here still)
+echo "$(python -c 'import crowelab_pyir; from pathlib import Path; print(Path(crowelab_pyir.__file__).parent / "data")')"
+cp -r data/pyir_cache/germlines "$(python -c 'import crowelab_pyir; from pathlib import Path; print(Path(crowelab_pyir.__file__).parent / "data")')"
+
+# Install fonts on cluster
+# (make sure to have the conda environment cuda-env-py39 active here still)
+echo "$(python -c 'import matplotlib; print(matplotlib.get_data_path())')/fonts/ttf"
+cp data/fonts/*.ttf "$(python -c 'import matplotlib; print(matplotlib.get_data_path())')/fonts/ttf"
 python -c 'import matplotlib.font_manager; matplotlib.font_manager._load_fontmanager(try_read_cache=False)'
+
+# Install local package
+pip install -e .
 
 # Run all tests
 pytest tests/test_dependencies.py # confirm core dependencies properly installed
@@ -96,6 +217,7 @@ pytest --gpu # unless CPU only
 
 # Install pre-commit (see Development section below)
 conda deactivate
+pip install pre-commit
 pre-commit install
 
 # Snapshot resulting conda environment (unless CPU virtualenv):
@@ -117,7 +239,7 @@ grep -rl "py37-cuda-env" . --exclude-dir=.git | xargs sed -i "" -e 's/py37-cuda-
 grep -rl "cuda-env-py37" . --exclude-dir=.git | xargs sed -i "" -e 's/cuda-env-py37/cuda-env-py39/g'
 ```
 
-### Install R kernel too
+## Installation, optional extra: install R kernel too
 
 ```bash
 conda create -n r-v41
@@ -230,14 +352,45 @@ git range-diff @{u} @{1} @
 
 When ready: `git push --force origin my-branch-name` to save your changes to the Github copy too.
 
+Monitor Github Actions CI jobs:
+
+```bash
+gh run list
+gh run watch
+
+# Sometimes merging to master sets off a cascade of Dependabot PR Github Actions runs.
+# Here's how to cancel them all:
+gh run list --json databaseId  -q '.[].databaseId' | xargs -IID gh run cancel ID
+```
+
+### Jupyter Lab extensions
+
+Several extensions have automatically be installed through pip: Jupytext (see above) and the Jupyter Lab code formatter, which creates a toolbar button that runs Black on your notebook.
+
+Some extra manual configuration is required for the code formatter extension:
+
+In the Jupyter Lab menu bar, go to: "Settings" > "Settings Editor" > "JSON Settings Editor" (top right) > "Jupyterlab Code Formatter". Under "User Preferences", add:
+
+```json
+{
+    "preferences": {
+        "default_formatter": {
+            "python": "black",
+            "R": "styler"
+        }
+    }
+}
+```
+
 ## Configuration
 
 ### Modeling feature flags
 
 In `config.py`:
 
-- `default_embedder`: language model to use. Or override with `EMBEDDER_TYPE` environment variable, which accepts `name` property values from any embedder.
-- `classification_targets`
+- `_default_dataset_version` and `_default_cross_validation_split_strategy`: which data to use
+- `_default_embedder`: language model to use. Or override with `EMBEDDER_TYPE` environment variable, which accepts `name` property values from any embedder.
+- `_default_classification_targets`
 - `sequence_identity_thresholds` (for model2)
 - `gene_loci_used` (include BCR, TCR, or both)
 - `metamodel_base_model_names` (base model versions used in metamodel)
@@ -254,11 +407,12 @@ To create all the necessary directories (including intermediates -- this is like
 
 To add new diseases, modify:
 
+- `assemble_etl_metadata.ipynb`
 - `etl.ipynb`
-- `helpers.py`'s disease list
-- `rm -r out && mkdir -p out`
-- `config.py`'s `subtypes_keep`, `diseases_to_keep_all_subtypes`, and `immunodeficiency_diseases`
+- `datamodels.py`'s disease list
+- `datamodels.CrossValidationSplitStrategy`'s `diseases_to_keep_all_subtypes` and `subtypes_keep`
 - `datamodels.TargetObsColumnEnum` and `config.classification_targets`
+- `rm -r out && mkdir -p out`
 - `config.py`'s `dataset_version`, then run `python scripts/make_dirs.py`
 
 ## Design
@@ -279,20 +433,28 @@ Embedded sequence vectors coming from a language model are stored in AnnData obj
 
 BCR and TCR sequences are stored together in Parquet, but pass through separate language model embeddings and land in separate AnnData objects. This is because the two types of sequences are selected to bind to different targets (antibodies can bind almost any epitope structure, whereas TCRs bind peptides in the context of MHC). We expect correlations within BCRs and correlations within TCRs, not between the two.
 
-These AnnData objects are further divided by cross validation folds: `fold_id` can be 0, 1, or 2, and `fold_label` can be `train_smaller`, `validation`, or `test`. There's also a special `fold_id=-1` "global" fold that does not have a `test` set. The data is instead used in the other two fold labels; the `train_smaller` to `validation` proportion is the same as for other fold IDs, but both sets are larger than usual.
+These AnnData objects are further divided by cross validation folds: `fold_id` can be 0, 1, or 2, and `fold_label` can be `train_smaller` (also further divided into `train_smaller1` and `train_smaller2`), `validation`, or `test`. There's also a special `fold_id=-1` "global" fold that does not have a `test` set. The data is instead used in the other two fold labels; the `train_smaller` to `validation` proportion is the same as for other fold IDs, but both sets are larger than usual.
 
 ### Models
 
 We train all the models using the AnnData objects divided into cross validation folds. (We do this so that all models get exactly the same sets of sequences - even though some models will ignore `.X` and only use `.obs`.)
 
-![Models](bcr_tcr_models.png)
-
-
 ## Runbook, for a single embedder
 
-### ETL and first embedding
+These environment variables are available to override the defaults in `config.py`:
 
-This will use default_embedder from `config.py`. The first ETL steps are not embedder-specific.
+- `MALID_DATASET_VERSION`
+- `MALID_CV_SPLIT`
+- `EMBEDDER_TYPE`
+- `MALID_DISABLE_IN_MEMORY_CACHE` (disables in-memory LRU cache of sequence embedding anndatas)
+
+### ETL
+
+(These ETL steps are not embedder-specific.)
+
+Add Boydlab participant tables directory paths to `notebooks/etl.ipynb`.
+
+Run the instructions in `adaptive_runbook.md` and `notebooks/airr_external_data/readme.md`. Confirm that the CDR1/2/3 format matches our data, e.g. no prefix and suffix in CDR3.
 
 ```bash
 # rm -r and mkdir -p the config.py paths
@@ -309,51 +471,89 @@ python scripts/get_tcr_v_gene_annotations.py;
 # ETL output is not embedding type-specific, so it's just written to `out/`, rather than an embedding type-specific subdirectory.
 
 ./run_notebooks.sh \
+    notebooks/assemble_etl_metadata.ipynb \
+    notebooks/airr_external_data/covid_tcr_immunecode_metadata.ipynb \
+    notebooks/airr_external_data/adaptive_cohorts.metadata.ipynb \
+    notebooks/airr_external_data/metadata_per_patient.ipynb \
+    notebooks/airr_external_data/metadata_shomuradova.ipynb \
+    notebooks/airr_external_data/metadata_britanova.ipynb \
+    notebooks/airr_external_data/combine_external_cohort_metadata.ipynb \
     notebooks/etl.ipynb \
     notebooks/participant_specimen_disease_map.ipynb \
     notebooks/read_counts_per_specimen.ipynb \
     notebooks/get_all_v_genes.ipynb; # generates a list of all observed V genes in our dataset so we can add V gene dummy variables to our models
 
+# Review out/reads_per_specimen_and_isotype.tsv carefully.
+
 ############
 
-# Sample sequences
+# Narrow down from "all data" to "data that has survived quality filters and has been subsampled".
+
+# Apply QC filters and downsample to roughly one sequence per clone per specimen.
+# (It's not exactly that. See this notebook malid/sample_sequences.py for details.)
 ./run_notebooks.sh notebooks/sample_sequences.ipynb;
 
+# Review log messages carefully: grep 'malid.sample_sequences' notebooks/sample_sequences.ipynb
+```
 
-## Make CV splits, subsetting to "peak" dataset only (as defined in config.py):
-# (We will use second-stage blending meta-model -- requires splitting training set into train-smaller + validation sets)
+### Narrow down to data for a particular cross validation split strategy
+
+All sections from here on are specific to the currently active cross validation split strategy, configured in `malid/config.py`. This determines which samples are included in the cross-validation training and testing sets.
+
+Cross valdiation split strategies include:
+
+- `CrossValidationSplitStrategy.in_house_peak_disease_timepoints`: default, 3 folds
+- `CrossValidationSplitStrategy.in_house_peak_disease_leave_one_cohort_out`: one single fold with specific study names in the hold-out test set
+- `CrossValidationSplitStrategy.adaptive_peak_disease_timepoints`: 3 folds, like the default but for Adaptive cohorts (TCR only)
+- `CrossValidationSplitStrategy.adaptive_peak_disease_timepoints_leave_some_cohorts_out`: one single fold with specific study names in the training set and the hold-out test set
+
+### Make cross validation folds
+
+Now, we will narrow down from "data that has survived quality filters and has been subsampled", to "data that has been further selected for the currently selected cross validation split strategy", which is defined in `malid/config.py`.
+
+```bash
+# Make CV splits, subsetting to specimens for the currently selected cross validation split strategy, such as "in-house samples at peak disease timepoints only".
+# This will create train/validation/test splits, along with a global fold that does not have a test set. (It's actually a bit more granular than that; see this notebook for more details.)
 ./run_notebooks.sh notebooks/make_cv_folds.ipynb;
 ```
 
-### Fine-tuning
+Review `out/$CROSS_VALIDATION_SPLIT_STRATEGY_NAME/all_data_combined.participants_by_disease_subtype.tsv` carefully.
 
-Fine tune UniRep separately for each fold, using a subset of train-smaller set (choosing the training epoch with best performance against a subset of validation set).
+### Prepare for embedding
+
+Review embedder selection in malid/config.py. It determines the base model and the sequence regions to be embedded (e.g. CDR1+2+3).
+
+Then make the directories: `python scripts/make_dirs.py`
+
+### Fine-tune the language model, if enabled in `config.py`
+
+This will use the default embedder configured in `malid/config.py`.
+
+Fine tune a language model separately for each fold, using a subset of train-smaller set (choosing the training epoch with best performance against a subset of validation set).
 
 ```bash
-# now change config.py to have embedder be "unirep_fine_tuned"
-
-# then make the directories:
-python scripts/make_dirs.py
-
-# Run fine-tuning with CDR123 and CDR3 only:
-# python scripts/fine_tune_unirep.py # Run them all
+## Run fine-tuning on all folds and gene loci:
+# python scripts/fine_tune_language_model.py
 # You can also override --num_epochs, which defaults to 40.
-# Split up between machines:
-python scripts/fine_tune_unirep.py --locus BCR --fold_id 0 2>&1 | tee "data/logs/fine_tune_unirep.fold0.bcr.log"
-python scripts/fine_tune_unirep.py --locus TCR --fold_id 0 2>&1 | tee "data/logs/fine_tune_unirep.fold0.tcr.log"
-#
-python scripts/fine_tune_unirep.py --locus BCR --fold_id 1 2>&1 | tee "data/logs/fine_tune_unirep.fold1.bcr.log"
-python scripts/fine_tune_unirep.py --locus TCR --fold_id 1 2>&1 | tee "data/logs/fine_tune_unirep.fold1.tcr.log"
-#
-python scripts/fine_tune_unirep.py --locus BCR --fold_id 2 2>&1 | tee "data/logs/fine_tune_unirep.fold2.bcr.log"
-python scripts/fine_tune_unirep.py --locus TCR --fold_id 2 2>&1 | tee "data/logs/fine_tune_unirep.fold2.tcr.log"
 
-python scripts/fine_tune_unirep.py --locus BCR --fold_id -1 2>&1 | tee "data/logs/fine_tune_unirep.globalfold.bcr.log"
-python scripts/fine_tune_unirep.py --locus TCR --fold_id -1 2>&1 | tee "data/logs/fine_tune_unirep.globalfold.tcr.log"
+# Or, split up between machines:
+python scripts/fine_tune_language_model.py --locus BCR --fold_id 0 2>&1 | tee "data/logs/fine_tune_language_model.fold0.bcr.log"
+python scripts/fine_tune_language_model.py --locus TCR --fold_id 0 2>&1 | tee "data/logs/fine_tune_language_model.fold0.tcr.log"
+#
+python scripts/fine_tune_language_model.py --locus BCR --fold_id 1 2>&1 | tee "data/logs/fine_tune_language_model.fold1.bcr.log"
+python scripts/fine_tune_language_model.py --locus TCR --fold_id 1 2>&1 | tee "data/logs/fine_tune_language_model.fold1.tcr.log"
+#
+python scripts/fine_tune_language_model.py --locus BCR --fold_id 2 2>&1 | tee "data/logs/fine_tune_language_model.fold2.bcr.log"
+python scripts/fine_tune_language_model.py --locus TCR --fold_id 2 2>&1 | tee "data/logs/fine_tune_language_model.fold2.tcr.log"
+
+python scripts/fine_tune_language_model.py --locus BCR --fold_id -1 2>&1 | tee "data/logs/fine_tune_language_model.globalfold.bcr.log"
+python scripts/fine_tune_language_model.py --locus TCR --fold_id -1 2>&1 | tee "data/logs/fine_tune_language_model.globalfold.tcr.log"
+
+# Some embedders can be monitored with Tensorboard:
+tensorboard --logdir="$(python -c 'import malid.config; print(malid.config.paths.fine_tuned_embedding_dir)')" --port=$PORT;
 
 # Extract parameters at epoch with best validation loss:
 ./run_notebooks.sh notebooks/fine_tune.analyze_over_epochs.ipynb;
-
 
 # Fetch uniref 50 raw data
 wget -O - https://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref50/README # print readme to describe uniref data
@@ -362,56 +562,53 @@ wget -O ./data/uniref50.fasta.gz  https://ftp.uniprot.org/pub/databases/uniprot/
 
 # Assess perplexity/cross validation loss on uniref50 + TCR/BCR sequences
 ./run_notebooks.sh notebooks/catastrophic_forgetting.ipynb;
-
-
-## Run CDR1+2+3 embedding with this fine-tuned language model. Then scale resulting anndatas.
-
-# Run on all folds and loci:
-# python scripts/run_embedding.fine_tuned.py # (TODO: Reenable running non-fine-tuned version)
-# python scripts/scale_anndatas_created_with_finetuned_embedding.py
-
-# OR split up between machines:
-python scripts/run_embedding.fine_tuned.py --locus BCR --fold_id 0 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold0.bcr.log"
-python scripts/scale_anndatas_created_with_finetuned_embedding.py --locus BCR --fold_id 0 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold0.bcr.log"
-
-python scripts/run_embedding.fine_tuned.py --locus TCR --fold_id 0 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold0.tcr.log"
-python scripts/scale_anndatas_created_with_finetuned_embedding.py --locus TCR --fold_id 0 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold0.tcr.log"
-
-#
-
-python scripts/run_embedding.fine_tuned.py --locus BCR --fold_id 1 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold1.bcr.log"
-python scripts/scale_anndatas_created_with_finetuned_embedding.py --locus BCR --fold_id 1 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold1.bcr.log"
-
-python scripts/run_embedding.fine_tuned.py --locus TCR --fold_id 1 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold1.tcr.log"
-python scripts/scale_anndatas_created_with_finetuned_embedding.py --locus TCR --fold_id 1 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold1.tcr.log"
-
-#
-
-python scripts/run_embedding.fine_tuned.py --locus BCR --fold_id 2 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold2.bcr.log"
-python scripts/scale_anndatas_created_with_finetuned_embedding.py --locus BCR --fold_id 2 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold2.bcr.log"
-
-python scripts/run_embedding.fine_tuned.py --locus TCR --fold_id 2 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold2.tcr.log"
-python scripts/scale_anndatas_created_with_finetuned_embedding.py --locus TCR --fold_id 2 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold2.tcr.log"
-
-#
-
-python scripts/run_embedding.fine_tuned.py --locus BCR --fold_id -1 2>&1 | tee "data/logs/run_embedding.fine_tuned.globalfold.bcr.log"
-python scripts/scale_anndatas_created_with_finetuned_embedding.py --locus BCR --fold_id -1 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.globalfold.bcr.log"
-
-python scripts/run_embedding.fine_tuned.py --locus TCR --fold_id -1 2>&1 | tee "data/logs/run_embedding.fine_tuned.globalfold.tcr.log"
-python scripts/scale_anndatas_created_with_finetuned_embedding.py --locus TCR --fold_id -1 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.globalfold.tcr.log"
 ```
 
-### Train and analyze models
+### Run off-the-shelf or fine-tund language model
+
+Create embeddings with the configured language model, then scale the resulting anndatas:
 
 ```bash
-## Generate isotype proportion counts per specimen. This is loaded as metadata by helpers.py when running all models below.
-./run_notebooks.sh notebooks/isotype_stats.ipynb;
+# Run on all folds and loci:
+# python scripts/run_embedding.py
+# python scripts/scale_embedding_anndatas.py
 
-################
+# OR split up between machines:
+python scripts/run_embedding.py --locus BCR --fold_id 0 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold0.bcr.log"
+python scripts/scale_embedding_anndatas.py --locus BCR --fold_id 0 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold0.bcr.log"
 
+python scripts/run_embedding.py --locus TCR --fold_id 0 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold0.tcr.log"
+python scripts/scale_embedding_anndatas.py --locus TCR --fold_id 0 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold0.tcr.log"
 
-## Model 1: Repertoire statistics classifiers, for Healthy-vs-Sick classification:
+#
+
+python scripts/run_embedding.py --locus BCR --fold_id 1 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold1.bcr.log"
+python scripts/scale_embedding_anndatas.py --locus BCR --fold_id 1 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold1.bcr.log"
+
+python scripts/run_embedding.py --locus TCR --fold_id 1 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold1.tcr.log"
+python scripts/scale_embedding_anndatas.py --locus TCR --fold_id 1 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold1.tcr.log"
+
+#
+
+python scripts/run_embedding.py --locus BCR --fold_id 2 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold2.bcr.log"
+python scripts/scale_embedding_anndatas.py --locus BCR --fold_id 2 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold2.bcr.log"
+
+python scripts/run_embedding.py --locus TCR --fold_id 2 2>&1 | tee "data/logs/run_embedding.fine_tuned.fold2.tcr.log"
+python scripts/scale_embedding_anndatas.py --locus TCR --fold_id 2 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.fold2.tcr.log"
+
+#
+
+python scripts/run_embedding.py --locus BCR --fold_id -1 2>&1 | tee "data/logs/run_embedding.fine_tuned.globalfold.bcr.log"
+python scripts/scale_embedding_anndatas.py --locus BCR --fold_id -1 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.globalfold.bcr.log"
+
+python scripts/run_embedding.py --locus TCR --fold_id -1 2>&1 | tee "data/logs/run_embedding.fine_tuned.globalfold.tcr.log"
+python scripts/scale_embedding_anndatas.py --locus TCR --fold_id -1 2>&1 | tee "data/logs/scale_anndatas_created_with_finetuned_embedding.globalfold.tcr.log"
+```
+
+### Train and analyze base models
+
+```bash
+## Model 1: Repertoire statistics classifiers:
 # Compute repertoire-level statistics, then run classifiers on them, using same fold splits as in modeling above.
 # Train new repertoire stats model on train_smaller too, first evaluating on validation set, then evaluating on test set (with and without tuning on validation set)
 # Feature standardization is built-in.
@@ -422,137 +619,105 @@ python scripts/train_repertoire_stats_models.py 2>&1 | tee "data/logs/train_repe
     notebooks/summary.repertoire_stats_classifiers.ipynb \
     notebooks/interpret_model1.ipynb;
 
+###########
+
 ## Model 2: Convergent sequence cluster classifiers for disease classification
 # Run convergent clustering classifiers on train-smaller too, so that comparable to our models above, along with tuning on validation set.
 # train on all folds, loci, and targets
 # or pass in specific settings, see: python scripts/train_convergent_clustering_models.py --help
 # for example: python scripts/train_convergent_clustering_models.py --target_obs_column "disease" --n_jobs 8
-# note that --n_jobs here corresponds to the parallelization level for p-value threshold tuning
+# Note that --n_jobs here corresponds to the parallelization level for p-value threshold tuning.
+# For larger datasets, reduce the n_jobs parallelization level to reduce memory pressure.
 python scripts/train_convergent_clustering_models.py --n_jobs 8 2>&1 | tee "data/logs/train_convergent_clustering_models.log";
 ./run_notebooks.sh \
     notebooks/analyze_convergent_clustering_models.ipynb \
     notebooks/convergent_clustering_models.tune_model_decision_thresholds_on_validation_set.ipynb \
     notebooks/summary.convergent_sequence_clusters.ipynb;
 
+###########
+
 ## Benchmark: Exact matches classifier.
-# Train on disease only.
-# note that --n_jobs here corresponds to the parallelization level for p-value threshold tuning
-python scripts/train_exact_matches_models.py --target_obs_column "disease" --n_jobs 8 2>&1 | tee "data/logs/train_exact_matches_models.log";
+# Train on disease task only.
+# Note that --n_jobs here corresponds to the parallelization level for p-value threshold tuning.
+# For larger datasets, reduce the n_jobs parallelization level to reduce memory pressure.
+python scripts/train_exact_matches_models.py \
+    --target_obs_column "disease" \
+    --n_jobs 8 2>&1 | tee "data/logs/train_exact_matches_models.log";
 ./run_notebooks.sh notebooks/analyze_exact_matches_models.ipynb;
 
+###########
+
 ## Model 3:
-# Train all-noisy-labels language model classifiers on training set with validation set removed
-python scripts/train_sequence_model.py --help;
-# Split targets into separate jobs on different machines:
-for TARGET_OBS_COLUMN in $(python scripts/target_obs_column_names.py)
-do
-    echo "python scripts/train_sequence_model.py --target_obs_column \"$TARGET_OBS_COLUMN\" 2>&1 | tee \"data/logs/train_sequence_model.$TARGET_OBS_COLUMN.log\""
-done
-unset TARGET_OBS_COLUMN;
+# Our example code below is for "disease" target only.
+# We want to run this for all target_obs_columns. We usually split into separate jobs.
+# You could construct a loop in bash like so:
+# for TARGET_OBS_COLUMN in $(python scripts/target_obs_column_names.py)
+# do
+#     echo "python scripts/my_command.py --target_obs_column \"$TARGET_OBS_COLUMN\" --other-parameters 2>&1 | tee \"data/logs/my_command.$TARGET_OBS_COLUMN.log\""
+# done
+# unset TARGET_OBS_COLUMN;
 
-# This generates e.g.:
-# python scripts/train_sequence_model.py --target_obs_column "disease" 2>&1 | tee "data/logs/train_sequence_model.disease.log"
-# python scripts/train_sequence_model.py --target_obs_column "disease_all_demographics_present" 2>&1 | tee "data/logs/train_sequence_model.disease_all_demographics_present.log"
-# python scripts/train_sequence_model.py --target_obs_column "ethnicity_condensed_healthy_only" 2>&1 | tee "data/logs/train_sequence_model.ethnicity_condensed_healthy_only.log"
-# python scripts/train_sequence_model.py --target_obs_column "age_group_healthy_only" 2>&1 | tee "data/logs/train_sequence_model.age_group_healthy_only.log"
-# python scripts/train_sequence_model.py --target_obs_column "age_group_binary_healthy_only" 2>&1 | tee "data/logs/train_sequence_model.age_group_binary_healthy_only.log"
-# python scripts/train_sequence_model.py --target_obs_column "sex_healthy_only" 2>&1 | tee "data/logs/train_sequence_model.sex_healthy_only.log"
-
-# Here's how that scripts works:
+# Here's how these scripts work:
 # - If no `--target_obs_column` is supplied, it trains on all target_obs_columns one by one. You can supply multiple `--target_obs_column` values.
 # - Same for `--fold_id` and `--locus`.
 
-# This means you can mix and match across machines, e.g.:
-# python scripts/train_sequence_model.py \
-#     --target_obs_column "disease" \
-#     --target_obs_column "disease_all_demographics_present" \
-#     --fold_id 1 \
-#     2>&1 | tee "data/logs/train_sequence_model.disease.disease_all_demographics_present.fold1.log";
-# python scripts/train_sequence_model.py \
-#     --target_obs_column "disease" \
-#     --target_obs_column "disease_all_demographics_present" \
-#     --fold_id 2 \
-#     2>&1 | tee "data/logs/train_sequence_model.disease.disease_all_demographics_present.fold2.log";
-# python scripts/train_sequence_model.py \
-#     --target_obs_column "age_group_binary_healthy_only" \
-#     --target_obs_column "sex_healthy_only" \
-#     2>&1 | tee "data/logs/train_sequence_model.age_group_binary_healthy_only.sex_healthy_only.log";
-# python scripts/train_sequence_model.py \
-#     --target_obs_column "ethnicity_condensed_healthy_only" \
-#     --target_obs_column "age_group_healthy_only" \
-#     --fold_id 1 --fold_id 2 \
-#     2>&1 | tee "data/logs/train_sequence_model.ethnicity_condensed_healthy_only.age_group_healthy_only.fold1.fold2.log";
+# Train sequence-level models split by V gene and isotype.
+# Note that --n_jobs here corresponds to the parallelization level across V-J gene pair subsets.
+# For larger datasets, reduce the n_jobs parallelization level to reduce memory pressure.
+# This command can also be separated by locus and fold using command line arguments --fold_id and --locus.
+# Add --resume to recover from a failed run.
+# Add --train-preferred-model-only to train only the preferred model name used downstream in the metamodel. Pairs with the --use-preferred-base-model-only option for scripts/train_vj_gene_specific_sequence_model_rollup.py.
+python scripts/train_vj_gene_specific_sequence_model.py \
+    --target_obs_column "disease" \
+    --n_jobs 8 \
+    --sequence-subset-strategy split_Vgene_and_isotype \
+    2>&1 | tee "data/logs/train_vj_gene_specific_sequence_model.disease.split_Vgene_and_isotype.log";
+# Add --fold_id or --locus (multiple usage allowed) to further split the work across machines.
 
-# Final example: if you just want to run the "disease" target (see also config.classification_targets setting), but split up loci and fold IDs, here's how you could parallelize that across machines:
-python scripts/train_sequence_model.py \
-    --target_obs_column "disease" \
-    --locus BCR \
-    --fold_id 0 \
-     2>&1 | tee "data/logs/train_sequence_model.disease.fold0.bcr.log";
-python scripts/train_sequence_model.py \
-    --target_obs_column "disease" \
-    --locus TCR \
-    --fold_id 0 \
-     2>&1 | tee "data/logs/train_sequence_model.disease.fold0.tcr.log";
-#
-python scripts/train_sequence_model.py \
-    --target_obs_column "disease" \
-    --locus BCR \
-    --fold_id 1 \
-     2>&1 | tee "data/logs/train_sequence_model.disease.fold1.bcr.log";
-python scripts/train_sequence_model.py \
-    --target_obs_column "disease" \
-    --locus TCR \
-    --fold_id 1 \
-     2>&1 | tee "data/logs/train_sequence_model.disease.fold1.tcr.log";
-#
-python scripts/train_sequence_model.py \
-    --target_obs_column "disease" \
-    --locus BCR \
-    --fold_id 2 \
-     2>&1 | tee "data/logs/train_sequence_model.disease.fold2.bcr.log";
-python scripts/train_sequence_model.py \
-    --target_obs_column "disease" \
-    --locus TCR \
-    --fold_id 2 \
-     2>&1 | tee "data/logs/train_sequence_model.disease.fold2.tcr.log";
-#
-python scripts/train_sequence_model.py \
-    --target_obs_column "disease" \
-    --locus BCR \
-    --fold_id -1 \
-     2>&1 | tee "data/logs/train_sequence_model.disease.globalfold.bcr.log";
-python scripts/train_sequence_model.py \
-    --target_obs_column "disease" \
-    --locus TCR \
-    --fold_id -1 \
-     2>&1 | tee "data/logs/train_sequence_model.disease.globalfold.tcr.log";
+# Monitor how many split_keys have been started by parsing the JSON logs:
+# cat data/logs/train_vj_gene_specific_sequence_model.disease.split_Vgene_and_isotype.log | grep '^\{"split_key' | jq -r '.split_key' --compact-output | sort | uniq -c | wc -l
 
+# Train rollup model that aggregates sequence scores to the patient (really the specimen) level.
+# This will produce a separate rollup model trained on top of each base model name that was configured in scripts/train_vj_gene_specific_sequence_model.py
+# Add --use-preferred-base-model-only to train only against the preferred base (sequence-level) model name used downstream in the metamodel. Pairs with the --train-preferred-model-only option for scripts/train_vj_gene_specific_sequence_model.py.
+python scripts/train_vj_gene_specific_sequence_model_rollup.py \
+    --target_obs_column "disease" \
+    --sequence-subset-strategy split_Vgene_and_isotype \
+    2>&1 | tee "data/logs/train_vj_gene_specific_sequence_model_rollup.disease.split_Vgene_and_isotype.log";
 
-## Model 3, analyze:
-./run_notebooks.sh notebooks/analyze_sequence_model.ipynb;
-# This script accepts target obs column and other similar arguments:
-python scripts/rollup_sequence_classifier_to_specimen_level.py 2>&1 | tee "data/logs/rollup_sequence_classifier_to_specimen_level.log";
-./run_notebooks.sh \
-    notebooks/sequence_classifier_rollup_strategy.ipynb \
-    notebooks/model3rollup_add_abstentions_to_compare_to_model2.ipynb \
-    notebooks/summary.model3.ipynb;
+# Analyze aggregation stage model
+SEQUENCE_SUBSET_STRATEGY=split_Vgene_and_isotype ./run_notebook_to_new_file.sh notebooks/analyze_vj_gene_specific_sequence_model_rollup_classifier.ipynb notebooks/analyze_subset_specific_sequence_model_rollup_classifier.split_Vgene_and_isotype.generated.ipynb;
 
-# Now train second-stage blending model using base models trained on train-smaller
-# Later, consider other variations where we use other sequence models besides lasso_multiclass, or try on all noisy labels with sequence weights
+# SHAP analysis of the aggregation stage model
+# Note: this notebook only supports Vgene-isotype splits, not other SEQUENCE_SUBSET_STRATEGY values:
+./run_notebooks.sh notebooks/model3_aggregation_feature_importances.ipynb;
+```
+
+Note that we have chopped up the training set further into `train_smaller1` and `train_smaller2`. One part is used to train the base sequence model (a wrapper around a bunch of V-J gene specific sequence models). The other part is used to train the model to aggregate mean-sequence-scores-by-Vgene-and-isotype to the patient/specimen level. That aggregation model is then evaluated on the validation set. It would be a mistake to train the second stage aggregation model on the same dataset as we trained the base sequence model: the sequence classifiers would emit unrealistic predicted probabilities. We want to expose the aggregation model to what probabilities will look like on held out data, so that it generalizes well.
+
+### Train and analyze ensemble metamodel using base models trained above
+
+```bash
 # train on all folds, loci, and targets
 # or pass in specific settings, see: python scripts/train_metamodels.py --help
 # for example: python scripts/train_metamodels.py --target_obs_column "disease"
 python scripts/train_metamodels.py 2>&1 | tee "data/logs/train_metamodels.log";
+# review the log for "Failed to create 'default' or dependent metamodel flavor" or similar errors, which means the metamodel training failed.
+
+# Analyze:
 ./run_notebooks.sh \
     notebooks/analyze_metamodels.ipynb \
+    notebooks/plot_metamodel_per_class_aucs.ipynb \
     notebooks/summary.metamodels.ipynb \
+    notebooks/summary.metamodels.per_class_scores.ipynb \
     notebooks/summary.metamodels.succinct.ipynb;
 
 # Overall summary
 ./run_notebooks.sh notebooks/summary.ipynb;
-```
 
+# Extract lupus vs rest; plot its specificity vs sensitivity
+./run_notebooks.sh notebooks/sensitivity_specificity_lupus.ipynb;
+```
 
 ### Analyze highly-ranked sequences and intersect with Cov-AbDab / MIRA
 
@@ -568,23 +733,15 @@ Unlike other datasets, we have amino acid entries (`VHorVHH` column). We need to
 
 # Export to fasta
 python scripts/export_sequences_to_fasta.py \
-    --input "data/CoV-AbDab_260722.filtered.tsv" \
-    --output "data/CoV-AbDab_260722.filtered.fasta" \
+    --input "data/CoV-AbDab_130623.filtered.tsv" \
+    --output "data/CoV-AbDab_130623.filtered.fasta" \
     --name "covabdab" \
     --separator $'\t' \
     --column "VHorVHH";
 
-# Move these to yellowblade:
-mkdir -p /data/maxim/covabdab
-cd /data/maxim/covabdab
-scp 'maximz@nandi:code/malid/data/CoV-AbDab_260722.filtered.fasta' covabdab.fasta
-
 # Chunk the fasta files.
-# Use gnu split command because we know the fastas we generated always have each sequence on a single line, i.e. number of lines is divisible by two (not all fasta are like this!)
-cd /data/maxim/covabdab
-rm -r splits
-mkdir -p splits
-split -l 10000 --verbose --numeric-suffixes=1 --suffix-length=10 --additional-suffix=".fasta" "covabdab.fasta" "splits/covabdab.fasta.part"
+# CoV-AbDab_130623.filtered.fasta --> CoV-AbDab_130623.filtered.fasta.part_001.fasta
+seqkit split2 "data/CoV-AbDab_130623.filtered.fasta" -O "data/cov_abdab_fasta_split" --by-size 10000 --by-size-prefix "CoV-AbDab_130623.filtered.fasta.part_"
 
 # Install igblastp
 # Download it from https://ftp.ncbi.nih.gov/blast/executables/igblast/release/1.3.0/ncbi-igblast-1.3.0-x64-linux.tar.gz
@@ -600,23 +757,33 @@ $HOME/boydlab/igblast/igblastn -version
 # Package: igblast 1.3.0, build Mar 26 2014 14:46:28
 
 # Run igblast
+# data/cov_abdab_fasta_split/CoV-AbDab_130623.filtered.fasta.part_001.fasta -> data/cov_abdab_fasta_split/CoV-AbDab_130623.filtered.fasta.part_001.fasta.parse.txt
+tmpdir_igblast=$(mktemp -d)
+echo "$tmpdir_igblast"
+pushd "$tmpdir_igblast"
 cp $HOME/boydlab/pipeline/run_igblastp_igh.sh .;
 cp $HOME/boydlab/igblast/human_gl* .;
 cp -r $HOME/boydlab/igblast/internal_data/ .;
-# IN TMUX:
-find splits -name "*.part*.fasta" | xargs -I {} -n 1 -P 55 sh -c "./run_igblastp_igh.sh {}"
 
-# Monitor
-find splits -name "*.part*.fasta" | wc -l
-find splits -name "*.parse.txt" | wc -l
+num_processors=200 # 55
 
-# Here's how to transfer this giant set of parses. Standard scp can fail with "argument list too long", but this works:
-# For igblastp, we will also transfer the chunked fastas
-rsync -a --include="*.part*.fasta" --exclude='*' splits/ maximz@nandi:code/malid/data/covabdab_igblast_splits/
-rsync -a --include='*.parse.txt' --exclude='*' splits/ maximz@nandi:code/malid/data/covabdab_igblast_splits/
+# use -print0 and -0 to handle spaces in filenames
+# _ is a dummy value for $0 (the script name)
+# $1 in the sh -c command will be the filename
+find $HOME/code/immune-repertoire-classification/data/cov_abdab_fasta_split/ -name "*.part_*.fasta" -print0 | xargs -0 -I {} -n 1 -P "$num_processors" sh -c './run_igblastp_igh.sh "$1"' _ {}
+echo $? # exit code
+
+popd
+echo "$tmpdir_igblast"
+rm -r "$tmpdir_igblast"
+
+# Monitor: these numbers must match
+find data/cov_abdab_fasta_split/ -name "*.part_*.fasta" | wc -l
+find data/cov_abdab_fasta_split/ -name "*.part_*.fasta.parse.txt" | wc -l
+
 
 # Back to our python environment
-for fname in data/covabdab_igblast_splits/*.part*.fasta; do
+for fname in data/cov_abdab_fasta_split/*.part_*.fasta; do
     echo $fname;
     python scripts/parse_igblastp.py \
         --fasta "$fname" \
@@ -624,6 +791,12 @@ for fname in data/covabdab_igblast_splits/*.part*.fasta; do
         --output "$fname.parsed.tsv" \
         --separator $'\t';
 done
+echo $?
+
+# Monitor: these numbers must match
+find data/cov_abdab_fasta_split/ -name "*.part_*.fasta.parse.txt" | wc -l
+find data/cov_abdab_fasta_split/ -name "*.part_*.fasta.parsed.tsv" | wc -l
+
 
 # Merge IgBlast parsed output to the original CoV-AbDab data
 ./run_notebooks.sh notebooks/covabdab_add_igblast_annotations.ipynb;
@@ -633,31 +806,27 @@ done
 
 ```bash
 python scripts/export_sequences_to_fasta.py \
-    --input "data/external_cohorts/raw_data/immunecode/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-ci.csv" \
-    --output "data/external_cohorts/raw_data/immunecode/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-ci.fasta" \
+    --input "data/external_cohorts/raw_data/immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-ci.csv" \
+    --output "data/external_cohorts/raw_data/immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-ci.fasta" \
     --name "peptide-detail-ci" \
     --column "TCR Nucleotide Sequence";
 
 python scripts/export_sequences_to_fasta.py \
-    --input "data/external_cohorts/raw_data/immunecode/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-cii.csv" \
-    --output "data/external_cohorts/raw_data/immunecode/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-cii.fasta" \
+    --input "data/external_cohorts/raw_data/immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-cii.csv" \
+    --output "data/external_cohorts/raw_data/immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-cii.fasta" \
     --name "peptide-detail-cii" \
     --column "TCR Nucleotide Sequence";
 
 python scripts/export_sequences_to_fasta.py \
-    --input "data/external_cohorts/raw_data/immunecode/mira/ImmuneCODE-MIRA-Release002.1/minigene-detail.csv" \
-    --output "data/external_cohorts/raw_data/immunecode/mira/ImmuneCODE-MIRA-Release002.1/minigene-detail.fasta" \
+    --input "data/external_cohorts/raw_data/immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/minigene-detail.csv" \
+    --output "data/external_cohorts/raw_data/immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/minigene-detail.fasta" \
     --name "minigene-detail" \
     --column "TCR Nucleotide Sequence";
 
-# Move these to yellowblade:
-mkdir -p /data/maxim/mira
-cd /data/maxim/mira
-scp 'maximz@nandi:code/malid/data/external_cohorts/raw_data/immunecode/mira/ImmuneCODE-MIRA-Release002.1/*.fasta' .
-
 # Chunk the fasta files.
 # Use gnu split command because we know the fastas we generated always have each sequence on a single line, i.e. number of lines is divisible by two (not all fasta are like this!)
-cd /data/maxim/mira
+# TODO: Update this to use same seqkit split as above.
+cd data/external_cohorts/raw_data/immunecode_all/mira/ImmuneCODE-MIRA-Release002.1
 rm -r splits
 mkdir -p splits
 for fname in *.fasta; do
@@ -668,7 +837,6 @@ done
 cp $HOME/boydlab/pipeline/run_igblast_command_tcr.sh .;
 cp $HOME/boydlab/igblast/human_gl* .;
 cp -r $HOME/boydlab/igblast/internal_data/ .;
-# IN TMUX:
 find splits -name "*.part*.fasta" | xargs -I {} -n 1 -P 55 sh -c "./run_igblast_command_tcr.sh {}"
 
 # Monitor
@@ -676,7 +844,6 @@ find splits -name "*.part*.fasta" | wc -l
 find splits -name "*.parse.txt" | wc -l
 
 # Parse to file
-# IN TMUX:
 conda deactivate
 source ~/boydlab/pyenv/activate
 # $HOME/boydlab/pipeline/load_igblast_parse.ireceptor_data.to_file.py --locus TCRB splits/*.parse.txt
@@ -686,11 +853,6 @@ find splits -name "*.parse.txt" | xargs -x -n 50 -P 40 $HOME/boydlab/pipeline/lo
 # Monitor
 find splits -name "*.parse.txt" | wc -l
 find splits -name "*.parse.txt.parsed.tsv" | wc -l
-
-# We will then join IgBlast parsed output to the original data in a notebook.
-
-# Here's how to transfer this giant set of parses. Standard scp can fail with "argument list too long", but this works:
-rsync -a --include='*.parse.txt.parsed.tsv' --exclude='*' splits/ maximz@nandi:code/malid/data/external_cohorts/raw_data/immunecode/mira/ImmuneCODE-MIRA-Release002.1/igblast_splits/
 ```
 
 Merge IgBlast parsed output to the original data (for MIRA) and subset to sequences of interest:
@@ -699,30 +861,81 @@ Merge IgBlast parsed output to the original data (for MIRA) and subset to sequen
 ./run_notebooks.sh notebooks/mira.ipynb;
 ```
 
+#### Flu known binders
+
+```bash
+# choose sequences of interest
+./run_notebooks.sh notebooks/flu_known_binders.ipynb;
+
+# Export to fasta
+python scripts/export_sequences_to_fasta.py \
+    --input "data/flu_known_binders.filtered.tsv" \
+    --output "data/flu_known_binders.filtered.fasta" \
+    --name "flu" \
+    --separator $'\t' \
+    --column "VH_nuc";
+
+# Chunk the fasta files.
+# flu_known_binders.filtered.fasta --> flu_known_binders.filtered.fasta.part_001.fasta
+seqkit split2 "data/flu_known_binders.filtered.fasta" -O "data/flu_known_binders_fasta_split" --by-size 10000 --by-size-prefix "flu_known_binders.filtered.fasta.part_"
+
+# Run igblast
+# data/flu_known_binders_fasta_split/flu_known_binders.filtered.fasta.part_001.fasta -> data/flu_known_binders_fasta_split/flu_known_binders.filtered.fasta.part_001.fasta.parse.txt
+tmpdir_igblast=$(mktemp -d)
+echo "$tmpdir_igblast"
+pushd "$tmpdir_igblast"
+cp $HOME/boydlab/pipeline/run_igblast_command.sh .;
+cp $HOME/boydlab/igblast/human_gl* .;
+cp -r $HOME/boydlab/igblast/internal_data/ .;
+
+num_processors=200 # 55
+
+# use -print0 and -0 to handle spaces in filenames
+# _ is a dummy value for $0 (the script name)
+# $1 in the sh -c command will be the filename
+find $HOME/code/immune-repertoire-classification/data/flu_known_binders_fasta_split/ -name "*.part_*.fasta" -print0 | xargs -0 -I {} -n 1 -P "$num_processors" sh -c './run_igblast_command.sh "$1"' _ {}
+echo $? # exit code
+
+popd
+echo "$tmpdir_igblast"
+rm -r "$tmpdir_igblast"
+
+# Monitor: these numbers must match
+find data/flu_known_binders_fasta_split/ -name "*.part_*.fasta" | wc -l
+find data/flu_known_binders_fasta_split/ -name "*.part_*.fasta.parse.txt" | wc -l
+
+# Parse to file (uses python2.7 pipeline code)
+conda deactivate
+source ~/boydlab/pyenv/activate
+# $HOME/boydlab/pipeline/load_igblast_parse.ireceptor_data.to_file.py --locus IgH splits/*.parse.txt
+# parallelize in chunk size of 50 parses x 40 processes:
+num_processors=200 # 40
+# use -print0 and -0 to handle spaces in filenames
+find data/flu_known_binders_fasta_split/ -name "*.part_*.fasta.parse.txt" -print0 | xargs -0 -x -n 50 -P "$num_processors" $HOME/boydlab/pipeline/load_igblast_parse.ireceptor_data.to_file.py --locus "IgH"
+echo $?
+
+# Monitor: these numbers must match
+find data/flu_known_binders_fasta_split/ -name "*.part_*.fasta.parse.txt" | wc -l
+find data/flu_known_binders_fasta_split/ -name "*.part_*.fasta.parse.txt.parsed.IgH.tsv" | wc -l
+
+# Merge IgBlast parsed output to the original flu binder data
+./run_notebooks.sh notebooks/flu_known_binders_add_igblast_annotations.ipynb;
+```
+
 #### Run analysis
 
 ```bash
 ./run_notebooks.sh \
-    notebooks/sequence_model_interpretation.ipynb \
-    notebooks/summary.sequence_model_interpretation.ipynb;
-
-# Embed known binders:
-./run_notebooks.sh notebooks/embed_known_binders.ipynb;
-
-# Updated known-binder database comparison:
-./run_notebooks.sh \
-    notebooks/sequence_model_ranks_of_known_binders_vs_healthy_donor_sequences.ipynb \
-    notebooks/model2_ranks_of_known_binders_vs_healthy_donor_sequences.ipynb \
-    notebooks/exact_matches_model_which_sequences_are_chosen.ipynb \
-    notebooks/summary.rankings_of_known_binders.ipynb;
+    notebooks/embed_known_binders.ipynb \
+    notebooks/ranks_of_known_binders_vs_healthy_donor_sequences.ipynb;
 ```
 
 ### Wrap up confounders checks
 
-Note that `vgene_usage_stats.ipynb` uses output from `sequence_model_interpretation.*.ipynb`.
-
 ```bash
+# isotype_stats: generate isotype proportion counts per specimen.
 ./run_notebooks.sh \
+    notebooks/isotype_stats.ipynb \
     notebooks/vgene_usage_stats.ipynb \
     notebooks/size_of_each_disease_batch.ipynb \
     notebooks/confounder_model.ipynb \
@@ -733,47 +946,11 @@ Note that `vgene_usage_stats.ipynb` uses output from `sequence_model_interpretat
 
 ## Measure batch mixing with kBET reimplementation
 ./run_notebooks.sh notebooks/kbet_batch_evaluation.ipynb;
-
-## Make PCA and UMAP plots of language model embedding, colored by disease or disease batch
-./run_notebooks.sh \
-    notebooks/unsupervised_embedding_visualize.ipynb \
-    notebooks/summary.unsupervised_embedding_visualize.ipynb;
 ```
 
-### Visualization
+### Analyze lupus misclassifications
 
-```bash
-# Embed off-peak timepoints for all loci and all fold IDs:
-# python scripts/off_peak.run_embedding_fine_tuned.and_scale.py 2>&1 | tee "data/logs/off_peak_embedding.log"
-
-# Split up:
-python scripts/off_peak.run_embedding_fine_tuned.and_scale.py --locus BCR --fold_id 0 2>&1 | tee "data/logs/off_peak_embedding.fold0.bcr.log"
-python scripts/off_peak.run_embedding_fine_tuned.and_scale.py --locus TCR --fold_id 0 2>&1 | tee "data/logs/off_peak_embedding.fold0.tcr.log"
-#
-python scripts/off_peak.run_embedding_fine_tuned.and_scale.py --locus BCR --fold_id 1 2>&1 | tee "data/logs/off_peak_embedding.fold1.bcr.log"
-python scripts/off_peak.run_embedding_fine_tuned.and_scale.py --locus TCR --fold_id 1 2>&1 | tee "data/logs/off_peak_embedding.fold1.tcr.log"
-#
-python scripts/off_peak.run_embedding_fine_tuned.and_scale.py --locus BCR --fold_id 2 2>&1 | tee "data/logs/off_peak_embedding.fold2.bcr.log"
-python scripts/off_peak.run_embedding_fine_tuned.and_scale.py --locus TCR --fold_id 2 2>&1 | tee "data/logs/off_peak_embedding.fold2.tcr.log"
-#
-python scripts/off_peak.run_embedding_fine_tuned.and_scale.py --locus BCR --fold_id -1 2>&1 | tee "data/logs/off_peak_embedding.globalfold.bcr.log"
-python scripts/off_peak.run_embedding_fine_tuned.and_scale.py --locus TCR --fold_id -1 2>&1 | tee "data/logs/off_peak_embedding.globalfold.tcr.log"
-
-# Repertoire visualization ("supervised embedding"). All folds, but split by loci.
-python scripts/repertoire_visualization.py --locus BCR 2>&1 | tee "data/logs/repertoire_visualization.bcr.log"
-python scripts/repertoire_visualization.py --locus TCR 2>&1 | tee "data/logs/repertoire_visualization.tcr.log"
-
-# Summary
-./run_notebooks.sh notebooks/summary.repertoire_visualization.ipynb
-```
-
-### Regenerate simulation datasets
-
-```bash
-./run_notebooks.sh \
-    notebooks/generate_simulation_datasets.ipynb \
-    notebooks/generate_simulation_datasets.known_binders_only.ipynb;
-```
+`./run_notebooks.sh notebooks/adult_lupus_misclassification_disease_activity_scores.ipynb` evaluates whether adult lupus patients (on treatment) who are misclassified as healthy have lower clinical disease activity scores than those who are correctly classified as lupus.
 
 ### Dotplots on raw data (pre-sampling)
 
@@ -794,31 +971,45 @@ conda activate cuda-env-py39;
 
 ### Validation on external cohorts
 
-We have only-BCR and only-TCR external specimens so far, so we'll use those metamodel variants. Later we might find BCR+TCR external cohorts for a full-fledged evaluation.
+_This section is only for `CrossValidationSplitStrategy.in_house_peak_disease_timepoints`._
 
-First follow `notebooks/airr_external_data/readme.md`.
+The external cohorts were loaded in the ETL process. We have only-BCR and only-TCR external specimens so far, so we'll use those metamodel variants. Later we might find BCR+TCR external cohorts for a full-fledged evaluation. But for now, the BCR and TCR `fold_id=-1, fold_label="external"` specimens are completely separate sets.
 
-Confirm that the CDR1/2/3 format matches our data, e.g. no prefix and suffix in CDR3.
-
-Then run:
 
 ```bash
-# ETL
-./run_notebooks.sh \
-    notebooks/airr_external_data/metadata_per_patient.ipynb \
-    notebooks/airr_external_data/metadata_shomuradova.ipynb \
-    notebooks/airr_external_data/metadata_britanova.ipynb \
-    notebooks/airr_external_data/covid_tcr_immunecode_metadata.ipynb \
-    notebooks/airr_external_data/assign_clone_ids.ipynb;
+# Embed with global fold (fold -1)
+python scripts/run_embedding.py --fold_id -1 --external-cohort 2>&1 | tee "data/logs/external_validation_cohort_embedding.log"
+python scripts/scale_embedding_anndatas.py --fold_id -1 --external-cohort 2>&1 | tee "data/logs/external_validation_cohort_scaling.log"
 
-# Embed (rerun when embedding changes)
-python scripts/external_validation_cohort.run_embedding_fine_tuned.and_scale.py --n_gpus 2 2>&1 | tee "data/logs/external_validation_cohort_embedding.log"
 
 # Evaluate
 ./run_notebooks.sh \
     notebooks/evaluate_external_cohorts.ipynb \
     notebooks/summary.external_cohort_validation.ipynb;
 
-# Investigate Adaptive TCR data V gene use
-./run_notebooks.sh notebooks/airr_external_data/compare.vgene.use.ipynb;
+```
+
+### Compare in-house and Adaptive TCR data V gene use
+
+We ran the following above for in-house data and for Adaptive:
+
+```bash
+./run_notebooks.sh notebooks/vgene_usage_stats.ipynb;
+MALID_CV_SPLIT="adaptive_peak_disease_timepoints" ./run_notebook_to_new_file.sh notebooks/vgene_usage_stats.ipynb notebooks/vgene_usage_stats.generated.adaptive.ipynb;
+```
+
+Now run: `./run_notebooks.sh notebooks/airr_external_data/compare.vgene.use.ipynb`.
+
+### Healthy resequencing sample analysis
+
+We resequenced a number of healthy donors, so their specimens now have two replicates each.
+
+Run the pipeline with `MALID_CV_SPLIT="in_house_peak_disease_leave_one_cohort_out"`.
+
+Then do extra analysis of the replicates split up:
+
+```bash
+./run_notebooks.sh \
+    notebooks/paired_sample_batch_effects.ipynb \
+    notebooks/leave_one_cohort_out_metamodel.remove_broken_replicate.ipynb;
 ```

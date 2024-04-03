@@ -8,22 +8,26 @@ from typing import Dict, List, Optional
 import joblib
 import numpy as np
 import pandas as pd
-import sklearn.base
 from joblib import Parallel, delayed
-from sklearn import preprocessing
+from tqdm import tqdm
 from sklearn.compose import ColumnTransformer
 from sklearn.compose import make_column_selector
 from sklearn.decomposition import PCA
-from sklearn.pipeline import make_pipeline, Pipeline
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
+from malid.external.standard_scaler_that_preserves_input_type import (
+    StandardScalerThatPreservesInputType,
+)
 
 from malid import config, helpers
 from malid import io
 from malid.datamodels import (
     GeneLocus,
+    SampleWeightStrategy,
     TargetObsColumnEnum,
 )
-from malid.external import model_evaluation
+import crosseval
+import genetools.arrays
 from malid.train import training_utils
 from malid.trained_model_wrappers import RepertoireClassifier
 
@@ -35,7 +39,10 @@ def _get_fold_data(
     fold_label: str,
     gene_locus: GeneLocus,
     target_obs_column: TargetObsColumnEnum,
+    sample_weight_strategy: SampleWeightStrategy,
     vj_count_matrix_columns_by_isotype: Optional[Dict[str, pd.Index]] = None,
+    # Model 1 does not require the embedding .X, so take the fast path and just load .obs:
+    load_obs_only=True,
 ):
     # for each fold:
     # load anndata without any filtering at all
@@ -44,25 +51,38 @@ def _get_fold_data(
         fold_label=fold_label,
         target_obs_column=target_obs_column,
         gene_locus=gene_locus,
+        sample_weight_strategy=sample_weight_strategy,
+        # load_obs_only defaults to True: Model 1 does not require the embedding .X, so take the fast path and just load .obs:
+        load_obs_only=load_obs_only,
     )
 
     if vj_count_matrix_columns_by_isotype is None:
         # This means we are training the model
         # Filter V genes to remove rare V genes, so their minute differences in proportions don't affect our model
+        # TODO: Switch to: v_genes_to_keep = helpers.find_non_rare_v_genes(adata). Results are the same for default sample weight strategy.
 
         # Get observed V gene frequencies
-        v_gene_frequencies = (
-            adata.obs["v_gene"]
-            .astype("category")
-            .cat.remove_unused_categories()
-            .value_counts(normalize=True)
-        )
+        if SampleWeightStrategy.CLONE_SIZE in sample_weight_strategy:
+            v_gene_frequencies = genetools.arrays.weighted_value_counts(
+                adata.obs,
+                "v_gene",
+                "num_clone_members",
+                normalize=True,
+                observed=True,  # exclude any missing V genes (empty categories)
+            )
+        else:
+            v_gene_frequencies = (
+                adata.obs["v_gene"]
+                .astype("category")
+                .cat.remove_unused_categories()
+                .value_counts(normalize=True)
+            )
 
         # Filtering criteria: median. Removing bottom half of genes, the ones that make up this fraction or less of the training data
         v_gene_frequency_threshold = v_gene_frequencies.quantile(0.5)
 
         # Which V genes does this leave?
-        v_gene_frequency_filter = v_gene_frequencies > v_gene_frequency_threshold
+        v_gene_frequency_filter = v_gene_frequencies >= v_gene_frequency_threshold
         kept_v_genes = v_gene_frequencies[v_gene_frequency_filter].index.tolist()
         removed_v_genes = v_gene_frequencies[~v_gene_frequency_filter].index.tolist()
 
@@ -90,6 +110,7 @@ def _get_fold_data(
         dataset=adata,
         gene_locus=gene_locus,
         target_obs_column=target_obs_column,
+        sample_weight_strategy=sample_weight_strategy,
         allow_missing_isotypes=False,
         vj_count_matrix_column_order=vj_count_matrix_columns_by_isotype,
     )
@@ -110,17 +131,22 @@ def _get_fold_data(
 def _run_models_on_fold(
     fold_id: int,
     gene_locus: GeneLocus,
+    target_obs_column: TargetObsColumnEnum,
+    sample_weight_strategy: SampleWeightStrategy,
     fold_label_train: str,
     fold_label_test: str,
     chosen_models: List[str],
-    target_obs_column: TargetObsColumnEnum,
     n_jobs=1,
     use_gpu=False,
     clear_cache=True,
     fail_on_error=False,
+    # Model 1 does not require the embedding .X, so take the fast path and just load .obs:
+    load_obs_only=True,
 ):
     models_base_dir = RepertoireClassifier._get_model_base_dir(
-        gene_locus=gene_locus, target_obs_column=target_obs_column
+        gene_locus=gene_locus,
+        target_obs_column=target_obs_column,
+        sample_weight_strategy=sample_weight_strategy,
     )
     models_base_dir.mkdir(parents=True, exist_ok=True)
     output_prefix = models_base_dir / f"{fold_label_train}_model"
@@ -134,8 +160,10 @@ def _run_models_on_fold(
         fold_id=fold_id,
         fold_label=fold_label_train,
         target_obs_column=target_obs_column,
+        sample_weight_strategy=sample_weight_strategy,
         gene_locus=gene_locus,
         vj_count_matrix_columns_by_isotype=None,
+        load_obs_only=load_obs_only,
     )
 
     (
@@ -147,8 +175,10 @@ def _run_models_on_fold(
         fold_id=fold_id,
         fold_label=fold_label_test,
         target_obs_column=target_obs_column,
+        sample_weight_strategy=sample_weight_strategy,
         gene_locus=gene_locus,
         vj_count_matrix_columns_by_isotype=train_vj_count_matrix_columns_by_isotype,
+        load_obs_only=load_obs_only,
     )
 
     # sanity checks
@@ -181,7 +211,7 @@ def _run_models_on_fold(
                                     feature_names_out="one-to-one",
                                 ),
                             ),
-                            ("scale", preprocessing.StandardScaler()),
+                            ("scale", StandardScalerThatPreservesInputType()),
                             ("pca", PCA(n_pcs, random_state=0)),
                         ]
                     ),
@@ -230,34 +260,15 @@ def _run_models_on_fold(
     results = []
     for model_name, model_clf in models.items():
         # log1p, scale, PCA the count matrices only. then scale everything. then run classifier.
-        # model_clf may be an individual estimator, or it may already be a pipeline
-        is_pipeline = type(model_clf) == Pipeline
-        if is_pipeline:
-            # If already a pipeline:
-            # Prepend a StandardScaler if it doesn't exist already
-            model_pipeline = sklearn.base.clone(model_clf)
-            if "standardscaler" in model_pipeline.named_steps.keys():
-                logger.warning(
-                    f"The pipeline already has a StandardScaler step already! Not inserting for model {model_name}"
-                )
-            else:
-                logger.info(
-                    f"Inserting StandardScaler into existing pipeline for model {model_name}"
-                )
-                model_pipeline.steps.insert(
-                    0, ("standardscaler", preprocessing.StandardScaler())
-                )
-            # Prepend make_column_transformer
-            model_pipeline.steps.insert(
-                0, ("columntransformer", make_column_transformer(n_pcs=n_pcs_effective))
-            )
-        else:
-            # Not yet a pipeline.
-            model_pipeline = make_pipeline(
-                make_column_transformer(n_pcs=n_pcs_effective),
-                preprocessing.StandardScaler(),
-                sklearn.base.clone(model_clf),
-            )
+        # desired pipeline is: column transformer -> standard scaler -> classifier
+
+        # Convert the model into a pipeline that starts with a StandardScaler
+        model_pipeline = training_utils.prepend_scaler_if_not_present(model_clf)
+
+        # Prepend make_column_transformer
+        model_pipeline.steps.insert(
+            0, ("columntransformer", make_column_transformer(n_pcs=n_pcs_effective))
+        )
 
         model_pipeline, result = training_utils.run_model_multiclass(
             model_name=model_name,
@@ -276,6 +287,52 @@ def _run_models_on_fold(
         )
         results.append(result)
 
+        # For Glmnet models, also record performance with lambda_1se flag flipped.
+        if (
+            model_pipeline is not None
+            and result is not None
+            and training_utils.does_fitted_model_support_lambda_setting_change(
+                model_pipeline
+            )
+        ):
+            (
+                model_pipeline2,
+                result2,
+            ) = training_utils.modify_fitted_model_lambda_setting(
+                fitted_clf=model_pipeline,
+                performance=result,
+                X_test=X_test,
+                output_prefix=output_prefix,
+            )
+            results.append(result2)
+
+        if (
+            model_pipeline is not None
+            and training_utils.does_fitted_model_support_conversion_from_glmnet_to_sklearn(
+                model_pipeline
+            )
+        ):
+            # Also train a sklearn model using the best lambda from the glmnet model, as an extra sanity check. Results should be identical.
+            sklearn_model = training_utils.convert_trained_glmnet_pipeline_to_untrained_sklearn_pipeline_at_best_lambda(
+                model_pipeline
+            )
+            sklearn_model, result_sklearn = training_utils.run_model_multiclass(
+                model_name=model_name.replace("_cv", "") + "_sklearn_with_lambdamax",
+                model_clf=sklearn_model,
+                X_train=X_train,
+                X_test=X_test,
+                y_train=y_train,
+                y_test=y_test,
+                fold_id=fold_id,
+                output_prefix=output_prefix,
+                fold_label_train=fold_label_train,
+                fold_label_test=fold_label_test,
+                train_groups=train_participant_labels,
+                test_metadata=test_metadata,
+                fail_on_error=fail_on_error,
+            )
+            results.append(result_sklearn)
+
     # Save out column order so we can create features for new test sets later
     joblib.dump(
         train_vj_count_matrix_columns_by_isotype,
@@ -292,6 +349,7 @@ def _run_models_on_fold(
 def run_classify_with_all_models(
     gene_locus: GeneLocus,
     target_obs_column: TargetObsColumnEnum,
+    sample_weight_strategy: SampleWeightStrategy,
     fold_label_train: str,
     fold_label_test: str,
     chosen_models: List[str],
@@ -300,10 +358,17 @@ def run_classify_with_all_models(
     use_gpu=False,
     clear_cache=True,
     fail_on_error=False,
-) -> model_evaluation.ExperimentSet:
+    # Model 1 does not require the embedding .X, so take the fast path and just load .obs:
+    load_obs_only=True,
+) -> crosseval.ExperimentSet:
     GeneLocus.validate(gene_locus)
     GeneLocus.validate_single_value(gene_locus)
     TargetObsColumnEnum.validate(target_obs_column)
+    SampleWeightStrategy.validate(sample_weight_strategy)
+    target_obs_column.confirm_compatibility_with_gene_locus(gene_locus)
+    target_obs_column.confirm_compatibility_with_cross_validation_split_strategy(
+        config.cross_validation_split_strategy
+    )
 
     if fold_ids is None:
         fold_ids = config.all_fold_ids
@@ -311,20 +376,28 @@ def run_classify_with_all_models(
 
     # Run in parallel
     # ("loky" backend required; "multiprocessing" backend can deadlock with xgboost, see https://github.com/dmlc/xgboost/issues/7044#issuecomment-1039912899 , https://github.com/dmlc/xgboost/issues/2163 , and https://github.com/dmlc/xgboost/issues/4246 )
-    job_outputs = Parallel(n_jobs=n_jobs, backend="loky")(
-        delayed(_run_models_on_fold)(
-            fold_id=fold_id,
-            gene_locus=gene_locus,
-            fold_label_train=fold_label_train,
-            fold_label_test=fold_label_test,
-            chosen_models=chosen_models,
-            target_obs_column=target_obs_column,
-            n_jobs=n_jobs,
-            use_gpu=use_gpu,
-            clear_cache=clear_cache,
-            fail_on_error=fail_on_error,
+    # Wrap in tqdm for progress bar (see https://stackoverflow.com/a/76726101/130164)
+    job_outputs = list(
+        tqdm(
+            Parallel(return_as="generator", n_jobs=n_jobs, backend="loky")(
+                delayed(_run_models_on_fold)(
+                    fold_id=fold_id,
+                    gene_locus=gene_locus,
+                    target_obs_column=target_obs_column,
+                    sample_weight_strategy=sample_weight_strategy,
+                    fold_label_train=fold_label_train,
+                    fold_label_test=fold_label_test,
+                    chosen_models=chosen_models,
+                    n_jobs=n_jobs,
+                    use_gpu=use_gpu,
+                    clear_cache=clear_cache,
+                    fail_on_error=fail_on_error,
+                    load_obs_only=load_obs_only,
+                )
+                for fold_id in fold_ids
+            ),
+            total=len(fold_ids),
         )
-        for fold_id in fold_ids
     )
 
-    return model_evaluation.ExperimentSet(model_outputs=job_outputs)
+    return crosseval.ExperimentSet(model_outputs=job_outputs)

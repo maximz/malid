@@ -1,117 +1,334 @@
 import copy
 import gc
 import logging
-from typing import List
+from typing import Dict, List, Set
 
 import numpy as np
+import pandas as pd
+import anndata
 import pytest
 import scanpy as sc
 
 from malid import (
     config,
     helpers,
-    interpretation,
     io,
 )
 from malid.datamodels import (
     GeneLocus,
     SampleWeightStrategy,
     TargetObsColumnEnum,
+    healthy_label,
 )
 from malid.external.adjust_model_decision_thresholds import (
     AdjustedProbabilitiesDerivedModel,
 )
 from malid.train import (
     train_repertoire_stats_model,
-    train_sequence_model,
+    train_vj_gene_specific_sequence_model,
+    train_vj_gene_specific_sequence_model_rollup,
     train_metamodel,
     train_convergent_cluster_classifier,
     train_exact_matches_classifier,
     model_definitions,
 )
 from malid.trained_model_wrappers import (
+    SequenceSubsetStrategy,
     RepertoireClassifier,
     ConvergentClusterClassifier,
     ExactMatchesClassifier,
     BlendingMetamodel,
-)
-from malid.train.train_rollup_sequence_classifier import (
-    generate_rollups_on_all_classification_targets,
+    VJGeneSpecificSequenceModelRollupClassifier,
 )
 from malid.trained_model_wrappers.immune_classifier_mixin import (
     ImmuneClassifierMixin,
 )
+from malid.trained_model_wrappers.vj_gene_specific_sequence_model_rollup_classifier import (
+    AggregationStrategy,
+)
 
 logger = logging.getLogger(__name__)
+sample_weight_strategy = (
+    SampleWeightStrategy.ISOTYPE_USAGE  # | SampleWeightStrategy.CLONE_SIZE
+    # TODO: Fix clone_size. Values in weight column created from num_clone_members all very small, and don't sum to 1.
+)
 
 
 @pytest.fixture()
 def modified_config():
     """Modify the config for end to end tests."""
-    ## Copy test anndatas to temporary config.paths directory, set up in conftest.py
+    ## Create test anndatas in temporary config.paths directory, set up in conftest.py
+
+    # Use these three diseases because they reliably have 20 or more specimens in each split of all folds.
+    # (A decent number of specimens is important because we will do nested/internal cross validation when training the Glmnet models, for example.)
+    diseases = ["Lupus", "HIV", healthy_label]
+    assert set(diseases) <= set(helpers.diseases)
+
+    # Generate samples from a multivariate Gaussian distribution for each class.
+    def define_class_parameters(classes: List[str], x_range=(0, 10), y_range=(0, 10)):
+        x_coords = np.random.uniform(x_range[0], x_range[1], len(classes))
+        y_coords = np.random.uniform(y_range[0], y_range[1], len(classes))
+        centers = list(zip(x_coords, y_coords))
+
+        class_params = {}
+
+        for i, class_name in enumerate(classes):
+            mu = centers[i]
+            # cov = np.array([
+            #     [np.random.uniform(0.5, 2), np.random.uniform(-0.5, 0.5)],
+            #     [np.random.uniform(-0.5, 0.5), np.random.uniform(0.5, 2)]
+            # ])
+            # Generate a valid covariance matrix: must be symmetric and positive-semidefinite.
+            # you can achieve that from any matrix by taking outer product with itself:
+            # random_matrix = np.random.rand(2, 2) # or smaller values for tighter clusters: np.random.uniform(0.1, 0.3, size=(2, 2))
+            # cov = np.dot(random_matrix, random_matrix.T)
+
+            # Update: Generate a near-diagonal covariance matrix for circular blobs
+            spread = np.random.uniform(0.1, 0.3)
+            cov = np.identity(2) * spread
+
+            class_params[class_name] = {"mu": mu, "cov": cov}
+
+        return class_params
+
+    def generate_samples(class_params: dict, class_label: str, n_samples: int):
+        mu = class_params[class_label]["mu"]
+        cov = class_params[class_label]["cov"]
+        return np.random.multivariate_normal(mu, cov, n_samples)
+
+    # Define the class distributions up-front, then sample repeatedly from them later.
+    # Generate these patterns upfront, so they're shared across subsets of the same fold (but actually currently shared across all folds and loci)
+    np.random.seed(42)
+    disease_gaussian_mixture_params = define_class_parameters(diseases)
+
     for gene_locus in GeneLocus:
-        for fname in (
-            config.paths.tests_snapshot_dir / "scaled_anndatas_dir" / gene_locus.name
-        ).glob("fold.*.h5ad"):
-            # shutil.copy2(fname, config.paths.scaled_anndatas_dir)
+        # Generate these patterns upfront, so they're shared across subsets of the same fold (but actually also shared across all folds)
+        amino_acid_alphabet: List[str] = list("ACDEFGHIKLMNPQRSTVWY")
+        common_disease_specific_sequence = {
+            disease: "".join(
+                np.random.choice(
+                    amino_acid_alphabet, size=np.random.randint(8, 12), replace=True
+                )
+            )
+            for disease in diseases
+        }
+        # Associate a specific set of V genes with each disease and healthy.
+        # (Note that model 1 will remove the bottom half of rare V genes)
+        disease_associated_v_genes = {
+            disease: helpers.all_observed_v_genes()[gene_locus][ix * 10 : ix * 10 + 10]
+            for ix, disease in enumerate(diseases)
+        }
+        assert all(len(lst) == 10 for lst in disease_associated_v_genes.values())
+        available_j_genes = helpers.all_observed_j_genes()[gene_locus][:3]
 
-            # Finish scaling here, to save space on disk for the test snapshots\:
-            # Previously we scaled the data before storing the snapshot, but this saves space by not storing raw.
+        # Precompute all V-J gene combinations (see below for usage)
+        all_v_genes = set().union(*disease_associated_v_genes.values())  # set union
+        all_vj_combinations = [(v, j) for v in all_v_genes for j in available_j_genes]
 
-            # Technically we should scale train_smaller and then apply those scale parameters to the other fold labels,
-            # but for tests that doesn't matter.
-            adata = sc.read(fname)
-            adata.raw = adata
-            sc.pp.scale(adata)
+        for fold_id in config.all_fold_ids:
+            for fold_label in ["train_smaller", "validation", "test"]:
+                if fold_id == -1 and fold_label == "test":
+                    # skip global fold test set: does not exist
+                    continue
 
-            # To save space, we had removed these columns, but let's regenerate
-            adata.obs["disease_subtype"] = adata.obs["disease"]
-            adata.obs["cdr3_aa_sequence_trim_len"] = adata.obs[
-                "cdr3_seq_aa_q_trim"
-            ].str.len()
+                all_X = []
+                all_obs = []
+                for disease in diseases:
+                    n_specimens = np.random.randint(15, 21)
+                    n_sequences = np.random.randint(4000, 5000)
 
-            # Generating these too - fake:
-            adata.obs["cdr1_seq_aa_q_trim"] = adata.obs["cdr3_seq_aa_q_trim"].copy()
-            adata.obs["cdr2_seq_aa_q_trim"] = adata.obs["cdr3_seq_aa_q_trim"].copy()
+                    X = generate_samples(
+                        class_params=disease_gaussian_mixture_params,
+                        class_label=disease,
+                        n_samples=n_sequences,
+                    )
+                    all_X.append(X)
 
-            destination_dir = config.paths.scaled_anndatas_dir / gene_locus.name
-            destination_dir.mkdir(parents=True, exist_ok=True)
-            adata.write(destination_dir / fname.name, compression="gzip")
+                    # Use real specimen labels associated with this disease, so all metadata loading works properly
+                    specimen_labels = helpers.get_all_specimen_cv_fold_info()
+                    specimen_labels = (
+                        specimen_labels[
+                            (specimen_labels["fold_id"] == int(fold_id))
+                            & (specimen_labels["fold_label"] == fold_label)
+                            & (specimen_labels["disease"] == disease)
+                        ][["specimen_label", "participant_label"]]
+                        .drop_duplicates()
+                        .iloc[:n_specimens]
+                    )
 
-    ## Change sequence identity thresholds
-    # save original values for later
-    # TODO: do we still want this?
-    old_sequence_identity_thresholds = copy.copy(config.sequence_identity_thresholds)
-    # modify the thresholds to be easier
-    config.sequence_identity_thresholds.cluster_amino_acids_across_patients = {
-        locus: 0.5 for locus in GeneLocus
-    }
-    config.sequence_identity_thresholds.assign_test_sequences_to_clusters = {
-        locus: 0.5 for locus in GeneLocus
-    }
+                    # Make obs dataframe with columns ["specimen_label", "participant_label"]
+                    obs = specimen_labels.sample(n_sequences, replace=True).reset_index(
+                        drop=True
+                    )
+                    obs["disease"] = disease
+                    obs["amplification_label"] = obs["specimen_label"]  # for simplicity
+
+                    # Set other obs columns
+                    # Note on this np.random.choice pattern: designed so that when disease == healthy_label, values to choose from are identical
+                    obs["cdr3_seq_aa_q_trim"] = np.random.choice(
+                        [
+                            common_disease_specific_sequence[healthy_label],
+                            common_disease_specific_sequence[disease],
+                        ],
+                        p=[0.1, 0.9],
+                        size=obs.shape[0],
+                        replace=True,
+                    )
+
+                    # Ensure at least one sequence for each disease for each V-J combination:
+                    # This will guarantee that each disease will have at least one sequence associated with each (V gene, J gene) combination in the obs dataframe.
+                    # As a result, when we split into V-J subsets to train submodels, each subset will have data from more than one class.
+                    # Without this, we would have some V-J subsets with only one class, and those submodels would fail to train.
+                    # Implementation: Start with a dataframe holding all possible V-J combinations, repeated several times:
+                    # (This is a small predetermined dataframe vis-a-vis the total size of obs)
+                    all_vj_combinations_df = pd.DataFrame(
+                        all_vj_combinations * 5, columns=["v_gene", "j_gene"]
+                    )
+
+                    # Fill the remaining rows (the majority of obs) with random V-J combinations depending on which disease we're in
+                    remaining_shape = obs.shape[0] - all_vj_combinations_df.shape[0]
+                    assert remaining_shape > 0  # Sanity check
+
+                    def normalize(arr) -> np.ndarray:
+                        arr = np.array(arr)
+                        return arr / np.sum(arr)
+
+                    more_v_genes = np.random.choice(
+                        np.hstack(
+                            [
+                                # Each is a list of gene names
+                                disease_associated_v_genes[healthy_label],
+                                disease_associated_v_genes[disease],
+                            ]
+                        ),
+                        p=normalize(
+                            # We want disease-specific V genes to be prevalent, since model 1 will filter out the rarest 50% of V genes.
+                            np.hstack(
+                                [
+                                    normalize(
+                                        [0.1]
+                                        * len(disease_associated_v_genes[healthy_label])
+                                    ),
+                                    normalize(
+                                        [0.9] * len(disease_associated_v_genes[disease])
+                                    ),
+                                ]
+                            )
+                        ),
+                        size=remaining_shape,
+                        replace=True,
+                    )
+
+                    more_j_genes = np.random.choice(
+                        available_j_genes, size=remaining_shape, replace=True
+                    )
+
+                    # Concatenate with the original precomputed V-J combinations lists, shuffle, and add to obs
+                    obs["v_gene"] = np.hstack(
+                        [all_vj_combinations_df["v_gene"], more_v_genes]
+                    )
+                    obs["j_gene"] = np.hstack(
+                        [all_vj_combinations_df["j_gene"], more_j_genes]
+                    )
+
+                    all_obs.append(obs)
+
+                # Create adata
+                adata = anndata.AnnData(
+                    X=np.vstack(all_X),
+                    obs=pd.concat(all_obs, axis=0),
+                    uns={
+                        "embedded": config.embedder.name,
+                        "embedded_fine_tuned_on_fold_id": fold_id,
+                        "embedded_fine_tuned_on_gene_locus": gene_locus.name,
+                    },
+                )
+                adata.obs_names_make_unique()  # make index unique again
+
+                # Sanity check: all V-J subsets should include every disease (see above for why this is important)
+                assert (
+                    adata.obs.groupby(["v_gene", "j_gene"], observed=True)[
+                        "disease"
+                    ].nunique()
+                    == len(diseases)
+                ).all()
+
+                # Generate other columns
+                adata.obs["disease_subtype"] = adata.obs["disease"]
+                adata.obs["cdr3_aa_sequence_trim_len"] = adata.obs[
+                    "cdr3_seq_aa_q_trim"
+                ].str.len()
+                adata.obs["cdr1_seq_aa_q_trim"] = adata.obs["cdr3_seq_aa_q_trim"].copy()
+                adata.obs["cdr2_seq_aa_q_trim"] = adata.obs["cdr3_seq_aa_q_trim"].copy()
+                adata.obs["num_clone_members"] = np.random.poisson(
+                    lam=50, size=adata.shape[0]
+                )
+                adata.obs["isotype_supergroup"] = np.random.choice(
+                    helpers.isotype_groups_kept[gene_locus],
+                    size=adata.shape[0],
+                    replace=True,
+                )
+                # generate v_mut between 0 and 0.2 for BCR, or always 0 for TCR
+                adata.obs["v_mut"] = (
+                    np.random.uniform(low=0, high=0.2, size=adata.shape[0])
+                    if gene_locus == GeneLocus.BCR
+                    else 0.0
+                )
+
+                adata.raw = adata
+                sc.pp.scale(adata)
+                assert not adata.obs_names.duplicated().any()
+
+                destination_dir = config.paths.scaled_anndatas_dir / gene_locus.name
+                destination_dir.mkdir(parents=True, exist_ok=True)
+                fname = f"fold.{fold_id}.{fold_label}.h5ad"
+                adata.write(destination_dir / fname, compression="gzip")
 
     ## Change n_lambda used in hyperparameter-tuned linear models
     # save original value for later
     old_n_lambda = model_definitions.DEFAULT_N_LAMBDAS_FOR_TUNING
-    model_definitions.DEFAULT_N_LAMBDAS_FOR_TUNING = 5
+    model_definitions.DEFAULT_N_LAMBDAS_FOR_TUNING = 3
+
+    ## Set desired sample weight strategy
+    # save original value for later
+    old_sample_weight_strategy = config.sample_weight_strategy
+    config.sample_weight_strategy = sample_weight_strategy
+
+    ## Set all_fold_ids and cross_validation_fold_ids to a smaller set for faster testing
+    # save original values for later
+    old_all_fold_ids = config.all_fold_ids
+    old_cross_validation_fold_ids = config.cross_validation_fold_ids
+    config.all_fold_ids = [0, -1]
+    config.cross_validation_fold_ids = [0]
 
     # run tests
     yield
 
     # reset to original values
-    config.sequence_identity_thresholds = old_sequence_identity_thresholds
     model_definitions.DEFAULT_N_LAMBDAS_FOR_TUNING = old_n_lambda
+    config.sample_weight_strategy = old_sample_weight_strategy
+    config.all_fold_ids = old_all_fold_ids
+    config.cross_validation_fold_ids = old_cross_validation_fold_ids
 
 
+@pytest.mark.parametrize(
+    "target_obs_column",
+    [
+        # This doesn't do any subsetting:
+        TargetObsColumnEnum.disease,
+        # This one does subsetting:
+        TargetObsColumnEnum.lupus_vs_healthy,
+    ],
+)
 def test_first_anndata_load_does_not_affect_second_anndata_load_from_cache(
-    modified_config,
+    modified_config, target_obs_column
 ):
     def load():
         return io.load_fold_embeddings(
             fold_id=0,
             fold_label="train_smaller",
             gene_locus=GeneLocus.BCR,
-            target_obs_column=TargetObsColumnEnum.disease,
+            target_obs_column=target_obs_column,
         )
 
     # first load, cache miss
@@ -127,15 +344,24 @@ def test_first_anndata_load_does_not_affect_second_anndata_load_from_cache(
     assert "new_col" not in adata2.obs.columns
 
 
+@pytest.mark.parametrize(
+    "target_obs_column",
+    [
+        # This doesn't do any subsetting:
+        TargetObsColumnEnum.disease,
+        # This one does subsetting:
+        TargetObsColumnEnum.lupus_vs_healthy,
+    ],
+)
 def test_modfiying_second_anndata_load_from_cache_does_not_affect_first_anndata_load(
-    modified_config,
+    modified_config, target_obs_column
 ):
     def load():
         return io.load_fold_embeddings(
             fold_id=0,
             fold_label="train_smaller",
             gene_locus=GeneLocus.BCR,
-            target_obs_column=TargetObsColumnEnum.disease,
+            target_obs_column=target_obs_column,
         )
 
     # first load, cache miss
@@ -151,6 +377,25 @@ def test_modfiying_second_anndata_load_from_cache_does_not_affect_first_anndata_
     assert "disease" not in adata2.obs.columns
 
 
+def test_load_train_smaller_further_splits(modified_config):
+    # train_smaller1 and train_smaller2 are further splits of train_smaller, and have a slightly different io.load_fold_embeddings path for efficiency
+    def _load(fold_label):
+        return io.load_fold_embeddings(
+            fold_id=0,
+            fold_label=fold_label,
+            gene_locus=GeneLocus.BCR,
+            target_obs_column=TargetObsColumnEnum.disease,
+        ).obs["specimen_label"]
+
+    specimens1 = _load("train_smaller1")
+    specimens2 = _load("train_smaller2")
+    assert (
+        len(set(specimens1).intersection(set(specimens2))) == 0
+    ), "train_smaller1 and train_smaller2 should have completely separate sets of specimen_labels"
+
+
+# This is a very slow test, so run it as the last test in the suite.
+@pytest.mark.order("last")
 def test_train_all_models(modified_config):
     training_fold_name = "train_smaller"
     validation_fold_name = "validation"
@@ -161,7 +406,13 @@ def test_train_all_models(modified_config):
         "convergent_cluster_model",
         "sequence_model",
     ]
-    fold_ids = config.all_fold_ids
+    fold_ids = [0, -1]  # config.all_fold_ids
+    # Special fold names for "Model 3 separated by V and J genes":
+    training_split_further_fold_name_base_sequence_model_train = (
+        "train_smaller"
+        # Technically this should be "train_smaller1", but for our small end-to-end test, this would cut out too many samples.
+    )
+    training_split_further_fold_name_rollup_model_train = "train_smaller"  # Technically this should be "train_smaller2", but for our small end-to-end test, this would cut out too many samples.
 
     gene_loci_used: GeneLocus = GeneLocus.BCR | GeneLocus.TCR
     # TODO add rest of TargetObsColumnEnum. The snapshot datasets don't have enough coverage of these classes to test them.
@@ -172,14 +423,14 @@ def test_train_all_models(modified_config):
         # TargetObsColumnEnum.covid_vs_healthy,
     ]
     expected_classes_by_target = {
-        TargetObsColumnEnum.disease: ["Covid19", "HIV", "Healthy/Background"],
+        TargetObsColumnEnum.disease: ["HIV", "Healthy/Background", "Lupus"],
         TargetObsColumnEnum.disease_all_demographics_present: [
-            "Covid19",
             "HIV",
             "Healthy/Background",
+            "Lupus",
         ],
         # TargetObsColumnEnum.age_group_binary_healthy_only: ["50+", "under 50"],
-        # TargetObsColumnEnum.covid_vs_healthy: ["Covid19", "Healthy/Background"],
+        # TargetObsColumnEnum.covid_vs_healthy: ["Lupus", "Healthy/Background"],
     }
 
     # TODO: assert config.paths is what we expect
@@ -188,15 +439,51 @@ def test_train_all_models(modified_config):
     def _run_metamodel(
         gene_locus: GeneLocus, target_obs_column: TargetObsColumnEnum, fold_id: int
     ):
-        for (
-            metamodel_flavor,
-            metamodel_config,
-        ) in train_metamodel.get_metamodel_flavors(
+        metamodel_flavors = train_metamodel.get_metamodel_flavors(
             gene_locus=gene_locus,
             target_obs_column=target_obs_column,
             fold_id=fold_id,
             base_model_train_fold_name=training_fold_name,
-        ).items():
+            base_model_train_fold_name_for_sequence_model=training_split_further_fold_name_base_sequence_model_train,
+            base_model_train_fold_name_for_aggregation_model=training_split_further_fold_name_rollup_model_train,
+        )
+
+        # Confirm all expected metamodel flavors were generated
+        expected_metamodel_flavors_by_target: Dict[TargetObsColumnEnum, Set[str]] = {
+            TargetObsColumnEnum.disease: {
+                "default",
+                "subset_of_submodels_repertoire_stats",
+                "subset_of_submodels_convergent_cluster_model",
+                "subset_of_submodels_sequence_model",
+                "subset_of_submodels_repertoire_stats_convergent_cluster_model",
+                "subset_of_submodels_repertoire_stats_sequence_model",
+                "subset_of_submodels_convergent_cluster_model_sequence_model",
+            },
+            TargetObsColumnEnum.disease_all_demographics_present: {
+                "default",
+                "with_demographics_columns",
+                "demographics_regressed_out",
+                "demographics_only",
+                "demographics_only_age",
+                "demographics_only_sex",
+                "demographics_only_ethnicity_condensed",
+            },
+            # TargetObsColumnEnum.age_group_binary_healthy_only: {"default"},
+            # TargetObsColumnEnum.covid_vs_healthy: {"default"},
+        }
+        if GeneLocus.BCR in gene_locus:
+            expected_metamodel_flavors_by_target[TargetObsColumnEnum.disease].add(
+                "isotype_counts_only"
+            )
+        assert (
+            set(metamodel_flavors.keys())
+            == expected_metamodel_flavors_by_target[target_obs_column]
+        )
+
+        for (
+            metamodel_flavor,
+            metamodel_config,
+        ) in metamodel_flavors.items():
             logger.info(
                 f"Training metamodel for gene_locus={gene_locus}, fold_id={fold_id}, target={target_obs_column}, metamodel flavor {metamodel_flavor}: {metamodel_config}"
             )
@@ -217,11 +504,12 @@ def test_train_all_models(modified_config):
                 metamodel_fold_label_test=(
                     testing_fold_name if fold_id != -1 else None
                 ),
-                chosen_models=["lasso_cv", "xgboost"],
+                chosen_models=["elasticnet_cv", "xgboost"],
                 n_jobs=1,
                 # control fold_id and cache manually so that we limit repetitive I/O
                 clear_cache=False,
-                fail_on_error=True,  # this is for CI only
+                # this is for CI only: don't swallow training errors
+                fail_on_error=True,
             )
 
             # Confirm feature names.
@@ -241,8 +529,20 @@ def test_train_all_models(modified_config):
                     # Still keep this as a list, so we can iterate over it
                     expected_classes = [expected_classes[1]]
 
+                if metamodel_flavor.startswith("subset_of_submodels"):
+                    # Special case: including only a subset of submodels
+                    # The metamodel flavor name will contain the submodel names
+                    metamodel_feature_prefixes_filtered = [
+                        feature_prefix
+                        for feature_prefix in metamodel_feature_prefixes
+                        if feature_prefix in metamodel_flavor
+                    ]
+                else:
+                    # Default: all submodels used
+                    metamodel_feature_prefixes_filtered = metamodel_feature_prefixes
+
                 for single_gene_locus in gene_locus:  # might be composite
-                    for feature_prefix in metamodel_feature_prefixes:
+                    for feature_prefix in metamodel_feature_prefixes_filtered:
                         for disease in expected_classes:
                             # this generates e.g.:
                             # [
@@ -369,7 +669,7 @@ def test_train_all_models(modified_config):
                     )
 
             # Load trained metamodel, two ways.
-            for metamodel_name in ["lasso_cv", "xgboost"]:
+            for metamodel_name in ["elasticnet_cv", "xgboost"]:
                 for clf in [
                     BlendingMetamodel(
                         fold_id=fold_id,
@@ -378,6 +678,7 @@ def test_train_all_models(modified_config):
                         metamodel_fold_label_train=metamodel_fold_label_train,
                         gene_locus=gene_locus,
                         target_obs_column=target_obs_column,
+                        metamodel_flavor=metamodel_flavor,
                         metamodel_config=metamodel_config,
                         metamodel_base_dir=BlendingMetamodel._get_metamodel_base_dir(
                             gene_locus=gene_locus,
@@ -406,7 +707,7 @@ def test_train_all_models(modified_config):
     but got:
 {nl.join(observed_metamodel_feature_names)}"""
 
-                    # TODO: run predictions with these models - based on supervised_embedding code - to check that we can load them from disk
+                    # TODO: run predictions with these models to check that we can load them from disk
 
     for gene_locus in gene_loci_used:
         # Control fold_id and cache manually so that we limit repetitive I/O
@@ -414,33 +715,42 @@ def test_train_all_models(modified_config):
             for target_obs_col in target_obs_columns:
                 # Train model 1
                 logger.info(
-                    f"Training model 1 for gene_locus={gene_locus}, fold_id={fold_id}, target={target_obs_col}."
+                    f"Training model 1 for gene_locus={gene_locus}, fold_id={fold_id}, target={target_obs_col}, sample_weight_strategy={sample_weight_strategy}."
                 )
                 train_repertoire_stats_model.run_classify_with_all_models(
                     gene_locus=gene_locus,
+                    target_obs_column=target_obs_col,
+                    sample_weight_strategy=sample_weight_strategy,
                     fold_label_train=training_fold_name,
                     fold_label_test=validation_fold_name,
                     chosen_models=[
-                        config.metamodel_base_model_names.model_name_overall_repertoire_composition,
+                        config.metamodel_base_model_names.model_name_overall_repertoire_composition[
+                            gene_locus
+                        ],
                     ],
                     n_jobs=1,
-                    target_obs_column=target_obs_col,
                     # control fold_id and cache manually so that we limit repetitive I/O
                     fold_ids=[fold_id],
                     clear_cache=False,
-                    fail_on_error=True,  # this is for CI only
+                    # this is for CI only: don't swallow training errors
+                    fail_on_error=True,
+                    # this is for CI only: we don't have sequences.sampled.parquet in CI; load our generated anndatas instead
+                    load_obs_only=False,
                 )
 
                 logger.info(
-                    f"Tuning model 1 on validation set for gene_locus={gene_locus}, fold_id={fold_id}, target={target_obs_col}."
+                    f"Tuning model 1 on validation set for gene_locus={gene_locus}, fold_id={fold_id}, target={target_obs_col}, sample_weight_strategy={sample_weight_strategy}."
                 )
                 # Load model 1
                 clf = RepertoireClassifier(
                     fold_id=fold_id,
-                    model_name=config.metamodel_base_model_names.model_name_overall_repertoire_composition,
+                    model_name=config.metamodel_base_model_names.model_name_overall_repertoire_composition[
+                        gene_locus
+                    ],
                     fold_label_train="train_smaller",
-                    target_obs_column=target_obs_col,
                     gene_locus=gene_locus,
+                    target_obs_column=target_obs_col,
+                    sample_weight_strategy=sample_weight_strategy,
                 )
                 # TODO: expose final pipeline step's feature_names_in_ as a property
                 feature_names = clf._inner[:-1].get_feature_names_out()
@@ -482,10 +792,12 @@ def test_train_all_models(modified_config):
                 )
                 train_convergent_cluster_classifier.run_classify_with_all_models(
                     gene_locus=gene_locus,
-                    fold_label_train=training_fold_name,
-                    fold_label_test=validation_fold_name,
+                    fold_label_train=training_split_further_fold_name_base_sequence_model_train,
+                    fold_label_test=training_split_further_fold_name_rollup_model_train,
                     chosen_models=[
-                        config.metamodel_base_model_names.model_name_convergent_clustering,
+                        config.metamodel_base_model_names.model_name_convergent_clustering[
+                            gene_locus
+                        ],
                     ],
                     n_jobs=2,  # this parameter controls p-value thresholding tuning parallelization
                     target_obs_column=target_obs_col,
@@ -495,8 +807,12 @@ def test_train_all_models(modified_config):
                     # reduced list of p-values for CI
                     # all are deliberately high to reduce potential for lots of abstentions on our tiny snapshot test dataset,
                     # which could cause tests to fail due to the resulting model training sets being too small / not having all classes included
+                    # TODO: Remove this customization for CI? Or try [0.001, 0.01, 0.1]?
                     p_values=[0.5, 0.8],
-                    fail_on_error=True,  # this is for CI only
+                    # this is for CI only: don't swallow training errors
+                    fail_on_error=True,
+                    # this is for CI only: we don't have sequences.sampled.parquet in CI; load our generated anndatas instead
+                    load_obs_only=False,
                 )
 
                 logger.info(
@@ -505,8 +821,10 @@ def test_train_all_models(modified_config):
                 # Load model 2
                 clf = ConvergentClusterClassifier(
                     fold_id=fold_id,
-                    model_name=config.metamodel_base_model_names.model_name_convergent_clustering,
-                    fold_label_train="train_smaller",
+                    model_name=config.metamodel_base_model_names.model_name_convergent_clustering[
+                        gene_locus
+                    ],
+                    fold_label_train=training_split_further_fold_name_base_sequence_model_train,
                     target_obs_column=target_obs_col,
                     gene_locus=gene_locus,
                 )
@@ -546,12 +864,13 @@ def test_train_all_models(modified_config):
                 )
                 train_exact_matches_classifier.run_classify_with_all_models(
                     gene_locus=gene_locus,
-                    fold_label_train=training_fold_name,
-                    # for CI, we don't do p-value cross validation on validation fold,
-                    # because we did not construct our snapshot datasets to have many repeated sequences
-                    fold_label_test=training_fold_name,  # validation_fold_name,
+                    fold_label_train=training_split_further_fold_name_base_sequence_model_train,
+                    # Note that in CI, this is effectively not doing p-value cross validation on a separate held-out fold, because these two fold labels are identical (though it should work either way because our artificial snapshot datasets are designed with repeated sequences):
+                    fold_label_test=training_split_further_fold_name_rollup_model_train,
                     chosen_models=[
-                        config.metamodel_base_model_names.model_name_convergent_clustering,
+                        config.metamodel_base_model_names.model_name_convergent_clustering[
+                            gene_locus
+                        ],
                     ],
                     n_jobs=2,  # this parameter controls p-value thresholding tuning parallelization
                     target_obs_column=target_obs_col,
@@ -559,14 +878,19 @@ def test_train_all_models(modified_config):
                     fold_ids=[fold_id],
                     clear_cache=False,
                     p_values=[0.1, 0.5],  # reduced list for CI
-                    fail_on_error=True,  # this is for CI only
+                    # this is for CI only: don't swallow training errors
+                    fail_on_error=True,
+                    # this is for CI only: we don't have sequences.sampled.parquet in CI; load our generated anndatas instead
+                    load_obs_only=False,
                 )
 
                 # Load exact matches model
                 clf = ExactMatchesClassifier(
                     fold_id=fold_id,
-                    model_name=config.metamodel_base_model_names.model_name_convergent_clustering,
-                    fold_label_train="train_smaller",
+                    model_name=config.metamodel_base_model_names.model_name_convergent_clustering[
+                        gene_locus
+                    ],
+                    fold_label_train=training_split_further_fold_name_base_sequence_model_train,
                     target_obs_column=target_obs_col,
                     gene_locus=gene_locus,
                 )
@@ -587,54 +911,189 @@ def test_train_all_models(modified_config):
 
                 ##########
 
-                # Train model 3
-                sample_weight_strategy = SampleWeightStrategy.ISOTYPE_USAGE
-                logger.info(
-                    f"Training model 3 for gene_locus={gene_locus}, fold_id={fold_id}, target={target_obs_col}, sample_weight_strategy={sample_weight_strategy}."
+                ### Train Model 3, separated by V gene + isotype, which is the default configured in config.py:
+                sequence_subset_strategy: SequenceSubsetStrategy = (
+                    config.metamodel_base_model_names.base_sequence_model_subset_strategy
                 )
-                train_sequence_model.run_classify_with_all_models(
+                v_gene_isotype_specific_sequence_models_to_train = list(
+                    {
+                        config.metamodel_base_model_names.base_sequence_model_name[
+                            gene_locus
+                        ],
+                        # Train some other models to cover our bases
+                        "elasticnet_cv_patient_level_optimization",
+                    }
+                )
+                logger.info(
+                    f"Training V-gene+isotype specific model 3 for gene_locus={gene_locus}, fold_id={fold_id}, target={target_obs_col}, sample_weight_strategy={sample_weight_strategy}."
+                )
+                train_vj_gene_specific_sequence_model.run_classify_with_all_models(
                     gene_locus=gene_locus,
                     target_obs_column=target_obs_col,
                     sample_weight_strategy=sample_weight_strategy,
-                    fold_label_train=training_fold_name,
-                    fold_label_test=validation_fold_name,
-                    chosen_models=[
-                        config.metamodel_base_model_names.model_name_sequence_disease,
-                    ],
+                    fold_label_train=training_split_further_fold_name_base_sequence_model_train,
+                    fold_label_test=training_split_further_fold_name_rollup_model_train,
+                    chosen_models=v_gene_isotype_specific_sequence_models_to_train,
                     n_jobs=1,
                     # control fold_id and cache manually so that we limit repetitive I/O
                     fold_ids=[fold_id],
                     clear_cache=False,
-                    fail_on_error=True,  # this is for CI only
+                    # this is for CI only: don't swallow training errors
+                    fail_on_error=True,
+                    # exclude rare V genes (default)
+                    exclude_rare_v_genes=True,
+                    # *This is the key parameter*:
+                    sequence_subset_strategy=sequence_subset_strategy,
                 )
 
-                # Model 3 rollup:
-                # Theoretically we don't need to run this model3 rollup before training metamodel,
-                # because metamodel will generate the rollup from scratch (rather than loading from disk),
-                # but let's do it anyway because the rollup + tune is an important part of the project.
-                logger.info(
-                    f"Rolling up model 3 (+ tuning rollup decision thresholds) for gene_locus={gene_locus}, fold_id={fold_id}, target={target_obs_col}, sample_weight_strategy={sample_weight_strategy}."
-                )
-                generate_rollups_on_all_classification_targets(
-                    fold_ids=[fold_id],  # range(config.n_folds),
-                    targets=[
-                        (target_obs_col, SampleWeightStrategy.ISOTYPE_USAGE)
-                        # (target_obs_column, SampleWeightStrategy.ISOTYPE_USAGE)
-                        # for target_obs_column in config.classification_targets
+                # Test reload - and will be used to test the specialized rollup below
+                base_model = (
+                    sequence_subset_strategy.base_model
+                )  # e.g. VGeneIsotypeSpecificSequenceClassifier
+                v_gene_isotype_specific_sequence_clf = base_model(
+                    fold_id=fold_id,
+                    model_name_sequence_disease=config.metamodel_base_model_names.base_sequence_model_name[
+                        gene_locus
                     ],
+                    fold_label_train=training_split_further_fold_name_base_sequence_model_train,
                     gene_locus=gene_locus,
-                    fold_label_test=testing_fold_name,
-                    chosen_models=[
-                        config.metamodel_base_model_names.model_name_sequence_disease,
-                    ],
-                    fold_label_train="train_smaller",
-                    also_tune_decision_thresholds=True,
-                    clear_cache=False,
-                    fail_on_error=True,  # this is for CI only
+                    target_obs_column=target_obs_col,
+                    sample_weight_strategy=sample_weight_strategy,
                 )
 
-                # TODO: Load model3 rollup and rollup_tuned
-                # TODO: confirm both clf and clf_tuned have the right classes_
+                # Train specialized rollup that is split by V gene + isotype (or as configured in config.py defaults)
+                # Which rollup models to train:
+                def _strip_all_model_name_suffixes(name: str):
+                    # Remove any model name suffixes corresponding to special customizations created inside the upcoming train.
+                    # For example, convert "elasticnet_cv_mean_aggregated_as_binary_ovr" to "elasticnet_cv".
+                    # Then the "_mean_aggregated_as_binary_ovr" variant will be trained within this upcoming train call.
+                    # (These strings are stored in an enum in train_vj_gene_specific_sequence_model_rollup.py)
+                    for (
+                        suffix
+                    ) in train_vj_gene_specific_sequence_model_rollup.ModelNameSuffixes:
+                        name = name.replace(suffix.value, "")
+
+                    for aggregation_strategy in AggregationStrategy:
+                        name = name.replace(aggregation_strategy.model_name_suffix, "")
+
+                    # Also, remove customizations from modify_fitted_model_lambda_setting() - these strings should match that function:
+                    name = name.replace("lambda1se", "").replace("lambdamax", "")
+
+                    return name
+
+                rollup_models_to_train = {
+                    # Train the model that will be used inside the metamodel.
+                    # Remove any model name suffixes corresponding to special customizations created inside the upcoming train:
+                    _strip_all_model_name_suffixes(
+                        config.metamodel_base_model_names.aggregation_sequence_model_name[
+                            gene_locus
+                        ]
+                    ),
+                    #
+                    # Also train xgboost because it has special handling of missing values:
+                    "xgboost",
+                }
+                train_vj_gene_specific_sequence_model_rollup.run_classify_with_all_models(
+                    gene_locus=gene_locus,
+                    target_obs_column=target_obs_col,
+                    sample_weight_strategy=sample_weight_strategy,
+                    fold_label_train=training_split_further_fold_name_rollup_model_train,
+                    fold_label_test=validation_fold_name,
+                    # Which rollup models to train:
+                    chosen_models=list(rollup_models_to_train),
+                    n_jobs=1,
+                    # Provide sequence model name here (rollup model will be trained on top of this model):
+                    base_model_name=config.metamodel_base_model_names.base_sequence_model_name[
+                        gene_locus
+                    ],
+                    base_model_fold_label_train=training_split_further_fold_name_base_sequence_model_train,
+                    # Configure aggregation strategies to train.
+                    # Let's train them all, because config.metamodel_base_model_names.aggregation_sequence_model_name[gene_locus] may use any of them,
+                    # so we will want to have it available for metamodel training later in this end-to-end run.
+                    aggregation_strategies=list(AggregationStrategy),
+                    # control fold_id and cache manually so that we limit repetitive I/O
+                    fold_ids=[fold_id],
+                    clear_cache=False,
+                    # this is for CI only: don't swallow training errors
+                    fail_on_error=True,
+                    # *This is the key parameter*:
+                    sequence_subset_strategy=sequence_subset_strategy,
+                )
+                # Test the trained model.
+                num_features = {}
+                for rollup_model_name in {
+                    f"{s}_mean_aggregated_as_binary_ovr" for s in rollup_models_to_train
+                } | {
+                    # Include the version of xgboost with special handling of missing values (it leaves them in instead of doing fillna).
+                    "xgboost_mean_aggregated_as_binary_ovr_with_nans",
+                    # Include reweighting by subset frequencies
+                    "xgboost_mean_aggregated_as_binary_ovr_reweighed_by_subset_frequencies",
+                }:
+                    # Load and run this specialized rollup
+                    v_gene_isotype_specific_rollup_clf_specialized = VJGeneSpecificSequenceModelRollupClassifier(
+                        fold_id=fold_id,
+                        # Provide sequence model name here (rollup model will be trained on top of this model):
+                        base_sequence_model_name=config.metamodel_base_model_names.base_sequence_model_name[
+                            gene_locus
+                        ],
+                        base_model_train_fold_label=training_split_further_fold_name_base_sequence_model_train,
+                        # Rollup model details:
+                        rollup_model_name=rollup_model_name,
+                        fold_label_train=training_split_further_fold_name_rollup_model_train,
+                        gene_locus=gene_locus,
+                        target_obs_column=target_obs_col,
+                        sample_weight_strategy=sample_weight_strategy,
+                        # We pass in the sequence classifier explicitly here, but we could instead pass sequence_subset_strategy
+                        sequence_classifier=v_gene_isotype_specific_sequence_clf,
+                    )
+                    v_gene_isotype_specific_rollup_featurized_specialized = (
+                        v_gene_isotype_specific_rollup_clf_specialized.featurize(
+                            io.load_fold_embeddings(
+                                fold_id=fold_id,
+                                fold_label=validation_fold_name,
+                                gene_locus=gene_locus,
+                                target_obs_column=target_obs_col,
+                                sample_weight_strategy=sample_weight_strategy,
+                            )
+                        )
+                    )
+                    # Confirm classes match
+                    # However, because train_smaller1 is a subset,
+                    # we may not really see all the classes.
+                    assert set(
+                        v_gene_isotype_specific_rollup_clf_specialized.classes_
+                    ) <= set(expected_classes_by_target[target_obs_col])
+                    assert set(
+                        v_gene_isotype_specific_rollup_clf_specialized.classes_
+                    ) == set(
+                        io.load_fold_embeddings(
+                            fold_id=fold_id,
+                            fold_label=training_split_further_fold_name_rollup_model_train,
+                            gene_locus=gene_locus,
+                            target_obs_column=target_obs_col,
+                            sample_weight_strategy=sample_weight_strategy,
+                        ).obs[target_obs_col.value.obs_column_name]
+                    )
+                    # Confirm predictions shape n_specimens x n_classes
+                    v_gene_isotype_specific_rollup_preds_specialized = (
+                        v_gene_isotype_specific_rollup_clf_specialized.predict_proba(
+                            v_gene_isotype_specific_rollup_featurized_specialized.X
+                        )
+                    )
+                    assert v_gene_isotype_specific_rollup_preds_specialized.shape == (
+                        len(
+                            v_gene_isotype_specific_rollup_featurized_specialized.sample_names
+                        ),
+                        len(v_gene_isotype_specific_rollup_clf_specialized.classes_),
+                    )
+                    num_features[
+                        rollup_model_name
+                    ] = v_gene_isotype_specific_rollup_clf_specialized.n_features_in_
+                # Confirm that the number of features is the same for all rollup models
+                assert all(
+                    nf == next(iter(num_features.values()))
+                    for nf in num_features.values()
+                )
 
                 ##########
 
@@ -667,24 +1126,6 @@ def test_train_all_models(modified_config):
             # clear cache
             io.clear_cached_fold_embeddings()
             gc.collect()
-
-        # For this gene locus, run model interpretations
-        logger.info(
-            f"Running sequence model interpretations for gene_locus={gene_locus}, target_obs_columns={target_obs_columns}."
-        )
-        interpretation.rank_entire_locus_sequences(
-            gene_locus=gene_locus,
-            target_obs_columns=target_obs_columns,
-            main_output_base_dir=(
-                config.paths.model_interpretations_output_dir / gene_locus.name
-            ),
-            highres_output_base_dir=(
-                config.paths.high_res_outputs_dir
-                / "model_interpretations"
-                / gene_locus.name
-            ),
-            cdr3_size_threshold=5,  # Lower because our simulated dataset is very sparse
-        )
 
     # Metamodel with all gene locuses together:
     if len(gene_loci_used) > 1:

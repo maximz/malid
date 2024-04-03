@@ -48,14 +48,16 @@ accepts_fold_ids = click.option(
     help="Fold IDs to run.",
 )
 
+
 accepts_sample_weight_strategies = click.option(
     "--sample_weight_strategy",
     multiple=True,
-    default=[SampleWeightStrategy.ISOTYPE_USAGE],  # , SampleWeightStrategy.NONE
+    default=[config.sample_weight_strategy],
     show_default=True,
     type=EnumChoice(SampleWeightStrategy, case_sensitive=False),
     help="Sample weight strategies to use",
 )  # if multiple isn't True, default could be 'test' or Test.test
+
 
 accepts_n_jobs = click.option(
     "--n_jobs",

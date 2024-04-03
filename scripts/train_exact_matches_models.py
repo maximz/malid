@@ -23,7 +23,9 @@ def run_standard_train(
     fold_ids: List[int],
     n_jobs=1,
 ):
-    training_fold_name, testing_fold_name = config.get_fold_split_labels()
+    # Set training and held-out fold names as in model3-split-into-seqeuence-subsets:
+    training_fold_name = "train_smaller1"  # Train on portion of train_smaller used to find sequences corresponding to disease
+    testing_fold_name = "train_smaller2"  # Evaluate on portion of train_smaller used to choose best p-value threshold for sequence association with disease, to prune sequence hits
     logger.info(f"Training on {training_fold_name}, evaluating on {testing_fold_name}")
 
     for gene_locus in gene_loci_used:
@@ -43,14 +45,7 @@ def run_standard_train(
                         target_obs_column=target_obs_col,
                         fold_label_train=training_fold_name,
                         fold_label_test=testing_fold_name,
-                        chosen_models=[
-                            "dummy_most_frequent",
-                            "dummy_stratified",
-                            "lasso_multiclass",
-                            "lasso_cv",
-                            "rf_multiclass",
-                            "linearsvm_ovr",
-                        ],
+                        chosen_models=config.model_names_to_train,
                         n_jobs=n_jobs,
                         # control fold_id and cache manually so that we limit repetitive I/O
                         fold_ids=[fold_id],

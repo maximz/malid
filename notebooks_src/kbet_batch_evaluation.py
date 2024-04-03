@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # %% [markdown]
 # # Abandoned attempt with kBET's R package and scib Python wrapper
 #
@@ -132,7 +131,9 @@ from IPython.display import display
 
 # %%
 from malid import io, helpers, logger, config
-from malid.datamodels import GeneLocus, TargetObsColumnEnum
+from malid.datamodels import (
+    map_cross_validation_split_strategy_to_default_target_obs_column,
+)
 
 # %%
 # Use GPU for kNN construction and queries
@@ -148,6 +149,9 @@ from malid.knn import _fit_knn_index, _get_neighbors
 # %%
 
 # %%
+target_obs_column = map_cross_validation_split_strategy_to_default_target_obs_column[
+    config.cross_validation_split_strategy
+]
 
 # %%
 
@@ -177,6 +181,44 @@ def kbet(
             )
             continue
 
+        # If any batch size is extremely large, subsample it.
+        MAX_BATCH_SIZE = 2000000  # 2 million
+
+        # Create a list to store obsnames to remove from the oversized groups
+        # See also https://github.com/scverse/scanpy/issues/987#issuecomment-1387199509 for another approach
+        indices_to_remove = []
+
+        if adata_label.obs_names.duplicated().any():
+            raise ValueError("Obs names must be unique")
+
+        for batch, batch_size in batch_sizes.items():
+            if batch_size > MAX_BATCH_SIZE:
+                logger.info(
+                    f"Subsampling {label_key}={label} because {batch_key}={batch} has {batch_size} entries which exceeds the maximum of {MAX_BATCH_SIZE}"
+                )
+                # Determine the number of entries to remove
+                remove_count = batch_size - MAX_BATCH_SIZE
+
+                # Randomly select indices to remove
+                indices_to_remove.append(
+                    np.random.choice(
+                        adata_label.obs_names[adata_label.obs[batch_key] == batch],
+                        size=remove_count,
+                        replace=False,
+                    )
+                )
+
+        if len(indices_to_remove) > 0:
+            # Exclude the indices to remove from the adata object
+            adata_label = adata_label[
+                ~adata_label.obs.index.isin(np.hstack(indices_to_remove))
+            ]
+
+            # Recompute batch_sizes
+            batch_sizes = adata_label.obs[batch_key].value_counts()
+        del indices_to_remove
+        gc.collect()
+
         # Choose neighborhood size, based on heuristics in kBET and scib
         neighborhood_size = batch_sizes.mean() // 4
         neighborhood_size = min([50, max([10, neighborhood_size])])
@@ -203,14 +245,18 @@ def kbet(
         # We will instead build separate kNN graphs for each identity-label subset of cells
 
         # Build kNN index
+        logger.info("Fitting kNN index...")
         knn_index = _fit_knn_index(X=adata_label.obsm["X_pca"])
 
         # Query kNN index
+        logger.info("Querying kNN index...")
         neighbor_links_df = _get_neighbors(
             knn_index=knn_index,
             data_X_contiguous=adata_label.obsm["X_pca"],
             n_neighbors=neighborhood_size,
         )
+
+        logger.info("Computing neighborhood statistics...")
 
         # Note when merging:
         # center_id and neighbor_id are integer ilocs (within adata_label), not obs_names / locs
@@ -326,7 +372,7 @@ def kbet(
 
 # %%
 # kBET will be computed amongst all sequences with same [label_key]
-label_key = "disease"
+label_key = target_obs_column.value.obs_column_name
 
 # kBET will compute whether [batch_key] batches are well-mixed within each [label_key]
 batch_key = "study_name"
@@ -336,7 +382,7 @@ fold_label = "test"
 
 # plot labels
 xlabel = "kBET χ² test corrected p-value"
-ylabel = "Disease"
+ylabel = target_obs_column.value.obs_column_name
 
 # %%
 kbet_results = kdict()
@@ -347,7 +393,7 @@ for gene_locus in config.gene_loci_used:
             fold_id=fold_id,
             fold_label=fold_label,
             gene_locus=gene_locus,
-            target_obs_column=TargetObsColumnEnum.disease,
+            target_obs_column=target_obs_column,
         )
         # PCA was precomputed with 50 dims
         assert adata.obsm["X_pca"].shape[1] == 50
@@ -492,9 +538,9 @@ all_results_per_label = pd.read_csv(
 all_results_per_label
 
 # %%
-all_results_per_label.groupby(["gene_locus", "disease"])["average_rejection_rate"].agg(
-    ["mean", "std"]
-)
+all_results_per_label.groupby(["gene_locus", target_obs_column.value.obs_column_name])[
+    "average_rejection_rate"
+].agg(["mean", "std"])
 
 # %%
 all_results_per_label.groupby(["gene_locus"])["average_rejection_rate"].agg(

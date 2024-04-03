@@ -1,4 +1,5 @@
 ## GPU packages
+# When updating versions here, be sure to update requirements_cpu.txt accordingly.
 
 # Torch package source
 # see command generator at https://pytorch.org/, and https://pytorch.org/get-started/previous-versions/, and match it up to cudatoolkit version in earlier steps of install
@@ -9,7 +10,8 @@
 # see https://github.com/google/jax#installation and https://github.com/ElArkk/jax-unirep/blob/b8048db1c12014c815d1b53e7b55cff8d2f688d8/install_jaxgpu.sh#L6
 --find-links https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
-jax [cuda11_cudnn82] == 0.3.14
-torch==1.11.0+cu115 # cuda suffix must match cudatoolkit version in rapidgenomics_cuda.yml and in environment variables (see README)
-torchaudio==0.11.0
-torchvision==0.12.0+cu115 # cuda suffix must match cudatoolkit version in rapidgenomics_cuda.yml and in environment variables (see README)
+jax [cuda11_pip] >= 0.4.13, < 1
+# cuda suffix must match cudatoolkit version in rapidgenomics_cuda.yml and in environment variables (see README)
+torch==2.0.1+cu118
+torchaudio==2.0.2+cu118
+torchvision==0.15.2+cu118

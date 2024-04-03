@@ -2,11 +2,10 @@
 Train specimen-level ensemble metamodel using existing base models trained on train-smaller set.
 """
 
-from typing import List
+from typing import List, Optional
 import gc
 
-from malid import io
-from malid import cli_utils
+from malid import io, config, cli_utils
 from malid.train import train_metamodel
 from malid.datamodels import (
     GeneLocus,
@@ -25,11 +24,14 @@ def run_standard_train(
     target_obs_columns: List[TargetObsColumnEnum],
     fold_ids: List[int],
     n_jobs=1,
+    metamodel_flavors: Optional[List[str]] = None,
+    base_model_train_fold_name="train_smaller",
+    metamodel_fold_label_train="validation",
+    metamodel_fold_label_test="test",
+    # If not provided, these will be set to base_model_train_fold_name followed by suffix "1" and "2":
+    base_model_train_fold_name_for_sequence_model: Optional[str] = None,
+    base_model_train_fold_name_for_aggregation_model: Optional[str] = None,
 ):
-    base_model_train_fold_name = "train_smaller"
-    metamodel_training_fold_name = "validation"
-    metamodel_testing_fold_name = "test"
-
     GeneLocus.validate(gene_locus)  # may be a single or a composite gene locus flag
 
     # Control fold_id and cache manually so that we limit repetitive I/O
@@ -42,6 +44,8 @@ def run_standard_train(
                     target_obs_column=target_obs_column,
                     fold_id=fold_id,
                     base_model_train_fold_name=base_model_train_fold_name,
+                    base_model_train_fold_name_for_sequence_model=base_model_train_fold_name_for_sequence_model,
+                    base_model_train_fold_name_for_aggregation_model=base_model_train_fold_name_for_aggregation_model,
                 )
             except Exception as err:
                 logger.warning(
@@ -53,6 +57,13 @@ def run_standard_train(
                 metamodel_config,
             ) in flavors.items():
                 # Defines each train operation
+                if (
+                    metamodel_flavors is not None
+                    and len(metamodel_flavors) > 0
+                    and metamodel_flavor not in metamodel_flavors
+                ):
+                    # Not a whitelisted metamodel flavor. Skip.
+                    continue
                 try:
                     logger.info(
                         f"fold {fold_id}, {gene_locus}, target {target_obs_column}, metamodel flavor {metamodel_flavor}: {metamodel_config}"
@@ -66,24 +77,12 @@ def run_standard_train(
                         metamodel_flavor=metamodel_flavor,
                         metamodel_config=metamodel_config,
                         base_model_train_fold_name=base_model_train_fold_name,
-                        metamodel_fold_label_train=metamodel_training_fold_name,
+                        metamodel_fold_label_train=metamodel_fold_label_train,
                         # Disable evaluation because global fold doesn't have a test set
                         metamodel_fold_label_test=(
-                            metamodel_testing_fold_name if fold_id != -1 else None
+                            metamodel_fold_label_test if fold_id != -1 else None
                         ),
-                        chosen_models=[
-                            "dummy_most_frequent",
-                            "dummy_stratified",
-                            "lasso_cv",
-                            "ridge_cv",
-                            "elasticnet_cv",
-                            # also add the non-CV lasso with a fixed default lambda, as a sanity check
-                            # (this is OK because the models are very fast to fit on metamodel-size inputs)
-                            "lasso_multiclass",
-                            "rf_multiclass",
-                            "linearsvm_ovr",
-                            "xgboost",
-                        ],
+                        chosen_models=config.model_names_to_train,
                         n_jobs=n_jobs,
                         # control fold_id and cache manually so that we limit repetitive I/O
                         clear_cache=False,
@@ -108,11 +107,57 @@ def run_standard_train(
 @cli_utils.accepts_target_obs_columns
 @cli_utils.accepts_fold_ids
 @cli_utils.accepts_n_jobs
+@click.option(
+    "--metamodel_flavor",
+    "metamodel_flavors",
+    multiple=True,
+    default=None,
+    show_default=True,
+    type=str,
+    help="Optional filter of metamodel flavors to train",
+)
+@click.option(
+    "--base_model_train_fold_name",
+    default="train_smaller",
+    show_default=True,
+    type=str,
+)
+@click.option(
+    "--metamodel_fold_label_train",
+    default="validation",
+    show_default=True,
+    type=str,
+)
+@click.option(
+    "--metamodel_fold_label_test",
+    default="test",
+    show_default=True,
+    type=str,
+)
+@click.option(
+    "--base_model_train_fold_name_for_sequence_model",
+    default=None,
+    show_default=True,
+    type=str,
+)
+@click.option(
+    "--base_model_train_fold_name_for_aggregation_model",
+    default=None,
+    show_default=True,
+    type=str,
+)
 def run(
     gene_locus: List[GeneLocus],
     target_obs_column: List[TargetObsColumnEnum],
     fold_ids: List[int],
     n_jobs: int,
+    metamodel_flavors: Optional[List[str]],
+    base_model_train_fold_name: str,
+    metamodel_fold_label_train: str,
+    metamodel_fold_label_test: str,
+    # If not provided, these will be set to base_model_train_fold_name followed by suffix "1" and "2":
+    base_model_train_fold_name_for_sequence_model: Optional[str] = None,
+    base_model_train_fold_name_for_aggregation_model: Optional[str] = None,
 ):
     # input arguments are lists.
 
@@ -124,6 +169,10 @@ def run(
     click.echo(f"Selected gene_locus: {gene_loci_used}")
     click.echo(f"Selected target_obs_columns: {target_obs_column}")
     click.echo(f"Selected fold_ids: {fold_ids}")
+    click.echo(f"Optional metamodel flavor filter: {metamodel_flavors}")
+    click.echo(f"base_model_train_fold_name: {base_model_train_fold_name}")
+    click.echo(f"metamodel_fold_label_train: {metamodel_fold_label_train}")
+    click.echo(f"metamodel_fold_label_test: {metamodel_fold_label_test}")
 
     # Individual gene locus
     for single_gene_locus in gene_loci_used:
@@ -134,6 +183,12 @@ def run(
             target_obs_columns=target_obs_column,
             fold_ids=fold_ids,
             n_jobs=n_jobs,  # Inner jobs to run in parallel, within a specific targetobscolumn-foldID combination.
+            metamodel_flavors=metamodel_flavors,
+            base_model_train_fold_name=base_model_train_fold_name,
+            metamodel_fold_label_train=metamodel_fold_label_train,
+            metamodel_fold_label_test=metamodel_fold_label_test,
+            base_model_train_fold_name_for_sequence_model=base_model_train_fold_name_for_sequence_model,
+            base_model_train_fold_name_for_aggregation_model=base_model_train_fold_name_for_aggregation_model,
         )
 
     # Together in combined metamodel
@@ -144,6 +199,10 @@ def run(
             target_obs_columns=target_obs_column,
             fold_ids=fold_ids,
             n_jobs=n_jobs,  # Inner jobs to run in parallel, within a specific targetobscolumn-foldID combination.
+            metamodel_flavors=metamodel_flavors,
+            base_model_train_fold_name=base_model_train_fold_name,
+            metamodel_fold_label_train=metamodel_fold_label_train,
+            metamodel_fold_label_test=metamodel_fold_label_test,
         )
 
 

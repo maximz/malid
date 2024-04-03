@@ -12,6 +12,11 @@ from malid import config, helpers
 from malid.datamodels import healthy_label
 
 # %%
+pd.set_option("display.max_rows", 500)
+pd.set_option("display.max_columns", 500)
+pd.set_option("display.width", 1000)
+
+# %%
 
 # %% [markdown]
 # # produce metadata about external cohorts
@@ -39,8 +44,7 @@ from malid.datamodels import healthy_label
 
 # %%
 df = pd.read_csv(
-    config.paths.base_data_dir
-    / "external_cohorts/raw_data/covid_external_as_part_tables/exported.metadata.tsv",
+    config.paths.external_raw_data / "Kim" / "airr_covid19_metadata.tsv",
     sep="\t",
 )
 df.shape
@@ -93,7 +97,7 @@ print("\n".join(df.columns))
 df[df.columns[df.columns.str.startswith("study.")]].drop_duplicates()
 
 # %%
-study_names = {"PRJNA648677": "Kim", "PRJNA645245": "Montague"}
+study_names = {"PRJNA648677": "Kim"}  # could add more here
 study_names
 
 # %%
@@ -102,7 +106,6 @@ study_names
 
 # %%
 for study_id in study_names.keys():
-
     display(
         df[df["study.study_id"] == study_id][
             ["repertoire_id", "study.study_id"]
@@ -126,7 +129,6 @@ for study_id in study_names.keys():
 
 # %%
 for study_id in study_names.keys():
-
     display(
         df[df["study.study_id"] == study_id][
             ["repertoire_id", "study.study_id", "subject.subject_id"]
@@ -140,7 +142,6 @@ for study_id in study_names.keys():
 
 # %%
 for study_id in study_names.keys():
-
     display(
         df[df["study.study_id"] == study_id][
             ["repertoire_id", "study.study_id", "subject.subject_id"]
@@ -165,7 +166,6 @@ for study_id in study_names.keys():
 # %%
 # find the right columns...
 for study_id in study_names.keys():
-
     display(
         df[df["study.study_id"] == study_id][
             ["repertoire_id", "study.study_id", "subject.subject_id"]
@@ -187,7 +187,7 @@ for study_id in study_names.keys():
 specimens_df = (
     df[df["study.study_id"].isin(study_names.keys())][
         [
-            "repertoire_id",
+            "repertoire_id",  # the internal repertoire ID
             "study.study_id",
             "subject.subject_id",
             "subject.sex",
@@ -196,6 +196,7 @@ specimens_df = (
             "subject.diagnosis.0.study_group_description",
             "subject.diagnosis.0.disease_diagnosis.label",
             "sample.0.collection_time_point_relative",
+            "sample.0.sample_id",
         ]
     ]
     .dropna(how="all", axis=1)
@@ -210,7 +211,7 @@ specimens_df = (
             "subject.diagnosis.0.study_group_description": "disease_subtype",
             "subject.diagnosis.0.disease_diagnosis.label": "disease",
             "sample.0.collection_time_point_relative": "timepoint",
-            "repertoire_id": "specimen_label",
+            "sample.0.sample_id": "specimen_label",
         }
     )
 )
@@ -418,11 +419,24 @@ participant_df.shape, specimen_metadata_extra.shape
 # for now, just add some simple metadata to create an "all external participants" metadata file
 
 # %%
-briney_patients = pd.read_csv(
-    config.paths.base_data_dir
-    / "external_cohorts/raw_data/briney_healthy_as_part_tables/exported.metadata.tsv",
-    sep="\t",
-).rename(columns={"repertoire_id": "specimen_label"})
+briney_patients = pd.DataFrame(
+    {
+        "specimen_label": [
+            "D103_1",
+            "326780_1",
+            "326650_1",
+            "326737_1",
+            "327059_1",
+            "326907_1",
+            "316188_1",
+            "326797_1",
+        ]
+    }
+)
+briney_patients["participant_label"] = (
+    briney_patients["specimen_label"].str.split("_").str[0]
+)
+briney_patients["study_name"] = "Briney"
 briney_patients["disease"] = healthy_label
 # all healthy are "peak" and 0 timepoint
 briney_patients["is_peak"] = True
@@ -503,22 +517,6 @@ participant_df_plus_briney.to_csv(
 )
 
 # %%
-
-# %% [markdown]
-# # what to do with this metadata
-
-# %% [markdown]
-# Conceivably we could stick these back into the database for richer joins:
-#
-# - `participant_df` becomes `ireceptor_data.external_patients`:
-#    - patient ID primary key
-#    - extra metadata columns summarized from per-sample metadata entries -- e.g. ethnicity, age.
-#    - can also include briney-healthy individuals
-# - `specimen_metadata_extra` can be a complementary table to `ireceptor_data.covid_metadata`:
-#    - `repertoire_id` primary key that's 1-to-1 with `ireceptor_data.covid_metadata`
-#    - patient ID foreign key that's many-to-1 with `external_patients`
-#
-# For now, we'll avoid this and just do the joins in our post-processing in python
 
 # %%
 

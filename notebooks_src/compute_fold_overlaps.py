@@ -7,7 +7,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from malid import config, helpers, io
-from malid.datamodels import TargetObsColumnEnum
+from malid.datamodels import (
+    map_cross_validation_split_strategy_to_default_target_obs_column,
+)
 import gc
 from kdict import kdict
 from IPython.display import display
@@ -31,6 +33,12 @@ pd.set_option("display.max_columns", 100)
 config.gene_loci_used
 
 # %%
+target_obs_column = map_cross_validation_split_strategy_to_default_target_obs_column[
+    config.cross_validation_split_strategy
+]
+target_obs_column
+
+# %%
 
 
 # %%
@@ -43,7 +51,7 @@ for gene_locus in config.gene_loci_used:
                 fold_id=fold_id,
                 fold_label=fold_label,
                 gene_locus=gene_locus,
-                target_obs_column=TargetObsColumnEnum.disease,
+                target_obs_column=target_obs_column,
             )
             df = adata.obs
 
@@ -258,7 +266,7 @@ for gene_locus in config.gene_loci_used:
             fold_id=fold_id,
             fold_label="test",
             gene_locus=gene_locus,
-            target_obs_column=TargetObsColumnEnum.disease,
+            target_obs_column=target_obs_column,
         )
         df = adata.obs
 
@@ -286,7 +294,9 @@ for gene_locus in config.gene_loci_used:
                 "unique_sequence_hashes": unique_sequence_hashes,
                 "fold_id": fold_id,
                 # 'fold_label': 'test',
-                "disease": participant_grp["disease.separate_past_exposures"].iloc[0],
+                target_obs_column.value.obs_column_name: participant_grp[
+                    target_obs_column.value.obs_column_name
+                ].iloc[0],
             }
 
         del df, adata
@@ -308,8 +318,12 @@ for gene_locus in config.gene_loci_used:
             "participantB": participantB,
             "fold_id_A": dataA["fold_id"],
             "fold_id_B": dataB["fold_id"],
-            "disease_A": dataA["disease"],
-            "disease_B": dataB["disease"],
+            f"{target_obs_column.value.obs_column_name}_A": dataA[
+                target_obs_column.value.obs_column_name
+            ],
+            f"{target_obs_column.value.obs_column_name}_B": dataB[
+                target_obs_column.value.obs_column_name
+            ],
             "nunique_sequences_A": len(unique_sequence_hashesA),
             "nunique_sequences_B": len(unique_sequence_hashesB),
             "nunique_sequences_intersection": len(
@@ -354,14 +368,26 @@ for gene_locus in config.gene_loci_used:
     print(any_two_patients.median())
     print(any_two_patients.describe())
 
-    participant_diseases = participant_comparison_data["disease_A"].unique()
+    participant_diseases = participant_comparison_data[
+        f"{target_obs_column.value.obs_column_name}_A"
+    ].unique()
 
     ## between patients from same disease
     for disease in participant_diseases:
         any_two_patients_same_disease = (
             participant_comparison_data[
-                (participant_comparison_data["disease_A"] == disease)
-                & (participant_comparison_data["disease_B"] == disease)
+                (
+                    participant_comparison_data[
+                        f"{target_obs_column.value.obs_column_name}_A"
+                    ]
+                    == disease
+                )
+                & (
+                    participant_comparison_data[
+                        f"{target_obs_column.value.obs_column_name}_B"
+                    ]
+                    == disease
+                )
             ]["jaccard_index"]
             * 100
         )  # convert to percent
@@ -374,12 +400,32 @@ for gene_locus in config.gene_loci_used:
         # either order accepted
         subset = participant_comparison_data[
             (
-                (participant_comparison_data["disease_A"] == diseaseA)
-                & (participant_comparison_data["disease_B"] == diseaseB)
+                (
+                    participant_comparison_data[
+                        f"{target_obs_column.value.obs_column_name}_A"
+                    ]
+                    == diseaseA
+                )
+                & (
+                    participant_comparison_data[
+                        f"{target_obs_column.value.obs_column_name}_B"
+                    ]
+                    == diseaseB
+                )
             )
             | (
-                (participant_comparison_data["disease_A"] == diseaseB)
-                & (participant_comparison_data["disease_B"] == diseaseA)
+                (
+                    participant_comparison_data[
+                        f"{target_obs_column.value.obs_column_name}_A"
+                    ]
+                    == diseaseB
+                )
+                & (
+                    participant_comparison_data[
+                        f"{target_obs_column.value.obs_column_name}_B"
+                    ]
+                    == diseaseA
+                )
             )
         ]
         any_two_patients_disease_pair = (
@@ -407,14 +453,14 @@ for gene_locus in config.gene_loci_used:
         fold_id=-1,
         fold_label="train_smaller",
         gene_locus=gene_locus,
-        target_obs_column=TargetObsColumnEnum.disease,
+        target_obs_column=target_obs_column,
     )
 
     adata_2 = io.load_fold_embeddings(
         fold_id=-1,
         fold_label="validation",
         gene_locus=gene_locus,
-        target_obs_column=TargetObsColumnEnum.disease,
+        target_obs_column=target_obs_column,
     )
     df = pd.concat([adata_1.obs, adata_2.obs], axis=0)
     del adata_1, adata_2

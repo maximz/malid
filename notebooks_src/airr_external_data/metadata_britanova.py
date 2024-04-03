@@ -6,7 +6,7 @@ from malid.datamodels import healthy_label
 # %%
 
 # %%
-base_dir = config.paths.external_raw_data / "chudakov_aging"
+base_dir = config.paths.external_raw_data / "Britanova"
 external_metadata = pd.read_csv(base_dir / "metadata.txt", sep="\t").assign(
     ethnicity_condensed="Caucasian"
 )

@@ -3,6 +3,7 @@ Export sequence column from any CSV as a fasta file.
 Fasta headers are >[name argument]|[row number]
 """
 
+from typing import List
 import numpy as np
 import pandas as pd
 import click
@@ -20,11 +21,12 @@ import click
 )
 @click.option(
     "--column",
-    "seq_col_name",
-    default="rearrangement",
+    "seq_col_names",
+    multiple=True,
+    default=["rearrangement"],
     type=str,
     show_default=True,
-    help="sequence column name to export",
+    help="sequence column name to export (multiple allowed; will try each one in order until one is found)",
 )
 @click.option(
     "--separator",
@@ -37,13 +39,22 @@ def run(
     fname_in,
     fname_out,
     specimen_label,
-    seq_col_name="rearrangement",
+    seq_col_names: List[str] = ["rearrangement"],
     separator=",",
     # special N/A values for Adaptive data
     na_values=["no data", "unknown"],
 ):
     # read in
     df = pd.read_csv(fname_in, sep=separator, na_values=na_values)
+
+    # try to find a valid sequence column name based on the options provided
+    seq_col_names_valid = [s for s in seq_col_names if s in df.columns]
+    if len(seq_col_names_valid) == 0:
+        raise ValueError(
+            f"None of the sequence column names are in the dataframe: {seq_col_names}"
+        )
+    # choose first valid column name
+    seq_col_name = seq_col_names_valid[0]
 
     # drop N/A or empty string
     df[seq_col_name] = df[seq_col_name].mask(

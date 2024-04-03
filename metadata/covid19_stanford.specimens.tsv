@@ -1,0 +1,71 @@
+participant_label	specimen_label	disease	participant_alternative_label	Age	Gender	Race	Ethnicity	Status	time_point	disease_subtype
+BFI-0009122	M418-S001	Covid19	55650-0271	63	Male	Other	Hispanic or Latino	ICU	10 days	Covid19 - ICU
+BFI-0009127	M418-S007	Covid19	55650-0280	48	Male	Asian	Not Hispanic or Latino	ICU	14 days	Covid19 - ICU
+BFI-0009127	M418-S008	Covid19	55650-0280	48	Male	Asian	Not Hispanic or Latino	ICU	42 days	Covid19 - ICU
+BFI-0009128	M418-S009	Covid19	55650-0281	43	Male	White	Not Hispanic or Latino	Admit	9 days	Covid19 - Admit
+BFI-0009129	M418-S010	Covid19	55650-0284	41	Female	Other	Hispanic or Latino	Admit	7 days	Covid19 - Admit
+BFI-0009131	M418-S012	Covid19	55650-0291	61	Male	Other	Hispanic or Latino	ICU	8 days	Covid19 - ICU
+BFI-0009131	M418-S013	Covid19	55650-0291	61	Male	Other	Hispanic or Latino	ICU	37 days	Covid19 - ICU
+BFI-0009132	M418-S014	Covid19	55650-0292	33	Male	Asian	Not Hispanic or Latino	Admit	10 days	Covid19 - Admit
+BFI-0009134	M418-S016	Covid19	55650-0298	24	Female	Other	Hispanic or Latino	Admit	11 days	Covid19 - Admit
+BFI-0009139	M418-S021	Covid19	55650-0303	48	Female	Unknown/Not Reported	Hispanic or Latino	ICU	9 days	Covid19 - ICU
+BFI-0009140	M418-S022	Covid19	55650-0304	54	Female	Other	Not Hispanic or Latino	Admit	14 days	Covid19 - Admit
+BFI-0009140	M418-S023	Covid19	55650-0304	54	Female	Other	Not Hispanic or Latino	Admit	43 days	Covid19 - Admit
+BFI-0009141	M418-S024	Covid19	55650-0306	58	Female	White	Not Hispanic or Latino	Admit	35 days	Covid19 - Admit
+BFI-0009142	M418-S025	Covid19	55650-0308	71	Male	White	Not Hispanic or Latino	Admit	8 days	Covid19 - Admit
+BFI-0009143	M418-S026	Covid19	55650-0309	40	Female	Other	Hispanic or Latino	ICU	11 days	Covid19 - ICU
+BFI-0009144	M418-S027	Covid19	55650-0310	58	Female	Other	Hispanic or Latino	Admit	8 days	Covid19 - Admit
+BFI-0009147	M418-S031	Covid19	55650-0316	83	Male	White	Not Hispanic or Latino	Admit	7 days	Covid19 - Admit
+BFI-0009148	M418-S032	Covid19	55650-0317	79	Male	Asian	Not Hispanic or Latino	Admit	12 days	Covid19 - Admit
+BFI-0009149	M418-S033	Covid19	55650-0318	71	Female	White	Not Hispanic or Latino	Admit	14 days	Covid19 - Admit
+BFI-0009151	M418-S035	Covid19	55650-0321	69	Female	Asian	Not Hispanic or Latino	ICU	8 days	Covid19 - ICU
+BFI-0009153	M418-S037	Covid19	55650-0326	41	Male	White	Not Hispanic or Latino	Admit	66 days	Covid19 - Admit
+BFI-0009154	M418-S038	Covid19	55650-0327	50	Male	White	Hispanic or Latino	ICU	10 days	Covid19 - ICU
+BFI-0009154	M418-S039	Covid19	55650-0327	50	Male	White	Hispanic or Latino	ICU	39 days	Covid19 - ICU
+BFI-0009155	M418-S040	Covid19	55650-0332	33	Male	White	Hispanic or Latino	Admit	8 days	Covid19 - Admit
+BFI-0009158	M418-S043	Covid19	55650-0336	34	Female	Other	Hispanic or Latino	ICU	7 days	Covid19 - ICU
+BFI-0009159	M418-S044	Covid19	55650-0340	40	Female	Other	Hispanic or Latino	Admit	7 days	Covid19 - Admit
+BFI-0009161	M418-S046	Covid19	55650-0344	61	Male	Other	Hispanic or Latino	ICU	8 days	Covid19 - ICU
+BFI-0009162	M418-S047	Covid19	55650-0345	30	Male	White	Not Hispanic or Latino	Admit	7 days	Covid19 - Admit
+BFI-0009164	M418-S049	Covid19	55650-0349	45	Female	Native Hawaiian or Pacific Islander	Not Hispanic or Latino	Admit	10 days	Covid19 - Admit
+BFI-0009165	M418-S050	Covid19	55650-0353	54	Male	White	Hispanic or Latino	Admit	8 days	Covid19 - Admit
+BFI-0009169	M418-S054	Covid19	55650-0367	67	Male	Asian	Not Hispanic or Latino	ICU	7 days	Covid19 - ICU
+BFI-0009047	M418-S094	Covid19	55650-0049	25	Female	Other	Hispanic or Latino	ICU	17 days	Covid19 - ICU
+BFI-0009048	M418-S095	Covid19	55650-0050	33	Male	Other	Hispanic or Latino	Admit	15 days	Covid19 - Admit
+BFI-0009048	M418-S096	Covid19	55650-0050	33	Male	Other	Hispanic or Latino	Admit	40 days	Covid19 - Admit
+BFI-0009051	M418-S101	Covid19	55650-0053	43	Male	Other	Not Hispanic or Latino	Admit	31 days	Covid19 - Admit
+BFI-0009051	M418-S102	Covid19	55650-0053	43	Male	Other	Not Hispanic or Latino	Admit	7 days	Covid19 - Admit
+BFI-0009052	M418-S104	Covid19	55650-0054	24	Female	Other	Hispanic or Latino	Admit	17 days	Covid19 - Admit
+BFI-0009052	M418-S105	Covid19	55650-0054	24	Female	Other	Hispanic or Latino	Admit	24 days	Covid19 - Admit
+BFI-0009052	M418-S106	Covid19	55650-0054	24	Female	Other	Hispanic or Latino	Admit	41 days	Covid19 - Admit
+BFI-0009056	M418-S110	Covid19	55650-0058	25	Male	Other	Hispanic or Latino	Admit	13 days	Covid19 - Admit
+BFI-0009056	M418-S112	Covid19	55650-0058	25	Male	Other	Hispanic or Latino	Admit	29 days	Covid19 - Admit
+BFI-0009057	M418-S113	Covid19	55650-0059	44	Male	Other	Hispanic or Latino	Admit	9 days	Covid19 - Admit
+BFI-0009057	M418-S114	Covid19	55650-0059	44	Male	Other	Hispanic or Latino	Admit	16 days	Covid19 - Admit
+BFI-0009059	M418-S118	Covid19	55650-0061	68	Male	Other	Hispanic or Latino	ICU	8 days	Covid19 - ICU
+BFI-0009076	M418-S139	Covid19	55650-0078	34	Female	Other	Hispanic or Latino	Admit	8 days	Covid19 - Admit
+BFI-0009080	M418-S144	Covid19	55650-0082	43	Male	Other	Hispanic or Latino	ICU	8 days	Covid19 - ICU
+BFI-0009083	M418-S148	Covid19	55650-0085	43	Female	White	Hispanic or Latino	Admit	14 days	Covid19 - Admit
+BFI-0009083	M418-S149	Covid19	55650-0085	43	Female	White	Hispanic or Latino	Admit	27 days	Covid19 - Admit
+BFI-0009083	M418-S150	Covid19	55650-0085	43	Female	White	Hispanic or Latino	Admit	7 days	Covid19 - Admit
+BFI-0009093	M418-S162	Covid19	55650-0095	31	Female	Other	Hispanic or Latino	Admit	12 days	Covid19 - Admit
+BFI-0009094	M418-S163	Covid19	55650-0096	21	Male	Other	Hispanic or Latino	Admit	37 days	Covid19 - Admit
+BFI-0009098	M418-S169	Covid19	55650-0105	37	Female	Black or African American	Not Hispanic or Latino	ICU	12 days	Covid19 - ICU
+BFI-0009102	M418-S174	Covid19	55650-0127	57	Female	Other	Hispanic or Latino	Admit	7 days	Covid19 - Admit
+BFI-0009108	M418-S180	Covid19	55650-0172	31	Female	Other	Hispanic or Latino	Admit	10 days	Covid19 - Admit
+BFI-0009110	M418-S182	Covid19	55650-0185	55	Male	Unknown/Not Reported	Hispanic or Latino	Admit	21 days	Covid19 - Admit
+BFI-0009112	M418-S184	Covid19	55650-0187	86	Female	Other	Hispanic or Latino	Admit	11 days	Covid19 - Admit
+BFI-0009120	M418-S192	Covid19	55650-0203	25	Female	Other	Hispanic or Latino	Admit	12 days	Covid19 - Admit
+BFI-0009121	M418-S193	Covid19	55650-0204	43	Male	Other	Hispanic or Latino	Admit	11 days	Covid19 - Admit
+BFI-0009005	M418-S198	Covid19	55650-0005	68	Male	White	Not Hispanic or Latino	ICU	11 days	Covid19 - ICU
+BFI-0009012	M418-S205	Covid19	55650-0012	55	Female	Asian	Not Hispanic or Latino	Admit	21 days	Covid19 - Admit
+BFI-0009023	M418-S217	Covid19	55650-0024	63	Female	Asian	Not Hispanic or Latino	Admit	7 days	Covid19 - Admit
+BFI-0009025	M418-S219	Covid19	55650-0026	63	Male	Other	Not Hispanic or Latino	Admit	28 days	Covid19 - Admit
+BFI-0009029	M418-S223	Covid19	55650-0030	51	Female	White	Not Hispanic or Latino	Admit	21 days	Covid19 - Admit
+BFI-0009031	M418-S225	Covid19	55650-0032	39	Female	White	Not Hispanic or Latino	Admit	7 days	Covid19 - Admit
+BFI-0009034	M418-S228	Covid19	55650-0035	46	Female	Other	Hispanic or Latino	Admit	46 days	Covid19 - Admit
+BFI-0009035	M418-S229	Covid19	55650-0036	74	Female	White	Not Hispanic or Latino	Admit	7 days	Covid19 - Admit
+BFI-0009036	M418-S230	Covid19	55650-0037	34	Female	Native Hawaiian or Pacific Islander	Not Hispanic or Latino	Admit	8 days	Covid19 - Admit
+BFI-0009036	M418-S231	Covid19	55650-0037	34	Female	Native Hawaiian or Pacific Islander	Not Hispanic or Latino	Admit	15 days	Covid19 - Admit
+BFI-0009036	M418-S232	Covid19	55650-0037	34	Female	Native Hawaiian or Pacific Islander	Not Hispanic or Latino	Admit	39 days	Covid19 - Admit
+BFI-0009038	M418-S234	Covid19	55650-0040	90	Male	Asian	Not Hispanic or Latino	Admit	7 days	Covid19 - Admit

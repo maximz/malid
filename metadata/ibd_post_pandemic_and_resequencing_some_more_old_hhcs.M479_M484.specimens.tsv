@@ -1,0 +1,53 @@
+participant_label	participant_alternative_label	disease	age	sex	ethnicity	participant_description	specimen_label	specimen_alternative_label	specimen_description	specimen_time_point
+BFI-0003106	HHC 57		65	F	1	Healthy Human Control; CMV = P; ABO = O+	M64-057	W070514218432	Healthy Control
+BFI-0003109	HHC 60		48	M	3	Healthy Human Control; CMV = P; ABO = A+	M64-060	W070514218550	Healthy Control
+BFI-0003110	HHC 61		63	F	3	Healthy Human Control; CMV = P; ABO = A+	M64-061	W070514218552	Healthy Control
+BFI-0003112	HHC 63		53	F	1	Healthy Human Control; CMV = P; ABO = A-	M64-063	W070514218554	Healthy Control
+BFI-0003115	HHC 66		55	F	1	Healthy Human Control; CMV = N; ABO = A+	M64-066	W070514218558	Healthy Control
+BFI-0003117	HHC 68		54	M	3	Healthy Human Control; CMV = P; ABO = O+	M64-068	W070514218560	Healthy Control
+BFI-0003118	HHC 69		55	M	3	Healthy Human Control; CMV = N; ABO = O+	M64-069	W070514218561	Healthy Control
+BFI-0003122	HHC 73		37	M	1	Healthy Human Control; CMV = N; ABO = O+	M64-073	W070514218568	Healthy Control
+BFI-0003124	HHC 75		48	F	3	Healthy Human Control; CMV = P; ABO = O+	M64-075	W070514218571	Healthy Control
+BFI-0003129	HHC 80		59	M	1	Healthy Human Control; CMV = P; ABO = B+	M64-080	W070514218578	Healthy Control
+BFI-0003130	HHC 81		67	M	15	Healthy Human Control; CMV = N; ABO = A-	M64-081	W070514218579	Healthy Control
+BFI-0003133	HHC 84		52	M	1	Healthy Human Control; CMV = N; ABO = O+	M64-084	W070514325202	Healthy Control
+BFI-0003136	HHC 87		49	M	1	Healthy Human Control; CMV = P; ABO = O+	M64-087	W070514325205	Healthy Control
+BFI-0003140	HHC 91		44	M	3	Healthy Human Control; CMV = P; ABO = O+	M64-091	W070514325210	Healthy Control
+BFI-0003142	HHC 93		50	M	1	Healthy Human Control; CMV = N; ABO = B+	M64-093	W070514325285	Healthy Control
+BFI-0003146	HHC 97		26	F	1	Healthy Human Control; CMV = P; ABO = A+	M64-097	W070514325289	Healthy Control
+BFI-0010600	Gubatan IBD subject 1	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Distal Ulcerative Colitis	M479-S001	1A		00:00:00
+BFI-0010601	Gubatan IBD subject 2	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S002	2A		00:00:00
+BFI-0010602	Gubatan IBD subject 3	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive UC	M479-S003	3A		00:00:00
+BFI-0010603	Gubatan IBD subject 4	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive UC	M479-S004	4A		00:00:00
+BFI-0010604	Gubatan IBD subject 5	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive UC	M479-S005	5A		00:00:00
+BFI-0010605	Gubatan IBD subject 6	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive UC	M479-S006	6A		00:00:00
+BFI-0010606	Gubatan IBD subject 7	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive UC	M479-S007	7A		00:00:00
+BFI-0010607	Gubatan IBD subject 8	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Left-sided Ulcerative Colitis	M479-S008	8A		00:00:00
+BFI-0010608	Gubatan IBD subject 9	Crohn's disease				IBD cohort from Gubatan post-pandemic: Ileocolonic Crohn's Disease	M479-S009	9A		00:00:00
+BFI-0010609	Gubatan IBD subject 10	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S010	10A		00:00:00
+BFI-0010610	Gubatan IBD subject 11	Crohn's disease				IBD cohort from Gubatan post-pandemic: Ileocolonic Crohn's Disease	M479-S011	11A		00:00:00
+BFI-0010611	Gubatan IBD subject 12	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Ulcerative Col	M479-S012	12A		00:00:00
+BFI-0010612	Gubatan IBD subject 37	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S013	37A		00:00:00
+BFI-0010612	Gubatan IBD subject 37	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S025	37B		84 days
+BFI-0010613	Gubatan IBD subject 38	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S014	38A		00:00:00
+BFI-0010613	Gubatan IBD subject 38	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S026	38B		84 days
+BFI-0010614	Gubatan IBD subject 39	Crohn's disease				IBD cohort from Gubatan post-pandemic: Crohn's Colitis	M479-S015	39A		00:00:00
+BFI-0010614	Gubatan IBD subject 39	Crohn's disease				IBD cohort from Gubatan post-pandemic: Crohn's Colitis	M479-S027	39B		84 days
+BFI-0010615	Gubatan IBD subject 40	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S016	40A		00:00:00
+BFI-0010615	Gubatan IBD subject 40	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S028	40B		84 days
+BFI-0010616	Gubatan IBD subject 41	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S017	41A		00:00:00
+BFI-0010616	Gubatan IBD subject 41	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S029	41B		84 days
+BFI-0010617	Gubatan IBD subject 42	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S018	42A		00:00:00
+BFI-0010617	Gubatan IBD subject 42	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S030	42B		84 days
+BFI-0010618	Gubatan IBD subject 43	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S019	43A		00:00:00
+BFI-0010618	Gubatan IBD subject 43	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S031	43B		84 days
+BFI-0010619	Gubatan IBD subject 44	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S020	44A		00:00:00
+BFI-0010619	Gubatan IBD subject 44	Ulcerative colitis				IBD cohort from Gubatan post-pandemic: Extensive Ulcerative Colitis	M479-S032	44B		84 days
+BFI-0010620	Gubatan IBD subject 45	Crohn's disease				IBD cohort from Gubatan post-pandemic: Ileocolonic Crohn's Disease	M479-S021	45A		00:00:00
+BFI-0010620	Gubatan IBD subject 45	Crohn's disease				IBD cohort from Gubatan post-pandemic: Ileocolonic Crohn's Disease	M479-S033	45B		84 days
+BFI-0010621	Gubatan IBD subject 46	Crohn's disease				IBD cohort from Gubatan post-pandemic: Ileocolonic Crohn's Disease	M479-S022	46A		00:00:00
+BFI-0010621	Gubatan IBD subject 46	Crohn's disease				IBD cohort from Gubatan post-pandemic: Ileocolonic Crohn's Disease	M479-S034	46B		84 days
+BFI-0010622	Gubatan IBD subject 47	Crohn's disease				IBD cohort from Gubatan post-pandemic: Ileocolonic Crohn's Disease	M479-S023	47A		00:00:00
+BFI-0010622	Gubatan IBD subject 47	Crohn's disease				IBD cohort from Gubatan post-pandemic: Ileocolonic Crohn's Disease	M479-S035	47B		84 days
+BFI-0010623	Gubatan IBD subject 48	Crohn's disease				IBD cohort from Gubatan post-pandemic: Ileocolonic Crohn's Disease	M479-S024	48A		00:00:00
+BFI-0010623	Gubatan IBD subject 48	Crohn's disease				IBD cohort from Gubatan post-pandemic: Ileocolonic Crohn's Disease	M479-S036	48B		84 days

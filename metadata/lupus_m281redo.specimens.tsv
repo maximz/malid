@@ -1,0 +1,69 @@
+participant_label	participant_alternative_label	disease_subtype	age	sex	ethnicity	specimen_label	specimen_alternative_label	specimen_description
+BFI-0005400	500103	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	51	F	African American	M281redo-S001	S1A1	Year 3, draw week 6
+BFI-0005400	500103	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	51	F	African American	M281redo-S002	S1A2	Year 3, draw week 12
+BFI-0005400	500103	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	51	F	African American	M281redo-S027	S1H8	Year 1, draw week 2
+BFI-0005400	500103	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	51	F	African American	M281redo-S028	S1H9	Year 1, draw week 6
+BFI-0005402	590008	SLE Multiple aAbs	39	F	African American	M281redo-S003	S1A4	Year 3, draw week 12
+BFI-0005403	550003	SLE Multiple aAbs	37	F	African American	M281redo-S004	S1A5	Year 1, draw week 6
+BFI-0005404	590103	SLE Multiple aAbs	37	F	African American	M281redo-S005	S1A9	Year 4, draw week 12
+BFI-0005405	530001	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	21	F	African American	M281redo-S006	S1B1	Year 1, draw week 12
+BFI-0005405	530001	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	21	F	African American	M281redo-S009	S1B5	Year 1, draw week 2
+BFI-0005405	530001	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	21	F	African American	M281redo-S036	S2A1	Year 3, draw week 12
+BFI-0005406	500025	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	55	F	African American	M281redo-S007	S1B2	Year 1, draw week 6
+BFI-0005406	500025	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	55	F	African American	M281redo-S008	S1B4	Year 3, draw week 6
+BFI-0005406	500025	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	55	F	African American	M281redo-S034	S1I8	Year 2, draw week 6
+BFI-0005409	590010	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	24	F	African American	M281redo-S010	S1B6	Year 2, draw week 12
+BFI-0005409	590010	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	24	F	African American	M281redo-S030	S1I4	Year 1, draw week 2
+BFI-0005409	590010	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	24	F	African American	M281redo-S031	S1I5	Year 1, draw week 6
+BFI-0005410	590063	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	36	F	Caucasian	M281redo-S011	S1B8	Year 3, draw week 6
+BFI-0005411	500091	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	35	F	Caucasian	M281redo-S012	S1B9	Year 3, draw week 6
+BFI-0005412	590096	SLE Multiple aAbs				M281redo-S013	S1C1	Year 4, draw week 12
+BFI-0005413	500028	SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis	34	F	Caucasian	M281redo-S014	S1C2	Year 2, draw week 12
+BFI-0005414	500008	SLE Multiple aAbs	47	M	Caucasian	M281redo-S015	S1C4	Year 1, draw week 6
+BFI-0005414	500008	SLE Multiple aAbs	47	M	Caucasian	M281redo-S016	S1C5	Year 1, draw week 12
+BFI-0005416	500310	SLE Multiple aAbs	71	F	Caucasian	M281redo-S017	S1C6	Year 3, draw week 6
+BFI-0005416	500310	SLE Multiple aAbs	71	F	Caucasian	M281redo-S018	S1C7	Year 3, draw week 12
+BFI-0005418	500038	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	31	F	Caucasian	M281redo-S019	S1D2	Year 1, draw week 12
+BFI-0005419	500132	SLE Multiple aAbs				M281redo-S020	S1D3	Year 1, draw week 2
+BFI-0005420	500004	SLE One aAbs	55	F	African American	M281redo-S021	S1D4	Year 1, draw week 6
+BFI-0005421	590044	SLE One aAbs / SLE dsDNA WITHOUT Nephritis	30	F	Caucasian	M281redo-S022	S1G8	Year 2, draw week 12
+BFI-0005422	590046	SLE One aAbs / SLE dsDNA WITH Nephritis	23	F	Caucasian	M281redo-S023	S1G9	Year 2, draw week 6
+BFI-0005423	590089	SLE One aAbs	28	F	Caucasian	M281redo-S024	S1H1	Year 4, draw week 6
+BFI-0005423	590089	SLE One aAbs	28	F	Caucasian	M281redo-S025	S1H2	Year 4, draw week 12
+BFI-0005425	590090	SLE One aAbs	32	F	Caucasian	M281redo-S026	S1H3	Year 4, draw week 12
+BFI-0005428	510012	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	26	F	African American	M281redo-S029	S1I1	Year 1, draw week 6
+BFI-0005431	590075	SLE Multiple aAbs / SLE dsDNA WITH Nephritis	47	F	African American	M281redo-S032	S1I6	Year 3, draw week 12
+BFI-0005432	500021	SLE One aAbs / SLE dsDNA WITHOUT Nephritis	41	F	African American	M281redo-S033	S1I7	Year 2, draw week 12
+BFI-0005434	500153	SLE One aAbs / SLE dsDNA WITHOUT Nephritis	50	F	Caucasian	M281redo-S035	S1I9	Year 2, draw week 12
+BFI-0005436	590069	SLE One aAbs / SLE dsDNA WITHOUT Nephritis	48	F	Caucasian	M281redo-S037	S2A3	Year 3, draw week 12
+BFI-0005437	500017	Healthy/Background - SLE negative	40	F	African American	M281redo-S038	S2A4	Year 2, draw week 12
+BFI-0005438	500027	Healthy/Background - SLE negative	25	M	African American	M281redo-S039	S2A5	Year 4, draw week 12
+BFI-0005439	500122	Healthy/Background - SLE negative	55	F	African American	M281redo-S040	S2A6	Year 4, draw week 12
+BFI-0005439	500122	Healthy/Background - SLE negative	55	F	African American	M281redo-S048	S2B5	Year 2, draw week 12
+BFI-0005440	500241	Healthy/Background - SLE negative	45	F	African American	M281redo-S041	S2A7	Year 2, draw week 12
+BFI-0005441	500242	Healthy/Background - SLE negative	30	F	African American	M281redo-S042	S2A8	Year 2, draw week 12
+BFI-0005442	560030	Healthy/Background - SLE negative	40	M	African American	M281redo-S043	S2A9	Year 1, draw week 1
+BFI-0005442	560030	Healthy/Background - SLE negative	40	M	African American	M281redo-S044	S2B1	Year 1, draw week 2
+BFI-0005444	590048	Healthy/Background - SLE negative	32	F	African American	M281redo-S045	S2B2	Year 4, draw week 12
+BFI-0005445	500014	Healthy/Background - SLE negative	59	F	African American	M281redo-S046	S2B3	Year 3, draw week 6
+BFI-0005445	500014	Healthy/Background - SLE negative	59	F	African American	M281redo-S047	S2B4	Year 3, draw week 12
+BFI-0005448	590017	Healthy/Background - SLE negative	31	F	African American	M281redo-S049	S2B6	Year 2, draw week 12
+BFI-0005448	590017	Healthy/Background - SLE negative	31	F	African American	M281redo-S053	S2C1	Year 3, draw week 6
+BFI-0005449	590049	Healthy/Background - SLE negative	61	F	African American	M281redo-S050	S2B7	Year 3, draw week 6
+BFI-0005450	590013	Healthy/Background - SLE negative	31	F	African American	M281redo-S051	S2B8	Year 2, draw week 12
+BFI-0005451	590015	Healthy/Background - SLE negative	47	F	African American	M281redo-S052	S2B9	Year 3, draw week 6
+BFI-0005453	500061	Healthy/Background - SLE negative	64	F	Caucasian	M281redo-S054	S2C2	Year 2, draw week 12
+BFI-0005453	500061	Healthy/Background - SLE negative	64	F	Caucasian	M281redo-S055	S2C3	Year 2, draw week 1
+BFI-0005455	510027	Healthy/Background - SLE negative	25	F	Caucasian	M281redo-S056	S2C5	Year 1, draw week 1
+BFI-0005455	510027	Healthy/Background - SLE negative	25	F	Caucasian	M281redo-S057	S2C6	Year 1, draw week 6
+BFI-0005457	510081	Healthy/Background - SLE negative	24	F	Caucasian	M281redo-S058	S2C8	Year 4, draw week 12
+BFI-0005458	510102	Healthy/Background - SLE negative	26	F	Caucasian	M281redo-S059	S2C9	Year 4, draw week 12
+BFI-0005459	590057	Healthy/Background - SLE negative	61	F	Caucasian	M281redo-S060	S2D1	Year 3, draw week 6
+BFI-0005460	590101	Healthy/Background - SLE negative	30	F	Caucasian	M281redo-S061	S2D2	Year 4, draw week 12
+BFI-0005461	500175	Healthy/Background - SLE negative	52	F	Caucasian	M281redo-S062	S2D4	Year 2, draw week 6
+BFI-0005462	590022	Healthy/Background - SLE negative	70	M	Caucasian	M281redo-S063	S2D7	Year 1, draw week 12
+BFI-0005463	590060	Healthy/Background - SLE negative	70	F	Caucasian	M281redo-S064	S2D8	Year 3, draw week 6
+BFI-0005464	590098	Healthy/Background - SLE negative	53	F	Caucasian	M281redo-S065	S2D9	Year 4, draw week 6
+BFI-0005464	590098	Healthy/Background - SLE negative	53	F	Caucasian	M281redo-S066	S2E1	Year 4, draw week 12
+BFI-0005466	590045	Healthy/Background - SLE negative	32	F	Caucasian	M281redo-S067	S2E3	Year 2, draw week 12
+BFI-0005467	590058	Healthy/Background - SLE negative				M281redo-S068	S2E5

@@ -53,6 +53,11 @@ def make_data(n_patients_per_disease: int):
     df["fold_id"] = 0
     df["fold_label"] = "train_smaller"
     df = io.label_past_exposures_in_obs(df)
+
+    # in practice, our index is usually pretty weird and not just an increment integer range index
+    # so let's make the index here unusual too by permuting the int order
+    df.index = np.random.permutation(df.index)
+
     return df
 
 
@@ -66,7 +71,7 @@ def df_big():
     return make_data(n_patients_per_disease=30)
 
 
-from malid.external.genetools_arrays import make_consensus_sequence
+from genetools.arrays import make_consensus_sequence
 
 
 def slow_get_cluster_centroids(clustered_df: pd.DataFrame) -> pd.Series:
@@ -224,7 +229,9 @@ def slow_assign_sequences_to_known_clusters(
 
     # Create higher-order groups: group by v, j, len
     test_groups = df.groupby(
-        ["v_gene", "j_gene", "cdr3_aa_sequence_trim_len"], observed=True
+        ["v_gene", "j_gene", "cdr3_aa_sequence_trim_len"],
+        observed=True,
+        group_keys=False,
     )
 
     # Assign each test sequence to a cluster with nearest centroid, using higher-order groups as a starting point
@@ -560,11 +567,16 @@ def test_convergent_cluster_featurizer(df):
         ),
     )
 
+    original_index = df.index.copy()
     df = ConvergentClusterClassifier._assign_sequences_to_known_clusters(
         df=df,
         cluster_centroids_by_supergroup=cluster_centroids_by_supergroup,
         sequence_identity_threshold=0.85,
     )
+    assert df.index.equals(
+        original_index
+    ), "index should not change after _assign_sequences_to_known_clusters"
+
     # only nonspecific sequences are not matched to any clusters (because those clusters are not chosen as disease-specific)
     na_counts = {
         key: grp["cluster_id_within_clustering_group"]

@@ -1,9 +1,12 @@
 # %%
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
-from malid import config, io, helpers
-from malid.datamodels import healthy_label, GeneLocus, TargetObsColumnEnum
+# %matplotlib inline
+import seaborn as sns
+
+# %%
 import gc
 import joblib
 from kdict import kdict
@@ -12,22 +15,40 @@ import genetools
 from pathlib import Path
 from slugify import slugify
 from typing import Tuple
+import genetools
+import anndata
 import scanpy as sc
+from scipy.spatial.distance import pdist, squareform
+from genetools.plots import plot_triangular_heatmap
+from malid import config, io, helpers
+from malid.datamodels import (
+    healthy_label,
+    GeneLocus,
+    TargetObsColumnEnum,
+    map_cross_validation_split_strategy_to_default_target_obs_column,
+)
+
 
 # %%
-import matplotlib.pyplot as plt
-
-# %matplotlib inline
-import seaborn as sns
-
-
-# %%
+# We only support split strategies with default target obs column == TargetObsColumnEnum.disease
+# TODO: broaden
+assert (
+    map_cross_validation_split_strategy_to_default_target_obs_column[
+        config.cross_validation_split_strategy
+    ]
+    == TargetObsColumnEnum.disease
+)
 
 # %%
 def get_dirs(gene_locus: GeneLocus):
-    output_dir = config.paths.model_interpretations_output_dir / gene_locus.name
+    output_dir = (
+        config.paths.model_interpretations_for_selected_cross_validation_strategy_output_dir
+        / gene_locus.name
+    )
     highres_output_dir = (
-        config.paths.high_res_outputs_dir / "model_interpretations" / gene_locus.name
+        config.paths.high_res_outputs_dir_for_cross_validation_strategy
+        / "model_interpretations"
+        / gene_locus.name
     )
 
     # Create directories - though these directories should already have been created by sequence model interpretations notebooks
@@ -49,11 +70,12 @@ def get_dirs(gene_locus: GeneLocus):
 # %%
 def get_vgene_and_cdr3length_counts(
     gene_locus: GeneLocus,
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
     fold_labels = ["train_smaller", "validation", "test"]
 
     specimen_v_gene_counts = []
     specimen_cdr3_length_counts = []
+    v_genes_to_keep = pd.Series()
     for fold_id in config.all_fold_ids:
         for fold_label in fold_labels:
             if fold_id == -1 and fold_label == "test":
@@ -64,6 +86,7 @@ def get_vgene_and_cdr3length_counts(
                 fold_label=fold_label,
                 gene_locus=gene_locus,
                 target_obs_column=TargetObsColumnEnum.disease,
+                load_obs_only=True,
             )
             df = adata.obs
             for specimen_label, subset_obs in adata.obs.groupby(
@@ -93,13 +116,19 @@ def get_vgene_and_cdr3length_counts(
                     }
                 )
 
+            if fold_id == -1 and fold_label == "train_smaller":
+                # Save non-rare V genes from global fold training set
+                v_genes_to_keep = pd.Series(
+                    helpers.find_non_rare_v_genes(adata), name="v_gene"
+                )
+
             del df, adata
             io.clear_cached_fold_embeddings()
             gc.collect()
 
     specimen_v_gene_counts_df = pd.DataFrame(specimen_v_gene_counts)
     specimen_cdr3_length_counts_df = pd.DataFrame(specimen_cdr3_length_counts)
-    return specimen_v_gene_counts_df, specimen_cdr3_length_counts_df
+    return specimen_v_gene_counts_df, specimen_cdr3_length_counts_df, v_genes_to_keep
 
 
 # %%
@@ -111,6 +140,7 @@ for gene_locus in config.gene_loci_used:
     (
         specimen_v_gene_counts_df,
         specimen_cdr3_length_counts_df,
+        v_genes_to_keep,
     ) = get_vgene_and_cdr3length_counts(gene_locus=gene_locus)
 
     # Export
@@ -123,6 +153,7 @@ for gene_locus in config.gene_loci_used:
         sep="\t",
         index=None,
     )
+    v_genes_to_keep.to_csv(output_dir / "meaningful_v_genes.txt", index=None)
 
 
 # %%
@@ -158,8 +189,7 @@ def import_v_gene_counts(gene_locus: GeneLocus):
     v_gene_cols = specimen_v_gene_counts_df_test_only.columns
     v_gene_cols = v_gene_cols[~v_gene_cols.isin(["disease"])]
 
-    # get filtered subset of v_gene_cols, produced previously
-    # TODO: switch to V genes from model1's choices?
+    # get filtered subset of v_gene_cols
     v_gene_cols_filtered = pd.read_csv(output_dir / "meaningful_v_genes.txt")[
         "v_gene"
     ].values
@@ -267,7 +297,7 @@ def analyze_v_gene_proportions(gene_locus: GeneLocus):
     )
 
     def plot(v_gene_usage_proportions_by_specimen_melt, filtered=False):
-        height = 6 if filtered else 12
+        height = 7 if filtered else 13
         selected_v_gene_order = pd.Series(
             v_gene_cols_filtered if filtered else v_gene_cols
         )
@@ -293,7 +323,7 @@ def analyze_v_gene_proportions(gene_locus: GeneLocus):
                 x="Proportion",
                 y="V gene",
                 # reference V gene order, possibly filtered down
-                order=sorted(
+                order=helpers.v_gene_sort(
                     selected_v_gene_order.replace(helpers.v_gene_friendly_names)
                 ),
                 ax=ax,
@@ -302,13 +332,16 @@ def analyze_v_gene_proportions(gene_locus: GeneLocus):
                 # sampling distribution of mean generated by repeated sampling and recording mean each time.
                 # the standard error is basically the standard deviation of many sample means
                 # we plot mean +/- 1.96*standard error. gives you average value +/- X at the 95% confidence level.
-                ci=95,
-                # ci="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
+                errorbar=("ci", 95),
+                # errorbar="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
                 # capsize=.025
             )
 
             ax.set_title(disease, fontweight="bold")
-            ax.set_xlabel("Proportion of specimen\n(mean +/- 95% confidence interval)")
+            ax.set_xlabel(
+                "Proportion of specimen\n(mean +/- 95% confidence interval)",
+                fontsize="small",
+            )
             ax.set_ylabel(None)
             sns.despine(ax=ax)
 
@@ -348,8 +381,6 @@ for gene_locus in config.gene_loci_used:
 # %%
 
 # %%
-
-# %%
 def analyze_cdr3_length_distribution(gene_locus: GeneLocus):
     output_dir, highres_output_dir = get_dirs(gene_locus)
 
@@ -377,8 +408,13 @@ def analyze_cdr3_length_distribution(gene_locus: GeneLocus):
         value_name="Proportion",
     )
 
+    # Not necessary, but let's cast from object to int:
+    cdr3_length_distribution_by_specimen_melt[
+        "CDR3 length"
+    ] = cdr3_length_distribution_by_specimen_melt["CDR3 length"].astype(int)
+
     def plot(cdr3_length_distribution_by_specimen_melt, filtered=False):
-        height = 6 if filtered else 12
+        height = 7 if filtered else 13
         diseases = sorted(cdr3_length_distribution_by_specimen_melt["disease"].unique())
 
         fig, axarr = plt.subplots(
@@ -396,20 +432,23 @@ def analyze_cdr3_length_distribution(gene_locus: GeneLocus):
                 x="Proportion",
                 y="CDR3 length",
                 orient="h",
-                order=reversed(sorted(cdr3_length_cols)),
+                order=list(reversed(sorted(cdr3_length_cols))),
                 ax=ax,
                 color=helpers.disease_color_palette[disease],
                 # Compute 95% confidence intervals around a sample mean by bootstrapping:
                 # sampling distribution of mean generated by repeated sampling and recording mean each time.
                 # the standard error is basically the standard deviation of many sample means
                 # we plot mean +/- 1.96*standard error. gives you average value +/- X at the 95% confidence level.
-                ci=95,
-                # ci="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
+                errorbar=("ci", 95),
+                # errorbar="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
                 # capsize=.025
             )
 
             ax.set_title(disease, fontweight="bold")
-            ax.set_xlabel("Proportion of specimen\n(mean +/- 95% confidence interval)")
+            ax.set_xlabel(
+                "Proportion of specimen\n(mean +/- 95% confidence interval)",
+                fontsize="small",
+            )
             ax.set_ylabel(None)
             sns.despine(ax=ax)
 
@@ -527,7 +566,7 @@ def analyze_v_gene_proportions_by_subgroup(gene_locus: GeneLocus, group_key: str
         disease: str,
         filtered=False,
     ):
-        height = 6 if filtered else 12
+        height = 7 if filtered else 13
         selected_v_gene_order = pd.Series(
             v_gene_cols_filtered if filtered else v_gene_cols
         )
@@ -555,6 +594,7 @@ def analyze_v_gene_proportions_by_subgroup(gene_locus: GeneLocus, group_key: str
             sharex=True,  # Make xlims consistent for better readability
             sharey=False,  # Repeat the V gene in each axis for better readability
         )
+        axarr = np.atleast_1d(axarr)  # edge case: wrap single axis in array
         for (group, ax) in zip(groups_this_disease, axarr):
             data = v_gene_usage_proportions_by_specimen_annot_melt_this_disease[
                 v_gene_usage_proportions_by_specimen_annot_melt_this_disease[group_key]
@@ -568,7 +608,7 @@ def analyze_v_gene_proportions_by_subgroup(gene_locus: GeneLocus, group_key: str
                 x="Proportion",
                 y="V gene",
                 # reference V gene order, possibly filtered down
-                order=sorted(
+                order=helpers.v_gene_sort(
                     selected_v_gene_order.replace(helpers.v_gene_friendly_names)
                 ),
                 ax=ax,
@@ -577,8 +617,8 @@ def analyze_v_gene_proportions_by_subgroup(gene_locus: GeneLocus, group_key: str
                 # sampling distribution of mean generated by repeated sampling and recording mean each time.
                 # the standard error is basically the standard deviation of many sample means
                 # we plot mean +/- 1.96*standard error. gives you average value +/- X at the 95% confidence level.
-                ci=95,
-                # ci="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
+                errorbar=("ci", 95),
+                # errorbar="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
                 # capsize=.025
             )
 
@@ -589,7 +629,10 @@ def analyze_v_gene_proportions_by_subgroup(gene_locus: GeneLocus, group_key: str
             ].shape[0]
 
             ax.set_title(f"{group} $(n={sample_size})$", fontweight="bold")
-            ax.set_xlabel("Proportion of specimen\n(mean +/- 95% confidence interval)")
+            ax.set_xlabel(
+                "Proportion of specimen\n(mean +/- 95% confidence interval)",
+                fontsize="small",
+            )
             ax.set_ylabel(None)
             sns.despine(ax=ax)
 
@@ -673,6 +716,10 @@ def analyze_cdr3_length_distribution_by_subgroup(gene_locus: GeneLocus, group_ke
         var_name="CDR3 length",
         value_name="Proportion",
     )
+    # Not necessary, but let's cast from object to int:
+    cdr3_length_distribution_by_specimen_annot_melt[
+        "CDR3 length"
+    ] = cdr3_length_distribution_by_specimen_annot_melt["CDR3 length"].astype(int)
 
     group_color_palette = {
         group: color
@@ -687,7 +734,7 @@ def analyze_cdr3_length_distribution_by_subgroup(gene_locus: GeneLocus, group_ke
         disease: str,
         filtered=False,
     ):
-        height = 6 if filtered else 12
+        height = 7 if filtered else 13
         cdr3_length_distribution_by_specimen_annot_melt_this_disease = (
             cdr3_length_distribution_by_specimen_annot_melt[
                 cdr3_length_distribution_by_specimen_annot_melt["disease"] == disease
@@ -711,6 +758,7 @@ def analyze_cdr3_length_distribution_by_subgroup(gene_locus: GeneLocus, group_ke
             sharex=True,  # Make xlims consistent for better readability
             sharey=False,  # Repeat the V gene in each axis for better readability
         )
+        axarr = np.atleast_1d(axarr)  # edge case: wrap single axis in array
         for (group, ax) in zip(groups_this_disease, axarr):
             sns.barplot(
                 data=cdr3_length_distribution_by_specimen_annot_melt_this_disease[
@@ -722,15 +770,15 @@ def analyze_cdr3_length_distribution_by_subgroup(gene_locus: GeneLocus, group_ke
                 x="Proportion",
                 y="CDR3 length",
                 orient="h",
-                order=reversed(sorted(cdr3_length_cols)),
+                order=list(reversed(sorted(cdr3_length_cols))),
                 ax=ax,
                 color=group_color_palette[group],
                 # Compute 95% confidence intervals around a sample mean by bootstrapping:
                 # sampling distribution of mean generated by repeated sampling and recording mean each time.
                 # the standard error is basically the standard deviation of many sample means
                 # we plot mean +/- 1.96*standard error. gives you average value +/- X at the 95% confidence level.
-                ci=95,
-                # ci="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
+                errorbar=("ci", 95),
+                # errorbar="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
                 # capsize=.025
             )
 
@@ -741,7 +789,10 @@ def analyze_cdr3_length_distribution_by_subgroup(gene_locus: GeneLocus, group_ke
             ].shape[0]
 
             ax.set_title(f"{group} $(n={sample_size})$", fontweight="bold")
-            ax.set_xlabel("Proportion of specimen\n(mean +/- 95% confidence interval)")
+            ax.set_xlabel(
+                "Proportion of specimen\n(mean +/- 95% confidence interval)",
+                fontsize="small",
+            )
             ax.set_ylabel(None)
             sns.despine(ax=ax)
 
@@ -794,51 +845,67 @@ for gene_locus in config.gene_loci_used:
 # ## Investigate means directly for two V genes of interest
 
 # %%
-v_gene_usage_proportions_by_specimen_annot_melt = (
-    v_gene_use_proportions_by_specimen_and_ethnicity[GeneLocus.BCR]
-)
-v_gene_usage_proportions_by_specimen_annot_melt
+has_BCR = GeneLocus.BCR in v_gene_use_proportions_by_specimen_and_ethnicity
+
+if has_BCR:
+    v_gene_usage_proportions_by_specimen_annot_melt = (
+        v_gene_use_proportions_by_specimen_and_ethnicity[GeneLocus.BCR]
+    )
+    display(v_gene_usage_proportions_by_specimen_annot_melt)
 
 # %%
-v_gene_usage_proportions_by_specimen_annot_melt[
-    (
+if has_BCR:
+    display(
+        v_gene_usage_proportions_by_specimen_annot_melt[
+            (
+                v_gene_usage_proportions_by_specimen_annot_melt["V gene"].isin(
+                    ["IGHV5-a", "IGHV4-b"]
+                )
+            )
+            & (
+                v_gene_usage_proportions_by_specimen_annot_melt["disease"].isin(
+                    [healthy_label, "Covid19"]
+                )
+            )
+        ]
+        .groupby(["disease", "V gene", "ethnicity_condensed"])["Proportion"]
+        .mean()
+        .apply(
+            # print as percentage
+            lambda mean: f"{mean:0.2%}"
+        )
+    )
+
+# %%
+
+# %%
+# repeat, without disease filter
+if has_BCR:
+    display(
+        v_gene_usage_proportions_by_specimen_annot_melt[
+            v_gene_usage_proportions_by_specimen_annot_melt["V gene"].isin(
+                ["IGHV5-a", "IGHV4-b"]
+            )
+        ]
+        .groupby(["disease", "V gene", "ethnicity_condensed"])["Proportion"]
+        .mean()
+        .apply(
+            # print as percentage
+            lambda mean: f"{mean:0.2%}"
+        )
+    )
+
+# %%
+# repeat, without disease filter
+if has_BCR:
+    v_gene_usage_proportions_by_specimen_annot_melt[
         v_gene_usage_proportions_by_specimen_annot_melt["V gene"].isin(
             ["IGHV5-a", "IGHV4-b"]
         )
+    ].groupby(["V gene", "ethnicity_condensed"])["Proportion"].mean().apply(
+        # print as percentage
+        lambda mean: f"{mean:0.2%}"
     )
-    & (
-        v_gene_usage_proportions_by_specimen_annot_melt["disease"].isin(
-            [healthy_label, "Covid19"]
-        )
-    )
-].groupby(["disease", "V gene", "ethnicity_condensed"])["Proportion"].mean().apply(
-    # print as percentage
-    lambda mean: f"{mean:0.2%}"
-)
-
-# %%
-
-# %%
-# repeat, without disease filter
-v_gene_usage_proportions_by_specimen_annot_melt[
-    v_gene_usage_proportions_by_specimen_annot_melt["V gene"].isin(
-        ["IGHV5-a", "IGHV4-b"]
-    )
-].groupby(["disease", "V gene", "ethnicity_condensed"])["Proportion"].mean().apply(
-    # print as percentage
-    lambda mean: f"{mean:0.2%}"
-)
-
-# %%
-# repeat, without disease filter
-v_gene_usage_proportions_by_specimen_annot_melt[
-    v_gene_usage_proportions_by_specimen_annot_melt["V gene"].isin(
-        ["IGHV5-a", "IGHV4-b"]
-    )
-].groupby(["V gene", "ethnicity_condensed"])["Proportion"].mean().apply(
-    # print as percentage
-    lambda mean: f"{mean:0.2%}"
-)
 
 # %%
 
@@ -860,21 +927,23 @@ for gene_locus in config.gene_loci_used:
 
 # %%
 # Some TCR V genes are present in some study_names (batches) but not others
-means = (
-    v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.TCR]
-    .groupby(["disease", "study_name", "V gene"])["Proportion"]
-    .mean()
-)
-means[means == 0.0]
+if GeneLocus.TCR in v_gene_use_proportions_by_specimen_and_study_name:
+    means = (
+        v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.TCR]
+        .groupby(["disease", "study_name", "V gene"])["Proportion"]
+        .mean()
+    )
+    display(means[means == 0.0])
 
 # %%
 # Some BCR V genes are present in some study_names (batches) but not others
-means = (
-    v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.BCR]
-    .groupby(["disease", "study_name", "V gene"])["Proportion"]
-    .mean()
-)
-means[means == 0.0]
+if GeneLocus.BCR in v_gene_use_proportions_by_specimen_and_study_name:
+    means = (
+        v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.BCR]
+        .groupby(["disease", "study_name", "V gene"])["Proportion"]
+        .mean()
+    )
+    display(means[means == 0.0])
 
 # %%
 
@@ -885,28 +954,48 @@ all_expected_v_genes = helpers.all_observed_v_genes()
 [(gl, lst.shape) for gl, lst in all_expected_v_genes.items()]
 
 # %%
-v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.BCR][
-    "V gene"
-].unique().shape
+if GeneLocus.BCR in v_gene_use_proportions_by_specimen_and_study_name:
+    print(
+        v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.BCR]["V gene"]
+        .unique()
+        .shape
+    )
 
 # %%
-v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.TCR][
-    "V gene"
-].unique().shape
+if GeneLocus.TCR in v_gene_use_proportions_by_specimen_and_study_name:
+    print(
+        v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.TCR]["V gene"]
+        .unique()
+        .shape
+    )
 
 # %%
 # Any BCR V genes in our entire parquet dataset after ETL step, but not in the plots above (i.e. not in peak timepoint test set?):
-set.symmetric_difference(
-    set(v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.BCR]["V gene"]),
-    all_expected_v_genes[GeneLocus.BCR],
-)
+if GeneLocus.BCR in v_gene_use_proportions_by_specimen_and_study_name:
+    print(
+        set.symmetric_difference(
+            set(
+                v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.BCR][
+                    "V gene"
+                ]
+            ),
+            all_expected_v_genes[GeneLocus.BCR],
+        )
+    )
 
 # %%
 # Any TCR V genes in our entire parquet dataset after ETL step, but not in the plots above (i.e. not in peak timepoint test set?):
-set.symmetric_difference(
-    set(v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.TCR]["V gene"]),
-    all_expected_v_genes[GeneLocus.TCR],
-)
+if GeneLocus.TCR in v_gene_use_proportions_by_specimen_and_study_name:
+    print(
+        set.symmetric_difference(
+            set(
+                v_gene_use_proportions_by_specimen_and_study_name[GeneLocus.TCR][
+                    "V gene"
+                ]
+            ),
+            all_expected_v_genes[GeneLocus.TCR],
+        )
+    )
 
 # %%
 
@@ -927,6 +1016,7 @@ for gene_locus in config.gene_loci_used:
         gene_locus, group_key="disease_severity"
     )
 
+
 # %%
 
 # %%
@@ -935,59 +1025,6 @@ for gene_locus in config.gene_loci_used:
 # # Plot V gene usage of each specimen on PCA/UMAP, and compare intra-disease batch distances vs inter-disease distances
 #
 # Using cosine distance between V gene use proportion vectors per specimen (or mean across specimens in a disease-batch)
-
-# %%
-import anndata
-import scanpy as sc
-from scipy.spatial.distance import pdist, squareform
-
-
-# %%
-def plot_triangular_heatmap(
-    df,
-    cmap="Blues",
-    colorbar_label="Distance",
-    figsize=(8, 6),
-    vmin=None,
-    vmax=None,
-    annot=True,
-):
-
-    with sns.axes_style("white"):
-        # Based on https://seaborn.pydata.org/examples/many_pairwise_correlations.html
-
-        fig, ax = plt.subplots(figsize=figsize)
-
-        # Upper triangle mask
-        triangle_mask = np.triu(np.ones_like(df, dtype=np.bool))
-
-        sns.heatmap(
-            df,
-            cmap=cmap,
-            # Draw the heatmap with the mask and correct aspect ratio
-            mask=triangle_mask,
-            vmin=vmin,
-            vmax=vmax,
-            square=True,
-            cbar_kws={"shrink": 0.5, "label": colorbar_label},
-            linewidths=0,
-            ax=ax,
-            # force all tick labels to be drawn
-            xticklabels=True,
-            yticklabels=True,
-            annot=annot,
-        )
-
-        xticklabels = ax.set_xticklabels(
-            ax.get_xticklabels(),
-            rotation=0,
-        )
-        genetools.plots.wrap_tick_labels(
-            ax, wrap_x_axis=True, wrap_y_axis=False, wrap_amount=10
-        )
-
-        return fig
-
 
 # %%
 # consider euclidean distance too?
@@ -1092,8 +1129,16 @@ def v_gene_use_plot_by_batch(
     #         ax.get_xticklabels(), rotation=60, size=12, horizontalalignment="right"
     #     )
 
-    fig_means = plot_triangular_heatmap(dist_mat, vmin=0)
-    plt.title(
+    fig_means, ax_means = plot_triangular_heatmap(
+        dist_mat,
+        vmin=0,
+        colorbar_label="Distance",
+        figsize=(20, 20),
+    )
+    genetools.plots.wrap_tick_labels(
+        ax_means, wrap_x_axis=True, wrap_y_axis=False, wrap_amount=10
+    )
+    ax_means.set_title(
         f"{distance_metric} distance between disease+batch mean V gene usage\n{gene_locus}"
     )
     genetools.plots.savefig(
@@ -1115,8 +1160,16 @@ def v_gene_use_plot_by_batch(
         index=medians.index.map(" - ".join),
         columns=medians.index.map(" - ".join),
     )
-    fig_medians = plot_triangular_heatmap(dist_mat, vmin=0)
-    plt.title(
+    fig_medians, ax_medians = plot_triangular_heatmap(
+        dist_mat,
+        vmin=0,
+        colorbar_label="Distance",
+        figsize=(20, 20),
+    )
+    genetools.plots.wrap_tick_labels(
+        ax_medians, wrap_x_axis=True, wrap_y_axis=False, wrap_amount=10
+    )
+    ax_medians.set_title(
         f"{distance_metric} distance between disease+batch median V gene usage\n{gene_locus}"
     )
     genetools.plots.savefig(
@@ -1173,7 +1226,7 @@ def v_gene_use_plot_by_batch(
         + all_dists["study_name_2"]
     )
 
-    fig_boxplot, ax = plt.subplots(figsize=(8, 6))
+    fig_boxplot, ax = plt.subplots(figsize=(8, all_dists["comparison"].nunique() // 2))
     sns.boxplot(
         data=all_dists,
         x="distance",
@@ -1202,10 +1255,14 @@ def v_gene_use_plot_by_batch(
 # %%
 
 # %%
-adata_vgene_use_bcr = v_gene_use_plot_by_batch(gene_locus=GeneLocus.BCR)
+adata_vgene_use_bcr = None
+if GeneLocus.BCR in config.gene_loci_used:
+    adata_vgene_use_bcr = v_gene_use_plot_by_batch(gene_locus=GeneLocus.BCR)
 
 # %%
-adata_vgene_use_tcr = v_gene_use_plot_by_batch(gene_locus=GeneLocus.TCR)
+adata_vgene_use_tcr = None
+if GeneLocus.TCR in config.gene_loci_used:
+    adata_vgene_use_tcr = v_gene_use_plot_by_batch(gene_locus=GeneLocus.TCR)
 
 # %%
 
@@ -1214,8 +1271,11 @@ for gene_locus, adata_vgene_use_single_locus in [
     (GeneLocus.BCR, adata_vgene_use_bcr),
     (GeneLocus.TCR, adata_vgene_use_tcr),
 ]:
+    if gene_locus not in config.gene_loci_used:
+        continue
     output_dir, highres_output_dir = get_dirs(gene_locus)
     for color in [
+        "disease",
         "disease_subtype",
         "disease_and_batch",
         "disease_severity",
@@ -1226,6 +1286,9 @@ for gene_locus, adata_vgene_use_single_locus in [
         "age_group_pediatric",
         "sex",
     ]:
+        if adata_vgene_use_single_locus.obs[color].isna().all():
+            # Skip all-NaN colors. They cause a plotting bug.
+            continue
         fig_umap = sc.pl.umap(
             adata_vgene_use_single_locus,
             color=color,

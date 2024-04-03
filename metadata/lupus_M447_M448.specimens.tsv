@@ -1,0 +1,44 @@
+participant_label	participant_alternative_label	disease	age	sex	ethnicity	participant_description	specimen_label	specimen_alternative_label	specimen_description
+BFI-0009800	SLE-85	SLE	16	F	Asian - non-Hispanic	Pediatric SLE - no nephritis	M447-S031	SLE-85A	SLE onset
+BFI-0009801	SLE-86	SLE	11	F	White - non-Hispanic	Pediatric SLE - nephritis	M447-S032	SLE-86A	SLE onset
+BFI-0009802	SLE-87	SLE	18	F	White - non-Hispanic	Pediatric SLE - nephritis	M447-S033	SLE-87A	SLE onset
+BFI-0009803	SLE-88	SLE	15	M	Asian - non-Hispanic	Pediatric SLE - nephritis	M447-S034	SLE-88A	SLE onset
+BFI-0009804	SLE-90	SLE	14	F	Other - Hispanic	Pediatric SLE - nephritis	M447-S035	SLE-90A	SLE onset
+BFI-0009805	SLE-91	SLE	14	M	White - non-Hispanic	Pediatric SLE - nephritis	M447-S036	SLE-91A	SLE onset
+BFI-0009806	SLE-92	SLE	13	M	White - non-Hispanic	Pediatric SLE - no nephritis	M447-S037	SLE-92A	SLE onset
+BFI-0009807	SLE-93	SLE	12	F	White - non-Hispanic	Pediatric SLE - no nephritis	M447-S038	SLE-93A	SLE onset
+BFI-0009808	SLE-94	SLE	11	F	White - non-Hispanic	Pediatric SLE - no nephritis	M447-S039	SLE-94A	SLE onset
+BFI-0009809	SLE-95	SLE	15	F	Black - non-Hispanic	Pediatric SLE - nephritis	M447-S040	SLE-95A	SLE onset
+BFI-0009810	SLE-96	SLE	11	F	Asian - non-Hispanic	Pediatric SLE - nephritis	M447-S041	SLE-96A	SLE onset
+BFI-0009811	SLE-97	SLE	15	F	Black - non-Hispanic	Pediatric SLE - no nephritis	M447-S042	SLE-97A LT	SLE onset
+BFI-0009812	SLE-98	SLE	17	M	White - Hispanic	Pediatric SLE - no nephritis	M447-S043	SLE-98A EV	SLE onset
+BFI-0009813	SLE-101	SLE	16	F	Black - non-Hispanic	Pediatric SLE - no nephritis	M447-S001	SLE-101A	SLE onset
+BFI-0009814	SLE-102	SLE	13	F	White - Hispanic	Pediatric SLE - nephritis	M447-S002	SLE-102A	SLE onset
+BFI-0009815	SLE-103	SLE	18	F	White - Hispanic	Pediatric SLE - no nephritis	M447-S003	SLE-103A	SLE onset
+BFI-0009816	SLE-105	SLE	14	F	Asian - non-Hispanic	Pediatric SLE - no nephritis	M447-S004	SLE-105A SL	SLE onset
+BFI-0009817	SLE-106	SLE	11	F	Asian - non-Hispanic	Pediatric SLE - nephritis	M447-S005	SLE-106A VC	SLE onset
+BFI-0009818	SLE-107	SLE	8	F	Asian - non-Hispanic	Pediatric SLE - nephritis	M447-S006	SLE-107A	SLE onset
+BFI-0009819	SLE-108	SLE	13	M	White - Hispanic	Pediatric SLE - nephritis	M447-S007	SLE-108A	SLE onset
+BFI-0009820	SLE-109	SLE	10	F	White - Hispanic	Pediatric SLE - no nephritis	M447-S008	SLE-109A	SLE onset
+BFI-0009821	SLE-110	SLE	15	F	White - non-Hispanic	Pediatric SLE - no nephritis	M447-S009	SLE-110A	SLE onset
+BFI-0009822	SLE-111	SLE	14	F	White - Hispanic	Pediatric SLE - nephritis	M447-S010	SLE-111A	SLE onset
+BFI-0009823	SLE-112	SLE	13	F	Asian - non-Hispanic	Pediatric SLE - no nephritis	M447-S011	SLE-112A	SLE onset
+BFI-0009824	SLE-113	SLE	11	F	Asian - non-Hispanic	Pediatric SLE - nephritis	M447-S012	SLE-113A	SLE onset
+BFI-0009825	SLE-114	SLE	16	F	Asian - non-Hispanic	Pediatric SLE - nephritis	M447-S013	SLE-114A	SLE onset
+BFI-0009826	SLE-116	SLE	12	F	White - non-Hispanic	Pediatric SLE - no nephritis	M447-S014	SLE-116A	SLE onset
+BFI-0009827	SLE-117	SLE	10	F	White - non-Hispanic	Pediatric SLE - nephritis	M447-S015	SLE-117A	SLE onset
+BFI-0009828	SLE-118	SLE	13	M	White - non-Hispanic	Pediatric SLE - no nephritis	M447-S016	SLE-118A	SLE onset
+BFI-0009829	SLE-119	SLE	16	F	White - non-Hispanic	Pediatric SLE - no nephritis	M447-S017	SLE-119A	SLE onset
+BFI-0009830	SLE-120	SLE	15	F	Asian - non-Hispanic	Pediatric SLE - no nephritis	M447-S018	SLE-120A	SLE onset
+BFI-0009831	SLE-121	SLE	14	F	Asian - non-Hispanic	Pediatric SLE - no nephritis	M447-S019	SLE-121A	SLE onset
+BFI-0009832	SLE-122	SLE	11	M	White - Hispanic	Pediatric SLE - nephritis	M447-S020	SLE-122A	SLE onset
+BFI-0009833	SLE-123	SLE	15	F	White - Hispanic	Pediatric SLE - nephritis	M447-S021	SLE-123A	SLE onset
+BFI-0009834	SLE-124	SLE	14	M	Other - Hispanic	Pediatric SLE - nephritis	M447-S022	SLE-124A	SLE onset
+BFI-0009835	SLE-125	SLE	11	F	White - Hispanic	Pediatric SLE - no nephritis	M447-S023	SLE-125A	SLE onset
+BFI-0009836	SLE-126	SLE	12	F	White - non-Hispanic	Pediatric SLE - no nephritis	M447-S024	SLE-126A	SLE onset
+BFI-0009837	SLE-127	SLE	13	M	Asian - non-Hispanic	Pediatric SLE - nephritis	M447-S025	SLE-127A	SLE onset
+BFI-0009838	SLE-128	SLE	13	F	Black/white - non-Hispanic	Pediatric SLE - nephritis	M447-S026	SLE-128A	SLE onset
+BFI-0009839	SLE-129	SLE	7	M	Asian - non-Hispanic	Pediatric SLE - nephritis	M447-S027	SLE-129A	SLE onset
+BFI-0009840	SLE-130	SLE	17	M	Asian - non-Hispanic	Pediatric SLE - no nephritis	M447-S028	SLE-130A	SLE onset
+BFI-0009841	SLE-131	SLE	16	F	Other - Hispanic	Pediatric SLE - nephritis	M447-S029	SLE-131A	SLE onset
+BFI-0009842	SLE-132	SLE	12	F	Asian - non-Hispanic	Pediatric SLE - nephritis	M447-S030	SLE-132A	SLE onset

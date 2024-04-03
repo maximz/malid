@@ -19,11 +19,8 @@ from IPython.display import display, Markdown
 
 # %%
 from malid import config, helpers, logger
-from malid.external import model_evaluation
+import crosseval
 from malid.trained_model_wrappers import RepertoireClassifier
-from malid.datamodels import (
-    combine_classification_option_names,
-)
 
 
 # %%
@@ -36,14 +33,26 @@ from malid.datamodels import (
 # %%
 for gene_locus in config.gene_loci_used:
     for target_obs_col in config.classification_targets:
+        try:
+            target_obs_col.confirm_compatibility_with_gene_locus(gene_locus)
+            target_obs_col.confirm_compatibility_with_cross_validation_split_strategy(
+                config.cross_validation_split_strategy
+            )
+        except Exception as err:
+            # Skip invalid combinations
+            logger.warning(f"{err}. Skipping.")
+            continue
+
         models_base_dir = RepertoireClassifier._get_model_base_dir(
-            gene_locus=gene_locus, target_obs_column=target_obs_col
+            gene_locus=gene_locus,
+            target_obs_column=target_obs_col,
+            sample_weight_strategy=config.sample_weight_strategy,
         )  # should already exist
 
-        output_base_dir = (
-            config.paths.repertoire_stats_classifier_output_dir
-            / gene_locus.name
-            / combine_classification_option_names(target_obs_col)
+        output_base_dir = RepertoireClassifier._get_output_base_dir(
+            gene_locus=gene_locus,
+            target_obs_column=target_obs_col,
+            sample_weight_strategy=config.sample_weight_strategy,
         )  # might not yet exist
         output_base_dir.mkdir(parents=True, exist_ok=True)  # create if needed
 
@@ -56,7 +65,7 @@ for gene_locus in config.gene_loci_used:
             )
 
             ## Load and summarize
-            experiment_set = model_evaluation.ExperimentSet.load_from_disk(
+            experiment_set = crosseval.ExperimentSet.load_from_disk(
                 output_prefix=model_output_prefix
             )
 

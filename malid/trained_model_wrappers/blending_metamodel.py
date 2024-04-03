@@ -3,7 +3,7 @@ from collections import defaultdict
 import functools
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, Iterable, List, Optional, Set, Tuple, Union
 import re
 
 import anndata
@@ -11,33 +11,45 @@ import joblib
 import pandas as pd
 from feature_engine.encoding import OneHotEncoder
 from feature_engine.preprocessing import MatchVariables
-from feature_engine.wrappers import SklearnTransformerWrapper
-from sklearn.preprocessing import StandardScaler
+from malid.external.standard_scaler_that_preserves_input_type import (
+    StandardScalerThatPreservesInputType,
+)
 from sklearn.pipeline import Pipeline, make_pipeline
 from regressout import RegressOutCovariates
 
-from malid import config, io, helpers
+from malid import config, helpers
 from malid.datamodels import (
     GeneLocus,
     SampleWeightStrategy,
     TargetObsColumnEnum,
 )
 from extendanything import ExtendAnything
-from malid.external.model_evaluation import FeaturizedData
+from crosseval import FeaturizedData
 from malid.trained_model_wrappers.immune_classifier_mixin import (
     ImmuneClassifierMixin,
     MetadataFeaturizerMixin,
 )
+import sentinels
 
 logger = logging.getLogger(__name__)
 
 
+# For downstream uses where we want to generate all MetamodelConfig combinations but don't need to load the submodels, we may want to use stub submodels instead.
+STUB_SUBMODEL: sentinels.Sentinel = sentinels.Sentinel("Stub stand-in for a submodel")
+
+
 @dataclass(eq=False)
 class MetamodelConfig:
+    # General metamodel settings
+    sample_weight_strategy: SampleWeightStrategy
+
     # For each gene locus: provide submodels along with their names (used as feature prefixes)
     # Submodels implement abstract ImmuneClassifierMixin interface, i.e. they have a featurize(adata)->df method.
     # The submodels are gene-locus specific.
-    submodels: Optional[Dict[GeneLocus, Dict[str, ImmuneClassifierMixin]]]
+    # Note: These submodel classes should be designed to have loaded any properties they need in their constructor, rather than having file reads deferred to later, because the entire MetamodelConfig will be pickled to disk. (The goal is for everything to be bundled in together in the metamodel pickle.)
+    submodels: Optional[
+        Dict[GeneLocus, Dict[str, Union[ImmuneClassifierMixin, sentinels.Sentinel]]]
+    ]
 
     # Also support featurizers like DemographicsFeaturizer that are non-gene-locus specific and operate on a dataframe, not an anndata.
     # Provide those additional non-gene-locus specific metadata featurizers here, along with their names (used as feature prefixes)
@@ -49,9 +61,6 @@ class MetamodelConfig:
     # Support regressing out covariates from the computed features.
     regress_out_featurizers: Optional[Dict[str, MetadataFeaturizerMixin]] = None
     regress_out_pipeline: Optional[Pipeline] = None  # Set after first train featurize
-
-    # Other metamodel settings
-    sample_weight_strategy: SampleWeightStrategy = SampleWeightStrategy.ISOTYPE_USAGE
 
 
 class DemographicsFeaturizer(MetadataFeaturizerMixin):
@@ -191,12 +200,54 @@ class BlendingMetamodel(ExtendAnything):
 
         Within this base dir we will store different metamodel models (e.g. random forest vs lasso at this 2nd stage metamodel step) for different fold IDs.
         """
+        # TODO: Convert to models_base_dir property and _get_model_base_dir function structure to be consistent with other models
         return (
             config.paths.second_stage_blending_metamodel_models_dir
             / gene_locus.name
             / target_obs_column.name
             / metamodel_flavor
         )
+
+    @property
+    def output_base_dir(self):
+        return self._get_output_base_dir(
+            gene_locus=self.gene_locus,
+            target_obs_column=self.target_obs_column,
+            metamodel_flavor=self.metamodel_flavor,
+        )
+
+    @classmethod
+    def _get_output_base_dir(
+        cls,
+        gene_locus: GeneLocus,
+        target_obs_column: TargetObsColumnEnum,
+        metamodel_flavor: str,
+    ) -> Path:
+        """
+        The metamodel output base dir captures the gene locus (or loci), the classification target, and the name of the metamodel flavor (corresponds to all the metamodel settings)
+
+        Within this base dir we will store results for different metamodel models (e.g. random forest vs lasso at this 2nd stage metamodel step) for different fold IDs.
+        """
+        return (
+            config.paths.second_stage_blending_metamodel_output_dir
+            / gene_locus.name
+            / target_obs_column.name
+            / metamodel_flavor
+        )
+
+    @property
+    def model_file_prefix(self):
+        return self._get_model_file_prefix(
+            self.base_model_train_fold_name, self.metamodel_fold_label_train
+        )
+
+    @staticmethod
+    def _get_model_file_prefix(
+        base_model_train_fold_name: str,
+        metamodel_fold_label_train: str,
+    ) -> str:
+        # TODO: Replace all hardcoded uses of this string elsewhere in the codebase with this function
+        return f"{base_model_train_fold_name}_applied_to_{metamodel_fold_label_train}_model"
 
     @classmethod
     def from_disk(
@@ -208,16 +259,20 @@ class BlendingMetamodel(ExtendAnything):
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
         metamodel_flavor: str,
+        # Optionally provide metamodel_config directly if we already have it loaded. It is expensive to load from disk.
+        metamodel_config: Optional[MetamodelConfig] = None,
     ):
         metamodel_base_dir = cls._get_metamodel_base_dir(
             gene_locus=gene_locus,
             target_obs_column=target_obs_column,
             metamodel_flavor=metamodel_flavor,
         )
-        metamodel_config = joblib.load(
-            metamodel_base_dir
-            / f"{base_model_train_fold_name}_applied_to_{metamodel_fold_label_train}_model.{fold_id}.metamodel_components.joblib"
-        )["metamodel_config"]
+        if metamodel_config is None:
+            # TODO(refactor): Cache this across calls to .from_disk() with same fold but different metamodel_names, to avoid expensive reload from disk
+            metamodel_config: MetamodelConfig = joblib.load(
+                metamodel_base_dir
+                / f"{cls._get_model_file_prefix(base_model_train_fold_name, metamodel_fold_label_train)}.{fold_id}.metamodel_components.joblib"
+            )["metamodel_config"]
         return cls(
             fold_id=fold_id,
             metamodel_name=metamodel_name,
@@ -225,6 +280,7 @@ class BlendingMetamodel(ExtendAnything):
             metamodel_fold_label_train=metamodel_fold_label_train,
             gene_locus=gene_locus,
             target_obs_column=target_obs_column,
+            metamodel_flavor=metamodel_flavor,
             metamodel_config=metamodel_config,
             metamodel_base_dir=metamodel_base_dir,
         )
@@ -237,6 +293,7 @@ class BlendingMetamodel(ExtendAnything):
         metamodel_fold_label_train: str,
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
+        metamodel_flavor: str,
         metamodel_config: MetamodelConfig,
         metamodel_base_dir: Path,
     ):
@@ -267,13 +324,14 @@ class BlendingMetamodel(ExtendAnything):
         self.metamodel_fold_label_train = metamodel_fold_label_train
         self.gene_locus = gene_locus
         self.target_obs_column = target_obs_column
+        self.metamodel_flavor = metamodel_flavor
         self.metamodel_config = metamodel_config
         self.metamodel_base_dir = Path(metamodel_base_dir)  # defensive cast
 
         # Load and wrap classifier
         fname = (
             self.metamodel_base_dir
-            / f"{self.base_model_train_fold_name}_applied_to_{self.metamodel_fold_label_train}_model.{self.metamodel_name}.{self.fold_id}.joblib"
+            / f"{self.model_file_prefix}.{self.metamodel_name}.{self.fold_id}.joblib"
         )
         clf = joblib.load(fname)
         if not hasattr(clf, "feature_names_in_"):
@@ -327,8 +385,9 @@ class BlendingMetamodel(ExtendAnything):
         TargetObsColumnEnum.validate(target_obs_column)
         SampleWeightStrategy.validate(metamodel_config.sample_weight_strategy)
 
-        model_outputs = []
-        metadata_objects_by_single_locus = defaultdict(list)
+        featurized_by_single_locus: Dict[GeneLocus, List[FeaturizedData]] = defaultdict(
+            list
+        )
 
         def _subselect_columns_if_binary(y_preds_proba: pd.DataFrame) -> pd.DataFrame:
             """
@@ -361,7 +420,9 @@ class BlendingMetamodel(ExtendAnything):
                 ]
 
         if metamodel_config.submodels is not None:
-            # Call all submodel featurize()->df steps and horizontally concatenate.
+            ## Call all submodel featurize()->df steps and horizontally concatenate.
+
+            # First, call all submodels.
             for single_gene_locus in gene_locus:
                 GeneLocus.validate_single_value(single_gene_locus)
                 data_for_locus = data[single_gene_locus]
@@ -386,168 +447,87 @@ class BlendingMetamodel(ExtendAnything):
                     # If binary model, switch to single column, rather than including p and 1-p as features in the metamodel
                     specimen_probas = _subselect_columns_if_binary(specimen_probas)
 
-                    # Store, renaming column names to indicate source
-                    model_outputs.append(
-                        specimen_probas.rename(
-                            columns=lambda col: f"{single_gene_locus.name}:{submodel_name}:{col}"
-                        )
-                    )
-                    # Store metadata object
-                    metadata_objects_by_single_locus[single_gene_locus].append(
-                        featurized.metadata
+                    # Rename column names to indicate source
+                    specimen_probas = specimen_probas.rename(
+                        columns=lambda col: f"{single_gene_locus.name}:{submodel_name}:{col}"
                     )
 
-        ## Harmonize across models and gene loci:
-        # Some models may have abstentions, and the abstentions may differ between gene loci.
+                    # Store back in featurized
+                    featurized.X = specimen_probas
 
-        # Combine metadata objects from different models, some of which may have extra columns
-        def combine_dfs(
-            df1: pd.DataFrame, df2: pd.DataFrame, allow_nonequal_indexes=False
-        ):
-            """
-            concatenate two dataframes horizontally, matching on their index, without making duplicate copies of identical columns.
-            if allow_nonequal_indexes: allows non-equal indexes (i.e. some rows may only be in either df1 or df2)
-            """
-            index_name_left = df1.index.name
-            index_name_right = df2.index.name
-            if index_name_left != index_name_right:
-                raise ValueError(
-                    f"Indexes of left and right dataframe have different names: {index_name_left} != {index_name_right}"
-                )
+                    # Store featurized
+                    featurized_by_single_locus[single_gene_locus].append(featurized)
 
-            temporary_index_column_name = "!INDEX!"
-            if (
-                temporary_index_column_name in df1.columns
-                or temporary_index_column_name in df2.columns
-            ):
-                raise ValueError(
-                    "Left or right dataframe have column name that interferes with index renaming"
-                )
+            ## Harmonize across models and gene loci:
+            # Some models may have abstentions, and the abstentions may differ between gene loci.
+            (
+                metadata_df,
+                specimens_with_full_predictions,
+                abstained_specimen_names,
+                X,
+            ) = cls._harmonize_across_models_and_gene_loci(featurized_by_single_locus)
 
-            merged = pd.merge(
-                df1.rename_axis(
-                    temporary_index_column_name, axis="index"
-                ).reset_index(),
-                df2.rename_axis(
-                    temporary_index_column_name, axis="index"
-                ).reset_index(),
-                on=df1.columns.intersection(df2.columns)
-                .union([temporary_index_column_name])
-                .tolist(),
-                how="outer" if allow_nonequal_indexes else "inner",
-                validate="1:1",
-            ).set_index(temporary_index_column_name)
-
-            if not allow_nonequal_indexes and not (
-                set(merged.index) == set(df1.index)
-                and set(merged.index) == set(df2.index)
-            ):
-                raise ValueError(
-                    "Index changed in merge but allow_nonequal_indexes was set to False"
-                )
-
-            merged.index.name = index_name_left  # undo rename
-            return merged
-
-        if metamodel_config.submodels is not None:
-            # Combine all metadata objects into one dataframe
-            # Set allow_nonequal_indexes=True because some models may abstain on some specimens
-            metadata_df = functools.reduce(
-                lambda accumulated, update: combine_dfs(
-                    accumulated, update, allow_nonequal_indexes=True
-                ),
-                (
-                    metadata_object
-                    for metadata_objects in metadata_objects_by_single_locus.values()
-                    for metadata_object in metadata_objects
-                ),
-            )
-
-            # For each locus, get all specimens that were scored by any model:
-            # First we will do this for each locus separately, and confirm that they are the same
-            all_specimens = {
-                single_gene_locus: set.union(
-                    *(
-                        set(metadata_object.index)
-                        for metadata_object in metadata_objects
-                    )
-                )
-                for single_gene_locus, metadata_objects in metadata_objects_by_single_locus.items()
-            }
-            first_value = next(iter(all_specimens.values()))
-            if (
-                any(specimens != first_value for specimens in all_specimens.values())
-                or set(metadata_df.index) != first_value
-            ):
-                # Sanity check
-                raise ValueError(
-                    "We had different specimen lists in different gene loci"
-                )
-            # extract specimen list now that we confirmed they are the same
-            all_specimens = first_value
-
-            # Now get the specimens that were scored by all models in all loci:
-            specimens_with_full_predictions = set.intersection(
-                *(
-                    set(metadata_object.index)
-                    for metadata_objects in metadata_objects_by_single_locus.values()
-                    for metadata_object in metadata_objects
-                )
-            )
-
-            # Get abstained specimens: those scored by some but not all classifiers, in any gene locus.
-            # This is the difference between specimens scored by any classifiers and specimens scored by all classifiers.
-            abstained_specimen_names = list(
-                all_specimens.difference(specimens_with_full_predictions)
-            )
-            if len(abstained_specimen_names) > 0:
-                logger.info(f"Abstained specimens: {abstained_specimen_names}")
-        else:
-            # Handle edge case that submodels was None.
-            # Extract specimen_metadata manually from each gene locus anndata and combine.
-            # We expect matching specimen lists across gene loci, which is checked for us by combine_dfs(..., allow_nonequal_indexes=False)
-            def _get_metadata(single_gene_locus):
-                return helpers.extract_specimen_metadata_from_anndata(
-                    adata=data[single_gene_locus],
-                    gene_locus=single_gene_locus,
-                    target_obs_column=target_obs_column,
-                )
-
-            metadata_df = functools.reduce(
-                combine_dfs,
-                (_get_metadata(single_gene_locus) for single_gene_locus in gene_locus),
-            )
-            all_specimens = set(metadata_df.index)
-            specimens_with_full_predictions = all_specimens
-            abstained_specimen_names = []
-
-        # All models should have a subset of the full specimen list:
-        if not all(
-            set(model_predict_proba.index) <= all_specimens
-            for model_predict_proba in model_outputs
-        ):
-            raise ValueError(
-                "All model_outputs from all gene locuses should be indexed by a subset of (or full copy of) the list of specimens."
-            )
-
-        # Subset the metadata object to the subset used in all models
-        abstained_specimen_metadata = metadata_df.loc[abstained_specimen_names].copy()
-        specimen_metadata = metadata_df.loc[list(specimens_with_full_predictions)]
-
-        # Combine the model predicted probabilities into a single dataframe
-        # This will be the input data matrix to our blending meta-model.
-        if metamodel_config.submodels is not None:
-            X = pd.concat(model_outputs, axis=1)
-            # Subset and reorder the predicted probabilities to match the specimen order of the reconciled metadata object
-            X = X.loc[specimen_metadata.index]
         else:
             # Handle edge case that submodels was None.
             X = None
+
+            # Extract specimen_metadata manually from each gene locus anndata and combine (merge to include loci-specific columns).
+            # We expect matching specimen lists across gene loci.
+            metadata_df = _combine_df_list(
+                (
+                    helpers.extract_specimen_metadata_from_anndata(
+                        adata=data[single_gene_locus],
+                        gene_locus=single_gene_locus,
+                        target_obs_column=target_obs_column,
+                    )
+                    for single_gene_locus in gene_locus
+                )
+            )
+
+            # # Alternative considered:
+            # # Keep *first* metadata for each specimen across loci:
+
+            # metadata_df = pd.concat(
+            #     [
+            #         helpers.extract_specimen_metadata_from_anndata(
+            #             adata=data[single_gene_locus],
+            #             gene_locus=single_gene_locus,
+            #             target_obs_column=target_obs_column,
+            #         )
+            #         for single_gene_locus in gene_locus
+            #     ],
+            #     axis=0
+            # )
+            # metadata_df = metadata_df.loc[~metadata_df.index.duplicated()]
+
+            # # This was rejected because we want to preserve loci-specific metadata columns,
+            # # such as BCR-specific "isotype_proportion" columns.
+            # # The "keep first occurence" strategy would only work because BCR comes before TCR,
+            # # but would fail if the order is switched or if TCR also has locus-specific columns.
+
+            # # Our chosen strategy (_combine_dfs) will instead merge all metadata entries for any specimen,
+            # # and will throw an error if any metadata columns have conflicting values.
+
+            # Extract specimen names from metadata
+            all_specimens = set(metadata_df.index)
+            specimens_with_full_predictions = all_specimens
+            abstained_specimen_names = {}
+
+        # Subset the metadata object to the subset used in all models
+        abstained_specimen_metadata = metadata_df.loc[
+            list(abstained_specimen_names)
+        ].copy()
+        specimen_metadata = metadata_df.loc[list(specimens_with_full_predictions)]
+
+        if X is not None:
+            # Subset and reorder the predicted probabilities to match the specimen order of the reconciled metadata object
+            X = X.loc[specimen_metadata.index]
 
         y_col = target_obs_column.value.blended_evaluation_column_name
         if y_col is None:
             y_col = target_obs_column.value.obs_column_name
 
+        # TODO: Overload FeaturizedData as in SubsetRollupClassifierFeaturizedData to define our custom type expectations.
         featurized = FeaturizedData(
             X=X,
             y=specimen_metadata[y_col].values,
@@ -678,12 +658,12 @@ class BlendingMetamodel(ExtendAnything):
             if metamodel_config.regress_out_pipeline is None:
                 # Make pipeline to regress out demographic variables (obs) from metamodel input feature matrix:
                 # 1. Confirm obs variables are in same order (Puts in same order if they're not; throw error if any column missing; drop any test column not found in train)
-                # 2. Scale obs (wrap in SklearnTransformerWrapper to keep pandas dataframe structure)
+                # 2. Scale obs (with StandardScalerThatPreservesInputType wrapper to keep pandas dataframe structure)
                 # 3. Regress out this obs matrix from the feature matrix
 
                 metamodel_config.regress_out_pipeline = make_pipeline(
                     MatchVariables(missing_values="raise"),
-                    SklearnTransformerWrapper(StandardScaler()),
+                    StandardScalerThatPreservesInputType(),
                     RegressOutCovariates(),
                 )
 
@@ -732,3 +712,169 @@ class BlendingMetamodel(ExtendAnything):
 
         # pass through if we don't recognize
         return feature_name
+
+    @staticmethod
+    def _harmonize_across_models_and_gene_loci(
+        featurized_by_single_locus: Dict[GeneLocus, List[FeaturizedData]]
+    ) -> Tuple[pd.DataFrame, Set[str], Set[str], pd.DataFrame]:
+        """
+        Harmonize across models and gene loci:
+        Some models may have abstentions, and the abstentions may differ between gene loci.
+
+        Returns:
+        - Metadata dataframe for all specimens, including those that were abstained on by any model in any locus.
+        - Set of all specimen names that were *not* abstained on by any model in any locus.
+        - Set of all specimen names that were abstained on by any model in any locus.
+        - Dataframe of all featurized.X horizontally combined for all specimens. Will include a row for any specimen that was not abstained on by *all* models.
+        """
+
+        # Combine all metadata and abstained metadata objects into one dataframe, across models and loci.
+        metadata_df = _combine_df_list(
+            (
+                pd.concat(
+                    [
+                        featurized_data.metadata,
+                        featurized_data.abstained_sample_metadata,
+                    ],
+                    axis=0,
+                )
+                for featurized_datas in featurized_by_single_locus.values()
+                for featurized_data in featurized_datas
+            ),
+            # Set allow_nonequal_indexes=True because some models may abstain on some specimens.
+            allow_nonequal_indexes=True,
+        )
+
+        # # Alternative considered:
+        # # Combine *first* metadata or abstained-metadata entry for each specimen across models and loci:
+
+        # metadata_df = pd.concat(
+        #     [
+        #         pd.concat(
+        #             [
+        #                 featurized_data.metadata,
+        #                 featurized_data.abstained_sample_metadata,
+        #             ],
+        #             axis=0,
+        #         )
+        #         for featurized_datas in featurized_by_single_locus.values()
+        #         for featurized_data in featurized_datas
+        #     ],
+        #     axis=0,
+        # )
+        # metadata_df = metadata_df.loc[~metadata_df.index.duplicated()]
+
+        # # This was rejected because we want to preserve loci-specific metadata columns,
+        # # such as BCR-specific "isotype_proportion" columns.
+        # # The "keep first occurence" strategy would only work because BCR comes before TCR,
+        # # but would fail if the order is switched or if TCR also has locus-specific columns.
+
+        # # Our chosen strategy (_combine_dfs) will instead merge all metadata entries for any specimen,
+        # # and will throw an error if any metadata columns have conflicting values.
+
+        # Get all specimens that were abstained on by any model in any locus.
+        abstained_specimen_names = set.union(
+            *(
+                set(featurized_data.abstained_sample_names)
+                for featurized_datas in featurized_by_single_locus.values()
+                for featurized_data in featurized_datas
+            )
+        )
+        if len(abstained_specimen_names) > 0:
+            logger.info(f"Abstained specimens: {abstained_specimen_names}")
+
+        # Now get all specimens regardless of whether they were abstained somewhere:
+        all_specimen_names = set(metadata_df.index)
+
+        # Take the difference: find specimens that are never abstained on.
+        specimens_with_full_predictions = all_specimen_names - abstained_specimen_names
+
+        # Confirm: All models should have a subset of the full specimen list:
+        if not all(
+            set(featurized_data.X.index) <= all_specimen_names
+            for featurized_datas in featurized_by_single_locus.values()
+            for featurized_data in featurized_datas
+        ):
+            raise ValueError(
+                "All model outputs from all gene locuses should be indexed by a subset of (or full copy of) the list of specimens."
+            )
+
+        # Combine the model predicted probabilities into a single dataframe
+        # This will be the input data matrix to our blending meta-model.
+        X = pd.concat(
+            [
+                featurized_data.X
+                for featurized_datas in featurized_by_single_locus.values()
+                for featurized_data in featurized_datas
+            ],
+            axis=1,
+        )
+
+        return metadata_df, specimens_with_full_predictions, abstained_specimen_names, X
+
+
+# Helper function to combine metadata objects from different models, some of which may have extra columns
+def _combine_dfs(
+    df1: pd.DataFrame, df2: pd.DataFrame, allow_nonequal_indexes: bool = False
+):
+    """
+    concatenate two dataframes horizontally, matching on their index, without making duplicate copies of identical columns.
+    if allow_nonequal_indexes: allows non-equal indexes (i.e. some rows may only be in either df1 or df2)
+    """
+    if df1.empty:
+        return df2
+    if df2.empty:
+        return df1
+    index_name_left = df1.index.name
+    index_name_right = df2.index.name
+    if index_name_left != index_name_right:
+        raise ValueError(
+            f"Indexes of left and right dataframe have different names: {index_name_left} != {index_name_right}"
+        )
+
+    temporary_index_column_name = "!INDEX!"
+    if (
+        temporary_index_column_name in df1.columns
+        or temporary_index_column_name in df2.columns
+    ):
+        raise ValueError(
+            "Left or right dataframe have column name that interferes with index renaming"
+        )
+
+    merged = pd.merge(
+        df1.rename_axis(temporary_index_column_name, axis="index").reset_index(),
+        df2.rename_axis(temporary_index_column_name, axis="index").reset_index(),
+        on=df1.columns.intersection(df2.columns)
+        .union([temporary_index_column_name])
+        .tolist(),
+        how="outer" if allow_nonequal_indexes else "inner",
+        validate="1:1",
+    ).set_index(temporary_index_column_name)
+
+    if not allow_nonequal_indexes and not (
+        set(merged.index) == set(df1.index) and set(merged.index) == set(df2.index)
+    ):
+        raise ValueError(
+            "Index changed in merge but allow_nonequal_indexes was set to False, suggesting conflicting values in some columns that were present in both dataframes"
+        )
+
+    merged.index.name = index_name_left  # undo rename
+
+    # Confirm the result index does not have any duplicates
+    if merged.index.duplicated().any():
+        raise ValueError(
+            "Merged index has duplicates, suggesting conflicting values in some columns that were present in both dataframes."
+        )
+
+    return merged
+
+
+def _combine_df_list(
+    df_list: Iterable[pd.DataFrame], allow_nonequal_indexes: bool = False
+):
+    return functools.reduce(
+        lambda accumulated, update: _combine_dfs(
+            accumulated, update, allow_nonequal_indexes=allow_nonequal_indexes
+        ),
+        df_list,
+    )

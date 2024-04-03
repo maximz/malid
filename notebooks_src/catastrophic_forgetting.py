@@ -3,11 +3,11 @@
 #
 # ## Reviewer request:
 #
-# - State the perplexity of the original UniRep model [a specific metric we can compute]
+# - State the perplexity of the original LLM model [a specific metric we can compute]
 #
 # - State the perplexity on the test set of BCR sequences of the fine tuned model.
 #
-# - State the perplexity of the test set of non-BCR sequences (the original unirep test set) of the fine tuned model. These numbers are needed to assess whether the fine tuning was successful and no catastrophic forgetting
+# - State the perplexity of the test set of non-BCR sequences (the original LLM test set) of the fine tuned model. These numbers are needed to assess whether the fine tuning was successful and no catastrophic forgetting
 #
 #
 # ## Conclusions from this notebook
@@ -22,30 +22,35 @@
 
 # %%
 run_extra_analysis = False  # feature flag to do a bunch of extra computation
+enable_gpu = True  # feature flag to enable/disable GPU usage
+
+# %%
+import choosegpu
+
+choosegpu.configure_gpu(enable=enable_gpu)
 
 # %%
 import pandas as pd
-import choosegpu
-
-choosegpu.configure_gpu(enable=False)
+from typing import Optional
 from Bio import SeqIO
 import gzip
 import re
-from malid import config, helpers
+from malid.datamodels import GeneLocus
+from malid import config, helpers, apply_embedding
+from malid.embedders.base_embedder import BaseEmbedder
 import genetools
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from jax_unirep.evotuning_models import mlstm1900_init_fun, mlstm1900_apply_fun
-from jax_unirep.utils import input_output_pairs, load_params
-from jax_unirep.evotuning import avg_loss
-import joblib
-import os
-from malid.datamodels import GeneLocus
-from malid.apply_embedding import load_sequences_from_fold
 import numpy as np
 import seaborn as sns
+from IPython.display import display
 
+# %%
+assert (
+    config.embedder.is_fine_tuned
+), "Current embedder is not fine tuned. The point of this notebook is to examine the fine tuning process."
+print(config.embedder.name)
 
 # %%
 
@@ -99,10 +104,17 @@ plt.xlabel("sequence length")
 plt.ylabel("num sequences")
 
 # %%
+gene_locus = next(iter(config.gene_loci_used))
+gene_locus
+
+# %%
 # load malid seqs
-malid_sequences = load_sequences_from_fold(
-    fold_id=1, fold_label="test", gene_locus=GeneLocus.BCR
-)
+malid_sequences = apply_embedding.load_sequence_embedding_content_for_fold(
+    fold_id=1,
+    fold_label="test",
+    gene_locus=gene_locus,
+    embedder_class=config.embedder,
+)[0]
 
 # %%
 # what is the distribution of sequence lengths in the malid data?
@@ -112,71 +124,37 @@ length_counts = (
 plt.scatter(length_counts.index, length_counts)
 
 # %%
-# load jax unirep with standard configuration
-base_params = load_params()
+# Load and instantiate standard non-fine-tuned model.
+non_fine_tuned_embedder: BaseEmbedder = config.embedder.non_fine_tuned_version()
 
 
-def fetch_malid_fold_data(gene_locus, fold_id, downsample=None):
+def fetch_malid_fold_data(
+    gene_locus: GeneLocus, fold_id: int, downsample: Optional[int] = None
+):
     """
-    For a given fold, load the parameters of the model as well as the sequence data for train/test/val splits
+    For a given fold, load the fine-tuned model, as well as the sequence data for train/test/val splits
     Optionally downsample the reads
     """
-    best_params = joblib.load(
-        config.paths.fine_tuned_embedding_dir
-        / f"{gene_locus.name}/fold_{fold_id}/best_params.joblib"
+    embedder = apply_embedding.load_embedding_model(
+        gene_locus=gene_locus,
+        fold_id=fold_id,
     )
-    test_sequences = load_sequences_from_fold(
-        fold_id=fold_id, fold_label="test", gene_locus=gene_locus
-    )
-    val_sequences = load_sequences_from_fold(
-        fold_id=fold_id, fold_label="validation", gene_locus=gene_locus
-    )
-    train_sequences = load_sequences_from_fold(
-        fold_id=fold_id, fold_label="train_smaller", gene_locus=gene_locus
-    )
+    train_sequences, val_sequences, test_sequences = [
+        apply_embedding.load_sequence_embedding_content_for_fold(
+            fold_id=fold_id,
+            fold_label=fold_label,
+            gene_locus=gene_locus,
+            embedder_class=config.embedder,
+        )[0]
+        for fold_label in ["train_smaller", "validation", "test"]
+    ]
 
     if downsample:
-        test_sequences = np.random.choice(test_sequences, downsample)
-        val_sequences = np.random.choice(val_sequences, downsample)
         train_sequences = np.random.choice(train_sequences, downsample)
+        val_sequences = np.random.choice(val_sequences, downsample)
+        test_sequences = np.random.choice(test_sequences, downsample)
 
-    return best_params, test_sequences, val_sequences, train_sequences
-
-
-def calc_loss(params, sequences):
-    """
-    For a set of parameters and a set of sequences, calculate the average loss
-    Sequences must be the same length
-    """
-    x, y = input_output_pairs(sequences)
-    loss = float(avg_loss([x], [y], params, mlstm1900_apply_fun))
-    return [len(sequences[0]), len(sequences), loss]
-
-
-def weighted_average_loss(params, sequences):
-    """
-    This function calculates the cross-entropy loss for a batch of protein sequences of arbitrary length,
-    by batching togethger all sequences of the same length and passing them through the mLSTM.
-    We want to calculate a single average for the sequences, so we take the weighted average of the
-    per-length losses (weighted by number of sequences in a given length)
-    """
-    length_indexed_sequences = {}
-    for seq in sequences:
-        if len(seq) in length_indexed_sequences.keys():
-            length_indexed_sequences[len(seq)].append(seq)
-        else:
-            length_indexed_sequences[len(seq)] = [seq]
-    losses = [
-        calc_loss(params, length_indexed_sequences[i])
-        for i in sorted(length_indexed_sequences.keys())
-    ]
-    summary = pd.DataFrame(losses, columns=["length", "n", "avg_loss"])
-    weighted_avg_loss = sum(summary["avg_loss"] * summary["n"]) / sum(summary["n"])
-    return weighted_avg_loss
-
-
-def perplexity(params, sequences):
-    return np.exp(weighted_average_loss(sequences, params))
+    return embedder, test_sequences, val_sequences, train_sequences
 
 
 # %% [markdown]
@@ -194,34 +172,42 @@ if run_extra_analysis:
     for gene_locus in config.gene_loci_used:
         for fold_id in config.cross_validation_fold_ids:
             (
-                best_params,
+                fine_tuned_embedder,
                 test_sequences,
                 val_sequences,
                 train_sequences,
             ) = fetch_malid_fold_data(gene_locus, fold_id, downsample)
             results[
                 (gene_locus.name, fold_id, "finetune_test")
-            ] = weighted_average_loss(best_params, test_sequences)
-            results[(gene_locus.name, fold_id, "finetune_val")] = weighted_average_loss(
-                best_params, val_sequences
-            )
+            ] = fine_tuned_embedder.calculate_cross_entropy_loss(test_sequences)
+            results[
+                (gene_locus.name, fold_id, "finetune_val")
+            ] = fine_tuned_embedder.calculate_cross_entropy_loss(val_sequences)
             results[
                 (gene_locus.name, fold_id, "finetune_train")
-            ] = weighted_average_loss(best_params, train_sequences)
+            ] = fine_tuned_embedder.calculate_cross_entropy_loss(train_sequences)
             results[
                 (gene_locus.name, fold_id, "finetune_uniref")
-            ] = weighted_average_loss(best_params, uniref_sample)
-            results[(gene_locus.name, fold_id, "base_test")] = weighted_average_loss(
-                base_params, test_sequences
+            ] = fine_tuned_embedder.calculate_cross_entropy_loss(
+                uniref_sample,
+                # Uniref sequences are very long, so we need to use lower batch size
+                batch_size=10,
             )
-            results[(gene_locus.name, fold_id, "base_val")] = weighted_average_loss(
-                base_params, val_sequences
-            )
-            results[(gene_locus.name, fold_id, "base_train")] = weighted_average_loss(
-                base_params, train_sequences
-            )
-            results[(gene_locus.name, fold_id, "base_uniref")] = weighted_average_loss(
-                base_params, uniref_sample
+            results[
+                (gene_locus.name, fold_id, "base_test")
+            ] = non_fine_tuned_embedder.calculate_cross_entropy_loss(test_sequences)
+            results[
+                (gene_locus.name, fold_id, "base_val")
+            ] = non_fine_tuned_embedder.calculate_cross_entropy_loss(val_sequences)
+            results[
+                (gene_locus.name, fold_id, "base_train")
+            ] = non_fine_tuned_embedder.calculate_cross_entropy_loss(train_sequences)
+            results[
+                (gene_locus.name, fold_id, "base_uniref")
+            ] = non_fine_tuned_embedder.calculate_cross_entropy_loss(
+                uniref_sample,
+                # Uniref sequences are very long, so we need to use lower batch size
+                batch_size=10,
             )
 
 
@@ -300,28 +286,45 @@ if run_extra_analysis:
 # %%
 results = {}
 for gene_locus in config.gene_loci_used:
-    val_sequences = load_sequences_from_fold(
-        fold_id=-1, fold_label="validation", gene_locus=gene_locus
+    fine_tuned_embedder = apply_embedding.load_embedding_model(
+        gene_locus=gene_locus,
+        fold_id=-1,
     )
-    best_params = joblib.load(
-        config.paths.fine_tuned_embedding_dir
-        / f"{gene_locus.name}/fold_-1/best_params.joblib",
+    print(
+        fine_tuned_embedder,
+        fine_tuned_embedder.embedder_sequence_content,
+        non_fine_tuned_embedder,
+        non_fine_tuned_embedder.embedder_sequence_content,
     )
+    val_sequences = apply_embedding.load_sequence_embedding_content_for_fold(
+        fold_id=-1,
+        fold_label="validation",
+        gene_locus=gene_locus,
+        embedder_class=config.embedder,
+    )[0]
     for i in range(20):
         print(i)
         val_sample = np.random.choice(val_sequences, 1000)
         uniref_sample = np.random.choice(uniref_sequences, 1000)
-        results[(gene_locus.name, i, "best", "validation")] = weighted_average_loss(
-            best_params, val_sample
+        results[
+            (gene_locus.name, i, "best", "validation")
+        ] = fine_tuned_embedder.calculate_cross_entropy_loss(val_sample)
+        results[
+            (gene_locus.name, i, "best", "uniref")
+        ] = fine_tuned_embedder.calculate_cross_entropy_loss(
+            uniref_sample,
+            # Uniref sequences are very long, so we need to use lower batch size
+            batch_size=10,
         )
-        results[(gene_locus.name, i, "best", "uniref")] = weighted_average_loss(
-            best_params, uniref_sample
-        )
-        results[(gene_locus.name, i, "base", "validation")] = weighted_average_loss(
-            base_params, val_sample
-        )
-        results[(gene_locus.name, i, "base", "uniref")] = weighted_average_loss(
-            base_params, uniref_sample
+        results[
+            (gene_locus.name, i, "base", "validation")
+        ] = non_fine_tuned_embedder.calculate_cross_entropy_loss(val_sample)
+        results[
+            (gene_locus.name, i, "base", "uniref")
+        ] = non_fine_tuned_embedder.calculate_cross_entropy_loss(
+            uniref_sample,
+            # Uniref sequences are very long, so we need to use lower batch size
+            batch_size=10,
         )
 
 
@@ -344,7 +347,7 @@ bootstraps = (
 bootstraps["perplexity"] = np.exp2(bootstraps["cross_val_entropy"])
 
 bootstraps["model"] = bootstraps["model"].map(
-    {"best": "Fine-tuned UniRep", "base": "Base UniRep"}
+    {"best": "Fine-tuned LLM", "base": "Base LLM"}
 )
 bootstraps.loc[
     (bootstraps["locus"] == "BCR") & (bootstraps["dataset"] == "validation"), "Dataset"
@@ -385,42 +388,44 @@ color_mapping = dict(
         colors[: bootstraps.Dataset.nunique()],
     )
 )
+color_mapping.keys()
 
 # %%
 fig, ax = plt.subplots(1, 2, figsize=(12, 4))
 
+if "BCR sequences" in color_mapping:
+    sns.barplot(
+        x="model",
+        y="cross_val_entropy",
+        hue="Dataset",
+        order=["Base LLM", "Fine-tuned LLM"],
+        hue_order=["BCR sequences", "Uniref50 sequences"],
+        data=bootstraps.loc[bootstraps.locus == "BCR"],
+        palette=[color_mapping[i] for i in ["BCR sequences", "Uniref50 sequences"]],
+        ax=ax[0],
+        errorbar=None,
+    )
+    ax[0].set_ylabel("Cross Entropy Loss")
+    ax[0].set_xlabel("Model")
+    ax[0].set_title("BCR finetuning")
+    ax[0].get_legend().remove()
 
-sns.barplot(
-    x="model",
-    y="cross_val_entropy",
-    hue="Dataset",
-    order=["Base UniRep", "Fine-tuned UniRep"],
-    hue_order=["BCR sequences", "Uniref50 sequences"],
-    data=bootstraps.loc[bootstraps.locus == "BCR"],
-    palette=[color_mapping[i] for i in ["BCR sequences", "Uniref50 sequences"]],
-    ax=ax[0],
-    ci=None,
-)
-ax[0].set_ylabel("Cross Entropy Loss")
-ax[0].set_xlabel("Model")
-ax[0].set_title("BCR finetuning")
-ax[0].get_legend().remove()
-
-sns.barplot(
-    x="model",
-    y="cross_val_entropy",
-    hue="Dataset",
-    order=["Base UniRep", "Fine-tuned UniRep"],
-    hue_order=["TCR sequences", "Uniref50 sequences"],
-    data=bootstraps.loc[bootstraps.locus == "TCR"],
-    palette=[color_mapping[i] for i in ["TCR sequences", "Uniref50 sequences"]],
-    ax=ax[1],
-    ci=None,
-)
-ax[1].set_ylabel("Cross Entropy Loss")
-ax[1].set_xlabel("Model")
-ax[1].set_title("TCR finetuning")
-ax[1].get_legend().remove()
+if "TCR sequences" in color_mapping:
+    sns.barplot(
+        x="model",
+        y="cross_val_entropy",
+        hue="Dataset",
+        order=["Base LLM", "Fine-tuned LLM"],
+        hue_order=["TCR sequences", "Uniref50 sequences"],
+        data=bootstraps.loc[bootstraps.locus == "TCR"],
+        palette=[color_mapping[i] for i in ["TCR sequences", "Uniref50 sequences"]],
+        ax=ax[1],
+        errorbar=None,
+    )
+    ax[1].set_ylabel("Cross Entropy Loss")
+    ax[1].set_xlabel("Model")
+    ax[1].set_title("TCR finetuning")
+    ax[1].get_legend().remove()
 
 lines_labels = [ax.get_legend_handles_labels() for ax in fig.axes]
 lines, labels = [sum(lol, []) for lol in zip(*lines_labels)]
@@ -442,37 +447,39 @@ genetools.plots.savefig(
 # %%
 fig, ax = plt.subplots(1, 2, figsize=(12, 4))
 
-sns.barplot(
-    x="model",
-    y="perplexity",
-    hue="Dataset",
-    order=["Base UniRep", "Fine-tuned UniRep"],
-    hue_order=["BCR sequences", "Uniref50 sequences"],
-    data=bootstraps.loc[bootstraps.locus == "BCR"],
-    palette=[color_mapping[i] for i in ["BCR sequences", "Uniref50 sequences"]],
-    ax=ax[0],
-    ci=None,
-)
-ax[0].set_ylabel("Perplexity")
-ax[0].set_xlabel("Model")
-ax[0].set_title("BCR finetuning")
-ax[0].get_legend().remove()
+if "BCR sequences" in color_mapping:
+    sns.barplot(
+        x="model",
+        y="perplexity",
+        hue="Dataset",
+        order=["Base LLM", "Fine-tuned LLM"],
+        hue_order=["BCR sequences", "Uniref50 sequences"],
+        data=bootstraps.loc[bootstraps.locus == "BCR"],
+        palette=[color_mapping[i] for i in ["BCR sequences", "Uniref50 sequences"]],
+        ax=ax[0],
+        errorbar=None,
+    )
+    ax[0].set_ylabel("Perplexity")
+    ax[0].set_xlabel("Model")
+    ax[0].set_title("BCR finetuning")
+    ax[0].get_legend().remove()
 
-sns.barplot(
-    x="model",
-    y="perplexity",
-    hue="Dataset",
-    order=["Base UniRep", "Fine-tuned UniRep"],
-    hue_order=["TCR sequences", "Uniref50 sequences"],
-    data=bootstraps.loc[bootstraps.locus == "TCR"],
-    palette=[color_mapping[i] for i in ["TCR sequences", "Uniref50 sequences"]],
-    ax=ax[1],
-    ci=None,
-)
-ax[1].set_ylabel("Perplexity")
-ax[1].set_xlabel("Model")
-ax[1].set_title("TCR finetuning")
-ax[1].get_legend().remove()
+if "TCR sequences" in color_mapping:
+    sns.barplot(
+        x="model",
+        y="perplexity",
+        hue="Dataset",
+        order=["Base LLM", "Fine-tuned LLM"],
+        hue_order=["TCR sequences", "Uniref50 sequences"],
+        data=bootstraps.loc[bootstraps.locus == "TCR"],
+        palette=[color_mapping[i] for i in ["TCR sequences", "Uniref50 sequences"]],
+        ax=ax[1],
+        errorbar=None,
+    )
+    ax[1].set_ylabel("Perplexity")
+    ax[1].set_xlabel("Model")
+    ax[1].set_title("TCR finetuning")
+    ax[1].get_legend().remove()
 
 lines_labels = [ax.get_legend_handles_labels() for ax in fig.axes]
 lines, labels = [sum(lol, []) for lol in zip(*lines_labels)]

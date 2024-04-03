@@ -2,7 +2,7 @@
 # %%
 
 # %% [markdown]
-# # Analyze convergent clustering model performance on validation set
+# # Analyze convergent clustering model performance on train_smaller2, the held out set used to tune the model's hyperparameters
 
 # %%
 
@@ -18,10 +18,7 @@ from IPython.display import display
 
 # %%
 from malid import config, logger
-from malid.external import model_evaluation
-from malid.datamodels import (
-    combine_classification_option_names,
-)
+import crosseval
 from malid.trained_model_wrappers import ConvergentClusterClassifier
 
 # %%
@@ -36,19 +33,28 @@ from malid.trained_model_wrappers import ConvergentClusterClassifier
 # %%
 for gene_locus in config.gene_loci_used:
     for target_obs_col in config.classification_targets:
+        try:
+            target_obs_col.confirm_compatibility_with_gene_locus(gene_locus)
+            target_obs_col.confirm_compatibility_with_cross_validation_split_strategy(
+                config.cross_validation_split_strategy
+            )
+        except Exception as err:
+            # Skip invalid combinations
+            logger.warning(f"{err}. Skipping.")
+            continue
+
         models_base_dir = ConvergentClusterClassifier._get_model_base_dir(
             gene_locus=gene_locus, target_obs_column=target_obs_col
         )  # should already exist
 
-        output_base_dir = (
-            config.paths.convergent_clusters_output_dir
-            / gene_locus.name
-            / combine_classification_option_names(target_obs_col)
+        output_base_dir = ConvergentClusterClassifier._get_output_base_dir(
+            gene_locus=gene_locus,
+            target_obs_column=target_obs_col,
         )  # might not yet exist
         output_base_dir.mkdir(parents=True, exist_ok=True)  # create if needed
 
-        model_output_prefix = models_base_dir / "train_smaller_model"
-        results_output_prefix = output_base_dir / "train_smaller_model"
+        model_output_prefix = models_base_dir / "train_smaller1_model"
+        results_output_prefix = output_base_dir / "train_smaller1_model"
 
         try:
             logger.info(
@@ -56,7 +62,7 @@ for gene_locus in config.gene_loci_used:
             )
 
             ## Load and summarize
-            experiment_set = model_evaluation.ExperimentSet.load_from_disk(
+            experiment_set = crosseval.ExperimentSet.load_from_disk(
                 output_prefix=model_output_prefix
             )
 
@@ -85,14 +91,14 @@ for gene_locus in config.gene_loci_used:
             # Which p values were chosen (varies by locus, model, and fold)? How many disease-associated sequences found?
             for fold_id in config.cross_validation_fold_ids:
                 for model_name in [
-                    "lasso_multiclass",
+                    "elasticnet_cv",
                     "rf_multiclass",
                     "linearsvm_ovr",
                 ]:
                     clf = ConvergentClusterClassifier(
                         fold_id=fold_id,
                         model_name=model_name,
-                        fold_label_train="train_smaller",
+                        fold_label_train="train_smaller1",
                         gene_locus=gene_locus,
                         target_obs_column=target_obs_col,
                     )

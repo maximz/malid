@@ -13,21 +13,21 @@ df = pd.concat(
     [
         pd.read_csv(
             config.paths.external_raw_data
-            / "immunecode/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-ci.csv"
+            / "immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-ci.csv"
         )
         .assign(source="peptide-cI")
         .rename_axis(index="rownum")
         .reset_index(),
         pd.read_csv(
             config.paths.external_raw_data
-            / "immunecode/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-cii.csv"
+            / "immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/peptide-detail-cii.csv"
         )
         .assign(source="peptide-cII")
         .rename_axis(index="rownum")
         .reset_index(),
         pd.read_csv(
             config.paths.external_raw_data
-            / "immunecode/mira/ImmuneCODE-MIRA-Release002.1/minigene-detail.csv"
+            / "immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/minigene-detail.csv"
         )
         .assign(source="minigene")
         .rename_axis(index="rownum")
@@ -39,7 +39,7 @@ df = pd.concat(
 # Merge in subject metadata
 subject_metadata = pd.read_csv(
     config.paths.external_raw_data
-    / "immunecode/mira/ImmuneCODE-MIRA-Release002.1/subject-metadata.csv",
+    / "immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/subject-metadata.csv",
     encoding="unicode_escape",
 )
 df = pd.merge(
@@ -99,7 +99,7 @@ df
 parse_fnames = list(
     (
         config.paths.external_raw_data
-        / "immunecode/mira/ImmuneCODE-MIRA-Release002.1/igblast_splits"
+        / "immunecode_all/mira/ImmuneCODE-MIRA-Release002.1/splits"
     ).glob(f"*.fasta.part*.fasta.parse.txt.parsed.tsv")
 )
 len(parse_fnames)
@@ -235,7 +235,7 @@ df.columns
 # %%
 df.to_csv(
     config.paths.external_raw_data
-    / "immunecode/mira/ImmuneCODE-MIRA-Release002.1"
+    / "immunecode_all/mira/ImmuneCODE-MIRA-Release002.1"
     / "mira_combined.filtered.tsv",
     sep="\t",
     index=None,

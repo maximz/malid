@@ -1,0 +1,149 @@
+participant_label	participant_alternative_label	disease	age	sex	ethnicity	participant_description	specimen_label	specimen_alternative_label	specimen_description	specimen_time_point
+BFI-0009950	A21-002					UPennFlu	M433-S001	A21-002-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009950	A21-002					UPennFlu	M433-S038	A21-002-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009950	A21-002					UPennFlu	M433-S076	A21-002-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009950	A21-002					UPennFlu	M433-S113	A21-002-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009951	A21-003					UPennFlu	M433-S002	A21-003-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009951	A21-003					UPennFlu	M433-S039	A21-003-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009951	A21-003					UPennFlu	M433-S077	A21-003-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009951	A21-003					UPennFlu	M433-S114	A21-003-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009952	A21-007					UPennFlu	M433-S003	A21-007-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009952	A21-007					UPennFlu	M433-S040	A21-007-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009952	A21-007					UPennFlu	M433-S078	A21-007-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009952	A21-007					UPennFlu	M433-S115	A21-007-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009953	A21-018					UPennFlu	M433-S004	A21-018-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009953	A21-018					UPennFlu	M433-S041	A21-018-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009953	A21-018					UPennFlu	M433-S079	A21-018-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009953	A21-018					UPennFlu	M433-S116	A21-018-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009954	A21-021					UPennFlu	M433-S005	A21-021-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009954	A21-021					UPennFlu	M433-S042	A21-021-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009954	A21-021					UPennFlu	M433-S080	A21-021-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009954	A21-021					UPennFlu	M433-S117	A21-021-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009955	A21-024					UPennFlu	M433-S006	A21-024-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009955	A21-024					UPennFlu	M433-S043	A21-024-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009955	A21-024					UPennFlu	M433-S081	A21-024-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009955	A21-024					UPennFlu	M433-S118	A21-024-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009956	A21-025					UPennFlu	M433-S007	A21-025-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009956	A21-025					UPennFlu	M433-S044	A21-025-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009956	A21-025					UPennFlu	M433-S082	A21-025-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009956	A21-025					UPennFlu	M433-S119	A21-025-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009957	A21-026					UPennFlu	M433-S008	A21-026-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009957	A21-026					UPennFlu	M433-S045	A21-026-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009957	A21-026					UPennFlu	M433-S083	A21-026-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009957	A21-026					UPennFlu	M433-S120	A21-026-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009958	A21-028					UPennFlu	M433-S009	A21-028-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009958	A21-028					UPennFlu	M433-S046	A21-028-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009958	A21-028					UPennFlu	M433-S084	A21-028-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009958	A21-028					UPennFlu	M433-S121	A21-028-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009959	A21-030					UPennFlu	M433-S010	A21-030-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009959	A21-030					UPennFlu	M433-S071	A21-030-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009959	A21-030					UPennFlu	M433-S085	A21-030-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009959	A21-030					UPennFlu	M433-S122	A21-030-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009960	A21-031					UPennFlu	M433-S011	A21-031-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009960	A21-031					UPennFlu	M433-S047	A21-031-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009960	A21-031					UPennFlu	M433-S086	A21-031-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009960	A21-031					UPennFlu	M433-S123	A21-031-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009961	A21-033					UPennFlu	M433-S012	A21-033-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009961	A21-033					UPennFlu	M433-S048	A21-033-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009961	A21-033					UPennFlu	M433-S087	A21-033-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009961	A21-033					UPennFlu	M433-S124	A21-033-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009962	A21-036					UPennFlu	M433-S013	A21-036-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009962	A21-036					UPennFlu	M433-S049	A21-036-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009962	A21-036					UPennFlu	M433-S088	A21-036-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009962	A21-036					UPennFlu	M433-S125	A21-036-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009963	A21-038					UPennFlu	M433-S014	A21-038-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009963	A21-038					UPennFlu	M433-S050	A21-038-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009963	A21-038					UPennFlu	M433-S089	A21-038-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009963	A21-038					UPennFlu	M433-S126	A21-038-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009964	A21-039					UPennFlu	M433-S015	A21-039-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009964	A21-039					UPennFlu	M433-S051	A21-039-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009964	A21-039					UPennFlu	M433-S090	A21-039-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009964	A21-039					UPennFlu	M433-S127	A21-039-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009965	A21-041					UPennFlu	M433-S016	A21-041-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009965	A21-041					UPennFlu	M433-S052	A21-041-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009965	A21-041					UPennFlu	M433-S091	A21-041-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009965	A21-041					UPennFlu	M433-S128	A21-041-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009966	A21-049					UPennFlu	M433-S017	A21-049-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009966	A21-049					UPennFlu	M433-S053	A21-049-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009966	A21-049					UPennFlu	M433-S092	A21-049-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009966	A21-049					UPennFlu	M433-S129	A21-049-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009967	A21-072					UPennFlu	M433-S018	A21-072-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009967	A21-072					UPennFlu	M433-S054	A21-072-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009967	A21-072					UPennFlu	M433-S093	A21-072-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009967	A21-072					UPennFlu	M433-S130	A21-072-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009968	A21-075					UPennFlu	M433-S019	A21-075-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009968	A21-075					UPennFlu	M433-S055	A21-075-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009968	A21-075					UPennFlu	M433-S094	A21-075-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009968	A21-075					UPennFlu	M433-S131	A21-075-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009969	A21-078					UPennFlu	M433-S020	A21-078-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009969	A21-078					UPennFlu	M433-S072	A21-078-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009969	A21-078					UPennFlu	M433-S095	A21-078-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009969	A21-078					UPennFlu	M433-S132	A21-078-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009970	A21-081					UPennFlu	M433-S021	A21-081-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009970	A21-081					UPennFlu	M433-S073	A21-081-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009970	A21-081					UPennFlu	M433-S096	A21-081-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009970	A21-081					UPennFlu	M433-S133	A21-081-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009971	A21-088					UPennFlu	M433-S022	A21-088-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009971	A21-088					UPennFlu	M433-S056	A21-088-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009971	A21-088					UPennFlu	M433-S097	A21-088-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009971	A21-088					UPennFlu	M433-S134	A21-088-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009972	A21-093					UPennFlu	M433-S023	A21-093-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009972	A21-093					UPennFlu	M433-S057	A21-093-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009972	A21-093					UPennFlu	M433-S098	A21-093-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009972	A21-093					UPennFlu	M433-S135	A21-093-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009973	A21-097					UPennFlu	M433-S024	A21-097-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009973	A21-097					UPennFlu	M433-S074	A21-097-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009973	A21-097					UPennFlu	M433-S099	A21-097-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009973	A21-097					UPennFlu	M433-S136	A21-097-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009974	A21-101					UPennFlu	M433-S025	A21-101-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009974	A21-101					UPennFlu	M433-S058	A21-101-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009974	A21-101					UPennFlu	M433-S100	A21-101-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009974	A21-101					UPennFlu	M433-S137	A21-101-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009975	A21-104					UPennFlu	M433-S026	A21-104-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009975	A21-104					UPennFlu	M433-S059	A21-104-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009975	A21-104					UPennFlu	M433-S101	A21-104-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009975	A21-104					UPennFlu	M433-S138	A21-104-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009976	A21-110					UPennFlu	M433-S027	A21-110-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009976	A21-110					UPennFlu	M433-S060	A21-110-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009976	A21-110					UPennFlu	M433-S102	A21-110-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009976	A21-110					UPennFlu	M433-S139	A21-110-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009977	A21-121					UPennFlu	M433-S028	A21-121-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009977	A21-121					UPennFlu	M433-S061	A21-121-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009977	A21-121					UPennFlu	M433-S103	A21-121-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009977	A21-121					UPennFlu	M433-S140	A21-121-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009978	A21-124					UPennFlu	M433-S029	A21-124-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009978	A21-124					UPennFlu	M433-S062	A21-124-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009978	A21-124					UPennFlu	M433-S104	A21-124-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009979	A21-125					UPennFlu	M433-S030	A21-125-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009979	A21-125					UPennFlu	M433-S063	A21-125-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009979	A21-125					UPennFlu	M433-S105	A21-125-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009979	A21-125					UPennFlu	M433-S141	A21-125-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009980	A21-141					UPennFlu	M433-S031	A21-141-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009980	A21-141					UPennFlu	M433-S064	A21-141-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009980	A21-141					UPennFlu	M433-S106	A21-141-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009980	A21-141					UPennFlu	M433-S142	A21-141-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009981	A21-143					UPennFlu	M433-S032	A21-143-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009981	A21-143					UPennFlu	M433-S065	A21-143-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009981	A21-143					UPennFlu	M433-S107	A21-143-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009981	A21-143					UPennFlu	M433-S143	A21-143-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009982	A21-150					UPennFlu	M433-S033	A21-150-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009982	A21-150					UPennFlu	M433-S066	A21-150-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009982	A21-150					UPennFlu	M433-S108	A21-150-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009982	A21-150					UPennFlu	M433-S144	A21-150-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009983	A21-151					UPennFlu	M433-S075	A21-151-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009984	A21-152					UPennFlu	M433-S034	A21-152-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009984	A21-152					UPennFlu	M433-S067	A21-152-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009984	A21-152					UPennFlu	M433-S109	A21-152-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009984	A21-152					UPennFlu	M433-S145	A21-152-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009985	A21-158					UPennFlu	M433-S035	A21-158-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009985	A21-158					UPennFlu	M433-S068	A21-158-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009985	A21-158					UPennFlu	M433-S110	A21-158-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009985	A21-158					UPennFlu	M433-S146	A21-158-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009986	A21-165					UPennFlu	M433-S036	A21-165-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009986	A21-165					UPennFlu	M433-S069	A21-165-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009986	A21-165					UPennFlu	M433-S111	A21-165-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009986	A21-165					UPennFlu	M433-S147	A21-165-v4-day90	UPenn Flu 2021 study	90 days
+BFI-0009987	A21-166					UPennFlu	M433-S037	A21-166-v1-day0	UPenn Flu 2021 study	00:00:00
+BFI-0009987	A21-166					UPennFlu	M433-S070	A21-166-v2-day7	UPenn Flu 2021 study	7 days
+BFI-0009987	A21-166					UPennFlu	M433-S112	A21-166-v3-day28	UPenn Flu 2021 study	28 days
+BFI-0009987	A21-166					UPennFlu	M433-S148	A21-166-v4-day90	UPenn Flu 2021 study	90 days

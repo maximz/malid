@@ -1,15 +1,51 @@
-def get_embedder_by_name(name):
+"""When adding a new embedder:
 
-    # TODO: generate this programatically... by storing names in a central registry, or by introspection on class names? But avoid slow runtime imports.
-    # For now, we use tests to confirm these are the same names as the name attributes of these embedders.
+- Create the class in `malid/embedders/`.
+- Add the import to this file. (Make sure all slow imports are deferred until the embedder is actually initialized.)
+- Add the embedder to the embedder registry below.
+- Run tests on CPU and GPU: `pytest tests/test_embeddings.py && pytest --gpu tests/test_embeddings.py`
+"""
 
-    if name == "unirep":
-        from .unirep import UnirepEmbedder
 
-        return UnirepEmbedder
-    elif name == "unirep_fine_tuned":
-        from .unirep import UnirepFineTunedEmbedder
+from typing import Type, Union
+from malid.embedders.base_embedder import BaseEmbedder, BaseFineTunedEmbedder
+from malid.embedders.unirep import (
+    UnirepEmbedder,
+    UnirepFineTunedEmbedder,
+    UnirepEmbedderCDR3Only,
+    UnirepFineTunedEmbedderCDR3Only,
+)
+from malid.embedders.biotransformers import (
+    Esm2Embedder,
+    Esm2FineTunedEmbedder,
+    Esm2EmbedderCDR3Only,
+    Esm2FineTunedEmbedderCDR3Only,
+)
+from malid.embedders.ablang import (
+    AbLangEmbeddder,
+)
 
-        return UnirepFineTunedEmbedder
-    else:
-        raise ValueError("Unrecognized embedder type")
+# List of embedder class types
+# Insert new embedders here
+_EMBEDDERS = [
+    UnirepEmbedder,
+    UnirepFineTunedEmbedder,
+    UnirepEmbedderCDR3Only,
+    UnirepFineTunedEmbedderCDR3Only,
+    Esm2Embedder,
+    Esm2FineTunedEmbedder,
+    Esm2EmbedderCDR3Only,
+    Esm2FineTunedEmbedderCDR3Only,
+    AbLangEmbeddder,
+]
+
+# Re-index by name
+_EMBEDDERS_DICT = {
+    embedder_class_type.name: embedder_class_type for embedder_class_type in _EMBEDDERS
+}
+
+
+def get_embedder_by_name(
+    name: str,
+) -> Union[Type[BaseEmbedder], Type[BaseFineTunedEmbedder]]:
+    return _EMBEDDERS_DICT[name]

@@ -3,7 +3,6 @@ Train CDR3 amino acid exact sequence match models.
 """
 
 import gc
-import logging
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
@@ -13,6 +12,7 @@ import numpy as np
 import pandas as pd
 import sklearn.base
 from joblib import Parallel, delayed
+from tqdm import tqdm
 from sklearn import preprocessing
 from sklearn.pipeline import make_pipeline, Pipeline
 from feature_engine.preprocessing import MatchVariables
@@ -23,11 +23,14 @@ from malid.datamodels import (
     GeneLocus,
     TargetObsColumnEnum,
 )
-from malid.external import model_evaluation
+import crosseval
 from malid.train import training_utils
 from malid.trained_model_wrappers import ExactMatchesClassifier
 
-logger = logging.getLogger(__name__)
+from malid.external.logging_context_for_warnings import ContextLoggerWrapper
+from log_with_context import add_logging_context
+
+logger = ContextLoggerWrapper(name=__name__)
 
 
 def _get_fold_data(
@@ -35,12 +38,16 @@ def _get_fold_data(
     fold_label: str,
     gene_locus: GeneLocus,
     target_obs_column: TargetObsColumnEnum,
+    # This model does not require the embedding .X, so take the fast path and just load .obs:
+    load_obs_only=True,
 ) -> pd.DataFrame:
     df = io.load_fold_embeddings(
         fold_id=fold_id,
         fold_label=fold_label,
         target_obs_column=target_obs_column,
         gene_locus=gene_locus,
+        # load_obs_only defaults to True: This model does not require the embedding .X, so take the fast path and just load .obs:
+        load_obs_only=load_obs_only,
     ).obs
     return df
 
@@ -138,68 +145,112 @@ def _try_a_p_value(
     results = []
 
     for model_name, model_clf in models.items():
-        is_pipeline = type(model_clf) == Pipeline
-        if is_pipeline:
-            # If already a pipeline:
-            model_pipeline = sklearn.base.clone(model_clf)
+        # Scale columns.
+        model_pipeline = training_utils.prepend_scaler_if_not_present(model_clf)
 
-            # Scale columns.
-            # Prepend a StandardScaler if it doesn't exist already
-            if "standardscaler" in model_pipeline.named_steps.keys():
-                logger.warning(
-                    f"The pipeline already has a StandardScaler step already! Not inserting for model {model_name}"
-                )
-            else:
-                logger.info(
-                    f"Inserting StandardScaler into existing pipeline for model {model_name}"
-                )
-                model_pipeline.steps.insert(
-                    0, ("standardscaler", preprocessing.StandardScaler())
-                )
-
-            # Prepend a MatchVariables if it doesn't exist already
-            # Confirms features are in same order.
-            # Puts in same order if they're not.
-            # Throws error if any train column missing.
-            # Drops any test column not found in train column list.
-            # It's like saving a feature_order and doing X.loc[feature_order]
-            if "matchvariables" not in model_pipeline.named_steps.keys():
-                model_pipeline.steps.insert(
-                    0,
-                    ("matchvariables", MatchVariables(missing_values="raise")),
-                )
-        else:  # Not yet a pipeline.
-            model_pipeline = make_pipeline(
-                MatchVariables(missing_values="raise"),
-                preprocessing.StandardScaler(),
-                sklearn.base.clone(model_clf),
+        # Prepend a MatchVariables if it doesn't exist already
+        # Confirms features are in same order.
+        # Puts in same order if they're not.
+        # Throws error if any train column missing.
+        # Drops any test column not found in train column list.
+        # It's like saving a feature_order and doing X.loc[feature_order]
+        if "matchvariables" not in model_pipeline.named_steps.keys():
+            model_pipeline.steps.insert(
+                0,
+                ("matchvariables", MatchVariables(missing_values="raise")),
             )
 
         # train model and evaluate on test set
         logger.debug(
             f"Training ExactMatchesClassifier {model_name} on fold {fold_id}-{fold_label_train}, {gene_locus} data for p_value={p_value}"
         )
-        model_pipeline, test_performance = training_utils.run_model_multiclass(
-            model_name=model_name,
-            model_clf=model_pipeline,
-            X_train=featurized_train.X,
-            X_test=featurized_test.X,
-            y_train=featurized_train.y,
-            y_test=featurized_test.y,
-            fold_id=fold_id,
-            output_prefix=output_prefix,
-            fold_label_train=fold_label_train,
-            fold_label_test=fold_label_test,
-            train_groups=train_participant_labels,
-            test_metadata=featurized_test.metadata,
-            test_abstention_ground_truth_labels=featurized_test.abstained_sample_y,
-            test_abstention_metadata=featurized_test.abstained_sample_metadata,
-            fail_on_error=fail_on_error,
-            # don't export until later when we choose best p value
-            export=False,
-        )
+        with add_logging_context(model_name=model_name, p_value=p_value):
+            model_pipeline, test_performance = training_utils.run_model_multiclass(
+                model_name=model_name,
+                model_clf=model_pipeline,
+                X_train=featurized_train.X,
+                X_test=featurized_test.X,
+                y_train=featurized_train.y,
+                y_test=featurized_test.y,
+                fold_id=fold_id,
+                output_prefix=output_prefix,
+                fold_label_train=fold_label_train,
+                fold_label_test=fold_label_test,
+                train_groups=train_participant_labels,
+                test_metadata=featurized_test.metadata,
+                test_abstention_ground_truth_labels=featurized_test.abstained_sample_y,
+                test_abstention_metadata=featurized_test.abstained_sample_metadata,
+                fail_on_error=fail_on_error,
+                # don't export until later when we choose best p value
+                export=False,
+            )
         # record one clf and performance at a particular p_value for a particular model name
         results.append((model_name, (model_pipeline, p_value, test_performance)))
+
+        # For Glmnet models, also record performance with lambda_1se flag flipped.
+        if (
+            model_pipeline is not None
+            and test_performance is not None
+            and training_utils.does_fitted_model_support_lambda_setting_change(
+                model_pipeline
+            )
+        ):
+            (
+                model_pipeline2,
+                test_performance2,
+            ) = training_utils.modify_fitted_model_lambda_setting(
+                fitted_clf=model_pipeline,
+                performance=test_performance,
+                X_test=featurized_test.X,
+                output_prefix=output_prefix,
+                # don't export until later when we choose best p value
+                export=False,
+            )
+            results.append(
+                (
+                    test_performance2.model_name,
+                    (model_pipeline2, p_value, test_performance2),
+                )
+            )
+
+        if (
+            model_pipeline is not None
+            and training_utils.does_fitted_model_support_conversion_from_glmnet_to_sklearn(
+                model_pipeline
+            )
+        ):
+            # Also train a sklearn model using the best lambda from the glmnet model, as an extra sanity check. Results should be identical.
+            sklearn_model = training_utils.convert_trained_glmnet_pipeline_to_untrained_sklearn_pipeline_at_best_lambda(
+                model_pipeline
+            )
+            sklearn_model_name = (
+                model_name.replace("_cv", "") + "_sklearn_with_lambdamax"
+            )
+            sklearn_model, result_sklearn = training_utils.run_model_multiclass(
+                model_name=sklearn_model_name,
+                model_clf=sklearn_model,
+                X_train=featurized_train.X,
+                X_test=featurized_test.X,
+                y_train=featurized_train.y,
+                y_test=featurized_test.y,
+                fold_id=fold_id,
+                output_prefix=output_prefix,
+                fold_label_train=fold_label_train,
+                fold_label_test=fold_label_test,
+                train_groups=train_participant_labels,
+                test_metadata=featurized_test.metadata,
+                test_abstention_ground_truth_labels=featurized_test.abstained_sample_y,
+                test_abstention_metadata=featurized_test.abstained_sample_metadata,
+                fail_on_error=fail_on_error,
+                # don't export until later when we choose best p value
+                export=False,
+            )
+            results.append(
+                (
+                    sklearn_model_name,
+                    (sklearn_model, p_value, result_sklearn),
+                )
+            )
     return results
 
 
@@ -215,6 +266,8 @@ def _run_models_on_fold(
     clear_cache=True,
     p_values: Optional[Union[List[float], np.ndarray]] = None,
     fail_on_error=False,
+    # This model does not require the embedding .X, so take the fast path and just load .obs:
+    load_obs_only=True,
 ):
     # n_jobs is the number of parallel jobs to run for p-value threshold tuning.
     models_base_dir = ExactMatchesClassifier._get_model_base_dir(
@@ -227,12 +280,14 @@ def _run_models_on_fold(
         fold_label=fold_label_train,
         target_obs_column=target_obs_column,
         gene_locus=gene_locus,
+        load_obs_only=load_obs_only,
     )
     test_df = _get_fold_data(
         fold_id=fold_id,
         fold_label=fold_label_test,
         target_obs_column=target_obs_column,
         gene_locus=gene_locus,
+        load_obs_only=load_obs_only,
     )
 
     # Compute fisher scores for all train sequences
@@ -253,26 +308,32 @@ def _run_models_on_fold(
         p_values = [0.001, 0.005, 0.01, 0.05, 0.10, 0.15, 0.25, 0.50, 1.0]
     # Run in parallel
     # ("loky" backend required; "multiprocessing" backend can deadlock with xgboost, see https://github.com/dmlc/xgboost/issues/7044#issuecomment-1039912899 , https://github.com/dmlc/xgboost/issues/2163 , and https://github.com/dmlc/xgboost/issues/4246 )
-    p_value_job_outputs = Parallel(n_jobs=n_jobs, backend="loky")(
-        delayed(_try_a_p_value)(
-            p_value=p_value,
-            train_df=train_df,
-            test_df=test_df,
-            sequence_pvalues_per_disease=sequence_pvalues_per_disease,
-            feature_names_order=feature_names_order,
-            target_obs_column=target_obs_column,
-            fold_id=fold_id,
-            gene_locus=gene_locus,
-            fold_label_train=fold_label_train,
-            fold_label_test=fold_label_test,
-            chosen_models=chosen_models,
-            use_gpu=use_gpu,
-            output_prefix=output_prefix,
-            # This controls nested multiprocessing:
-            n_jobs=n_jobs,
-            fail_on_error=fail_on_error,
+    # Wrap in tqdm for progress bar (see https://stackoverflow.com/a/76726101/130164)
+    p_value_job_outputs = list(
+        tqdm(
+            Parallel(return_as="generator", n_jobs=n_jobs, backend="loky")(
+                delayed(_try_a_p_value)(
+                    p_value=p_value,
+                    train_df=train_df,
+                    test_df=test_df,
+                    sequence_pvalues_per_disease=sequence_pvalues_per_disease,
+                    feature_names_order=feature_names_order,
+                    target_obs_column=target_obs_column,
+                    fold_id=fold_id,
+                    gene_locus=gene_locus,
+                    fold_label_train=fold_label_train,
+                    fold_label_test=fold_label_test,
+                    chosen_models=chosen_models,
+                    use_gpu=use_gpu,
+                    output_prefix=output_prefix,
+                    # This controls nested multiprocessing:
+                    n_jobs=n_jobs,
+                    fail_on_error=fail_on_error,
+                )
+                for p_value in p_values
+            ),
+            total=len(p_values),
         )
-        for p_value in p_values
     )
 
     # Unwrap each job's outputs
@@ -361,17 +422,23 @@ def run_classify_with_all_models(
     clear_cache=True,
     p_values: Optional[Union[List[float], np.ndarray]] = None,
     fail_on_error=False,
-) -> model_evaluation.ExperimentSet:
+    # This model does not require the embedding .X, so take the fast path and just load .obs:
+    load_obs_only=True,
+) -> crosseval.ExperimentSet:
     """Run classification. n_jobs is passed to `_run_models_on_fold` to parallelize the p-value threshold tuning."""
     GeneLocus.validate(gene_locus)
     GeneLocus.validate_single_value(gene_locus)
     TargetObsColumnEnum.validate(target_obs_column)
+    target_obs_column.confirm_compatibility_with_gene_locus(gene_locus)
+    target_obs_column.confirm_compatibility_with_cross_validation_split_strategy(
+        config.cross_validation_split_strategy
+    )
 
     if fold_ids is None:
         fold_ids = config.all_fold_ids
     logger.info(f"Starting train on folds: {fold_ids}")
 
-    return model_evaluation.ExperimentSet(
+    return crosseval.ExperimentSet(
         model_outputs=[
             _run_models_on_fold(
                 fold_id=fold_id,
@@ -385,6 +452,7 @@ def run_classify_with_all_models(
                 clear_cache=clear_cache,
                 p_values=p_values,
                 fail_on_error=fail_on_error,
+                load_obs_only=load_obs_only,
             )
             for fold_id in fold_ids
         ]

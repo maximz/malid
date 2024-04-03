@@ -13,7 +13,7 @@ repos:
 # 2. run jupytext on notebooks/ only, and parallelize the command
 
 -   repo: https://github.com/mwouts/jupytext
-    rev: v1.11.5 # should match requirements.txt
+    rev: v1.15.0 # should match requirements.txt
     hooks:
     - id: jupytext
       args: [--sync, --pipe, black]

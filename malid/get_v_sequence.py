@@ -106,8 +106,11 @@ def get_tcrb_v_gene_annotations() -> pd.DataFrame:
                 {
                     "expected_v_call": key.split("|")[1],
                     "v_call": result["v_call"].split(",")[0],
+                    "fwr1_aa": result["fwr1_aa"],
                     "cdr1_aa": result["cdr1_aa"],
+                    "fwr2_aa": result["fwr2_aa"],
                     "cdr2_aa": result["cdr2_aa"],
+                    "fwr3_aa": result["fwr3_aa"],
                 }
                 for key, result in all_seqs_output.items()
             ]

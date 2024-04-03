@@ -1,0 +1,16 @@
+participant_label,specimen_label,time_point,description,age,sex,ethnicity
+BFI-0007780,M404-S001,12 days,Acute 1,26,M,
+BFI-0007780,M404-S002,16 days,Acute 2,26,M,
+BFI-0007780,M404-S003,76 days,Convalescence,26,M,
+BFI-0007781,M404-S004,5 days,Acute 1,57,M,Caucasian
+BFI-0007781,M404-S005,8 days,Acute 2,57,M,Caucasian
+BFI-0007781,M404-S006,61 days,Convalescence,57,M,Caucasian
+BFI-0007782,M404-S007,35 days,Acute 1,73,F,Caucasian
+BFI-0007782,M404-S008,37 days,Acute 2,73,F,Caucasian
+BFI-0007782,M404-S009,88 days,Convalescence,73,F,Caucasian
+BFI-0007783,M404-S010,14 days,Acute 1,57,M,Asian
+BFI-0007783,M404-S011,16 days,Acute 2,57,M,Asian
+BFI-0007783,M404-S012,63 days,Convalescence,57,M,Asian
+BFI-0007784,M404-S013,16 days,Acute 1,71,F,African American
+BFI-0007784,M404-S014,22 days,Acute 2,71,F,African American
+BFI-0007784,M404-S015,60 days,Convalescence,71,F,African American

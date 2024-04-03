@@ -55,6 +55,6 @@ def test_weighted_median_uniform_probabilities_uniform_weights(
     uniform_probabilities_uniform_weights,
 ):
     probs, weights = uniform_probabilities_uniform_weights
-    tested = _entropy_threshold(probs, weights)
+    tested = _entropy_threshold(probs, weights, max_entropy=1.4)
     expected = pd.Series([0.5, 0.5], index=["covid", "hiv"])
     tm.assert_series_equal(tested, expected)

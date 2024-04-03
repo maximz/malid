@@ -10,21 +10,16 @@ from malid.datamodels import (
     GeneLocus,
     TargetObsColumnEnum,
     SampleWeightStrategy,
-    combine_classification_option_names,
 )
 from malid.train import train_metamodel
-from malid.trained_model_wrappers import BlendingMetamodel
+from malid.trained_model_wrappers import (
+    SequenceClassifier,
+    RollupSequenceClassifier,
+    RepertoireClassifier,
+    ConvergentClusterClassifier,
+)
 
 # %%
-model_name_overall_repertoire_composition = (
-    config.metamodel_base_model_names.model_name_overall_repertoire_composition
-)
-model_name_convergent_clustering = (
-    config.metamodel_base_model_names.model_name_convergent_clustering
-)
-model_name_sequence_disease = (
-    config.metamodel_base_model_names.model_name_sequence_disease
-)
 base_model_train_fold_name = "train_smaller"
 metamodel_fold_label_train = "validation"
 
@@ -32,7 +27,7 @@ metamodel_fold_label_train = "validation"
 def summary(
     gene_locus: GeneLocus,
     target_obs_column: TargetObsColumnEnum,
-    sample_weight_strategy: SampleWeightStrategy = SampleWeightStrategy.ISOTYPE_USAGE,
+    sample_weight_strategy: SampleWeightStrategy,
     show_base=True,
     show_metamodel=True,
     show_best_metamodel_only=False,
@@ -42,57 +37,50 @@ def summary(
     )
     try:
         if show_base:
+            GeneLocus.validate_single_value(gene_locus)
+            model_name_overall_repertoire_composition = config.metamodel_base_model_names.model_name_overall_repertoire_composition[
+                gene_locus
+            ]
+            model_name_convergent_clustering = (
+                config.metamodel_base_model_names.model_name_convergent_clustering[
+                    gene_locus
+                ]
+            )
             show(
                 [
                     [
-                        config.paths.repertoire_stats_classifier_output_dir
-                        / gene_locus.name
-                        / combine_classification_option_names(
-                            target_obs_column=target_obs_column
+                        RepertoireClassifier._get_output_base_dir(
+                            gene_locus=gene_locus,
+                            target_obs_column=target_obs_column,
+                            sample_weight_strategy=sample_weight_strategy,
                         )
                         / f"train_smaller_model.test_set_performance.{model_name_overall_repertoire_composition}.classification_report.txt",
-                        config.paths.convergent_clusters_output_dir
-                        / gene_locus.name
-                        / combine_classification_option_names(
-                            target_obs_column=target_obs_column
-                        )
-                        / f"train_smaller_model.test_set_performance.{model_name_convergent_clustering}.classification_report.txt",
-                        config.paths.sequence_models_output_dir
-                        / gene_locus.name
-                        / "rollup_models"
-                        / combine_classification_option_names(
+                        ConvergentClusterClassifier._get_output_base_dir(
+                            gene_locus=gene_locus,
                             target_obs_column=target_obs_column,
                             sample_weight_strategy=sample_weight_strategy,
                         )
-                        / f"sequence_prediction_rollup.{model_name_sequence_disease}.train_smaller_model.report.txt",
+                        / f"train_smaller_model.test_set_performance.{model_name_convergent_clustering}.classification_report.txt"
+                        # TODO: Add model3 rollup results based on notebooks/analyze_vj_gene_specific_sequence_model_rollup_classifier.ipynb
                     ],
                     [
-                        config.paths.repertoire_stats_classifier_output_dir
-                        / gene_locus.name
-                        / combine_classification_option_names(
-                            target_obs_column=target_obs_column
-                        )
-                        / f"train_smaller_model.test_set_performance.{model_name_overall_repertoire_composition}.confusion_matrix.png",
-                        config.paths.convergent_clusters_output_dir
-                        / gene_locus.name
-                        / combine_classification_option_names(
-                            target_obs_column=target_obs_column
-                        )
-                        / f"train_smaller_model.test_set_performance.{model_name_convergent_clustering}.confusion_matrix.png",
-                        config.paths.sequence_models_output_dir
-                        / gene_locus.name
-                        / "rollup_models"
-                        / combine_classification_option_names(
+                        RepertoireClassifier._get_output_base_dir(
+                            gene_locus=gene_locus,
                             target_obs_column=target_obs_column,
                             sample_weight_strategy=sample_weight_strategy,
                         )
-                        / f"sequence_prediction_rollup.{model_name_sequence_disease}.train_smaller_model.confusion_matrix.png",
+                        / f"train_smaller_model.test_set_performance.{model_name_overall_repertoire_composition}.confusion_matrix.png",
+                        ConvergentClusterClassifier._get_output_base_dir(
+                            gene_locus=gene_locus,
+                            target_obs_column=target_obs_column,
+                            sample_weight_strategy=sample_weight_strategy,
+                        )
+                        / f"train_smaller_model.test_set_performance.{model_name_convergent_clustering}.confusion_matrix.png",
                     ],
                 ],
                 headers=[
                     f"model1 {model_name_overall_repertoire_composition}",
                     f"model2 {model_name_convergent_clustering}",
-                    f"model3-rollup {model_name_sequence_disease}",
                 ],
                 max_width=400,
             )
@@ -106,6 +94,7 @@ def summary(
                     target_obs_column=target_obs_column,
                     fold_id=config.all_fold_ids[0],
                     base_model_train_fold_name=base_model_train_fold_name,
+                    use_stubs_instead_of_submodels=True,
                 )
             except Exception as err:
                 logger.warning(
@@ -140,14 +129,7 @@ def summary(
                 for metamodel_name in (
                     [metamodel_stats.index[0]]
                     if show_best_metamodel_only
-                    else [
-                        "linearsvm_ovr",
-                        "lasso_cv",
-                        "ridge_cv",
-                        "elasticnet_cv",
-                        "xgboost",
-                        "rf_multiclass",
-                    ]
+                    else config.model_names_to_train
                 ):
                     show(
                         [
@@ -187,6 +169,7 @@ for target_obs_column in config.classification_targets:
         summary(
             gene_locus=gene_locus,
             target_obs_column=target_obs_column,
+            sample_weight_strategy=config.sample_weight_strategy,
             show_base=True,
             show_metamodel=True,
         )
@@ -196,6 +179,7 @@ for target_obs_column in config.classification_targets:
         summary(
             gene_locus=config.gene_loci_used,
             target_obs_column=target_obs_column,
+            sample_weight_strategy=config.sample_weight_strategy,
             show_base=False,
             show_metamodel=True,
         )

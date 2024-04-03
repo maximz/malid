@@ -1,0 +1,58 @@
+Subject ID Yoni	participant_label	FR1	IgA	IgD	IgE	IgG	IgM	specimen_label	Disease	Flare/Remission	Sex	Disease location	HBI or Partial Mayo score	Stricturing/fistulizing/inflammatory/perianal/ulcerative	Onset ≤18 years	Disease for ≥15 years?	Disease duration (yrs)	Estraintestinal manifestations?	Tx	disease_subtype
+117	BFI-0010530	A1	A1	A1	A1	A1	A1	M477-S001	Ulcerative colitis	F	F	pan	7		Y	Y	16.0	N	GOLI, STEROID	Ulcerative colitis - Flare
+118	BFI-0010531	A1	A2	A2	A2	A2	A2	M477-S002	Crohn's disease	F	F	ileocolonic	6	Stricturing	N	Y	30.0	N	HUM,MTX,  STEROID	Crohn's disease - Flare
+119	BFI-0010532	A1	A3	A3	A3	A3	A3	M477-S003	Crohn's disease	F	F	ileocolonic	7	Stricturing	N	Y	39.0	N	HUM, MTX	Crohn's disease - Flare
+120	BFI-0010533	A1	A4	A4	A4	A4	A4	M477-S004	Ulcerative colitis	F	F	pan	9		Y	N	5.0	N	ASA, STEROID	Ulcerative colitis - Flare
+121	BFI-0010534	A1	A5	A5	A5	A5	A5	M477-S005	Ulcerative colitis	F	F	left-sided	7		N	Y	28.0	N	HUM, STEROID, EDEMA	Ulcerative colitis - Flare
+122	BFI-0010535	A1	A6	A6	A6	A6	A6	M477-S006	Ulcerative colitis	F	F	left-sided	7		N	N	2.0	N	VEDO4days, STEROID	Ulcerative colitis - Flare
+123	BFI-0010536	A1	A7	A7	A7	A7	A7	M477-S007	Ulcerative colitis	F	M	left-sided	8		N	Y	29.0	N	6-MP, ASA, STEROID	Ulcerative colitis - Flare
+124	BFI-0010537	A1	A8	A8	A8	A8	A8	M477-S008	Crohn's disease	F	M	ileal	5	Stricturing	Y	Y	18.0	N	HUM, MTX, STEROID	Crohn's disease - Flare
+127	BFI-0010538	A2	A1	A1	A1	A1	A1	M477-S009	Crohn's disease	F	M	ileocolonic	5	Fistulizing	N	N	10.0	N	6-MP, STEROID	Crohn's disease - Flare
+128	BFI-0010539	A2	A2	A2	A2	A2	A2	M477-S010	Crohn's disease	F	M	ileal	2	Stricturing	Y	Y	18.0	N	MTX, STEROID	Crohn's disease - Flare
+129	BFI-0010540	A2	A3	A3	A3	A3	A3	M477-S011	Crohn's disease	F	M	ileocolonic	7	Stricturing, fistulizing	Y	Y	26.0	N	6-MP, STEL, STEROID	Crohn's disease - Flare
+138	BFI-0010541	A2	A4	A4	A4	A4	A4	M477-S012	Crohn's disease	R	F	ileocolonic	2	Stricturing	N	N	10.0	N	ASA, HUM	Crohn's disease - Remission
+139	BFI-0010542	A2	A5	A5	A5	A5	A5	M477-S013	Ulcerative colitis	R	F	pan	0		N	Y	17.0	N	none	Ulcerative colitis - Remission
+140	BFI-0010543	A2	A6	A6	A6	A6	A6	M477-S014	Ulcerative colitis	R	F	pan	1		N	Y	15.0	N	ASA, ENEMA	Ulcerative colitis - Remission
+141	BFI-0010544	A2	A7	A7	A7	A7	A7	M477-S015	Ulcerative colitis	R	F	proctitis	0		N	N	2.0	N	ASA	Ulcerative colitis - Remission
+143	BFI-0010545	A2	A8	A8	A8	A8	A8	M477-S016	Crohn's disease	R	M	ileal	2	Stricturing	Y	Y	17.0	N	HUM, MTX	Crohn's disease - Remission
+145	BFI-0010546	A3	A1	A1	A1	A1	A1	M477-S017	Ulcerative colitis	R	F	left-sided	3		N	N	10.0	N	6-MP, ASA	Ulcerative colitis - Remission
+146	BFI-0010547	A3	A2	A2	A2	A2	A2	M477-S018	Crohn's disease	R	F	colonic	0	Fistulizing	N	Y	30.0	N	none	Crohn's disease - Remission
+152	BFI-0010548	A3	A3	A3	A3	A3	A3	M477-S019	Crohn's disease	R	M	colonic	2	Stricturing	Y	Y	34.0	N	6-MP, ASA, INFX	Crohn's disease - Remission
+154	BFI-0010549	A3	A4	A4	A4	A4	A4	M477-S020	Healthy/Background		M									Healthy/Background
+155	BFI-0010550	A3	A5	A5	A5	A5	A5	M477-S021	Healthy/Background		M									Healthy/Background
+158	BFI-0010551	A3	A6	A6	A6	A6	A6	M477-S022	Crohn's disease	F	M	ileocolonic	5	unknown	Y	Y	34.0	N	6-MP, ASA, INFX, STEROID	Crohn's disease - Flare
+159	BFI-0010552	A3	A7	A7	A7	A7	A7	M477-S023	Ulcerative colitis	F	M	pan	6		N	N	3.0	N	ASA, INFX, STEROID, ENEMA	Ulcerative colitis - Flare
+160	BFI-0010553	A3	A8	A8	A8	A8	A8	M477-S024	Crohn's disease	F	F	ileocolonic	3	Fistulizing	Y	N	9.0	Y	ASA, STEL	Crohn's disease - Flare
+161	BFI-0010554	A4	A1	A1	A1	A1	A1	M477-S025	Ulcerative colitis	R	M	pan	2		N	N	4.0	N	ASA, ENEMA	Ulcerative colitis - Remission
+162	BFI-0010555	A4	A2	A2	A2	A2	A2	M477-S026	IND	R	F	left-sided	Partial Mayo 2		N	N	5.0	N	MTX	IND - Remission
+165	BFI-0010556	A4	A3	A3	A3	A3	A3	M477-S027	Healthy/Background		M									Healthy/Background
+167	BFI-0010557	A4	A4	A4	A4	A4	A4	M477-S028	Crohn's disease	R	F	ileocolonic	7	Fistulizing	Y	Y	19.0	Y	6-MP	Crohn's disease - Remission
+168	BFI-0010558	A4	A5	A5	A5	A5	A5	M477-S029	Ulcerative colitis	R	F	pan	2		N	N	11.0	Y	ASA, HUM, ENEMA	Ulcerative colitis - Remission
+170	BFI-0010559	A4	A6	A6	A6	A6	A6	M477-S030	Ulcerative colitis	R	M	pan	2		N	Y	42.0	N	6-MP, ASA	Ulcerative colitis - Remission
+171	BFI-0010560	A4	A7	A7	A7	A7	A7	M477-S031	Crohn's disease	R	F	colonic	0	unknown	N	N	10.0	N	INFX	Crohn's disease - Remission
+172	BFI-0010561	A4	A8	A8	A8	A8	A8	M477-S032	Healthy/Background		M									Healthy/Background
+175	BFI-0010562	A5	A1	A1	A1	A1	A1	M477-S033	Ulcerative colitis	R	M	pan	2		Y	Y	28.0	Y	6-MP, ASA, HUM	Ulcerative colitis - Remission
+177	BFI-0010563	A5	A2	A2	A2	A2	A2	M477-S034	Crohn's disease	R	F	ileocolonic	0	Fistulizing	Y	Y	30.0	Y	none	Crohn's disease - Remission
+178	BFI-0010564	A5	A3	A3	A3	A3	A3	M477-S035	Crohn's disease	F	M	ileocolonic	5	Fistulizing	N	N	0.08	Y	none	Crohn's disease - Flare
+180	BFI-0010565	A5	A4	A4	A4	A4	A4	M477-S036	Ulcerative colitis	F	M	pan	5		N	N	3.0	N	ASA, STEROID	Ulcerative colitis - Flare
+184	BFI-0010566	A5	A5	A5	A5	A5	A5	M477-S037	Crohn's disease	F	M	colonic	1	Fistulizing	N	N	8.0	N	HUM	Crohn's disease - Flare
+185	BFI-0010567	A5	A6	A6	A6	A6	A6	M477-S038	Crohn's disease	F	F	ileal	3	unknown	N	N	2.0	N	STEL, STEROID	Crohn's disease - Flare
+187	BFI-0010568	A5	A7	A7	A7	A7	A7	M477-S039	Crohn's disease	R	F	ileocolonic	0	unknown	Y	N	13.0	Y	6-MP	Crohn's disease - Remission
+188	BFI-0010569	A5	A8	A8	A8	A8	A8	M477-S040	Crohn's disease	R	F	ileal	0	unknown	N	N	5.0	N	ASA	Crohn's disease - Remission
+189	BFI-0010570	A6	A1	A1	A1	A1	A1	M477-S041	Crohn's disease	R	F	ileocolonic	0	unknown	Y	N	10.0	N	6-MP, ASA, HUM	Crohn's disease - Remission
+190	BFI-0010571	A6	A2	A2	A2	A2	A2	M477-S042	Ulcerative colitis	R	F	left-sided	1		N	Y	18.0	N	ASA, ENEMA	Ulcerative colitis - Remission
+191	BFI-0010572	A6	A3	A3	A3	A3	A3	M477-S043	Ulcerative colitis	F	F	pan	8		Y	N	1.0	N	ASA, STEROID	Ulcerative colitis - Flare
+192	BFI-0010573	A6	A4	A4	A4	A4	A4	M477-S044	Healthy/Background		M									Healthy/Background
+193	BFI-0010574	A6	A5	A5	A5	A5	A5	M477-S045	Healthy/Background		F									Healthy/Background
+196	BFI-0010575	A6	A6	A6	A6	A6	A6	M477-S046	Crohn's disease	R	M	ileocolonic	0	Non-stricturing, non-penetrating	Y	N	14.0	N	VEDO	Crohn's disease - Remission
+198	BFI-0010576	A6	A7	A7	A7	A7	A7	M477-S047	Ulcerative colitis	F	F	left-sided	6		N	N	2.0	N	ASA, STEROID, ENEMA	Ulcerative colitis - Flare
+199	BFI-0010577	A6	A8	A8	A8	A8	A8	M477-S048	Ulcerative colitis	R	M	left-sided	2		N	N	3.0	N	ASA, ENEMA	Ulcerative colitis - Remission
+202	BFI-0010578	A7	A1	A1	A1	A1	A1	M477-S049	Crohn's disease	F	F	ileocolonic	4	Stricturing, fistulizing	N	N	0.25	N	6-MP, HUM, STEROID	Crohn's disease - Flare
+204	BFI-0010579	A7	A2	A2	A2	A2	A2	M477-S050	Ulcerative colitis	F	F	pan	5		Y	N	1.0	N	ASA, VEDO, STEROID, ENEMA	Ulcerative colitis - Flare
+205	BFI-0010580	A7	A3	A3	A3	A3	A3	M477-S051	Crohn's disease	F	M	ileocolonic	4	unknown	N	N	1.0	Y	HUM, MTX, STEROID	Crohn's disease - Flare
+206	BFI-0010581	A7	A4	A4	A4	A4	A4	M477-S052	Healthy/Background		M									Healthy/Background
+207	BFI-0010582	A7	A5	A5	A5	A5	A5	M477-S053	Healthy/Background		F									Healthy/Background
+208	BFI-0010583	A7	A6	A6	A6	A6	A6	M477-S054	Healthy/Background		M									Healthy/Background
+210	BFI-0010584	A7	A7	A7	A7	A7	A7	M477-S055	Healthy/Background		M									Healthy/Background
+211	BFI-0010585	A7	A8	A8	A8	A8	A8	M477-S056	Healthy/Background		F									Healthy/Background
+212	BFI-0010586	A8	A1	A1	A1	A1	A1	M477-S057	Healthy/Background		F									Healthy/Background

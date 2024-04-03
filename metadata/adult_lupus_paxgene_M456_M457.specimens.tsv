@@ -1,0 +1,12 @@
+participant_label	disease	age	sex	ethnicity	participant_description	specimen_label	BSID
+BFI-0010060	SLE	51	F	Caucasian	SLE Patient	M456-S001	BS1090567
+BFI-0010061	SLE	34	F	African American	SLE Patient	M456-S002	BS1090648
+BFI-0010062	MS	37	F	Caucasian	MS Patient	M456-S003	BS737900
+BFI-0010063	MS	45	F	Caucasian	RRMS Patient	M456-S004	BS758986
+BFI-0010064	Healthy/Background	48	M	Caucasian	Unaffected Control	M456-S005	BS766431
+BFI-0010065	SLE	46	F	Asian	SLE Patient	M456-S006	BS767818
+BFI-0010066	Healthy/Background	47	M	African American	Unaffected Control	M456-S007	BS962019
+BFI-0010067	SLE	49	F	African American	SLE Patient	M456-S008	BS963497
+BFI-0010068	SLE	42	F	African American	SLE Patient	M456-S009	BS965589
+BFI-0010069	NMO	61	F	African American	NMO Patient	M456-S010	BS966310
+BFI-0010070	MS	27	M	Caucasian	RRMS Patient	M456-S011	BS966514

@@ -8,10 +8,38 @@ import copy
 
 import numpy as np
 import pytest
+import os
 
 import choosegpu
 
 multiprocessing.set_start_method("spawn")
+
+if os.getenv("_PYTEST_RAISE", "0") != "0":
+    # For debugging tests with pytest and vscode:
+    # Configure pytest to not swallow exceptions, so that vscode can catch them before the debugging session ends.
+    # See https://stackoverflow.com/a/62563106/130164
+    # The .vscode/launch.json configuration should be:
+    # "configurations": [
+    #     {
+    #         "name": "Python: Debug Tests",
+    #         "type": "python",
+    #         "request": "launch",
+    #         "program": "${file}",
+    #         "purpose": ["debug-test"],
+    #         "console": "integratedTerminal",
+    #         "justMyCode": false,
+    #         "env": {
+    #             "_PYTEST_RAISE": "1"
+    #         },
+    #     },
+    # ]
+    @pytest.hookimpl(tryfirst=True)
+    def pytest_exception_interact(call):
+        raise call.excinfo.value
+
+    @pytest.hookimpl(tryfirst=True)
+    def pytest_internalerror(excinfo):
+        raise excinfo.value
 
 
 def pytest_addoption(parser):
@@ -51,6 +79,7 @@ def pytest_configure(config):
     tmp_path = temp_path_factory.mktemp("test_temp_path", numbered=True)
     malid_config_module.paths = malid_config_module.make_paths(
         embedder=malid_config_module.embedder,
+        cross_validation_split_strategy=malid_config_module.cross_validation_split_strategy,
         base_data_dir="data",
         base_output_dir="out",
         base_scratch_dir="scratch",
@@ -63,6 +92,10 @@ def pytest_configure(config):
     malid_config_module.paths.tests_snapshot_dir = old_paths.tests_snapshot_dir
     malid_config_module.paths.dataset_specific_metadata = (
         old_paths.tests_snapshot_dir / "dataset_specific_metadata"
+    )
+    malid_config_module.paths.dataset_specific_metadata_for_selected_cross_validation_strategy = (
+        old_paths.tests_snapshot_dir
+        / "dataset_specific_metadata_for_selected_cross_validation_strategy"
     )
     malid_config_module.paths.metadata_dir = old_paths.metadata_dir
 

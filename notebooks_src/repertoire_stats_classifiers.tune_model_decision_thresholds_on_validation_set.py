@@ -12,9 +12,6 @@ from malid.train.training_utils import (
     tune_on_validation_set,
 )
 from malid.trained_model_wrappers import RepertoireClassifier
-from malid.datamodels import (
-    combine_classification_option_names,
-)
 
 # %%
 
@@ -24,10 +21,10 @@ from malid.datamodels import (
 # Run
 for gene_locus in config.gene_loci_used:
     map_targets_to_output_dir = {
-        target_obs_column: (
-            config.paths.repertoire_stats_classifier_output_dir
-            / gene_locus.name
-            / combine_classification_option_names(target_obs_column)
+        target_obs_column: RepertoireClassifier._get_output_base_dir(
+            gene_locus=gene_locus,
+            target_obs_column=target_obs_column,
+            sample_weight_strategy=config.sample_weight_strategy,
         )  # output base dir should already exist
         for target_obs_column in config.classification_targets
     }
@@ -35,19 +32,19 @@ for gene_locus in config.gene_loci_used:
     clfs = tune_on_validation_set(
         gene_locus=gene_locus,
         targets=map_targets_to_output_dir,
-        model_names=[
-            "lasso_multiclass",
-            "lasso_cv",
-            "ridge_cv",
-            "elasticnet_cv",
-            "rf_multiclass",
-            "xgboost",
-            "linearsvm_ovr",
-        ],
+        sample_weight_strategy=config.sample_weight_strategy,
+        model_names=config.model_names_to_train,
         model_class=RepertoireClassifier,
+        # Model 1 does not require the embedding .X, so take the fast path and just load .obs:
+        load_obs_only=True,
     )
     evaluate_original_and_tuned_on_test_set(
-        clfs=clfs, gene_locus=gene_locus, targets=map_targets_to_output_dir
+        clfs=clfs,
+        gene_locus=gene_locus,
+        targets=map_targets_to_output_dir,
+        sample_weight_strategy=config.sample_weight_strategy,
+        # Model 1 does not require the embedding .X, so take the fast path and just load .obs:
+        load_obs_only=True,
     )
 
 

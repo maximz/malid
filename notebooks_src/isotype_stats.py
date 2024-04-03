@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # %%
 import numpy as np
 import pandas as pd
@@ -16,12 +15,33 @@ import matplotlib.pyplot as plt
 # %matplotlib inline
 import seaborn as sns
 
-from malid.datamodels import GeneLocus, TargetObsColumnEnum
+from malid.datamodels import (
+    GeneLocus,
+    TargetObsColumnEnum,
+    map_cross_validation_split_strategy_to_default_target_obs_column,
+)
 
 # %%
 
 # %% [markdown]
 # # Isotype counts overall by disease cohort. BCR only.
+
+# %%
+target_obs_column = map_cross_validation_split_strategy_to_default_target_obs_column[
+    config.cross_validation_split_strategy
+]
+target_obs_column
+
+# %%
+# for the special case of TargetObsColumnEnum.disease, we have a custom color palette
+color_palette = (
+    helpers.disease_color_palette
+    if target_obs_column == TargetObsColumnEnum.disease
+    else None
+)
+
+# %%
+assert GeneLocus.BCR in config.gene_loci_used
 
 # %%
 fold_labels = ["train_smaller", "validation", "test"]
@@ -40,20 +60,23 @@ for fold_id in config.all_fold_ids:
             fold_label=fold_label,
             gene_locus=GeneLocus.BCR,
             target_obs_column=TargetObsColumnEnum.disease,
-            load_isotype_counts_per_specimen=False,  # because not created yet - gets created here!
+            load_obs_only=True,
         )
         df = adata.obs
         for specimen_label, subset_obs in adata.obs.groupby(
             "specimen_label", observed=True
         ):
-            # get value counts, but first defensively cast to categorical and remove any unused categories — so we don't mark 0 counts for filtered out isotypes.
+            # Get value counts, but first defensively cast to categorical and remove any unused categories — so we don't mark 0 counts for filtered out isotypes.
+            # This is related to how "isotype_proportion" obs columns are calculated in load_fold_embeddings(), but those are normalized, so to make things simple we just recalculate here.
             isotype_counts = (
                 subset_obs["isotype_supergroup"]
                 .astype("category")
                 .cat.remove_unused_categories()
                 .value_counts()
             )
-            specimen_description = subset_obs[["specimen_label", "disease"]].iloc[0]
+            specimen_description = subset_obs[
+                ["specimen_label", target_obs_column.value.obs_column_name]
+            ].iloc[0]
             specimen_isotype_counts.append(
                 {
                     "fold_id": fold_id,
@@ -77,7 +100,8 @@ specimen_isotype_counts_df
 # %%
 # export
 specimen_isotype_counts_df.to_csv(
-    config.paths.dataset_specific_metadata / "isotype_counts_by_specimen.tsv",
+    config.paths.dataset_specific_metadata_for_selected_cross_validation_strategy
+    / "isotype_counts_by_specimen.tsv",
     sep="\t",
     index=None,
 )
@@ -89,7 +113,9 @@ specimen_isotype_counts_df.to_csv(
 # %%
 # reimport (start here if resuming)
 specimen_isotype_counts_df = pd.read_csv(
-    config.paths.dataset_specific_metadata / "isotype_counts_by_specimen.tsv", sep="\t"
+    config.paths.dataset_specific_metadata_for_selected_cross_validation_strategy
+    / "isotype_counts_by_specimen.tsv",
+    sep="\t",
 )
 specimen_isotype_counts_df
 
@@ -97,7 +123,13 @@ specimen_isotype_counts_df
 
 # %%
 specimen_isotype_counts_df.sort_values(
-    ["fold_id", "fold_label", "disease", "specimen_label"], inplace=True
+    [
+        "fold_id",
+        "fold_label",
+        target_obs_column.value.obs_column_name,
+        "specimen_label",
+    ],
+    inplace=True,
 )
 
 # %%
@@ -116,25 +148,39 @@ specimen_isotype_counts_df_test_only
 
 # %%
 # option 1: for each disease, sum across all specimens. plot totals
-specimen_isotype_counts_df_test_only.groupby("disease").sum()
+specimen_isotype_counts_df_test_only.groupby(
+    target_obs_column.value.obs_column_name
+).sum()
 
 # %%
 pd.melt(
-    specimen_isotype_counts_df_test_only.groupby("disease").sum().reset_index(),
-    id_vars=["disease"],
+    specimen_isotype_counts_df_test_only.groupby(
+        target_obs_column.value.obs_column_name
+    )
+    .sum()
+    .reset_index(),
+    id_vars=[target_obs_column.value.obs_column_name],
     value_vars=["IGHD-M", "IGHA", "IGHG"],
 )
 
 # %%
-sns.barplot(
+ax = sns.barplot(
     data=pd.melt(
-        specimen_isotype_counts_df_test_only.groupby("disease").sum().reset_index(),
-        id_vars=["disease"],
+        specimen_isotype_counts_df_test_only.groupby(
+            target_obs_column.value.obs_column_name
+        )
+        .sum()
+        .reset_index(),
+        id_vars=[target_obs_column.value.obs_column_name],
         value_vars=["IGHD-M", "IGHA", "IGHG"],
     ),
-    x="disease",
+    x=target_obs_column.value.obs_column_name,
     y="value",
     hue="variable",
+)
+
+genetools.plots.wrap_tick_labels(
+    ax, wrap_x_axis=True, wrap_y_axis=False, wrap_amount=10
 )
 
 # %%
@@ -148,32 +194,38 @@ pd.concat(
         genetools.stats.normalize_rows(
             specimen_isotype_counts_df_test_only[["IGHD-M", "IGHA", "IGHG"]]
         ),
-        specimen_isotype_counts_df_test_only["disease"],
+        specimen_isotype_counts_df_test_only[target_obs_column.value.obs_column_name],
     ],
     axis=1,
 )
 
 # %%
-sns.barplot(
+ax = sns.barplot(
     data=pd.melt(
         pd.concat(
             [
                 genetools.stats.normalize_rows(
                     specimen_isotype_counts_df_test_only[["IGHD-M", "IGHA", "IGHG"]]
                 ),
-                specimen_isotype_counts_df_test_only["disease"],
+                specimen_isotype_counts_df_test_only[
+                    target_obs_column.value.obs_column_name
+                ],
             ],
             axis=1,
         )
-        .groupby("disease")
+        .groupby(target_obs_column.value.obs_column_name)
         .sum()
         .reset_index(),
-        id_vars=["disease"],
+        id_vars=[target_obs_column.value.obs_column_name],
         value_vars=["IGHD-M", "IGHA", "IGHG"],
     ),
-    x="disease",
+    x=target_obs_column.value.obs_column_name,
     y="value",
     hue="variable",
+)
+
+genetools.plots.wrap_tick_labels(
+    ax, wrap_x_axis=True, wrap_y_axis=False, wrap_amount=10
 )
 
 # %%
@@ -187,11 +239,13 @@ genetools.stats.normalize_rows(
             genetools.stats.normalize_rows(
                 specimen_isotype_counts_df_test_only[["IGHD-M", "IGHA", "IGHG"]]
             ),
-            specimen_isotype_counts_df_test_only["disease"],
+            specimen_isotype_counts_df_test_only[
+                target_obs_column.value.obs_column_name
+            ],
         ],
         axis=1,
     )
-    .groupby("disease")
+    .groupby(target_obs_column.value.obs_column_name)
     .sum()
 )
 
@@ -204,21 +258,21 @@ ax = sns.barplot(
                     genetools.stats.normalize_rows(
                         specimen_isotype_counts_df_test_only[["IGHD-M", "IGHA", "IGHG"]]
                     ),
-                    specimen_isotype_counts_df_test_only["disease"],
+                    specimen_isotype_counts_df_test_only[
+                        target_obs_column.value.obs_column_name
+                    ],
                 ],
                 axis=1,
             )
-            .groupby("disease")
+            .groupby(target_obs_column.value.obs_column_name)
             .sum()
-        )
-        .reset_index()
-        .rename(columns={"disease": "Disease"}),
-        id_vars=["Disease"],
+        ).reset_index(),
+        id_vars=[target_obs_column.value.obs_column_name],
         value_vars=["IGHD-M", "IGHA", "IGHG"],
         var_name="Isotype",
         value_name="Proportion",
     ),
-    x="Disease",
+    x=target_obs_column.value.obs_column_name,
     y="Proportion",
     hue="Isotype",
 )
@@ -241,6 +295,10 @@ leg.set_title(title=legend_title, prop={"weight": "bold", "size": "medium"})
 # align legend title left
 leg._legend_box.align = "left"
 
+genetools.plots.wrap_tick_labels(
+    ax, wrap_x_axis=True, wrap_y_axis=False, wrap_amount=10
+)
+
 # %%
 
 # %%
@@ -253,7 +311,7 @@ pd.concat(
         genetools.stats.normalize_rows(
             specimen_isotype_counts_df_test_only[["IGHD-M", "IGHA", "IGHG"]]
         ),
-        specimen_isotype_counts_df_test_only["disease"],
+        specimen_isotype_counts_df_test_only[target_obs_column.value.obs_column_name],
     ],
     axis=1,
 )
@@ -265,11 +323,13 @@ isotype_proportions = pd.melt(
             genetools.stats.normalize_rows(
                 specimen_isotype_counts_df_test_only[["IGHD-M", "IGHA", "IGHG"]]
             ),
-            specimen_isotype_counts_df_test_only["disease"],
+            specimen_isotype_counts_df_test_only[
+                target_obs_column.value.obs_column_name
+            ],
         ],
         axis=1,
-    ).rename(columns={"disease": "Disease"}),
-    id_vars=["Disease"],
+    ),
+    id_vars=[target_obs_column.value.obs_column_name],
     value_vars=["IGHD-M", "IGHA", "IGHG"],
     var_name="Isotype",
     value_name="Proportion",
@@ -284,19 +344,19 @@ ax = sns.barplot(
     data=isotype_proportions,
     x="Isotype",
     y="Proportion",
-    hue="Disease",
-    palette=helpers.disease_color_palette,
+    hue=target_obs_column.value.obs_column_name,
+    palette=color_palette,
     # Compute 95% confidence intervals around a sample mean by bootstrapping:
     # sampling distribution of mean generated by repeated sampling and recording mean each time.
     # the standard error is basically the standard deviation of many sample means
     # we plot mean +/- 1.96*standard error. gives you average value +/- X at the 95% confidence level.
-    ci=95,
-    # ci="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
+    errorbar=("ci", 95),
+    # errorbar="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
     # capsize=.025
 )
 
 sns.despine(ax=ax)
-legend_title = "Disease"
+legend_title = target_obs_column.value.obs_column_name
 # place legend outside figure
 leg = plt.legend(
     bbox_to_anchor=(1.05, 0.5),
@@ -318,25 +378,24 @@ ax.set_title("Average specimen isotype proportions by disease")
 
 fig = ax.get_figure()
 genetools.plots.savefig(
-    fig, config.paths.output_dir / f"isotype_counts_by_disease.png", dpi=300
-)
-genetools.plots.savefig(
     fig,
-    config.paths.high_res_outputs_dir / f"isotype_counts_by_disease.pdf",
+    config.paths.base_output_dir_for_selected_cross_validation_strategy
+    / f"isotype_counts_by_class.png",
+    dpi=300,
 )
 
 # %%
 ax = sns.barplot(
     data=isotype_proportions,
-    x="Disease",
+    x=target_obs_column.value.obs_column_name,
     y="Proportion",
     hue="Isotype",
     # Compute 95% confidence intervals around a sample mean by bootstrapping:
     # sampling distribution of mean generated by repeated sampling and recording mean each time.
     # the standard error is basically the standard deviation of many sample means
     # we plot mean +/- 1.96*standard error. gives you average value +/- X at the 95% confidence level.
-    ci=95,
-    # ci="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
+    errorbar=("ci", 95),
+    # errorbar="sd", # instead draw the standard deviation of the observations, instead of bootstrapping to get 95% confidence intervals
     # capsize=.025
     hue_order=helpers.isotype_friendly_name_order,
     palette=helpers.isotype_palette,
@@ -363,13 +422,16 @@ leg._legend_box.align = "left"
 
 ax.set_title("Average specimen isotype proportions by disease")
 
+genetools.plots.wrap_tick_labels(
+    ax, wrap_x_axis=True, wrap_y_axis=False, wrap_amount=10
+)
+
 fig = ax.get_figure()
 genetools.plots.savefig(
-    fig, config.paths.output_dir / f"isotype_counts_by_disease.inverted.png", dpi=300
-)
-genetools.plots.savefig(
     fig,
-    config.paths.high_res_outputs_dir / f"isotype_counts_by_disease.inverted.pdf",
+    config.paths.base_output_dir_for_selected_cross_validation_strategy
+    / f"isotype_counts_by_class.inverted.png",
+    dpi=300,
 )
 
 # %%

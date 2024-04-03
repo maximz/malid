@@ -1,0 +1,72 @@
+study_name	sample_name	gene_locus	disease	sequencing_type	disease_subtype	participant_label	specimen_label	amplification_label	replicate_label	sex	age	ethnicity_condensed	specimen_description	has_BCR	has_TCR	expect_a_read_count_column	file_extension	age_group
+Kim	A_d17	BCR	Covid19	cDNA	Covid19 - Kim	Kim_A	Kim_A_d17	Kim_A_d17	Kim_A_d17	M	55.0	Asian	17.0	True	False	False	tsv	50-60
+Kim	B_d19	BCR	Covid19	cDNA	Covid19 - Kim	Kim_B	Kim_B_d19	Kim_B_d19	Kim_B_d19	M	55.0	Asian	19.0	True	False	False	tsv	50-60
+Kim	C_d15	BCR	Covid19	cDNA	Covid19 - Kim	Kim_C	Kim_C_d15	Kim_C_d15	Kim_C_d15	F	53.0	Asian	15.0	True	False	False	tsv	50-60
+Kim	D_d28	BCR	Covid19	cDNA	Covid19 - Kim	Kim_D	Kim_D_d28	Kim_D_d28	Kim_D_d28	M	24.0	Asian	28.0	True	False	False	tsv	20-30
+Kim	E_d23	BCR	Covid19	cDNA	Covid19 - Kim	Kim_E	Kim_E_d23	Kim_E_d23	Kim_E_d23	M	48.0	Asian	23.0	True	False	False	tsv	40-50
+Kim	F_d14	BCR	Covid19	cDNA	Covid19 - Kim	Kim_F	Kim_F_d14	Kim_F_d14	Kim_F_d14	F	40.0	Asian	14.0	True	False	False	tsv	40-50
+Kim	G_d22	BCR	Covid19	cDNA	Covid19 - Kim	Kim_G	Kim_G_d22	Kim_G_d22	Kim_G_d22	F	59.0	Asian	22.0	True	False	False	tsv	50-60
+Briney	D103_1	BCR	Healthy/Background	cDNA	Healthy/Background - Briney	Briney_D103	Briney_D103_1	Briney_D103_1	Briney_D103_1	M	25.0	Caucasian	0.0	True	False	False	csv	20-30
+Briney	326780_1	BCR	Healthy/Background	cDNA	Healthy/Background - Briney	Briney_326780	Briney_326780_1	Briney_326780_1	Briney_326780_1	M	29.0	Caucasian	0.0	True	False	False	csv	20-30
+Briney	326650_1	BCR	Healthy/Background	cDNA	Healthy/Background - Briney	Briney_326650	Briney_326650_1	Briney_326650_1	Briney_326650_1	F	18.0	Caucasian	0.0	True	False	False	csv	<20
+Briney	326737_1	BCR	Healthy/Background	cDNA	Healthy/Background - Briney	Briney_326737	Briney_326737_1	Briney_326737_1	Briney_326737_1	M	29.0	Caucasian	0.0	True	False	False	csv	20-30
+Briney	327059_1	BCR	Healthy/Background	cDNA	Healthy/Background - Briney	Briney_327059	Briney_327059_1	Briney_327059_1	Briney_327059_1	M	26.0		0.0	True	False	False	csv	20-30
+Briney	326907_1	BCR	Healthy/Background	cDNA	Healthy/Background - Briney	Briney_326907	Briney_326907_1	Briney_326907_1	Briney_326907_1	F	29.0	African	0.0	True	False	False	csv	20-30
+Briney	316188_1	BCR	Healthy/Background	cDNA	Healthy/Background - Briney	Briney_316188	Briney_316188_1	Briney_316188_1	Briney_316188_1	F	30.0	African	0.0	True	False	False	csv	30-40
+Briney	326797_1	BCR	Healthy/Background	cDNA	Healthy/Background - Briney	Briney_326797	Briney_326797_1	Briney_326797_1	Briney_326797_1	F	21.0	Caucasian	0.0	True	False	False	csv	20-30
+Britanova	A3-i101	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p1	Britanova_A3-i101	Britanova_A3-i101	Britanova_A3-i101	F	36.0	Caucasian		False	True	True	txt.gz	30-40
+Britanova	A3-i102	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p2	Britanova_A3-i102	Britanova_A3-i102	Britanova_A3-i102	F	43.0	Caucasian		False	True	True	txt.gz	40-50
+Britanova	A3-i106	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p3	Britanova_A3-i106	Britanova_A3-i106	Britanova_A3-i106	F	43.0	Caucasian		False	True	True	txt.gz	40-50
+Britanova	A3-i107	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p4	Britanova_A3-i107	Britanova_A3-i107	Britanova_A3-i107	F	39.0	Caucasian		False	True	True	txt.gz	30-40
+Britanova	A3-i110	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p5	Britanova_A3-i110	Britanova_A3-i110	Britanova_A3-i110	F	34.0	Caucasian		False	True	True	txt.gz	30-40
+Britanova	A2-i138	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p15	Britanova_A2-i138	Britanova_A2-i138	Britanova_A2-i138	F	74.0	Caucasian		False	True	True	txt.gz	70-80
+Britanova	A2-i139	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p16	Britanova_A2-i139	Britanova_A2-i139	Britanova_A2-i139	M	75.0	Caucasian		False	True	True	txt.gz	70-80
+Britanova	A2-i140	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p17	Britanova_A2-i140	Britanova_A2-i140	Britanova_A2-i140	F	73.0	Caucasian		False	True	True	txt.gz	70-80
+Britanova	A2-i141	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p18	Britanova_A2-i141	Britanova_A2-i141	Britanova_A2-i141	M	71.0	Caucasian		False	True	True	txt.gz	70-80
+Britanova	A4-i101	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p19	Britanova_A4-i101	Britanova_A4-i101	Britanova_A4-i101	M	36.0	Caucasian		False	True	True	txt.gz	30-40
+Britanova	A4-i102	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p20	Britanova_A4-i102	Britanova_A4-i102	Britanova_A4-i102	M	37.0	Caucasian		False	True	True	txt.gz	30-40
+Britanova	A4-i106	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p21	Britanova_A4-i106	Britanova_A4-i106	Britanova_A4-i106	M	43.0	Caucasian		False	True	True	txt.gz	40-50
+Britanova	A4-i107	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p22	Britanova_A4-i107	Britanova_A4-i107	Britanova_A4-i107	M	39.0	Caucasian		False	True	True	txt.gz	30-40
+Britanova	A4-i110	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p23	Britanova_A4-i110	Britanova_A4-i110	Britanova_A4-i110	F	43.0	Caucasian		False	True	True	txt.gz	40-50
+Britanova	A4-i124	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p26	Britanova_A4-i124	Britanova_A4-i124	Britanova_A4-i124	M	66.0	Caucasian		False	True	True	txt.gz	60-70
+Britanova	A4-i125	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p27	Britanova_A4-i125	Britanova_A4-i125	Britanova_A4-i125	M	64.0	Caucasian		False	True	True	txt.gz	60-70
+Britanova	A4-i128	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p29	Britanova_A4-i128	Britanova_A4-i128	Britanova_A4-i128	F	62.0	Caucasian		False	True	True	txt.gz	60-70
+Britanova	A4-i184	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p32	Britanova_A4-i184	Britanova_A4-i184	Britanova_A4-i184	M	61.0	Caucasian		False	True	True	txt.gz	60-70
+Britanova	A4-i185	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p33	Britanova_A4-i185	Britanova_A4-i185	Britanova_A4-i185	F	61.0	Caucasian		False	True	True	txt.gz	60-70
+Britanova	A4-i186	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p34	Britanova_A4-i186	Britanova_A4-i186	Britanova_A4-i186	F	61.0	Caucasian		False	True	True	txt.gz	60-70
+Britanova	A4-i188	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p35	Britanova_A4-i188	Britanova_A4-i188	Britanova_A4-i188	F	61.0	Caucasian		False	True	True	txt.gz	60-70
+Britanova	A4-i189	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p36	Britanova_A4-i189	Britanova_A4-i189	Britanova_A4-i189	M	25.0	Caucasian		False	True	True	txt.gz	20-30
+Britanova	A4-i190	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p36	Britanova_A4-i190	Britanova_A4-i190	Britanova_A4-i190	M	25.0	Caucasian		False	True	True	txt.gz	20-30
+Britanova	A4-i191	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p37	Britanova_A4-i191	Britanova_A4-i191	Britanova_A4-i191	F	22.0	Caucasian		False	True	True	txt.gz	20-30
+Britanova	A4-i192	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p38	Britanova_A4-i192	Britanova_A4-i192	Britanova_A4-i192	F	24.0	Caucasian		False	True	True	txt.gz	20-30
+Britanova	A4-i194	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p39	Britanova_A4-i194	Britanova_A4-i194	Britanova_A4-i194	M	20.0	Caucasian		False	True	True	txt.gz	20-30
+Britanova	A4-i195	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p40	Britanova_A4-i195	Britanova_A4-i195	Britanova_A4-i195	F	21.0	Caucasian		False	True	True	txt.gz	20-30
+Britanova	A5-S22	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p41	Britanova_A5-S22	Britanova_A5-S22	Britanova_A5-S22	M	51.0	Caucasian		False	True	True	txt.gz	50-60
+Britanova	A5-S20	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p43	Britanova_A5-S20	Britanova_A5-S20	Britanova_A5-S20	F	51.0	Caucasian		False	True	True	txt.gz	50-60
+Britanova	A5-S24	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p52	Britanova_A5-S24	Britanova_A5-S24	Britanova_A5-S24	F	50.0	Caucasian		False	True	True	txt.gz	50-60
+Britanova	A5-S23	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p53	Britanova_A5-S23	Britanova_A5-S23	Britanova_A5-S23	M	50.0	Caucasian		False	True	True	txt.gz	50-60
+Britanova	A5-S21	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p54	Britanova_A5-S21	Britanova_A5-S21	Britanova_A5-S21	F	51.0	Caucasian		False	True	True	txt.gz	50-60
+Britanova	A5-S19	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p56	Britanova_A5-S19	Britanova_A5-S19	Britanova_A5-S19	F	55.0	Caucasian		False	True	True	txt.gz	50-60
+Britanova	A6-I160	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p70	Britanova_A6-I160	Britanova_A6-I160	Britanova_A6-I160	F	51.0	Caucasian		False	True	True	txt.gz	50-60
+Britanova	A6-I215ob	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p71	Britanova_A6-I215ob	Britanova_A6-I215ob	Britanova_A6-I215ob	F	51.0	Caucasian		False	True	True	txt.gz	50-60
+Britanova	A6-I150	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p72	Britanova_A6-I150	Britanova_A6-I150	Britanova_A6-I150	M	51.0	Caucasian		False	True	True	txt.gz	50-60
+Britanova	A6-I200ob	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p76	Britanova_A6-I200ob	Britanova_A6-I200ob	Britanova_A6-I200ob	M	27.0	Caucasian		False	True	True	txt.gz	20-30
+Britanova	A6-I201ob	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p76	Britanova_A6-I201ob	Britanova_A6-I201ob	Britanova_A6-I201ob	M	30.0	Caucasian		False	True	True	txt.gz	30-40
+Britanova	A6-I202ob	TCR	Healthy/Background	cDNA	Healthy/Background - Britanova	Britanova_p53	Britanova_A6-I202ob	Britanova_A6-I202ob	Britanova_A6-I202ob	M	47.0	Caucasian		False	True	True	txt.gz	40-50
+Shomuradova	5f07aa8839579433171763b4	TCR	Covid19	cDNA	Covid19 - Shomuradova - mild	Shomuradova_p1437	Shomuradova_5f07aa8839579433171763b4	Shomuradova_5f07aa8839579433171763b4	Shomuradova_5f07aa8839579433171763b4	M	28.0	Caucasian		False	True	False	tsv	20-30
+Shomuradova	5f07aa8939579433171763b7	TCR	Covid19	cDNA	Covid19 - Shomuradova - mild	Shomuradova_p1445	Shomuradova_5f07aa8939579433171763b7	Shomuradova_5f07aa8939579433171763b7	Shomuradova_5f07aa8939579433171763b7	M	32.0	Caucasian		False	True	False	tsv	30-40
+Shomuradova	5f07aa8a39579433171763ba	TCR	Covid19	cDNA	Covid19 - Shomuradova - mild	Shomuradova_p1473	Shomuradova_5f07aa8a39579433171763ba	Shomuradova_5f07aa8a39579433171763ba	Shomuradova_5f07aa8a39579433171763ba	F	31.0	Caucasian		False	True	False	tsv	30-40
+Shomuradova	5f07aa8c39579433171763c0	TCR	Covid19	cDNA	Covid19 - Shomuradova - mild	Shomuradova_p1489	Shomuradova_5f07aa8c39579433171763c0	Shomuradova_5f07aa8c39579433171763c0	Shomuradova_5f07aa8c39579433171763c0	M	27.0	Caucasian		False	True	False	tsv	20-30
+Shomuradova	6047f702136a6d924982945c	TCR	Covid19	cDNA	Covid19 - Shomuradova - mild	Shomuradova_p1434	Shomuradova_6047f702136a6d924982945c	Shomuradova_6047f702136a6d924982945c	Shomuradova_6047f702136a6d924982945c	M	28.0	Caucasian		False	True	False	tsv	20-30
+Shomuradova	6047f703136a6d924982945f	TCR	Covid19	cDNA	Covid19 - Shomuradova - moderate/severe	Shomuradova_p1448	Shomuradova_6047f703136a6d924982945f	Shomuradova_6047f703136a6d924982945f	Shomuradova_6047f703136a6d924982945f	M	37.0	Caucasian		False	True	False	tsv	30-40
+Shomuradova	6047f704136a6d9249829462	TCR	Covid19	cDNA	Covid19 - Shomuradova - mild	Shomuradova_p1449	Shomuradova_6047f704136a6d9249829462	Shomuradova_6047f704136a6d9249829462	Shomuradova_6047f704136a6d9249829462	F	34.0	Caucasian		False	True	False	tsv	30-40
+Shomuradova	6047f704136a6d9249829465	TCR	Covid19	cDNA	Covid19 - Shomuradova - moderate/severe	Shomuradova_p1465	Shomuradova_6047f704136a6d9249829465	Shomuradova_6047f704136a6d9249829465	Shomuradova_6047f704136a6d9249829465	M	19.0	Caucasian		False	True	False	tsv	<20
+Shomuradova	6047f706136a6d924982946b	TCR	Covid19	cDNA	Covid19 - Shomuradova - moderate/severe	Shomuradova_p1480	Shomuradova_6047f706136a6d924982946b	Shomuradova_6047f706136a6d924982946b	Shomuradova_6047f706136a6d924982946b	M	29.0	Caucasian		False	True	False	tsv	20-30
+Shomuradova	6047f707136a6d924982946e	TCR	Covid19	cDNA	Covid19 - Shomuradova - moderate/severe	Shomuradova_p1481	Shomuradova_6047f707136a6d924982946e	Shomuradova_6047f707136a6d924982946e	Shomuradova_6047f707136a6d924982946e	F	30.0	Caucasian		False	True	False	tsv	30-40
+Shomuradova	6047f708136a6d9249829471	TCR	Covid19	cDNA	Covid19 - Shomuradova - mild	Shomuradova_p1482	Shomuradova_6047f708136a6d9249829471	Shomuradova_6047f708136a6d9249829471	Shomuradova_6047f708136a6d9249829471	F	36.0	Caucasian		False	True	False	tsv	30-40
+Shomuradova	6047f709136a6d9249829474	TCR	Covid19	cDNA	Covid19 - Shomuradova - moderate/severe	Shomuradova_p1486	Shomuradova_6047f709136a6d9249829474	Shomuradova_6047f709136a6d9249829474	Shomuradova_6047f709136a6d9249829474	F	46.0	Caucasian		False	True	False	tsv	40-50
+Shomuradova	6047f70a136a6d9249829477	TCR	Covid19	cDNA	Covid19 - Shomuradova - mild	Shomuradova_p1494	Shomuradova_6047f70a136a6d9249829477	Shomuradova_6047f70a136a6d9249829477	Shomuradova_6047f70a136a6d9249829477	F	36.0	Caucasian		False	True	False	tsv	30-40
+Shomuradova	6047f70b136a6d924982947a	TCR	Covid19	cDNA	Covid19 - Shomuradova - moderate/severe	Shomuradova_p1495	Shomuradova_6047f70b136a6d924982947a	Shomuradova_6047f70b136a6d924982947a	Shomuradova_6047f70b136a6d924982947a	M	41.0	Caucasian		False	True	False	tsv	40-50
+Shomuradova	6047f70c136a6d924982947d	TCR	Covid19	cDNA	Covid19 - Shomuradova - mild	Shomuradova_p1531	Shomuradova_6047f70c136a6d924982947d	Shomuradova_6047f70c136a6d924982947d	Shomuradova_6047f70c136a6d924982947d	M	23.0	Caucasian		False	True	False	tsv	20-30
+Shomuradova	6047f70c136a6d924982947f	TCR	Covid19	cDNA	Covid19 - Shomuradova - moderate/severe	Shomuradova_p1545	Shomuradova_6047f70c136a6d924982947f	Shomuradova_6047f70c136a6d924982947f	Shomuradova_6047f70c136a6d924982947f	F	44.0	Caucasian		False	True	False	tsv	40-50
+Shomuradova	6047f70d136a6d9249829482	TCR	Covid19	cDNA	Covid19 - Shomuradova - mild	Shomuradova_p1551	Shomuradova_6047f70d136a6d9249829482	Shomuradova_6047f70d136a6d9249829482	Shomuradova_6047f70d136a6d9249829482	M	24.0	Caucasian		False	True	False	tsv	20-30

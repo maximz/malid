@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 import gc
 
-import anndata
 import joblib
 import numpy as np
 import pandas as pd
@@ -11,11 +10,13 @@ import pandas as pd
 from malid import config, helpers
 from malid.datamodels import (
     GeneLocus,
+    GeneralAnndataType,
+    SampleWeightStrategy,
     TargetObsColumnEnum,
     combine_classification_option_names,
 )
 from extendanything import ExtendAnything
-from malid.external.model_evaluation import FeaturizedData
+from crosseval import FeaturizedData
 from malid.trained_model_wrappers.immune_classifier_mixin import (
     ImmuneClassifierMixin,
 )
@@ -177,7 +178,7 @@ class ExactMatchesClassifier(ImmuneClassifierMixin, ExtendAnything):
         # optionally filter down if we have already decided on best p-val
         return results[results.min(axis=1) <= p_value_threshold]
 
-    def featurize(self, dataset: anndata.AnnData) -> FeaturizedData:
+    def featurize(self, dataset: GeneralAnndataType) -> FeaturizedData:
         """
         Pass adata.
         Make sure all data is from the same fold ID and fold label, and match the classifier's fold settings.
@@ -342,12 +343,31 @@ class ExactMatchesClassifier(ImmuneClassifierMixin, ExtendAnything):
 
     @staticmethod
     def _get_model_base_dir(
-        gene_locus: GeneLocus, target_obs_column: TargetObsColumnEnum
+        gene_locus: GeneLocus,
+        target_obs_column: TargetObsColumnEnum,
+        # sample_weight_strategy is disregarded; just included for compatibility with ImmuneClassifierMixin
+        sample_weight_strategy: Optional[SampleWeightStrategy] = None,
     ):
         return (
             config.paths.exact_matches_models_dir
             / gene_locus.name
             / combine_classification_option_names(target_obs_column)
+        )
+
+    @staticmethod
+    def _get_output_base_dir(
+        gene_locus: GeneLocus,
+        target_obs_column: TargetObsColumnEnum,
+        # sample_weight_strategy disregarded
+        sample_weight_strategy: Optional[SampleWeightStrategy] = None,
+    ) -> Path:
+
+        return (
+            config.paths.exact_matches_output_dir
+            / gene_locus.name
+            / combine_classification_option_names(
+                target_obs_column=target_obs_column,
+            )
         )
 
     def __init__(
@@ -358,29 +378,35 @@ class ExactMatchesClassifier(ImmuneClassifierMixin, ExtendAnything):
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
         models_base_dir: Optional[Path] = None,
+        # sample_weight_strategy is not used by ExactMatchesClassifier,
+        # but can optionally be passed in to be consistent with ImmuneClassifierMixin.
+        sample_weight_strategy: Optional[SampleWeightStrategy] = None,
     ):
-        # Load model properties from disk
-        if models_base_dir is None:
-            models_base_dir = self._get_model_base_dir(
-                gene_locus=gene_locus, target_obs_column=target_obs_column
-            )
-        models_base_dir = Path(models_base_dir)
-
-        # Load and wrap classifier
-        # sets self._inner to loaded model, to expose its attributes
-        super().__init__(
-            inner=joblib.load(
-                models_base_dir
-                / f"{fold_label_train}_model.{model_name}.{fold_id}.joblib"
-            ),
+        # Control the order of superclass initialization.
+        # 1. Call ImmuneClassifierMixin's constructor
+        ImmuneClassifierMixin.__init__(
+            self,
             fold_id=fold_id,
             fold_label_train=fold_label_train,
             gene_locus=gene_locus,
             target_obs_column=target_obs_column,
             models_base_dir=models_base_dir,
+            sample_weight_strategy=sample_weight_strategy,
         )
 
+        # 2. Now that models_base_dir is set, construct the file path
         self.model_name = model_name
+        fname = (
+            self.models_base_dir
+            / f"{self.fold_label_train}_model.{self.model_name}.{self.fold_id}.joblib"
+        )
+
+        # 3. Call ExtendAnything's constructor to load and wrap classifier
+        # self._inner will now be the loaded model, and its attributes will be exposed (pass-through)
+        ExtendAnything.__init__(self, inner=joblib.load(fname))
+
+        # Load and set other attributes.
+        # (Do all loading like this up front in init(), rather than deferred in featurize() or elsewhere, because we may pickle out this object when saving a metamodel and want to make sure everything is bundled in.)
 
         self.p_value_threshold = joblib.load(
             self.models_base_dir

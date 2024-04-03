@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # %% [markdown]
 # Patient types:
 #
@@ -22,7 +21,7 @@ import pandas as pd
 from malid import config
 
 # %%
-base_dir = config.paths.external_raw_data / "shomuradova"
+base_dir = config.paths.external_raw_data / "Shomuradova"
 
 # %%
 # specimen labels seen in the AIRR repertoire list
@@ -111,7 +110,7 @@ metadata_filtered[
 ]
 
 # %%
-# confoirm our annotations
+# confirm our annotations
 metadata_filtered[["medical_history", "severity"]].drop_duplicates()
 
 # %%

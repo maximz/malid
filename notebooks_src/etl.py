@@ -4,6 +4,8 @@
 # **See dask worker logs on disk.**
 #
 # Convert csvs to parquet. The resulting parquet files are partitioned by `participant_label` and `specimen_label`, so we can run `df.map_partitions(lambda part: ...)` to execute a function on each specimen.
+#
+# The parquet dataset will include all datasets: in-house and Adaptive together.
 
 # %%
 
@@ -16,38 +18,35 @@ import os
 import pandas as pd
 import glob
 import time
-import dask
+import dask, dask.distributed
 import dask.dataframe as dd
+from dask.distributed import Client
 from IPython.display import display
 from typing import Dict
 from malid import config
 from malid.datamodels import GeneLocus
 from malid.etl import (
-    dtypes_read_in,
     dtypes_expected_after_preprocessing,
     preprocess_each_participant_table,
-    fix_dtypes,
+    load_participant_data_external,
+    read_boydlab_participant_table,
 )
 
 # %%
 config.paths.sequences
 
 # %%
-
-# %%
-from dask.distributed import Client
-
-dask.config.set({"logging.distributed": "info"})
-
 # multi-processing backend
-# access dashbaord at http://127.0.0.1:61083
+# if already opened from another notebook, see https://stackoverflow.com/questions/60115736/dask-how-to-connect-to-running-cluster-scheduler-and-access-total-occupancy
 client = Client(
-    scheduler_port=61084,
-    dashboard_address=":61083",
-    n_workers=8,  # 4
+    scheduler_port=config.dask_scheduler_port,
+    dashboard_address=config.dask_dashboard_address,
+    n_workers=config.dask_n_workers,
     processes=True,
     threads_per_worker=8,
-    memory_limit="auto",  # "125GB" per worker
+    # memory_limit="auto",
+    # Still experimenting with this:
+    memory_limit=0,  # no limit
     local_directory="/tmp",
 )
 
@@ -73,12 +72,6 @@ display(client)
 # %%
 
 
-# %%
-cols = {
-    GeneLocus.BCR: list(dtypes_read_in[GeneLocus.BCR].keys()),
-    GeneLocus.TCR: list(dtypes_read_in[GeneLocus.TCR].keys()),
-}
-
 # %% [markdown]
 # If we try to do `df = dd.read_csv(fnames, sep="\t", compression="bz2", dtype=dtypes, usecols=cols)`, it works but with:
 #
@@ -101,63 +94,24 @@ cols = {
 
 
 # %%
-allowed_hiv_runs = ["M111", "M112", "M113", "M114", "M124", "M125", "M132"]
 
 
 # %%
 @dask.delayed
 def load_participant(files: Dict[GeneLocus, str], metadata_whitelist: pd.DataFrame):
-    final_dtypes = dtypes_expected_after_preprocessing  # not dependent on locus
     df_parts = []
     for gene_locus, fname in files.items():
-        df_for_locus = pd.read_csv(
-            fname, sep="\t", dtype=dtypes_read_in[gene_locus], usecols=cols[gene_locus]
-        )
-
-        # filter out anything except whitelisted specimens
-        # this means df.shape[0] can become 0
-        df_for_locus = pd.merge(
-            df_for_locus,
-            metadata_whitelist,
-            how="inner",
-            on=["participant_label", "specimen_label"],
-        )
-
-        if df_for_locus.shape[0] == 0:
-            # empty sample at this point - skip rest of processing this locus
-            continue
-
-        # override some variables
-        df_for_locus["participant_label"] = df_for_locus[
-            "participant_label_override"
-        ].fillna(df_for_locus["participant_label"])
-        df_for_locus["specimen_time_point"] = df_for_locus[
-            "specimen_time_point_override"
-        ].fillna(df_for_locus["specimen_time_point"])
-
-        # if this is a patient from the HIV cohort: allow specimens from certain runs only
-        if (
-            df_for_locus.shape[0] > 0 and df_for_locus["hiv_run_filter"].iloc[0] == True
-        ):  # must check shape[0] > 0 so iloc[0] does not fail
-            # select certain run IDs only. exclude very old runs (M52 and such)
-            # this means df.shape[0] can become 0
-            df_for_locus = df_for_locus.loc[
-                df_for_locus["run_label"].isin(allowed_hiv_runs)
-            ]
-
         df_parts.append(
             preprocess_each_participant_table(
-                df=df_for_locus.reset_index(drop=True),
+                df=read_boydlab_participant_table(fname, gene_locus),
                 gene_locus=gene_locus,
-                final_dtypes=final_dtypes,
+                metadata_whitelist=metadata_whitelist,
             )
         )
 
-    # combine BCR + TCR data from same participant. necessary because we output one parquet partition per specimen - including both loci
-    if len(df_parts) == 0:
-        # return empty dataframe but with the right columns + dtypes
-        return fix_dtypes(pd.DataFrame(), final_dtypes)
-
+    # combine BCR + TCR data from same participant.
+    # necessary because we output one parquet partition per specimen - including both loci.
+    # note that any or all parts may be empty dataframes (with .shape[0] == 0), but that's ok, as long as the columns and dtypes are correct.
     return pd.concat(df_parts, axis=0).reset_index(drop=True)
 
 
@@ -165,7 +119,10 @@ def load_participant(files: Dict[GeneLocus, str], metadata_whitelist: pd.DataFra
 
 # %%
 bcr_directories_to_read = [
+    # NOTE: Some of the HHCs have been renamed as ".bz2.bak" in hhc_bcr_part_tables,
+    # because they were resequenced later and had part tables reexported in other run directories (e.g. M477/M482).
     f"{config.paths.base_data_dir}/hhc_bcr_part_tables/part_table_*.bz2",
+    #
     f"{config.paths.base_data_dir}/hiv_bcr_part_tables/part_table_*.bz2",
     f"{config.paths.base_data_dir}/covid19_buffycoat/bcr/part_table_*.bz2",
     f"{config.paths.base_data_dir}/M418_M434_Covid_SamYang/part_table_*.bz2",
@@ -173,12 +130,19 @@ bcr_directories_to_read = [
     f"{config.paths.base_data_dir}/M454_M455_adult_lupus_rna/BCR_M454/part_table_*.bz2",
     f"{config.paths.base_data_dir}/M456_M457_adult_lupus_paxgene/BCR_M456/part_table_*.bz2",
     f"{config.paths.base_data_dir}/M464_M463_healthy_children/BCR_M465/part_table_*.bz2",
+    f"{config.paths.base_data_dir}/M477_M482_yoni_ibd_and_some_old_hhc/BCR_M477/part_table_*.bz2",
+    f"{config.paths.base_data_dir}/M479_M484_gubatan_ibd_and_some_old_hhc/BCR_M479/part_table_*.bz2",
+    f"{config.paths.base_data_dir}/M433_M435_UPENN_Influenza_Study_2021/BCR_M433_M435/part_table_*.bz2",
+    f"{config.paths.base_data_dir}/M491_M493_diabetes_biobank/BCR_M491_M492/part_table_*.bz2",
     # These datasets are BCR only:
     f"{config.paths.base_data_dir}/covid19_seattle/part_table_*.bz2",
     f"{config.paths.base_data_dir}/lupus_m281redo/part_table_*.bz2",
 ]
 tcr_directories_to_read = [
+    # NOTE: Some of the HHCs have been renamed as ".bz2.bak" in hhc_tcr_part_tables,
+    # because they were resequenced later and had part tables reexported in other run directories.
     f"{config.paths.base_data_dir}/hhc_tcr_part_tables/part_table_*.bz2",
+    #
     f"{config.paths.base_data_dir}/hiv_tcr_part_tables/part_table_*.bz2",
     f"{config.paths.base_data_dir}/covid19_buffycoat/tcr/part_table_*.bz2",
     f"{config.paths.base_data_dir}/M419_Covid_SamYang_tcrb/part_table_*.bz2",
@@ -186,6 +150,10 @@ tcr_directories_to_read = [
     f"{config.paths.base_data_dir}/M454_M455_adult_lupus_rna/TCR_M455/part_table_*.bz2",
     f"{config.paths.base_data_dir}/M456_M457_adult_lupus_paxgene/TCR_M457/part_table_*.bz2",
     f"{config.paths.base_data_dir}/M464_M463_healthy_children/TCR_M463/part_table_*.bz2",
+    f"{config.paths.base_data_dir}/M477_M482_yoni_ibd_and_some_old_hhc/TCR_M482/part_table_*.bz2",
+    f"{config.paths.base_data_dir}/M479_M484_gubatan_ibd_and_some_old_hhc/TCR_M484/part_table_*.bz2",
+    f"{config.paths.base_data_dir}/M433_M435_UPENN_Influenza_Study_2021/TCR_M444/part_table_*.bz2",
+    f"{config.paths.base_data_dir}/M491_M493_diabetes_biobank/TCR_M493/part_table_*.bz2",
 ]
 
 # %%
@@ -252,7 +220,9 @@ files_trimmed = pd.merge(
 assert (
     files_trimmed["fname_trim"].nunique()
     == specimen_whitelist_and_metadata["fname"].nunique()
-), "Some expected part tables are missing"
+), "Some expected part tables are missing: " + str(
+    set(specimen_whitelist_and_metadata["fname"]) - set(files_trimmed["fname_trim"])
+)
 
 # %%
 
@@ -262,12 +232,32 @@ files_trimmed["fname_trim"].nunique(), files_trimmed.shape[0]
 # %%
 
 # %%
+# Load Adaptive metadata
+adaptive_metadata = pd.read_csv(
+    config.paths.metadata_dir / "adaptive" / "generated.adaptive_external_cohorts.tsv",
+    sep="\t",
+)
+adaptive_metadata
+
+# %%
+# Load other external cohort metadata
+other_external_metadata = pd.read_csv(
+    config.paths.metadata_dir / "generated.external_cohorts.tsv",
+    sep="\t",
+)
+other_external_metadata
+
+# %%
+
+# %%
 # all Delayed() objects
 part_tables = []
 
+# in-house data
 for key, grp in files_trimmed.groupby("fname_trim"):
-    # We have now selected all files for this participant
-    # Spread out over several rows by locus and by specimen - even though ultimately there is one source file on disk per locus per participant
+    # We have now selected all files for this participant, because fname_trim is something like part_table_BFI-#######.bz2 (there's a BCR file with that name and a TCR file with that name).
+    # The participant is spread out over several rows in files_trimmed by locus and by specimen - even though ultimately there is one source file on disk per locus per participant.
+
     # Drop specimen dupes:
     unique_locus_files_for_this_participant = (
         grp[["fname_full", "gene_locus"]]
@@ -288,12 +278,77 @@ for key, grp in files_trimmed.groupby("fname_trim"):
         )
     )
 
+# Adaptive data (TCR)
+delayed_load_func = dask.delayed(load_participant_data_external)
+for key, grp in adaptive_metadata.groupby("participant_label"):
+    part_tables.append(
+        delayed_load_func(
+            participant_samples=grp,
+            gene_locus=GeneLocus.TCR,
+            base_path=config.paths.external_raw_data / "adaptive_immuneaccess",
+            is_adaptive=True,
+        )
+    )
+
+# Other external data (BCR or TCR)
+for key, grp in other_external_metadata.groupby("participant_label"):
+    gene_locus = grp["gene_locus"].unique()
+    # Allow some studies to be exempted from read count column requirements
+    expect_a_read_count_column = grp["expect_a_read_count_column"].unique()
+    # Allow custom file extensions for some studies. Default is tsv
+    file_extension = grp["file_extension"].unique()
+
+    # All participants are either BCR or TCR, not both
+    assert len(gene_locus) == 1
+    gene_locus = gene_locus[0]
+
+    # Other columns should also have single value
+    assert len(expect_a_read_count_column) == 1
+    expect_a_read_count_column = expect_a_read_count_column[0]
+    assert len(file_extension) == 1
+    file_extension = file_extension[0]
+
+    part_tables.append(
+        delayed_load_func(
+            participant_samples=grp,
+            # convert back from name attribute to full GeneLocus object
+            gene_locus=GeneLocus[gene_locus],
+            # Under this main directory are /study_name folders that include the samples and the parsed.IgH.tsv or parsed.TCRB.tsv files
+            base_path=config.paths.external_raw_data,
+            is_adaptive=False,
+            expect_a_read_count_column=expect_a_read_count_column,
+            file_extension=file_extension,
+        )
+    )
+
+# Later, consider giving the dask.delayed objects custom names, e.g. the participant label as name, so we can identify them in dashboard and track down errors.
+# see https://docs.dask.org/en/latest/delayed-api.html#dask.delayed.delayed and https://docs.dask.org/en/stable/custom-collections.html#implementing-deterministic-hashing
+# Perhaps this will also enable us to rearrange the order in which jobs are run. We had tried to randomly shuffle the part_tables list, but from_delayed seemed to ignore our shuffling. Are the jobs run in the order of their (currently random) dask.delayed name attributes?
+#
+# Easiest way to do this may be:
+# delayed_task = delayed_load_func(...)
+# delayed_task.key = f"{delayed_task.key}_{gene_locus}_{grp['participant_label'].iloc[0]}"
+# part_tables.append(delayed_task)
+# This appens specific information to the task's existing key, which Dask has already made sure is unique. Therefore we get unique identifier plus our own custom information.
+#
+# Alternative:
+# delayed_task = delayed(myfunc_not_yet_wrapped, dask_key_name=f"load_data_{gene_locus}_{grp['participant_label'].iloc[0]}")(...)
+# part_tables.append(delayed_task)
+# Here we directly control the task's key, but it's on us to make sure keys are unique and never reused.
+#
+# (We've tested neither approach ourselves.)
+
 df = dd.from_delayed(
     part_tables, meta=dtypes_expected_after_preprocessing, verify_meta=False
 )
 
 # %%
 df
+
+# %%
+
+# %%
+config.paths.sequences
 
 # %%
 itime = time.time()
@@ -332,6 +387,8 @@ etime - itime
 # %%
 
 # %%
+
+# %%
 df2 = dd.read_parquet(config.paths.sequences, engine="pyarrow")
 
 # %%
@@ -339,10 +396,14 @@ df2 = dd.read_parquet(config.paths.sequences, engine="pyarrow")
 df2
 
 # %%
-df2.dtypes
-
-# %%
-df.dtypes
+# compare dtypes
+pd.concat(
+    [
+        df.dtypes.rename("expected dtypes"),
+        df2.dtypes.rename("reloaded observed dtypes"),
+    ],
+    axis=1,
+)
 
 # %%
 # expected higher because now divided by participant_label and specimen_label

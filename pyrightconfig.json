@@ -1,0 +1,8 @@
+{
+    "exclude": [
+        "out",
+        "**/__pycache__",
+        "data",
+        "**/.git"
+    ]
+}

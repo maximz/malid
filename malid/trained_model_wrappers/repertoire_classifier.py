@@ -12,16 +12,19 @@ from sklearn.utils._testing import ignore_warnings
 from malid import config, helpers
 from malid.datamodels import (
     GeneLocus,
+    GeneralAnndataType,
+    SampleWeightStrategy,
     TargetObsColumnEnum,
     combine_classification_option_names,
     healthy_label,
 )
 from extendanything import ExtendAnything
 from static_class_property import classproperty
-from malid.external.model_evaluation import FeaturizedData
+from crosseval import FeaturizedData
 from malid.trained_model_wrappers.immune_classifier_mixin import (
     ImmuneClassifierMixin,
 )
+import genetools.arrays
 
 logger = logging.getLogger(__name__)
 
@@ -41,41 +44,81 @@ class RepertoireClassifier(ImmuneClassifierMixin, ExtendAnything):
         fold_label_train: str,
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
+        sample_weight_strategy: SampleWeightStrategy,
         models_base_dir: Optional[Path] = None,
     ):
-        if models_base_dir is None:
-            models_base_dir = self._get_model_base_dir(
-                gene_locus=gene_locus,
-                target_obs_column=target_obs_column,
-            )
-        models_base_dir = Path(models_base_dir)
-
-        fname = (
-            models_base_dir / f"{fold_label_train}_model.{model_name}.{fold_id}.joblib"
-        )
-
-        # sets self._inner to loaded model, to expose its attributes
-        # Load and wrap classifier
-        super().__init__(
-            inner=joblib.load(fname),
+        # Control the order of superclass initialization.
+        # 1. Call ImmuneClassifierMixin's constructor
+        ImmuneClassifierMixin.__init__(
+            self,
             fold_id=fold_id,
             fold_label_train=fold_label_train,
             gene_locus=gene_locus,
             target_obs_column=target_obs_column,
+            sample_weight_strategy=sample_weight_strategy,
             models_base_dir=models_base_dir,
         )
 
+        # 2. Now that models_base_dir is set, construct the file path
+        fname = (
+            self.models_base_dir
+            / f"{self.fold_label_train}_model.{model_name}.{self.fold_id}.joblib"
+        )
+
+        # 3. Call ExtendAnything's constructor to load and wrap classifier
+        # self._inner will now be the loaded model, and its attributes will be exposed (pass-through)
+        ExtendAnything.__init__(self, inner=joblib.load(fname))
+
+        # Set other attributes.
         self.model_name = model_name
+
+        # Load columns list from the training fold used for this model version
+        # (Do all loading like this up front in init(), rather than deferred in featurize() or elsewhere, because we may pickle out this object when saving a metamodel and want to make sure everything is bundled in.)
+        self._train_count_matrix_columns = joblib.load(
+            self.models_base_dir
+            / f"{self.fold_label_train}_model.{self.fold_id}.{self.fold_label_train}.specimen_vj_gene_counts_columns_joblib"
+        )
 
     @staticmethod
     def _get_model_base_dir(
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
+        sample_weight_strategy: SampleWeightStrategy,
     ) -> Path:
+        # HACK:
+        # SampleWeightStrategy.ISOTYPE_USAGE is a no-op for RepertoireClassifier,
+        # so we don't need to distinguish it from SampleWeightStrategy.NONE.
+        if sample_weight_strategy == SampleWeightStrategy.ISOTYPE_USAGE:
+            sample_weight_strategy = SampleWeightStrategy.NONE
+
         return (
             config.paths.repertoire_stats_classifier_models_dir
             / gene_locus.name
-            / combine_classification_option_names(target_obs_column)
+            / combine_classification_option_names(
+                target_obs_column=target_obs_column,
+                sample_weight_strategy=sample_weight_strategy,
+            )
+        )
+
+    @staticmethod
+    def _get_output_base_dir(
+        gene_locus: GeneLocus,
+        target_obs_column: TargetObsColumnEnum,
+        sample_weight_strategy: SampleWeightStrategy,
+    ) -> Path:
+        # HACK:
+        # SampleWeightStrategy.ISOTYPE_USAGE is a no-op for RepertoireClassifier,
+        # so we don't need to distinguish it from SampleWeightStrategy.NONE.
+        if sample_weight_strategy == SampleWeightStrategy.ISOTYPE_USAGE:
+            sample_weight_strategy = SampleWeightStrategy.NONE
+
+        return (
+            config.paths.repertoire_stats_classifier_output_dir
+            / gene_locus.name
+            / combine_classification_option_names(
+                target_obs_column=target_obs_column,
+                sample_weight_strategy=sample_weight_strategy,
+            )
         )
 
     @classproperty
@@ -95,7 +138,7 @@ class RepertoireClassifier(ImmuneClassifierMixin, ExtendAnything):
                     )
         return features_from_obs
 
-    def featurize(self, dataset: anndata.AnnData) -> FeaturizedData:
+    def featurize(self, dataset: GeneralAnndataType) -> FeaturizedData:
         """
         Featurize repertoire composition.
         compute repertoire stats features for specimen(s) from a single fold.
@@ -116,18 +159,13 @@ class RepertoireClassifier(ImmuneClassifierMixin, ExtendAnything):
         # get repertoire stats model features for full test set (not high-confidence subset)
         # dataset includes many specimens
 
-        # Load columns list from the training fold used for this model version
-        train_count_matrix_columns = joblib.load(
-            self.models_base_dir
-            / f"{self.fold_label_train}_model.{self.fold_id}.{self.fold_label_train}.specimen_vj_gene_counts_columns_joblib"
-        )
-
         featurized = self._featurize(
             dataset=dataset,
             gene_locus=self.gene_locus,
             target_obs_column=self.target_obs_column,
+            sample_weight_strategy=self.sample_weight_strategy,
             allow_missing_isotypes=True,
-            vj_count_matrix_column_order=train_count_matrix_columns,
+            vj_count_matrix_column_order=self._train_count_matrix_columns,
         )
 
         # confirm that feature order matches what model expects
@@ -143,13 +181,19 @@ class RepertoireClassifier(ImmuneClassifierMixin, ExtendAnything):
     @classmethod
     def _featurize(
         cls,
-        dataset: anndata.AnnData,
+        dataset: GeneralAnndataType,
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
+        sample_weight_strategy: SampleWeightStrategy,
         allow_missing_isotypes: bool,
         vj_count_matrix_column_order: Optional[Dict[str, pd.Index]],
     ):
         """Featurize."""
+        GeneLocus.validate(gene_locus)
+        GeneLocus.validate_single_value(gene_locus)
+        TargetObsColumnEnum.validate(target_obs_column)
+        SampleWeightStrategy.validate(sample_weight_strategy)
+
         (
             data_X,
             adata_featurized,
@@ -157,6 +201,7 @@ class RepertoireClassifier(ImmuneClassifierMixin, ExtendAnything):
         ) = cls._create_repertoire_stats(
             df=dataset.obs,
             gene_locus=gene_locus,
+            sample_weight_strategy=sample_weight_strategy,
             allow_missing_isotypes=allow_missing_isotypes,
             vj_count_matrix_column_order=vj_count_matrix_column_order,
         )
@@ -182,7 +227,7 @@ class RepertoireClassifier(ImmuneClassifierMixin, ExtendAnything):
     @classmethod
     def _get_ground_truth_repertoire_labels(
         cls,
-        dataset: anndata.AnnData,
+        dataset: GeneralAnndataType,
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
     ):
@@ -230,10 +275,13 @@ class RepertoireClassifier(ImmuneClassifierMixin, ExtendAnything):
         cls,
         df,
         gene_locus: GeneLocus,
+        sample_weight_strategy: SampleWeightStrategy,
         allow_missing_isotypes: bool,
         vj_count_matrix_column_order: Optional[Dict[str, pd.Index]],
     ) -> Tuple[pd.DataFrame, anndata.AnnData, Dict[str, pd.Index]]:
         """Pass vj_count_matrix_column_order=None to generate V-J count matrix structure"""
+        # In RepertoireClassifier, this just changes weight of each clone's contribution to the repertoire-level summary features.
+
         # copy before making changes
         df = df.copy()
 
@@ -246,26 +294,51 @@ class RepertoireClassifier(ImmuneClassifierMixin, ExtendAnything):
         if gene_locus == GeneLocus.BCR:
             # Make features for each isotype-supergroup (amplified separately, so don't compare across them) -- aggregate to specimen level (within each fold)
 
-            v_mut_median_by_specimen = (
-                df.groupby(["specimen_label", "isotype_supergroup"], observed=True)[
-                    "v_mut"
-                ]
-                .median()
-                .rename("v_mut_median_per_specimen")
-            )
+            if SampleWeightStrategy.CLONE_SIZE in sample_weight_strategy:
+                v_mut_median_by_specimen = (
+                    df.groupby(["specimen_label", "isotype_supergroup"], observed=True)
+                    .apply(
+                        lambda grp: genetools.arrays.weighted_median(
+                            grp["v_mut"], grp["num_clone_members"]
+                        )
+                    )
+                    .rename("v_mut_median_per_specimen")
+                )
+            else:
+                v_mut_median_by_specimen = (
+                    df.groupby(["specimen_label", "isotype_supergroup"], observed=True)[
+                        "v_mut"
+                    ]
+                    .median()
+                    .rename("v_mut_median_per_specimen")
+                )
 
             # proportion of nonmutated vs mutated IgG (of any subisotypes)
             # (allows analysis of datasets that don't distinguish subisotypes)
             # Looking for low-mutation-level (recently class switched) B cells
             df["v_sequence_is_mutated"] = df["v_mut"] >= 0.01
-            mutated_proportion_of_sequences_by_specimen = (
-                df.groupby(["specimen_label", "isotype_supergroup"], observed=True)[
-                    "v_sequence_is_mutated"
-                ]
-                .value_counts(normalize=True)
-                .to_frame(name="proportion_of_sequences_mutated")
-                .reset_index()
-            )
+            if SampleWeightStrategy.CLONE_SIZE in sample_weight_strategy:
+                mutated_proportion_of_sequences_by_specimen = (
+                    genetools.arrays.groupby_apply_weighted_value_counts(
+                        df,
+                        ["specimen_label", "isotype_supergroup"],
+                        observed=True,
+                        category_column_name="v_sequence_is_mutated",
+                        weight_column_name="num_clone_members",
+                        normalize=True,
+                    )
+                    .to_frame(name="proportion_of_sequences_mutated")
+                    .reset_index()
+                )
+            else:
+                mutated_proportion_of_sequences_by_specimen = (
+                    df.groupby(["specimen_label", "isotype_supergroup"], observed=True)[
+                        "v_sequence_is_mutated"
+                    ]
+                    .value_counts(normalize=True)
+                    .to_frame(name="proportion_of_sequences_mutated")
+                    .reset_index()
+                )
             # Choose "v_sequence_is_mutated=True" rows
             mutated_proportion_of_sequences_by_specimen = (
                 mutated_proportion_of_sequences_by_specimen[
@@ -305,14 +378,28 @@ class RepertoireClassifier(ImmuneClassifierMixin, ExtendAnything):
         # V and J gene pair count matrix
         df["vgene_jgene"] = df["v_gene"].astype(str) + "|" + df["j_gene"].astype(str)
 
-        specimen_vj_gene_counts = (
-            df.groupby(["specimen_label", "isotype_supergroup"], observed=True)[
-                "vgene_jgene"
-            ]
-            .value_counts(normalize=True)
-            .rename("frequency")
-            .reset_index()
-        )
+        if SampleWeightStrategy.CLONE_SIZE in sample_weight_strategy:
+            specimen_vj_gene_counts = (
+                genetools.arrays.groupby_apply_weighted_value_counts(
+                    df,
+                    ["specimen_label", "isotype_supergroup"],
+                    observed=True,
+                    category_column_name="vgene_jgene",
+                    weight_column_name="num_clone_members",
+                    normalize=True,
+                )
+                .rename("frequency")
+                .reset_index()
+            )
+        else:
+            specimen_vj_gene_counts = (
+                df.groupby(["specimen_label", "isotype_supergroup"], observed=True)[
+                    "vgene_jgene"
+                ]
+                .value_counts(normalize=True)
+                .rename("frequency")
+                .reset_index()
+            )
 
         vj_gene_use_count_matrices_by_isotype = {}
         for isotype_supergroup in helpers.isotype_groups_kept[gene_locus]:

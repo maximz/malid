@@ -1,7 +1,6 @@
 import sys, json
 import pandas as pd
 
-# pip install flatten_json
 from flatten_json import flatten
 
 data = json.loads(sys.stdin.read())

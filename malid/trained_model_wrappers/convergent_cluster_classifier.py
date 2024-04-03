@@ -2,7 +2,6 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
-import anndata
 import joblib
 import numpy as np
 import pandas as pd
@@ -11,18 +10,20 @@ from scipy.spatial.distance import cdist
 from malid import config, helpers
 from malid.datamodels import (
     GeneLocus,
+    GeneralAnndataType,
+    SampleWeightStrategy,
     TargetObsColumnEnum,
     combine_classification_option_names,
 )
 from extendanything import ExtendAnything
-from malid.external.genetools_arrays import (
+from genetools.arrays import (
     strings_to_numeric_vectors,
     make_consensus_sequence,
     masked_argmin,
 )
 from scipy.cluster.hierarchy import linkage, fcluster
 from scipy.spatial.distance import pdist
-from malid.external.model_evaluation import FeaturizedData
+from crosseval import FeaturizedData
 from malid.trained_model_wrappers.immune_classifier_mixin import (
     ImmuneClassifierMixin,
 )
@@ -48,7 +49,7 @@ class ConvergentClusterClassifier(ImmuneClassifierMixin, ExtendAnything):
 
         clf = ConvergentClusterClassifier(
             fold_id=0,
-            model_name="lasso_multiclass",
+            model_name="elasticnet_cv",
             fold_label_train="train_smaller",
         )
         X_test, y_test, test_metadata = clf.featurize(adata_test.obs)
@@ -381,12 +382,31 @@ class ConvergentClusterClassifier(ImmuneClassifierMixin, ExtendAnything):
 
     @staticmethod
     def _get_model_base_dir(
-        gene_locus: GeneLocus, target_obs_column: TargetObsColumnEnum
+        gene_locus: GeneLocus,
+        target_obs_column: TargetObsColumnEnum,
+        # sample_weight_strategy is disregarded; just included for compatibility with ImmuneClassifierMixin
+        sample_weight_strategy: Optional[SampleWeightStrategy] = None,
     ):
         return (
             config.paths.convergent_clusters_models_dir
             / gene_locus.name
             / combine_classification_option_names(target_obs_column)
+        )
+
+    @staticmethod
+    def _get_output_base_dir(
+        gene_locus: GeneLocus,
+        target_obs_column: TargetObsColumnEnum,
+        # sample_weight_strategy disregarded
+        sample_weight_strategy: Optional[SampleWeightStrategy] = None,
+    ) -> Path:
+
+        return (
+            config.paths.convergent_clusters_output_dir
+            / gene_locus.name
+            / combine_classification_option_names(
+                target_obs_column=target_obs_column,
+            )
         )
 
     def __init__(
@@ -398,28 +418,33 @@ class ConvergentClusterClassifier(ImmuneClassifierMixin, ExtendAnything):
         target_obs_column: TargetObsColumnEnum,
         models_base_dir: Optional[Path] = None,
         sequence_identity_threshold: Optional[float] = None,
+        # sample_weight_strategy is not used by ConvergentClusterClassifier,
+        # but can optionally be passed in to be consistent with ImmuneClassifierMixin.
+        sample_weight_strategy: Optional[SampleWeightStrategy] = None,
     ):
-        # Load model properties from disk
-        if models_base_dir is None:
-            models_base_dir = self._get_model_base_dir(
-                gene_locus=gene_locus, target_obs_column=target_obs_column
-            )
-        models_base_dir = Path(models_base_dir)
-
-        # Load and wrap classifier
-        # sets self._inner to loaded model, to expose its attributes
-        super().__init__(
-            inner=joblib.load(
-                models_base_dir
-                / f"{fold_label_train}_model.{model_name}.{fold_id}.joblib"
-            ),
+        # Control the order of superclass initialization.
+        # 1. Call ImmuneClassifierMixin's constructor
+        ImmuneClassifierMixin.__init__(
+            self,
             fold_id=fold_id,
             fold_label_train=fold_label_train,
             gene_locus=gene_locus,
             target_obs_column=target_obs_column,
             models_base_dir=models_base_dir,
+            sample_weight_strategy=sample_weight_strategy,
         )
 
+        # 2. Now that models_base_dir is set, construct the file path
+        fname = (
+            self.models_base_dir
+            / f"{self.fold_label_train}_model.{model_name}.{self.fold_id}.joblib"
+        )
+
+        # 3. Call ExtendAnything's constructor to load and wrap classifier
+        # self._inner will now be the loaded model, and its attributes will be exposed (pass-through)
+        ExtendAnything.__init__(self, inner=joblib.load(fname))
+
+        # Set other attributes.
         self.model_name = model_name
         self.sequence_identity_threshold = (
             sequence_identity_threshold
@@ -430,6 +455,7 @@ class ConvergentClusterClassifier(ImmuneClassifierMixin, ExtendAnything):
         )
 
         # Load cross-validated p-value threshold
+        # (Do all loading like this up front in init(), rather than deferred in featurize() or elsewhere, because we may pickle out this object when saving a metamodel and want to make sure everything is bundled in.)
         self.p_value_threshold = joblib.load(
             self.models_base_dir
             / f"{self.fold_label_train}_model.{self.model_name}.{self.fold_id}.p_value.joblib"
@@ -535,7 +561,9 @@ class ConvergentClusterClassifier(ImmuneClassifierMixin, ExtendAnything):
 
         # Create higher-order groups: group by v, j, len
         test_groups = deduped_df.groupby(
-            ["v_gene", "j_gene", "cdr3_aa_sequence_trim_len"], observed=True
+            ["v_gene", "j_gene", "cdr3_aa_sequence_trim_len"],
+            observed=True,
+            group_keys=False,
         )
 
         # Assign each test sequence to a cluster with nearest centroid, using higher-order groups as a starting point
@@ -568,7 +596,9 @@ class ConvergentClusterClassifier(ImmuneClassifierMixin, ExtendAnything):
             how="left",
             validate="m:1",
             on=["v_gene", "j_gene", "cdr3_aa_sequence_trim_len", "cdr3_seq_aa_q_trim"],
-        )
+        ).set_index(
+            df.index
+        )  # restore index back to df's original index
 
         # Create a globally meaningful "resulting cluster ID" for each row of df (each input sequence from each participant):
         df["global_resulting_cluster_ID"] = df[
@@ -586,7 +616,7 @@ class ConvergentClusterClassifier(ImmuneClassifierMixin, ExtendAnything):
         df["num_clone_members"].fillna(1, inplace=True)
         return df
 
-    def featurize(self, dataset: anndata.AnnData) -> FeaturizedData:
+    def featurize(self, dataset: GeneralAnndataType) -> FeaturizedData:
         """
         Pass adata.
         Make sure all data is from the same fold ID and fold label, and match the classifier's fold settings.
@@ -764,6 +794,7 @@ class ConvergentClusterClassifier(ImmuneClassifierMixin, ExtendAnything):
                 "Some specimens (feature matrix rows) have all 0s. These should be abstentions."
             )
 
+        # TODO: Overload FeaturizedData as with SubsetRollupClassifierFeaturizedData to make X type explicitly dataframe
         return FeaturizedData(
             X=X,
             y=y,

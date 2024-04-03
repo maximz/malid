@@ -58,12 +58,11 @@ with open(os.path.expandvars("$HOME/.config/dask/distributed.yaml"), "w") as w:
 from dask.distributed import Client
 
 # multi-processing backend
-# access dashbaord at http://127.0.0.1:61083
 # if already opened from another notebook, see https://stackoverflow.com/questions/60115736/dask-how-to-connect-to-running-cluster-scheduler-and-access-total-occupancy
 client = Client(
-    scheduler_port=61084,
-    dashboard_address=":61083",
-    n_workers=7,
+    scheduler_port=config.dask_scheduler_port,
+    dashboard_address=config.dask_dashboard_address,
+    n_workers=config.dask_n_workers,
     processes=True,
     threads_per_worker=8,
     memory_limit="auto",
@@ -125,6 +124,11 @@ metadata_df_c
 # %%
 metadata_df_c = metadata_df_c.sort_values(["disease", "participant_label"])
 metadata_df_c
+
+# %%
+# Important sanity check
+if metadata_df_c["disease"].isna().any():
+    raise ValueError("Some specimens had disease column unset.")
 
 # %%
 # sanity check: one entry per participant + specimen

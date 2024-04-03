@@ -41,18 +41,19 @@
 # %%
 
 # %% [markdown]
-# # Analyze exact matches model performance on validation set
+# # Analyze exact matches model performance on train_smaller2, the held out set used to tune the model's hyperparameters
 
 # %%
 from IPython.display import display, Markdown
 from malid import config, logger, io
-from malid.external import model_evaluation
+import crosseval
 from malid.datamodels import (
-    combine_classification_option_names,
-    TargetObsColumnEnum,
-    GeneLocus,
+    map_cross_validation_split_strategy_to_default_target_obs_column,
 )
-from malid.trained_model_wrappers import ExactMatchesClassifier
+from malid.trained_model_wrappers import (
+    ExactMatchesClassifier,
+    ConvergentClusterClassifier,
+)
 import joblib
 import gc
 import numpy as np
@@ -67,70 +68,79 @@ from summarynb import show, indexed_csv, table, chunks
 # %%
 
 # %% [markdown]
-# ## Analyze on validation set
+# ## Analyze on train_smaller2, the held out set used to tune the model's hyperparameters
+
+# %%
+# Run this benchmark model on the default classification target only, e.g. TargetObsColumnEnum.disease
+target_obs_column = map_cross_validation_split_strategy_to_default_target_obs_column[
+    config.cross_validation_split_strategy
+]
 
 # %%
 for gene_locus in config.gene_loci_used:
-    for target_obs_col in [
-        TargetObsColumnEnum.disease
-    ]:  # config.classification_targets:
-        models_base_dir = ExactMatchesClassifier._get_model_base_dir(
-            gene_locus=gene_locus, target_obs_column=target_obs_col
-        )  # should already exist
+    target_obs_column.confirm_compatibility_with_gene_locus(gene_locus)
+    target_obs_column.confirm_compatibility_with_cross_validation_split_strategy(
+        config.cross_validation_split_strategy
+    )
+    models_base_dir = ExactMatchesClassifier._get_model_base_dir(
+        gene_locus=gene_locus, target_obs_column=target_obs_column
+    )  # should already exist
 
-        output_base_dir = (
-            config.paths.exact_matches_output_dir
-            / gene_locus.name
-            / combine_classification_option_names(target_obs_col)
-        )  # might not yet exist
-        output_base_dir.mkdir(parents=True, exist_ok=True)  # create if needed
+    output_base_dir = ExactMatchesClassifier._get_output_base_dir(
+        gene_locus=gene_locus,
+        target_obs_column=target_obs_column,
+    )  # might not yet exist
+    output_base_dir.mkdir(parents=True, exist_ok=True)  # create if needed
 
-        model_output_prefix = models_base_dir / "train_smaller_model"
-        results_output_prefix = output_base_dir / "train_smaller_model"
+    model_output_prefix = models_base_dir / "train_smaller1_model"
+    results_output_prefix = output_base_dir / "train_smaller1_model"
 
-        try:
-            logger.info(
-                f"{gene_locus}, {target_obs_col} from {model_output_prefix} to {results_output_prefix}"
-            )
+    try:
+        logger.info(
+            f"{gene_locus}, {target_obs_column} from {model_output_prefix} to {results_output_prefix}"
+        )
 
-            ## Load and summarize
-            experiment_set = model_evaluation.ExperimentSet.load_from_disk(
-                output_prefix=model_output_prefix
-            )
+        ## Load and summarize
+        experiment_set = crosseval.ExperimentSet.load_from_disk(
+            output_prefix=model_output_prefix
+        )
 
-            # Remove global fold (we trained global fold model, but now get evaluation scores on cross-validation folds only)
-            # TODO: make kdict support: del self.model_outputs[:, fold_id]
-            for key in experiment_set.model_outputs[:, -1].keys():
-                logger.debug(f"Removing {key} (global fold)")
-                del experiment_set.model_outputs[key]
+        # Remove global fold (we trained global fold model, but now get evaluation scores on cross-validation folds only)
+        # TODO: make kdict support: del self.model_outputs[:, fold_id]
+        for key in experiment_set.model_outputs[:, -1].keys():
+            logger.debug(f"Removing {key} (global fold)")
+            del experiment_set.model_outputs[key]
 
-            experiment_set_global_performance = experiment_set.summarize()
-            experiment_set_global_performance.export_all_models(
-                func_generate_classification_report_fname=lambda model_name: f"{results_output_prefix}.classification_report.{model_name}.txt",
-                func_generate_confusion_matrix_fname=lambda model_name: f"{results_output_prefix}.confusion_matrix.{model_name}.png",
-                dpi=72,
-            )
-            combined_stats = (
-                experiment_set_global_performance.get_model_comparison_stats()
-            )
-            combined_stats.to_csv(
-                f"{results_output_prefix}.compare_model_scores.tsv",
-                sep="\t",
-            )
-            print(gene_locus, target_obs_col)
-            display(combined_stats)
+        experiment_set_global_performance = experiment_set.summarize()
+        experiment_set_global_performance.export_all_models(
+            func_generate_classification_report_fname=lambda model_name: f"{results_output_prefix}.classification_report.{model_name}.txt",
+            func_generate_confusion_matrix_fname=lambda model_name: f"{results_output_prefix}.confusion_matrix.{model_name}.png",
+            dpi=72,
+        )
+        combined_stats = experiment_set_global_performance.get_model_comparison_stats()
+        combined_stats.to_csv(
+            f"{results_output_prefix}.compare_model_scores.tsv",
+            sep="\t",
+        )
+        print(gene_locus, target_obs_column)
+        display(combined_stats)
 
-        except Exception as err:
-            logger.exception(f"{gene_locus}, {target_obs_col} failed with error: {err}")
+    except Exception as err:
+        logger.exception(f"{gene_locus}, {target_obs_column} failed with error: {err}")
 
 
 # %%
 
 # %%
-model_names = combined_stats.index[
+model_names_to_check_later = combined_stats.index[
     ~combined_stats.index.str.startswith("dummy_")
 ].tolist()
-model_names
+model_names_to_check_later
+
+# %%
+
+# %% [markdown]
+# # TODO: Evaluate on validation set
 
 # %%
 
@@ -138,23 +148,23 @@ model_names
 # # Evaluate on test set
 
 # %%
-target_obs_column = TargetObsColumnEnum.disease
 featurized_all = {}
 for gene_locus in config.gene_loci_used:
     print(gene_locus)
-    results_output_dir = (
-        config.paths.exact_matches_output_dir
-        / gene_locus.name
-        / combine_classification_option_names(target_obs_column)
+    results_output_dir = ExactMatchesClassifier._get_output_base_dir(
+        gene_locus=gene_locus,
+        target_obs_column=target_obs_column,
     )  # already created above when analyzing validation set
 
-    results = model_evaluation.ExperimentSet()
+    results = crosseval.ExperimentSet()
     for fold_id in config.cross_validation_fold_ids:
         adata_test = io.load_fold_embeddings(
             fold_id=fold_id,
             fold_label="test",
             gene_locus=gene_locus,
             target_obs_column=target_obs_column,
+            # This model does not require the embedding .X, so take the fast path and just load .obs:
+            load_obs_only=True,
         )
 
         # load validation set for tuning
@@ -163,30 +173,32 @@ for gene_locus in config.gene_loci_used:
             fold_label="validation",
             gene_locus=gene_locus,
             target_obs_column=target_obs_column,
+            # This model does not require the embedding .X, so take the fast path and just load .obs:
+            load_obs_only=True,
         )
 
-        for model_name in model_names:
+        for model_name in model_names_to_check_later:
             clf = ExactMatchesClassifier(
                 fold_id=fold_id,
                 model_name=model_name,
-                fold_label_train="train_smaller",
+                fold_label_train="train_smaller1",
                 target_obs_column=target_obs_column,
                 gene_locus=gene_locus,
             )
 
             # Featurization may vary by model, because p-value threshold may vary by model
-            featurized: model_evaluation.FeaturizedData = clf.featurize(adata_test)
+            featurized: crosseval.FeaturizedData = clf.featurize(adata_test)
             # store for later analysis of featurized.extras
             featurized_all[(gene_locus, fold_id, model_name)] = featurized
 
             def _make_result(
                 name: str,
-                model: model_evaluation.Classifier,
-                featurized_test: model_evaluation.FeaturizedData,
+                model: crosseval.Classifier,
+                featurized_test: crosseval.FeaturizedData,
             ):
                 # For curiosity's sake, what does the model predict for an input row of all 0s?
                 row_of_0s: pd.DataFrame = (
-                    pd.Series(1, index=model.feature_names_in_).to_frame().T
+                    pd.Series(0, index=model.feature_names_in_).to_frame().T
                 )
                 row_of_0s_predict = model.predict(row_of_0s)[0]
                 row_of_0s_predict_proba = (
@@ -200,13 +212,13 @@ for gene_locus in config.gene_loci_used:
                 )
 
                 # Create performance object
-                return model_evaluation.ModelSingleFoldPerformance(
+                return crosseval.ModelSingleFoldPerformance(
                     model_name=name,
                     fold_id=fold_id,
                     y_true=featurized_test.y,
                     clf=model,
                     X_test=featurized_test.X,
-                    fold_label_train="train_smaller",
+                    fold_label_train="train_smaller1",
                     fold_label_test="test",
                     test_metadata=featurized_test.metadata,
                     test_abstentions=featurized_test.abstained_sample_y,
@@ -225,7 +237,7 @@ for gene_locus in config.gene_loci_used:
                 joblib.dump(
                     clf_tuned,
                     clf_tuned.models_base_dir
-                    / f"train_smaller_model.{model_name}.decision_thresholds_tuned.{fold_id}.joblib",
+                    / f"train_smaller1_model.{model_name}.decision_thresholds_tuned.{fold_id}.joblib",
                 )
 
                 # add tuned model performance
@@ -251,15 +263,15 @@ for gene_locus in config.gene_loci_used:
 
     fname = (
         results_output_dir
-        / f"train_smaller_model.compare_model_scores.test_set_performance.tsv"
+        / f"train_smaller1_model.compare_model_scores.test_set_performance.tsv"
     )
     combined_stats.to_csv(fname, sep="\t")
 
     summary.export_all_models(
         func_generate_classification_report_fname=lambda model_name: results_output_dir
-        / f"train_smaller_model.test_set_performance.{model_name}.classification_report.txt",
+        / f"train_smaller1_model.test_set_performance.{model_name}.classification_report.txt",
         func_generate_confusion_matrix_fname=lambda model_name: results_output_dir
-        / f"train_smaller_model.test_set_performance.{model_name}.confusion_matrix.png",
+        / f"train_smaller1_model.test_set_performance.{model_name}.confusion_matrix.png",
         dpi=72,
     )
 
@@ -271,14 +283,13 @@ for gene_locus in config.gene_loci_used:
 # %%
 for gene_locus in config.gene_loci_used:
     display(Markdown(f"## {gene_locus} test set performance"))
-    results_output_dir = (
-        config.paths.exact_matches_output_dir
-        / gene_locus.name
-        / combine_classification_option_names(target_obs_column)
+    results_output_dir = ExactMatchesClassifier._get_output_base_dir(
+        gene_locus=gene_locus,
+        target_obs_column=target_obs_column,
     )
     results_df = pd.read_csv(
         results_output_dir
-        / "train_smaller_model.compare_model_scores.test_set_performance.tsv",
+        / "train_smaller1_model.compare_model_scores.test_set_performance.tsv",
         sep="\t",
         index_col=0,
     )
@@ -288,12 +299,12 @@ for gene_locus in config.gene_loci_used:
             [
                 [
                     results_output_dir
-                    / f"train_smaller_model.test_set_performance.{model_name}.confusion_matrix.png"
+                    / f"train_smaller1_model.test_set_performance.{model_name}.confusion_matrix.png"
                     for model_name in model_name_chunks
                 ],
                 [
                     results_output_dir
-                    / f"train_smaller_model.test_set_performance.{model_name}.classification_report.txt"
+                    / f"train_smaller1_model.test_set_performance.{model_name}.classification_report.txt"
                     for model_name in model_name_chunks
                 ],
             ],
@@ -308,10 +319,11 @@ for gene_locus in config.gene_loci_used:
 # %%
 for gene_locus in config.gene_loci_used:
     results_output_prefix_alternative = (
-        config.paths.convergent_clusters_output_dir
-        / gene_locus.name
-        / combine_classification_option_names(target_obs_column)
-        / "train_smaller_model"
+        ConvergentClusterClassifier._get_output_base_dir(
+            gene_locus=gene_locus,
+            target_obs_column=target_obs_column,
+        )
+        / "train_smaller1_model"
     )
 
     display(
@@ -359,19 +371,22 @@ for gene_locus in config.gene_loci_used:
 # %%
 for gene_locus in config.gene_loci_used:
     for fold_id in config.cross_validation_fold_ids:
-        for model_name in model_names:
-            clf = ExactMatchesClassifier(
-                fold_id=fold_id,
-                model_name=model_name,
-                fold_label_train="train_smaller",
-                target_obs_column=TargetObsColumnEnum.disease,
-                gene_locus=gene_locus,
-            )
-            p_value = clf.p_value_threshold
-            seqs = clf.sequences_with_fisher_result
-            print(
-                f"{gene_locus}, fold {fold_id}, {model_name}: p = {p_value}. Number of disease associated sequences: {(seqs <= p_value).sum().to_dict()}"
-            )
+        for model_name in model_names_to_check_later:
+            try:
+                clf = ExactMatchesClassifier(
+                    fold_id=fold_id,
+                    model_name=model_name,
+                    fold_label_train="train_smaller1",
+                    target_obs_column=target_obs_column,
+                    gene_locus=gene_locus,
+                )
+                p_value = clf.p_value_threshold
+                seqs = clf.sequences_with_fisher_result
+                print(
+                    f"{gene_locus}, fold {fold_id}, {model_name}: p = {p_value}. Number of {target_obs_column.name} associated sequences: {(seqs <= p_value).sum().to_dict()}"
+                )
+            except FileNotFoundError as err:
+                logger.warning(f"Not run: {err}")
         print()
 
 # %%

@@ -1,19 +1,20 @@
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
+from typing import Optional
 
-import anndata
 import pandas as pd
 
-from malid import io
+from malid import io, config
 from malid.datamodels import (
     GeneLocus,
+    GeneralAnndataType,
     TargetObsColumnEnum,
     SampleWeightStrategy,
 )
 from malid.external.adjust_model_decision_thresholds import (
     AdjustedProbabilitiesDerivedModel,
 )
-from malid.external.model_evaluation import FeaturizedData
+from crosseval import FeaturizedData
 
 
 class MetadataFeaturizerMixin(metaclass=ABCMeta):
@@ -32,13 +33,20 @@ class ImmuneClassifierMixin(metaclass=ABCMeta):
         fold_label_train: str,
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
-        models_base_dir: Path,
+        models_base_dir: Optional[Path] = None,
         # These might not be set by every classifier:
-        sample_weight_strategy: SampleWeightStrategy = SampleWeightStrategy.ISOTYPE_USAGE,
-        **kwargs,
+        sample_weight_strategy: Optional[SampleWeightStrategy] = None,
     ):
-        # Forward all unused arguments in the case of multiple inheritance (https://stackoverflow.com/a/50465583/130164)
-        super().__init__(*args, **kwargs)
+        """
+        Common interface to access classifier metadata.
+
+        In the case of multiple inheritance, ImmuneClassifierMixin does *not* forward unused arguments to the next class in the Method Resolution Order.
+        The user must explicitly initialize other base classes.
+        """
+
+        if sample_weight_strategy is None:
+            # This might not be set by every classifier
+            sample_weight_strategy = config.sample_weight_strategy
 
         GeneLocus.validate(gene_locus)
         GeneLocus.validate_single_value(gene_locus)
@@ -49,11 +57,53 @@ class ImmuneClassifierMixin(metaclass=ABCMeta):
         self.fold_label_train = fold_label_train
         self.gene_locus = gene_locus
         self.target_obs_column = target_obs_column
-        self.models_base_dir = models_base_dir
         self.sample_weight_strategy = sample_weight_strategy
 
+        # If a custom models_base_dir is given, overwrite the default property
+        if models_base_dir is not None:
+            self._custom_models_base_dir = Path(models_base_dir)
+        else:
+            self._custom_models_base_dir = None
+
+    # output_base_dir and models_base_dir are properties, not strings, so that they do not go stale when the class is pickled to disk as a submodel in a MetamodelConfig object.
+    # However, the user is allowed to override them by setting them directly.
+    @property
+    def output_base_dir(self):
+        return self._get_output_base_dir(
+            gene_locus=self.gene_locus,
+            target_obs_column=self.target_obs_column,
+            sample_weight_strategy=self.sample_weight_strategy,
+        )
+
+    @property
+    def models_base_dir(self):
+        # Custom directory provided during initialization takes precedence over default.
+        return self._custom_models_base_dir or self._get_model_base_dir(
+            gene_locus=self.gene_locus,
+            target_obs_column=self.target_obs_column,
+            sample_weight_strategy=self.sample_weight_strategy,
+        )
+
+    @staticmethod
     @abstractmethod
-    def featurize(self, dataset: anndata.AnnData) -> FeaturizedData:
+    def _get_output_base_dir(
+        gene_locus: GeneLocus,
+        target_obs_column: TargetObsColumnEnum,
+        sample_weight_strategy: SampleWeightStrategy,
+    ) -> Path:
+        ...
+
+    @staticmethod
+    @abstractmethod
+    def _get_model_base_dir(
+        gene_locus: GeneLocus,
+        target_obs_column: TargetObsColumnEnum,
+        sample_weight_strategy: SampleWeightStrategy,
+    ) -> Path:
+        ...
+
+    @abstractmethod
+    def featurize(self, dataset: GeneralAnndataType) -> FeaturizedData:
         """Featurize dataset."""
         pass
 
@@ -62,9 +112,9 @@ class ImmuneClassifierMixin(metaclass=ABCMeta):
 
         Provide validation_set or it will be loaded using this clf's fold_id setting.
         """
-        if self.fold_label_train != "train_smaller":
+        if not self.fold_label_train.startswith("train_smaller"):
             raise ValueError(
-                "Fold label train must be train_smaller because we will tune on validation set"
+                "Fold label train must start with train_smaller because we will tune on validation set. Do not tune on validation set if model was trained on train-full (which includes validation set)."
             )
 
         if validation_set is None:

@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 import pandas as pd
 
-import malid.external.genetools_arrays
+import genetools.arrays
 
 if TYPE_CHECKING:
     # Same API to satisfy the type checker without having CuML installed (GPU required?)
@@ -64,9 +64,7 @@ def _get_neighbors(
     # uses cell ID (not obsname) for center node and for each neighboring node of a specific center node
 
     dfnonzero = (
-        malid.external.genetools_arrays.convert_matrix_to_one_element_per_row(
-            knn_indices_all
-        )
+        genetools.arrays.convert_matrix_to_one_element_per_row(knn_indices_all)
         .rename(columns={"row_id": "center_id", "value": "neighbor_id"})
         .drop("col_id", axis=1)
     )

@@ -2,12 +2,9 @@
 from summarynb import show, indexed_csv, table, chunks
 from malid.external.summarynb_extras import plaintext, empty
 from malid import config, logger
-from malid.datamodels import (
-    TargetObsColumnEnum,
-    combine_classification_option_names,
-)
 import pandas as pd
 from IPython.display import display, Markdown
+from malid.trained_model_wrappers import RepertoireClassifier
 
 # %%
 fold_label_train, fold_label_validation = config.get_fold_split_labels()
@@ -39,9 +36,11 @@ for gene_locus in config.gene_loci_used:
     targets = {}
     for target in config.classification_targets:
         targets[target] = (
-            config.paths.repertoire_stats_classifier_output_dir
-            / gene_locus.name
-            / combine_classification_option_names(target)
+            RepertoireClassifier._get_output_base_dir(
+                gene_locus=gene_locus,
+                target_obs_column=target,
+                sample_weight_strategy=config.sample_weight_strategy,
+            )
             / "train_smaller_model"
         )
 

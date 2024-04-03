@@ -24,8 +24,14 @@ from IPython.display import display, Markdown
 # - Plot mean +/- 1.96 * standard error. Gives you average value +/- X at the 95% confidence level.
 
 # %%
-show(config.paths.output_dir / "isotype_counts_by_disease.png")
-show(config.paths.output_dir / "isotype_counts_by_disease.inverted.png")
+show(
+    config.paths.base_output_dir_for_selected_cross_validation_strategy
+    / "isotype_counts_by_class.png"
+)
+show(
+    config.paths.base_output_dir_for_selected_cross_validation_strategy
+    / "isotype_counts_by_class.inverted.png"
+)
 
 # %%
 
@@ -41,9 +47,14 @@ show(config.paths.output_dir / "isotype_counts_by_disease.inverted.png")
 
 # %%
 for gene_locus in config.gene_loci_used:
-    main_output_dir = config.paths.model_interpretations_output_dir / gene_locus.name
+    main_output_dir = (
+        config.paths.model_interpretations_for_selected_cross_validation_strategy_output_dir
+        / gene_locus.name
+    )
     high_res_output_dir = (
-        config.paths.high_res_outputs_dir / "model_interpretations" / gene_locus.name
+        config.paths.high_res_outputs_dir_for_cross_validation_strategy
+        / "model_interpretations"
+        / gene_locus.name
     )
     show(
         high_res_output_dir

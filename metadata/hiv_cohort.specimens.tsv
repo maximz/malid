@@ -1,0 +1,284 @@
+participant_label	disease_subtype	sex	age	ethnicity	description	specimen_label
+BFI-0000234	HIV Negative	M	27		Location: USA	M124-S014
+BFI-0000234	HIV Negative	M	27		Location: USA	M132-S014
+BFI-0000254	HIV Broad Neutralizing	F	48		Location: Tanzania	M111-S037
+BFI-0000254	HIV Broad Neutralizing	F	48		Location: Tanzania	M114-S037
+BFI-0000255	HIV Broad Neutralizing	F	33		Location: Tanzania	M111-S033
+BFI-0000255	HIV Broad Neutralizing	F	33		Location: Tanzania	M114-S033
+BFI-0000256	HIV Broad Neutralizing	F	31		Location: Tanzania	M111-S038
+BFI-0000256	HIV Broad Neutralizing	F	31		Location: Tanzania	M114-S038
+BFI-0000258	HIV Non Neutralizing	F	49		Location: Tanzania	M111-S055
+BFI-0000258	HIV Non Neutralizing	F	49		Location: Tanzania	M114-S055
+BFI-0000258	HIV Non Neutralizing	F	49		Location: Tanzania	M124-S070
+BFI-0000258	HIV Non Neutralizing	F	49		Location: Tanzania	M132-S070
+BFI-0002850	HIV Negative	F	26		Location: USA	M124-S042
+BFI-0002850	HIV Negative	F	26		Location: USA	M132-S040
+BFI-0002851	HIV Negative	F	27		Location: USA	M124-S041
+BFI-0002851	HIV Negative	F	27		Location: USA	M132-S039
+BFI-0002852	HIV Negative	F	26		Location: USA	M124-S012
+BFI-0002852	HIV Negative	F	26		Location: USA	M132-S012
+BFI-0002854	HIV Non Neutralizing	F	25		Location: Malawi	M111-S042
+BFI-0002854	HIV Non Neutralizing	F	25		Location: Malawi	M114-S042
+BFI-0002855	HIV Broad Neutralizing	F	22		Location: Malawi	M111-S016
+BFI-0002855	HIV Broad Neutralizing	F	22		Location: Malawi	M114-S016
+BFI-0002856	HIV Non Neutralizing	F	23		Location: Malawi	M111-S043
+BFI-0002856	HIV Non Neutralizing	F	23		Location: Malawi	M114-S043
+BFI-0002857	HIV Broad Neutralizing	F	36		Location: Malawi	M111-S018
+BFI-0002857	HIV Broad Neutralizing	F	36		Location: Malawi	M114-S018
+BFI-0002859	HIV Broad Neutralizing	M	41		Location: Malawi	M111-S034
+BFI-0002859	HIV Broad Neutralizing	M	41		Location: Malawi	M114-S034
+BFI-0002861	HIV Negative	F	34		Location: Malawi	M124-S037
+BFI-0002861	HIV Negative	F	34		Location: Malawi	M132-S037
+BFI-0002862	HIV Negative	F	29		Location: Malawi	M124-S036
+BFI-0002862	HIV Negative	F	29		Location: Malawi	M132-S036
+BFI-0002863	HIV Negative	F	42		Location: Malawi	M124-S035
+BFI-0002863	HIV Negative	F	42		Location: Malawi	M132-S035
+BFI-0002864	HIV Broad Neutralizing	F	24		Location: Malawi	M111-S040
+BFI-0002864	HIV Broad Neutralizing	F	24		Location: Malawi	M114-S040
+BFI-0002865	HIV Broad Neutralizing	M	44		Location: Malawi	M111-S041
+BFI-0002865	HIV Broad Neutralizing	M	44		Location: Malawi	M114-S041
+BFI-0002866	HIV Negative	F	36		Location: South Africa	M124-S038
+BFI-0002866	HIV Negative	F	36		Location: South Africa	M132-S042
+BFI-0002867	HIV Negative	F	35		Location: South Africa	M124-S039
+BFI-0002867	HIV Negative	F	35		Location: South Africa	M132-S043
+BFI-0002868	HIV Negative	F	47		Location: South Africa	M124-S040
+BFI-0002868	HIV Negative	F	47		Location: South Africa	M132-S038
+BFI-0002870	HIV Broad Neutralizing	F	29		Location: South Africa	M111-S035
+BFI-0002870	HIV Broad Neutralizing	F	29		Location: South Africa	M114-S035
+BFI-0002871	HIV Broad Neutralizing	M	30		Location: South Africa	M111-S025
+BFI-0002871	HIV Broad Neutralizing	M	30		Location: South Africa	M114-S025
+BFI-0002875	HIV Broad Neutralizing	F	24		Location: Tanzania	M111-S011
+BFI-0002875	HIV Broad Neutralizing	F	24		Location: Tanzania	M114-S011
+BFI-0002877	HIV Broad Neutralizing	F	33		Location: Tanzania	M111-S036
+BFI-0002877	HIV Broad Neutralizing	F	33		Location: Tanzania	M114-S036
+BFI-0002879	HIV Broad Neutralizing	F	41		Location: Tanzania	M111-S039
+BFI-0002879	HIV Broad Neutralizing	F	41		Location: Tanzania	M114-S039
+BFI-0003450	HIV Broad Neutralizing	F	29		Location: South Africa	M111-S022
+BFI-0003450	HIV Broad Neutralizing	F	29		Location: South Africa	M114-S022
+BFI-0003451	HIV Broad Neutralizing	F	25		Location: South Africa	M111-S019
+BFI-0003451	HIV Broad Neutralizing	F	25		Location: South Africa	M114-S019
+BFI-0003452	HIV Broad Neutralizing	F	24		Location: UK	M111-S013
+BFI-0003452	HIV Broad Neutralizing	F	24		Location: UK	M114-S013
+BFI-0003453	HIV Broad Neutralizing	M	47		Location: UK	M111-S009
+BFI-0003453	HIV Broad Neutralizing	M	47		Location: UK	M114-S009
+BFI-0003454	HIV Broad Neutralizing	F	21		Location: Malawi	M111-S030
+BFI-0003454	HIV Broad Neutralizing	F	21		Location: Malawi	M114-S030
+BFI-0003455	HIV Broad Neutralizing	F	41		Location: South Africa	M111-S026
+BFI-0003455	HIV Broad Neutralizing	F	41		Location: South Africa	M114-S026
+BFI-0003456	HIV Broad Neutralizing	F	19		Location: South Africa	M111-S032
+BFI-0003456	HIV Broad Neutralizing	F	19		Location: South Africa	M114-S032
+BFI-0003457	HIV Broad Neutralizing	F	28		Location: Malawi	M111-S031
+BFI-0003457	HIV Broad Neutralizing	F	28		Location: Malawi	M114-S031
+BFI-0003458	HIV Broad Neutralizing	M	34		Location: South Africa	M111-S020
+BFI-0003458	HIV Broad Neutralizing	M	34		Location: South Africa	M114-S020
+BFI-0003459	HIV Broad Neutralizing	F	22		Location: South Africa	M111-S027
+BFI-0003459	HIV Broad Neutralizing	F	22		Location: South Africa	M114-S027
+BFI-0003460	HIV Broad Neutralizing	M	39		Location: Malawi	M111-S004
+BFI-0003460	HIV Broad Neutralizing	M	39		Location: Malawi	M114-S004
+BFI-0003461	HIV Broad Neutralizing	F	40		Location: Tanzania	M111-S008
+BFI-0003461	HIV Broad Neutralizing	F	40		Location: Tanzania	M114-S008
+BFI-0003462	HIV Broad Neutralizing	F	48		Location: South Africa	M111-S001
+BFI-0003462	HIV Broad Neutralizing	F	48		Location: South Africa	M114-S001
+BFI-0003463	HIV Broad Neutralizing	M	32		Location: Malawi	M111-S005
+BFI-0003463	HIV Broad Neutralizing	M	32		Location: Malawi	M114-S005
+BFI-0003464	HIV Broad Neutralizing	M	21		Location: USA	M111-S014
+BFI-0003464	HIV Broad Neutralizing	M	21		Location: USA	M114-S014
+BFI-0003465	HIV Broad Neutralizing	M	29		Location: Malawi	M111-S024
+BFI-0003465	HIV Broad Neutralizing	M	29		Location: Malawi	M114-S024
+BFI-0003466	HIV Broad Neutralizing	M	49		Location: Tanzania	M111-S003
+BFI-0003466	HIV Broad Neutralizing	M	49		Location: Tanzania	M114-S003
+BFI-0003467	HIV Broad Neutralizing	M	30		Location: Malawi	M111-S053
+BFI-0003467	HIV Broad Neutralizing	M	30		Location: Malawi	M114-S053
+BFI-0003468	HIV Broad Neutralizing	F	56		Location: Tanzania	M111-S023
+BFI-0003468	HIV Broad Neutralizing	F	56		Location: Tanzania	M114-S023
+BFI-0003469	HIV Broad Neutralizing	M	48		Location: Tanzania	M111-S007
+BFI-0003469	HIV Broad Neutralizing	M	48		Location: Tanzania	M114-S007
+BFI-0003470	HIV Broad Neutralizing	F	25		Location: South Africa	M111-S045
+BFI-0003470	HIV Broad Neutralizing	F	25		Location: South Africa	M114-S045
+BFI-0003471	HIV Broad Neutralizing	F	35		Location: South Africa	M111-S044
+BFI-0003471	HIV Broad Neutralizing	F	35		Location: South Africa	M114-S044
+BFI-0003472	HIV Broad Neutralizing	F	35		Location: Tanzania	M111-S006
+BFI-0003472	HIV Broad Neutralizing	F	35		Location: Tanzania	M114-S006
+BFI-0003473	HIV Non Neutralizing	M	28		Location: South Africa	M111-S021
+BFI-0003473	HIV Non Neutralizing	M	28		Location: South Africa	M114-S021
+BFI-0003474	HIV Non Neutralizing	M	36		Location: Malawi	M111-S046
+BFI-0003474	HIV Non Neutralizing	M	36		Location: Malawi	M114-S046
+BFI-0003475	HIV Non Neutralizing	F	27		Location: Malawi	M111-S054
+BFI-0003475	HIV Non Neutralizing	F	27		Location: Malawi	M114-S054
+BFI-0003476	HIV Non Neutralizing	F	20		Location: South Africa	M111-S047
+BFI-0003476	HIV Non Neutralizing	F	20		Location: South Africa	M114-S047
+BFI-0003477	HIV Non Neutralizing	F	39		Location: Tanzania	M111-S050
+BFI-0003477	HIV Non Neutralizing	F	39		Location: Tanzania	M114-S050
+BFI-0003478	HIV Non Neutralizing	F	28		Location: Malawi	M111-S017
+BFI-0003478	HIV Non Neutralizing	F	28		Location: Malawi	M114-S017
+BFI-0003479	HIV Non Neutralizing	M	24		Location: Malawi	M111-S015
+BFI-0003479	HIV Non Neutralizing	M	24		Location: Malawi	M114-S015
+BFI-0003480	HIV Non Neutralizing	M	43		Location: Malawi	M111-S010
+BFI-0003480	HIV Non Neutralizing	M	43		Location: Malawi	M114-S010
+BFI-0003481	HIV Non Neutralizing	F	58		Location: Tanzania	M111-S002
+BFI-0003481	HIV Non Neutralizing	F	58		Location: Tanzania	M114-S002
+BFI-0003482	HIV Non Neutralizing	M	44		Location: South Africa	M111-S048
+BFI-0003482	HIV Non Neutralizing	M	44		Location: South Africa	M114-S048
+BFI-0003483	HIV Non Neutralizing	F	21		Location: UK	M111-S012
+BFI-0003483	HIV Non Neutralizing	F	21		Location: UK	M114-S012
+BFI-0003484	HIV Non Neutralizing	F	44		Location: South Africa	M111-S028
+BFI-0003484	HIV Non Neutralizing	F	44		Location: South Africa	M114-S028
+BFI-0003485	HIV Non Neutralizing	F	42		Location: Tanzania	M111-S051
+BFI-0003485	HIV Non Neutralizing	F	42		Location: Tanzania	M114-S051
+BFI-0003486	HIV Non Neutralizing	F	22		Location: South Africa	M111-S052
+BFI-0003486	HIV Non Neutralizing	F	22		Location: South Africa	M114-S052
+BFI-0003487	HIV Non Neutralizing	F	26		Location: South Africa	M111-S049
+BFI-0003487	HIV Non Neutralizing	F	26		Location: South Africa	M114-S049
+BFI-0003488	HIV Non Neutralizing	M	31		Location: South Africa	M111-S029
+BFI-0003488	HIV Non Neutralizing	M	31		Location: South Africa	M114-S029
+BFI-0003700	HIV Negative	M	25		Location: Malawi	M124-S001
+BFI-0003700	HIV Negative	M	25		Location: Malawi	M132-S001
+BFI-0003701	HIV Negative	M	29		Location: Malawi	M124-S002
+BFI-0003701	HIV Negative	M	29		Location: Malawi	M132-S002
+BFI-0003702	HIV Negative	F	21		Location: South Africa	M124-S003
+BFI-0003702	HIV Negative	F	21		Location: South Africa	M132-S003
+BFI-0003703	HIV Negative	F	21		Location: South Africa	M124-S004
+BFI-0003703	HIV Negative	F	21		Location: South Africa	M132-S004
+BFI-0003704	HIV Negative	M	20		Location: Malawi	M124-S005
+BFI-0003704	HIV Negative	M	20		Location: Malawi	M132-S005
+BFI-0003705	HIV Negative	M	32		Location: USA	M124-S006
+BFI-0003705	HIV Negative	M	32		Location: USA	M132-S006
+BFI-0003706	HIV Negative	M	21		Location: USA	M124-S007
+BFI-0003706	HIV Negative	M	21		Location: USA	M132-S007
+BFI-0003707	HIV Negative	M	46		Location: USA	M124-S008
+BFI-0003707	HIV Negative	M	46		Location: USA	M132-S008
+BFI-0003708	HIV Negative	M	30		Location: USA	M124-S009
+BFI-0003708	HIV Negative	M	30		Location: USA	M132-S009
+BFI-0003709	HIV Negative	F	22		Location: USA	M124-S010
+BFI-0003709	HIV Negative	F	22		Location: USA	M132-S010
+BFI-0003710	HIV Negative	F	24		Location: USA	M124-S011
+BFI-0003710	HIV Negative	F	24		Location: USA	M132-S011
+BFI-0003711	HIV Negative	M	29		Location: USA	M124-S013
+BFI-0003711	HIV Negative	M	29		Location: USA	M132-S013
+BFI-0003712	HIV Negative	M	51		Location: USA	M124-S015
+BFI-0003712	HIV Negative	M	51		Location: USA	M132-S015
+BFI-0003713	HIV Negative	M	26		Location: Malawi	M124-S016
+BFI-0003713	HIV Negative	M	26		Location: Malawi	M132-S016
+BFI-0003714	HIV Negative	M	34		Location: Malawi	M124-S017
+BFI-0003714	HIV Negative	M	34		Location: Malawi	M132-S017
+BFI-0003715	HIV Negative	M	26		Location: Malawi	M124-S018
+BFI-0003715	HIV Negative	M	26		Location: Malawi	M132-S018
+BFI-0003716	HIV Negative	F	28		Location: Malawi	M124-S019
+BFI-0003716	HIV Negative	F	28		Location: Malawi	M132-S019
+BFI-0003717	HIV Negative	M	34		Location: Malawi	M124-S020
+BFI-0003717	HIV Negative	M	34		Location: Malawi	M132-S020
+BFI-0003718	HIV Negative	M	23		Location: Malawi	M124-S021
+BFI-0003718	HIV Negative	M	23		Location: Malawi	M132-S021
+BFI-0003719	HIV Negative	M	31		Location: Malawi	M124-S022
+BFI-0003719	HIV Negative	M	31		Location: Malawi	M132-S022
+BFI-0003720	HIV Negative	M	25		Location: Malawi	M124-S023
+BFI-0003720	HIV Negative	M	25		Location: Malawi	M132-S023
+BFI-0003721	HIV Negative	F	25		Location: Malawi	M124-S024
+BFI-0003721	HIV Negative	F	25		Location: Malawi	M132-S024
+BFI-0003722	HIV Negative	F	31		Location: Malawi	M124-S025
+BFI-0003722	HIV Negative	F	31		Location: Malawi	M132-S025
+BFI-0003723	HIV Negative	M	23		Location: Malawi	M124-S026
+BFI-0003723	HIV Negative	M	23		Location: Malawi	M132-S026
+BFI-0003724	HIV Negative	M	28		Location: Malawi	M124-S027
+BFI-0003724	HIV Negative	M	28		Location: Malawi	M132-S027
+BFI-0003725	HIV Negative	F	24		Location: South Africa	M124-S028
+BFI-0003725	HIV Negative	F	24		Location: South Africa	M132-S028
+BFI-0003726	HIV Negative	F	37		Location: USA	M124-S029
+BFI-0003726	HIV Negative	F	37		Location: USA	M132-S029
+BFI-0003727	HIV Negative	F	27		Location: Malawi	M124-S030
+BFI-0003727	HIV Negative	F	27		Location: Malawi	M132-S030
+BFI-0003728	HIV Negative	F	21		Location: USA	M124-S031
+BFI-0003728	HIV Negative	F	21		Location: USA	M132-S031
+BFI-0003729	HIV Negative	M	29		Location: South Africa	M124-S032
+BFI-0003729	HIV Negative	M	29		Location: South Africa	M132-S032
+BFI-0003730	HIV Negative	M	28		Location: South Africa	M124-S033
+BFI-0003730	HIV Negative	M	28		Location: South Africa	M132-S033
+BFI-0003731	HIV Negative	F	27		Location: South Africa	M124-S034
+BFI-0003731	HIV Negative	F	27		Location: South Africa	M132-S034
+BFI-0003732	HIV Negative	F	21		Location: USA	M124-S043
+BFI-0003732	HIV Negative	F	21		Location: USA	M132-S041
+BFI-0003733	HIV Broad Neutralizing	F	33		Location: Malawi	M124-S044
+BFI-0003733	HIV Broad Neutralizing	F	33		Location: Malawi	M132-S044
+BFI-0003734	HIV Non Neutralizing	F	33		Location: South Africa	M124-S045
+BFI-0003734	HIV Non Neutralizing	F	33		Location: South Africa	M132-S045
+BFI-0003735	HIV Broad Neutralizing	F	27		Location: Malawi	M124-S046
+BFI-0003735	HIV Broad Neutralizing	F	27		Location: Malawi	M132-S046
+BFI-0003736	HIV Broad Neutralizing	M	27		Location: Malawi	M124-S047
+BFI-0003736	HIV Broad Neutralizing	M	27		Location: Malawi	M132-S047
+BFI-0003737	HIV Non Neutralizing	M	28		Location: Malawi	M124-S048
+BFI-0003737	HIV Non Neutralizing	M	28		Location: Malawi	M132-S048
+BFI-0003738	HIV Broad Neutralizing	F	27		Location: Tanzania	M124-S049
+BFI-0003738	HIV Broad Neutralizing	F	27		Location: Tanzania	M132-S049
+BFI-0003739	HIV Broad Neutralizing	M	32		Location: Malawi	M124-S050
+BFI-0003739	HIV Broad Neutralizing	M	32		Location: Malawi	M132-S050
+BFI-0003740	HIV Broad Neutralizing	F	34		Location: Malawi	M124-S051
+BFI-0003740	HIV Broad Neutralizing	F	34		Location: Malawi	M132-S051
+BFI-0003741	HIV Broad Neutralizing	F	23		Location: Malawi	M124-S052
+BFI-0003741	HIV Broad Neutralizing	F	23		Location: Malawi	M132-S052
+BFI-0003742	HIV Broad Neutralizing	F	37		Location: Tanzania	M124-S053
+BFI-0003742	HIV Broad Neutralizing	F	37		Location: Tanzania	M132-S053
+BFI-0003743	HIV Non Neutralizing	F	31		Location: Malawi	M124-S054
+BFI-0003743	HIV Non Neutralizing	F	31		Location: Malawi	M132-S054
+BFI-0003745	HIV Non Neutralizing	F	21		Location: Malawi	M124-S056
+BFI-0003745	HIV Non Neutralizing	F	21		Location: Malawi	M132-S056
+BFI-0003746	HIV Non Neutralizing	F	19		Location: South Africa	M124-S057
+BFI-0003746	HIV Non Neutralizing	F	19		Location: South Africa	M132-S057
+BFI-0003747	HIV Non Neutralizing	M	22		Location: South Africa	M124-S058
+BFI-0003747	HIV Non Neutralizing	M	22		Location: South Africa	M132-S058
+BFI-0003748	HIV Non Neutralizing	F	28		Location: South Africa	M124-S059
+BFI-0003748	HIV Non Neutralizing	F	28		Location: South Africa	M132-S059
+BFI-0003749	HIV Non Neutralizing	F	26		Location: South Africa	M124-S060
+BFI-0003749	HIV Non Neutralizing	F	26		Location: South Africa	M132-S060
+BFI-0003750	HIV Non Neutralizing	F	41		Location: South Africa	M124-S061
+BFI-0003750	HIV Non Neutralizing	F	41		Location: South Africa	M132-S061
+BFI-0003751	HIV Non Neutralizing	F	36		Location: Tanzania	M124-S062
+BFI-0003751	HIV Non Neutralizing	F	36		Location: Tanzania	M132-S062
+BFI-0003752	HIV Non Neutralizing	F	44		Location: Tanzania	M124-S063
+BFI-0003752	HIV Non Neutralizing	F	44		Location: Tanzania	M132-S063
+BFI-0003754	HIV Non Neutralizing	F	25		Location: Malawi	M124-S065
+BFI-0003754	HIV Non Neutralizing	F	25		Location: Malawi	M132-S065
+BFI-0003755	HIV Non Neutralizing	F	27		Location: South Africa	M124-S066
+BFI-0003755	HIV Non Neutralizing	F	27		Location: South Africa	M132-S066
+BFI-0003756	HIV Non Neutralizing	M	22		Location: South Africa	M124-S067
+BFI-0003756	HIV Non Neutralizing	M	22		Location: South Africa	M132-S067
+BFI-0003757	HIV Non Neutralizing	F	33		Location: South Africa	M124-S068
+BFI-0003757	HIV Non Neutralizing	F	33		Location: South Africa	M132-S068
+BFI-0003758	HIV Non Neutralizing	F	33		Location: South Africa	M124-S069
+BFI-0003758	HIV Non Neutralizing	F	33		Location: South Africa	M132-S069
+BFI-0003759	HIV Non Neutralizing	M	22		Location: South Africa	M124-S071
+BFI-0003759	HIV Non Neutralizing	M	22		Location: South Africa	M132-S071
+BFI-0003760	HIV Non Neutralizing	F	21		Location: South Africa	M124-S072
+BFI-0003760	HIV Non Neutralizing	F	21		Location: South Africa	M132-S072
+BFI-0003761	HIV Non Neutralizing	M	35		Location: South Africa	M124-S073
+BFI-0003761	HIV Non Neutralizing	M	35		Location: South Africa	M132-S073
+BFI-0003762	HIV Non Neutralizing	M	33		Location: Malawi	M124-S074
+BFI-0003762	HIV Non Neutralizing	M	33		Location: Malawi	M132-S074
+BFI-0003763	HIV Non Neutralizing	F	34		Location: South Africa	M124-S075
+BFI-0003763	HIV Non Neutralizing	F	34		Location: South Africa	M132-S075
+BFI-0003764	HIV Non Neutralizing	F	45		Location: Tanzania	M124-S076
+BFI-0003764	HIV Non Neutralizing	F	45		Location: Tanzania	M132-S076
+BFI-0003765	HIV Non Neutralizing	M	27		Location: USA	M124-S077
+BFI-0003765	HIV Non Neutralizing	M	27		Location: USA	M132-S077
+BFI-0003766	HIV Broad Neutralizing	M	47		Location: USA	M124-S078
+BFI-0003766	HIV Broad Neutralizing	M	47		Location: USA	M132-S078
+BFI-0003767	HIV Non Neutralizing	M	37		Location: USA	M124-S079
+BFI-0003767	HIV Non Neutralizing	M	37		Location: USA	M132-S079
+BFI-0003768	HIV Broad Neutralizing	M	64		Location: USA	M124-S080
+BFI-0003768	HIV Broad Neutralizing	M	64		Location: USA	M132-S080
+BFI-0003769	HIV Non Neutralizing	M	28		Location: USA	M124-S081
+BFI-0003769	HIV Non Neutralizing	M	28		Location: USA	M132-S081
+BFI-0003770	HIV Non Neutralizing	M	24		Location: USA	M124-S082
+BFI-0003770	HIV Non Neutralizing	M	24		Location: USA	M132-S082
+BFI-0003771	HIV Non Neutralizing	F	24		Location: South Africa	M124-S083
+BFI-0003771	HIV Non Neutralizing	F	24		Location: South Africa	M132-S083
+BFI-0003772	HIV Non Neutralizing	M	57		Location: Tanzania	M124-S084
+BFI-0003772	HIV Non Neutralizing	M	57		Location: Tanzania	M132-S084
+BFI-0003773	HIV Non Neutralizing	M	20		Location: USA	M124-S064
+BFI-0003773	HIV Non Neutralizing	M	20		Location: USA	M124-S085
+BFI-0003773	HIV Non Neutralizing	M	20		Location: USA	M132-S064
+BFI-0003774	HIV Non Neutralizing	M	22		Location: Malawi	M124-S055
+BFI-0003774	HIV Non Neutralizing	M	22		Location: Malawi	M124-S086
+BFI-0003774	HIV Non Neutralizing	M	22		Location: Malawi	M132-S055
+BFI-0003775	HIV Non Neutralizing	F	35		Location: Malawi	M124-S087
+BFI-0003775	HIV Non Neutralizing	F	35		Location: Malawi	M132-S085
+BFI-0003775	HIV Non Neutralizing	F	35		Location: Malawi	M132-S086

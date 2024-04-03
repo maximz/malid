@@ -22,7 +22,7 @@ class AdjustedProbabilitiesDerivedModel(ExtendAnything, ClassifierMixin, BaseEst
     Don't renormalize.
 
     Note: sklearn's built-in ROC AUC score does not accept multiclass probabilities that don't sum to 1.
-    Use model_evaluation roc_auc_score instead.
+    Use crosseval roc_auc_score instead.
 
     The intuition for how this adjusts decision thresholds between classes:
     By downweighing a class by dividing its probabilities by a factor of n, it now has to be n times as strong to outrank its competitor classes.
@@ -120,12 +120,33 @@ class AdjustedProbabilitiesDerivedModel(ExtendAnything, ClassifierMixin, BaseEst
             score = score_func(y_true, y_pred)
             return -1.0 * score
 
-        # Technically, the only constraint we need is >0,
-        # so that adjusted probabilities are >0 and normalizing rows by sum works right.
-        # But to constrain the search, we'll use the range 0 to 1. (Consider a 1-100 range instead?)
-        bounds = optimize.Bounds([1e-5] * len(classes), [1] * len(classes))
+        # Check for any classes that were in the model but are now absent from the tuning data.
+        # Their weights will be fixed at 0.
+        n_classes = len(classes)
+        present_classes = np.unique(y_validation_true)
+        n_present_classes = len(present_classes)
 
-        # class weights will be supplied as first argument. args are additional arguments
+        # Initialize weights to 1/n_present_classes for classes present in validation, 0 otherwise
+        initial_weights = np.array(
+            [
+                1.0 / n_present_classes if classes[i] in present_classes else 0.0
+                for i in range(n_classes)
+            ]
+        )
+
+        # Define bounds for optimization.
+        # Technically, the only constraint we need is >0, so that adjusted probabilities are >0 and normalizing rows by sum works right.
+        # But to constrain the search, we'll use the range 0 to 1. (Consider a 1-100 range instead?)
+        # Also, we will constrain missing classes to always have 0 weight.
+        lower_bounds = [
+            1e-5 if classes[i] in present_classes else 0.0 for i in range(n_classes)
+        ]
+        upper_bounds = [
+            1.0 if classes[i] in present_classes else 0.0 for i in range(n_classes)
+        ]
+        bounds = optimize.Bounds(lower_bounds, upper_bounds)
+
+        # Class weights will be supplied as first argument. args are additional arguments to _score.
         result = optimize.differential_evolution(
             _score,
             bounds,
@@ -134,6 +155,8 @@ class AdjustedProbabilitiesDerivedModel(ExtendAnything, ClassifierMixin, BaseEst
                 np.array(y_validation_true),
                 classes,
             ),
+            # Starting point for the optimization
+            x0=initial_weights,
         )
         best_class_weights = result.x
         return best_class_weights

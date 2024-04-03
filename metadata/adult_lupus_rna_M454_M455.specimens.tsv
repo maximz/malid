@@ -1,0 +1,61 @@
+participant_label	participant_alternative_label	disease	age	sex	ethnicity	participant_description	specimen_label	specimen_alternative_label	specimen_description
+BFI-0010000		MS	53	F	Caucasian	RRMS Patient	M454-S001	AA02038	Age 53
+BFI-0010001		MS	38	F	Caucasian	MS Patient	M454-S002	AA02040	Age 38
+BFI-0010002		RA	34	F	Caucasian	RA Patient	M454-S003	AA02914	Age 34
+BFI-0010003		SLE	58	F	Caucasian	SLE Patient	M454-S004	AA03435	Age 58
+BFI-0010004		SLE	56	F	Caucasian	SLE Patient	M454-S005	AA03449	Age 56
+BFI-0010005		SLE	31	F	Caucasian	SLE Patient	M454-S006	AA03213	Age 31
+BFI-0010006		SLE	53	F	African American	SLE Patient	M454-S007	AA03289	Age 53
+BFI-0010007		SLE	35	F	Caucasian	SLE Patient	M454-S008	AA03177	Age 35
+BFI-0010008		SLE	37	F	Caucasian + Hispanic	SLE Patient	M454-S009	AA01986	Age 37
+BFI-0010009		SLE	45	M	African American	SLE Patient	M454-S010	AA03206	Age 45
+BFI-0010010		SLE	29	F	Caucasian	SLE Patient	M454-S011	AA03620	Age 29
+BFI-0010011		SLE	22	F	Caucasian + Hispanic	SLE Patient	M454-S012	AA03122	Age 22
+BFI-0010012		MS	38	F	Caucasian	RRMS Patient	M454-S013	AA02605	Age 38
+BFI-0010013		MS	46	F	Caucasian	RRMS Patient	M454-S014	AA02434	Age 46
+BFI-0010014		SLE	45	F	Caucasian	SLE Patient	M454-S015	AA04573	Age 45
+BFI-0010015		SLE	33	F	Caucasian	SLE Patient	M454-S016	AA03817	Age 33
+BFI-0010016		SLE	21	F	African American	SLE Patient	M454-S018	AA02596	Age 21
+BFI-0010017		SLE	38	F	Caucasian	SLE Patient	M454-S019	AA04930	Age 38
+BFI-0010018		SLE	24	F	Caucasian	SLE Patient	M454-S020	AA03340	Age 24
+BFI-0010019		SLE	39	F	Asian	SLE Patient	M454-S021	AA05048	Age 39
+BFI-0010020		Rheumatic	25	M	Native American	Rheumatic Disease Patient	M454-S022	AA03328	Age 25
+BFI-0010021		Rheumatic	54	F	Caucasian	Rheumatic Disease Patient	M454-S023	AA02943	Age 54
+BFI-0010021		Rheumatic	54	F	Caucasian	Rheumatic Disease Patient	M454-S024	AA03233	Age 54
+BFI-0010022		Rheumatic	41	F	Native American	Rheumatic Disease Patient	M454-S025	AA01992	Age 41
+BFI-0010023		Sjogren syndrome	39	F	Caucasian	SS Patient	M454-S026	AA01996	Age 39
+BFI-0010023		Sjogren syndrome	39	F	Caucasian	SS Patient	M454-S027	AA00707	Age 36
+BFI-0010024		Healthy/Background	40	F	Caucasian	Unaffected Control	M454-S028	AA05105	Age 40
+BFI-0010025		Healthy/Background	58	F	Caucasian	Unaffected Control	M454-S029	AA02832	Age 58
+BFI-0010026		Healthy/Background	33	M	Caucasian	Unaffected Control	M454-S030	AA05110	Age 33
+BFI-0010027		SLE	34	F	Caucasian	SLE Patient	M454-S031	AA02013	Age 34
+BFI-0010028		Healthy/Background	67	F	Caucasian	Unaffected Control	M454-S032	AA02830	Age 67
+BFI-0010029		SLE	47	M	Caucasian	SLE Patient	M454-S033	AA01666	Age 47
+BFI-0010030		SLE	24	M	Native American + Caucasian	SLE Patient	M454-S034	AA00587	Age 24
+BFI-0010031		SLE	58	F	Caucasian	SLE Patient	M454-S035	AA01763	Age 58
+BFI-0010032		SLE	71	M	Caucasian	SLE Patient	M454-S036	AA02997	Age 71
+BFI-0010033		SLE	26	F	African American	SLE Patient	M454-S037	AA00870	Age 26
+BFI-0010033		SLE	26	F	African American	SLE Patient	M454-S038	AA01549	Age 28
+BFI-0010033		SLE	26	F	African American	SLE Patient	M454-S039	AA01209	Age 27
+BFI-0010034		SLE	64	F	Caucasian	SLE Patient	M454-S040	AA01458	Age 64
+BFI-0010034		SLE	64	F	Caucasian	SLE Patient	M454-S047	AA01458	Age 64
+BFI-0010035		SLE	51	F	African American	SLE Patient	M454-S041	AA00719	Age 51
+BFI-0010036		SLE	38	F	African American	SLE Patient	M454-S042	AA00985	Age 38
+BFI-0010037		MS	72	F	Caucasian	MS Patient	M454-S043	AA02671	Age 72
+BFI-0010038		MS	25	M	Caucasian	RRMS Patient	M454-S044	AA02402	Age 25
+BFI-0010039		MS	38	F	Caucasian	RRMS Patient	M454-S045	AA02387	Age 38
+BFI-0010040		SLE	68	F	Caucasian	SLE Patient	M454-S046	AA04577	Age 68
+BFI-0010040		SLE	68	F	Caucasian	SLE Patient	M454-S059	AA05584	Age 67
+BFI-0010041		SLE	35	F	Caucasian	SLE Patient	M454-S048	AA00576	Age 35
+BFI-0010042		SLE	42	F	Native American	SLE Patient	M454-S049	AA00151	Age 42
+BFI-0010042		SLE	42	F	Native American	SLE Patient	M454-S050	AA01438	Age 47
+BFI-0010043		SLE	65	F	Caucasian	SLE Patient	M454-S051	AA01495	Age 65
+BFI-0010044		SLE	68	F	Native American + Caucasian + Hispanic	SLE Patient	M454-S052	AA01451	Age 68
+BFI-0010045		RA	31	F	Caucasian	RA Patient	M454-S053	AA00081	Age 31
+BFI-0010045		RA	31	F	Caucasian	RA Patient	M454-S054	AA00463	Age 32
+BFI-0010046		SLE	43	F	Caucasian	SLE Patient	M454-S055	AA04995	Age 43
+BFI-0010047		Rheumatic	54	F	Native American	Rheumatic Disease Patient	M454-S056	AA03317	Age 54
+BFI-0010048		RA	58	F	Caucasian	RA Patient	M454-S057	AA05237	Age 58
+BFI-0010049		SLE	51	F	Caucasian	SLE Patient	M454-S058	AA05466	Age 51
+BFI-0010050		SLE	46	F	Caucasian	SLE Patient	M454-S060	AA05488	Age 46
+BFI-0010051		SLE	29	F	Caucasian	SLE Patient	M454-S017	AA01048	Age 29

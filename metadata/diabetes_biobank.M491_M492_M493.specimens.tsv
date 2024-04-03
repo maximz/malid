@@ -1,0 +1,170 @@
+participant_label	participant_alternative_label	disease	age	sex	ethnicity	participant_description	specimen_label	specimen_alternative_label	specimen_description	specimen_time_point
+BFI-0010650	35453-214	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S001	214	pre Covid
+BFI-0010651	35453-266	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S002	266	during or after Covid
+BFI-0010652	35453-244	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S003	244	during or after Covid
+BFI-0010653	35453-270	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S004	270	during or after Covid
+BFI-0010654	35453-217	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S005	217	pre Covid
+BFI-0010655	35453-226	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S006	226	pre Covid
+BFI-0010656	35453-250	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S007	250	during or after Covid
+BFI-0010657	35453-286	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S008	286	during or after Covid
+BFI-0010658	35453-231	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S009	231	during or after Covid
+BFI-0010659	35453-332	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; TBD - AutoAb negative	M491-S010	332	during or after Covid
+BFI-0010660	35453-263	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; unknown	M491-S011	263-1	during or after Covid
+BFI-0010660	35453-263	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; unknown	M491-S012	263-2	during or after Covid
+BFI-0010661	35453-220	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S013	220	pre Covid
+BFI-0010662	35453-241	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; AutoAb negative	M491-S014	241	during or after Covid
+BFI-0010663	35453-341	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S015	341	during or after Covid
+BFI-0010664	35453-234	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S016	234	during or after Covid
+BFI-0010665	35453-026	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S017	26	pre Covid
+BFI-0010666	35453-013	T1D				Diabetes 35453-study biobank: adult; TID	M491-S018	13	pre Covid
+BFI-0010667	35453-025	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S019	25	pre Covid
+BFI-0010668	35453-316	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S020	316-2	during or after Covid
+BFI-0010668	35453-316	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S166	316-1	during or after Covid
+BFI-0010669	35453-224	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S021	224	pre Covid
+BFI-0010670	35453-264	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; AutoAb negative - likely T2D	M491-S022	264-1	during or after Covid
+BFI-0010670	35453-264	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; AutoAb negative - likely T2D	M491-S027	264-2	during or after Covid
+BFI-0010671	35453-281	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S023	281	during or after Covid
+BFI-0010672	35453-218	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S024	218	pre Covid
+BFI-0010673	35453-275	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S025	275-1	during or after Covid
+BFI-0010673	35453-275	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S122	275-2	during or after Covid
+BFI-0010674	35453-033	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S026	33	pre Covid
+BFI-0010675	35453-003	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S028	3	pre Covid
+BFI-0010676	35453-031	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S029	31	pre Covid
+BFI-0010677	35453-280	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S030	280	during or after Covid
+BFI-0010678	35453-330	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; TBD - AutoAb negative	M491-S031	330-2	during or after Covid
+BFI-0010678	35453-330	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; TBD - AutoAb negative	M491-S110	330-1	during or after Covid
+BFI-0010679	35453-333	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S032	333	during or after Covid
+BFI-0010680	35453-271	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S033	271	during or after Covid
+BFI-0010681	35453-228	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S034	228	during or after Covid
+BFI-0010682	35453-062	Healthy/Background				Diabetes 35453-study biobank: adult; control subject	M491-S035	62	during or after Covid
+BFI-0010683	35453-049	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S036	49	during or after Covid
+BFI-0010684	35453-221	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S037	221	pre Covid
+BFI-0010685	35453-308	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S038	308	during or after Covid
+BFI-0010686	35453-201	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S039	201	pre Covid
+BFI-0010687	35453-010	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S040	10	pre Covid
+BFI-0010688	35453-227	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S041	227	pre Covid
+BFI-0010689	35453-290	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S042	290	during or after Covid
+BFI-0010690	35453-219	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S043	219	pre Covid
+BFI-0010691	35453-248	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S044	248	during or after Covid
+BFI-0010692	35453-012	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S045	12	pre Covid
+BFI-0010693	35453-229	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S046	229	during or after Covid
+BFI-0010694	35453-239	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S047	239	during or after Covid
+BFI-0010695	35453-211	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S048	211	pre Covid
+BFI-0010696	35453-202	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S049	202-1	pre Covid
+BFI-0010696	35453-202	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S127	202-2	pre Covid
+BFI-0010697	35453-069	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S050	69	during or after Covid
+BFI-0010698	35453-209	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S051	209	pre Covid
+BFI-0010699	35453-210	T1D				Diabetes 35453-study biobank: pediatric; TID	M491-S052	210	pre Covid
+BFI-0010700	35453-343	T1D				Diabetes 35453-study biobank: pediatric; TID	M491-S053	343	during or after Covid
+BFI-0010701	35453-293	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S054	293	during or after Covid
+BFI-0010702	35453-295	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S055	295	during or after Covid
+BFI-0010703	35453-007	unknown (diabetes biobank)				Diabetes 35453-study biobank: adult; At-risk FDR of T1D	M491-S056	007-2	pre Covid
+BFI-0010703	35453-007	unknown (diabetes biobank)				Diabetes 35453-study biobank: adult; At-risk FDR of T1D	M491-S168	007-1	pre Covid
+BFI-0010704	35453-014	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S057	14	pre Covid
+BFI-0010705	35453-283	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S058	283	during or after Covid
+BFI-0010706	35453-259	monogenic diabetes				Diabetes 35453-study biobank: pediatric; monogenic	M491-S059	259-1	during or after Covid
+BFI-0010706	35453-259	monogenic diabetes				Diabetes 35453-study biobank: pediatric; monogenic	M491-S137	259-2	during or after Covid
+BFI-0010707	35453-070	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S060	70	during or after Covid
+BFI-0010708	35453-045	unknown (diabetes biobank)				Diabetes 35453-study biobank: adult; Not stated in EPIC - possible monogenic?	M491-S061	045-2	during or after Covid
+BFI-0010708	35453-045	unknown (diabetes biobank)				Diabetes 35453-study biobank: adult; Not stated in EPIC - possible monogenic?	M491-S152	045-1	during or after Covid
+BFI-0010709	35453-306	Healthy/Background				Diabetes 35453-study biobank: pediatric; control subject	M491-S062	306	during or after Covid
+BFI-0010710	35453-249	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S063	249	during or after Covid
+BFI-0010711	35453-246	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S064	246	during or after Covid
+BFI-0010712	35453-019	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S065	19	pre Covid
+BFI-0010713	35453-225	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S066	225	pre Covid
+BFI-0010714	35453-208	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S067	208	pre Covid
+BFI-0010715	35453-022	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S068	22	pre Covid
+BFI-0010716	35453-213	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; At-risk non-progressor	M491-S069	213	pre Covid
+BFI-0010717	35453-052	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S070	52	during or after Covid
+BFI-0010718	35453-338	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S071	338	during or after Covid
+BFI-0010719	35453-310	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S072	310	during or after Covid
+BFI-0010720	35453-284	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S073	284	during or after Covid
+BFI-0010721	35453-287	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S074	287	during or after Covid
+BFI-0010722	35453-027	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S075	27	pre Covid
+BFI-0010723	35453-339	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S076	339	during or after Covid
+BFI-0010724	35453-243	T1D				Diabetes 35453-study biobank: pediatric; TID	M491-S077	243	during or after Covid
+BFI-0010725	35453-223	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S078	223	pre Covid
+BFI-0010726	35453-334	T1D				Diabetes 35453-study biobank: pediatric; TID	M491-S079	334	during or after Covid
+BFI-0010727	35453-260	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S080	260	during or after Covid
+BFI-0010728	35453-325	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S081	325	during or after Covid
+BFI-0010729	35453-205	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; subject 206? - at-risk non-progressor	M491-S082	205	pre Covid
+BFI-0010730	35453-067	T1D				Diabetes 35453-study biobank: adult; TID	M491-S083	67	during or after Covid
+BFI-0010731	35453-349	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; At-risk	M491-S084	349	during or after Covid
+BFI-0010732	35453-274	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S085	274-1	during or after Covid
+BFI-0010732	35453-274	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S101	274-2	during or after Covid
+BFI-0010733	35453-317	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S086	317	during or after Covid
+BFI-0010734	35453-030	T1D				Diabetes 35453-study biobank: adult; TID	M491-S087	30	pre Covid
+BFI-0010735	35453-055	Healthy/Background				Diabetes 35453-study biobank: adult; control subject	M491-S088	55	during or after Covid
+BFI-0010736	35453-345	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S089	345	during or after Covid
+BFI-0010737	35453-282	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S090	282	during or after Covid
+BFI-0010738	35453-305	T1D				Diabetes 35453-study biobank: pediatric; TID	M491-S091	305	during or after Covid
+BFI-0010739	35453-301	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S092	301	during or after Covid
+BFI-0010740	35453-004	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S093	4	pre Covid
+BFI-0010741	35453-327	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; TBD - AutoAb negative	M491-S094	327	during or after Covid
+BFI-0010742	35453-066	unknown (diabetes biobank)				Diabetes 35453-study biobank: adult; At-risk FDR of T1D	M491-S095	66	during or after Covid
+BFI-0010743	35453-311	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S096	311	during or after Covid
+BFI-0010744	35453-021	T1D				Diabetes 35453-study biobank: adult; TID	M491-S097	21	pre Covid
+BFI-0010745	35453-309	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S098	309	during or after Covid
+BFI-0010746	35453-318	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S099	318	during or after Covid
+BFI-0010747	35453-277	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S100	277	during or after Covid
+BFI-0010748	35453-253	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S102	253	during or after Covid
+BFI-0010749	35453-336	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S103	336	during or after Covid
+BFI-0010750	35453-320	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S104	320	during or after Covid
+BFI-0010751	35453-292	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S105	292	during or after Covid
+BFI-0010752	35453-279	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S106	279	during or after Covid
+BFI-0010753	35453-307	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S107	307	during or after Covid
+BFI-0010754	35453-314	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S108	314	during or after Covid
+BFI-0010755	35453-001	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S109	1	pre Covid
+BFI-0010756	35453-315	T1D				Diabetes 35453-study biobank: pediatric; TID	M491-S111	315	during or after Covid
+BFI-0010757	35453-289	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S112	289	during or after Covid
+BFI-0010758	35453-268	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S113	268	during or after Covid
+BFI-0010759	35453-061	unknown (diabetes biobank)				Diabetes 35453-study biobank: adult; treated as T2D but AutoAb positive	M491-S114	61	during or after Covid
+BFI-0010760	35453-258	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S115	258	during or after Covid
+BFI-0010761	35453-328	T1D				Diabetes 35453-study biobank: pediatric; T1D + coeliac	M491-S116	328	during or after Covid
+BFI-0010762	35453-041	T1D				Diabetes 35453-study biobank: adult; TID	M491-S117	41	during or after Covid
+BFI-0010763	35453-029	T1D				Diabetes 35453-study biobank: adult; TID	M491-S118	29	pre Covid
+BFI-0010764	35453-068	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S119	68	during or after Covid
+BFI-0010765	35453-051	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S120	51	during or after Covid
+BFI-0010766	35453-346	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S121	346	during or after Covid
+BFI-0010767	35453-276	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S123	276-2	during or after Covid
+BFI-0010767	35453-276	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S156	276-1	during or after Covid
+BFI-0010768	35453-053	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S124	53	during or after Covid
+BFI-0010769	35453-065	T1D				Diabetes 35453-study biobank: adult; TID	M491-S125	65	during or after Covid
+BFI-0010770	35453-050	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S126	50	during or after Covid
+BFI-0010771	35453-348	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S128	348	during or after Covid
+BFI-0010772	35453-032	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S129	32	pre Covid
+BFI-0010773	35453-071	unknown (diabetes biobank)				Diabetes 35453-study biobank: adult; TBD - AutoAb negative	M491-S130	71	during or after Covid
+BFI-0010774	35453-321	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S131	321	during or after Covid
+BFI-0010775	35453-300	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S132	300	during or after Covid
+BFI-0010776	35453-296	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S133	296	during or after Covid
+BFI-0010777	35453-323	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S134	323	during or after Covid
+BFI-0010778	35453-335	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S135	335	during or after Covid
+BFI-0010779	35453-291	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S136	291	during or after Covid
+BFI-0010780	35453-298	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S138	298	during or after Covid
+BFI-0010781	35453-322	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S139	322	during or after Covid
+BFI-0010782	35453-059	T2D				Diabetes 35453-study biobank: adult; T2D	M491-S140	59	during or after Covid
+BFI-0010783	35453-215	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S141	215	pre Covid
+BFI-0010784	35453-272	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; At-risk	M491-S142	272	during or after Covid
+BFI-0010785	35453-302	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; please double check this subject ID	M491-S143	302	during or after Covid
+BFI-0010786	35453-064	unknown (diabetes biobank)				Diabetes 35453-study biobank: adult; At-risk FDR of T1D	M491-S144	64	during or after Covid
+BFI-0010787	35453-057	T1D				Diabetes 35453-study biobank: adult; T1D	M491-S145	57	during or after Covid
+BFI-0010788	35453-303	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S146	303	during or after Covid
+BFI-0010789	35453-254	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S147	254	during or after Covid
+BFI-0010790	35453-326	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S148	326	during or after Covid
+BFI-0010791	35453-342	T1D				Diabetes 35453-study biobank: pediatric; T1D + coeliac	M491-S149	342	during or after Covid
+BFI-0010792	35453-056	T1D				Diabetes 35453-study biobank: adult; TID	M491-S150	56	during or after Covid
+BFI-0010793	35453-058	unknown (diabetes biobank)				Diabetes 35453-study biobank: adult; At-risk FDR of T1D	M491-S151	58	during or after Covid
+BFI-0010794	35453-337	T1D				Diabetes 35453-study biobank: pediatric; TID	M491-S153	337	during or after Covid
+BFI-0010795	35453-299	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S154	299	during or after Covid
+BFI-0010796	35453-273	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S155	273	during or after Covid
+BFI-0010797	35453-331	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; TBD - AutoAb negative	M491-S157	331	during or after Covid
+BFI-0010798	35453-350	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S158	350	during or after Covid
+BFI-0010799	35453-329	unknown (diabetes biobank)				Diabetes 35453-study biobank: pediatric; TBD - AutoAb negative	M491-S159	329	during or after Covid
+BFI-0010800	35453-344	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S160	344	during or after Covid
+BFI-0010801	35453-024	T1D				Diabetes 35453-study biobank: adult; TID	M491-S161	24	pre Covid
+BFI-0010802	35453-340	T1D				Diabetes 35453-study biobank: pediatric; T1D + coeliac	M491-S162	340	during or after Covid
+BFI-0010803	35453-294	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S163	294	during or after Covid
+BFI-0010804	35453-297	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S164	297	during or after Covid
+BFI-0010805	35453-324	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S165	324	during or after Covid
+BFI-0010806	35453-269	T1D				Diabetes 35453-study biobank: pediatric; T1D	M491-S167	269	during or after Covid
+BFI-0010807	35453-319	T2D				Diabetes 35453-study biobank: pediatric; T2D	M491-S169	319	during or after Covid

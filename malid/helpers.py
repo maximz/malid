@@ -1,30 +1,24 @@
 import logging
 from functools import cache
-from typing import Dict, List
+from typing import Dict, List, Union
 
-import anndata
 import numpy as np
 import pandas as pd
+import re
 import scanpy as sc
 import seaborn as sns
 from genetools.palette import HueValueStyle
 
 from malid import config
 from malid.datamodels import (
+    DataSource,
     GeneLocus,
     TargetObsColumnEnum,
-    healthy_label,
+    GeneralAnndataType,
+    diseases,
 )
 
 logger = logging.getLogger(__name__)
-
-# Update this with new diseases:
-diseases = [
-    "Covid19",
-    "HIV",
-    healthy_label,
-    "Lupus",
-]
 
 disease_color_palette = {
     disease: color for disease, color in zip(diseases, sc.plotting.palettes.default_20)
@@ -42,13 +36,20 @@ cdr3_segment_name: Dict[GeneLocus, str] = {
 # (Verified for completeness by automated tests.)
 # The colors for batches of each disease are chosen to be similar. See https://colorhunt.co/palettes/blue
 study_name_color_palette = {
-    "Covid19-Stanford": "#0078AA",
     "Covid19-Seattle": "#1F4690",
+    "Covid19-Stanford": "#0078AA",
     "Covid19-buffycoat": "#FC0394",
+    "Diabetes biobank": "#8B008B",
+    "Flu vaccine UPenn 2021": "#8A2BE2",
     "HIV": "#ff7f0e",
     "Healthy-StanfordBloodCenter": HueValueStyle(
         color="#279e68", zorder=-15, alpha=0.5
     ),
+    "Healthy-StanfordBloodCenter_included-in-resequencing": HueValueStyle(
+        color="#ffd700", zorder=-15, alpha=0.5
+    ),
+    "IBD post-pandemic Gubatan": "#3CB371",
+    "IBD pre-pandemic Yoni": "#20B2AA",
     "Lupus": "#d62728",
     "Lupus Pediatric": "#aa40fc",
     "New Lupus RNA": "#E4CAC6",
@@ -94,8 +95,7 @@ def all_observed_v_genes() -> Dict[GeneLocus, np.ndarray]:
     """
     return {
         gene_locus: pd.read_csv(
-            config.paths.dataset_specific_metadata
-            / f"all_v_genes.in_order.{gene_locus.name}.txt"
+            config.paths.metadata_dir / f"all_v_genes.in_order.{gene_locus.name}.txt"
         )["v_gene"].values
         for gene_locus in GeneLocus
     }
@@ -110,8 +110,7 @@ def all_observed_j_genes() -> Dict[GeneLocus, np.ndarray]:
     """
     return {
         gene_locus: pd.read_csv(
-            config.paths.dataset_specific_metadata
-            / f"all_j_genes.in_order.{gene_locus.name}.txt"
+            config.paths.metadata_dir / f"all_j_genes.in_order.{gene_locus.name}.txt"
         )["j_gene"].values
         for gene_locus in GeneLocus
     }
@@ -121,7 +120,7 @@ def all_observed_j_genes() -> Dict[GeneLocus, np.ndarray]:
 
 
 # TODO: this should be a helper method on a Repertoire subclass of AnnData in datamodels.py.
-def should_switch_to_raw(repertoire: anndata.AnnData):
+def should_switch_to_raw(repertoire: GeneralAnndataType):
     # if target is not the happy path ("disease" / "disease.separate_past_exposures"), we should re-scale the data from raw, because we are starting from a subset of specimens
     # this is recorded if/when we perform subsetting.
     return repertoire.uns.get("adata_was_subset_should_switch_to_raw", False)
@@ -138,7 +137,7 @@ def get_obs_column_list_with_target_obs_column_included(
 
 
 # TODO: this should be a helper method on a Repertoire subclass of AnnData in datamodels.py.
-def confirm_all_sequences_from_same_specimen(repertoire: anndata.AnnData):
+def confirm_all_sequences_from_same_specimen(repertoire: GeneralAnndataType):
     if repertoire.obs["specimen_label"].nunique() != 1:
         raise ValueError(
             "All sequences must come from one single repertoire, i.e. one specimen_label."
@@ -147,7 +146,12 @@ def confirm_all_sequences_from_same_specimen(repertoire: anndata.AnnData):
 
 
 # TODO: this should be a helper method on a Repertoire subclass of AnnData in datamodels.py.
-def anndata_groupby_obs(adata: anndata.AnnData, *groupby_args, **groupby_kwargs):
+def anndata_groupby_obs(
+    adata: GeneralAnndataType,
+    *groupby_args,
+    return_copies: bool = False,
+    **groupby_kwargs,
+):
     """
     Do a groupby on anndata obs, and return anndata chunks
 
@@ -155,9 +159,14 @@ def anndata_groupby_obs(adata: anndata.AnnData, *groupby_args, **groupby_kwargs)
     Imagine an anndata with 2 rows with obs "patient = A" and 3 rows with obs "patient = B"
     Call e.g. anndata_groupby_obs(adata, 'patient', observed=True, sort=False)
     This returns ('A', adata[adata.obs['patient'] == 'A']), ('B', adata[adata.obs['patient'] == 'B']) as a generator.
+
+    If return_copies is True (default False), returns copied anndatas instead of views.
     """
     for key, grp in adata.obs.groupby(*groupby_args, **groupby_kwargs):
-        yield key, adata[grp.index, :]
+        if return_copies:
+            yield key, adata[grp.index, :].copy()
+        else:
+            yield key, adata[grp.index, :]
 
 
 def get_specimen_info(specimen_label):
@@ -175,8 +184,8 @@ def get_specimens_for_participant(participant_label):
 def get_all_specimen_cv_fold_info():
     """get cross validation info for each specimen. based on get_all_specimen_info() but supplemented."""
     df = pd.read_csv(
-        config.paths.dataset_specific_metadata
-        / "cross_validation_divisions.specimens.tsv",
+        config.paths.dataset_specific_metadata_for_selected_cross_validation_strategy
+        / "cross_validation_divisions.specimens.tsv.gz",
         sep="\t",
     )
     return df
@@ -201,10 +210,12 @@ def get_test_fold_id_for_each_specimen():
     return df.set_index("specimen_label")["fold_id"].rename("test_fold_id")
 
 
-def get_specimens_in_one_cv_fold(fold_id: int, fold_label: str):
+def get_specimens_in_one_cv_fold(fold_id: int, fold_label: str) -> pd.Series:
     """get specimens in a particular cross validation fold. based on get_all_specimen_cv_fold_info()."""
     df = get_all_specimen_cv_fold_info()
-    return df[(df["fold_id"] == fold_id) & (df["fold_label"] == fold_label)].copy()
+    return df[(df["fold_id"] == fold_id) & (df["fold_label"] == fold_label)][
+        "specimen_label"
+    ]
 
 
 @cache
@@ -215,61 +226,54 @@ def get_all_specimen_info(add_cv_fold_information=True):
 
     explanation of some columns:
     - survived_filters: is this a valid specimen with sufficient number of sequences and all isotypes present
-    - is_peak: was this specimen selected for inclusion in the training set by virtue of being at a peak time point?
-    - in_training_set: was this specimen actually included in the training set?
+    - is_selected_for_cv_strategy: was this specimen selected for inclusion in the training set by virtue of being at a peak time point (or similar criteria for whichever cross-validation split strategy is active)?
+    - in_training_set: was this specimen actually included in the training set? defined as survived_filters AND is_selected_for_cv_strategy
 
-    note that in_training_set implies (is_peak and survived_filters), but is_peak does not imply in_training_set.
+    note that in_training_set implies (is_selected_for_cv_strategy and survived_filters), but is_selected_for_cv_strategy does not imply in_training_set.
     the reason for this is that we skip certain specimens with not enough sequences or not all isotypes present
-    we attempt to include all is_peak specimens, but eventually we have an anndata with only the in_training_set specimens.
-    so in_training_set is basically "is_peak and is valid"
+    we attempt to include all is_selected_for_cv_strategy specimens, but eventually we have an anndata with only the in_training_set specimens.
+    so in_training_set is basically "is_selected_for_cv_strategy and is valid"
     """
     # Key metadata values stored in anndata obs
     df = pd.read_csv(
         config.paths.dataset_specific_metadata / "participant_specimen_disease_map.tsv",
         sep="\t",
-    ).assign(cohort="Boydlab")
+    )
 
     # Load study_name (required), has_BCR/has_TCR (required), and metadata (where available) for all specimens
     # Also replace some of the anndata obs metadata values, which may be stale
     # (Easier to update _load_etl_metadata()'s contents than to regenerate all anndatas)
+    etl_metadata = _load_etl_metadata()
     df = pd.merge(
         df.drop(columns=["participant_age", "disease_subtype"]),
         # To update the below list, make sure to update _load_etl_metadata()
         # Also when updating this list, register anything we want to use in io.load_fold_embeddings too.
-        _load_etl_metadata()[
+        etl_metadata[
             [
+                "data_source",
                 "study_name",
                 "available_gene_loci",
                 # Overrides:
                 "disease_subtype",
                 "age",
-                "participant_label_override",
-                "specimen_time_point_override",
-                # Metadata:
+                # New metadata:
                 "sex",
                 "ethnicity_condensed",
                 "age_group",
                 "age_group_binary",
                 "age_group_pediatric",
-                "cmv",
                 "disease_severity",
+                "specimen_description",
             ]
+            # also include symptoms_* columns
+            + list(
+                etl_metadata.columns[etl_metadata.columns.str.startswith("symptoms_")]
+            )
         ],
         left_on="specimen_label",
         right_index=True,
         how="left",
         validate="1:1",
-    )
-    # Override some variables, as in etl.ipynb
-    df["participant_label"] = df["participant_label_override"].fillna(
-        df["participant_label"]
-    )
-    df["specimen_time_point"] = df["specimen_time_point_override"].fillna(
-        df["specimen_time_point"]
-    )
-    df.drop(
-        columns=["participant_label_override", "specimen_time_point_override"],
-        inplace=True,
     )
 
     # Confirm all specimens have study_name annotations
@@ -280,36 +284,38 @@ def get_all_specimen_info(add_cv_fold_information=True):
     # Extract days since symptom onset from timepoint field, where possible
     # Will be NaN for many specimens
     df["specimen_time_point_days"] = pd.Series(dtype=float)  # float is nullable
-    # find "day" containing strings. fillna for anything that is not a string.
-    mask_days = df["specimen_time_point"].str.contains("day").fillna(False)
-    # extract digits from "day" containing strings
-    extracted_days = (
-        df.loc[mask_days, "specimen_time_point"]
-        .str.extract("(\d+)", expand=False)
-        .astype(int)
-    )
-    # confirm correct type
-    if type(extracted_days) != pd.Series:
-        raise ValueError(
-            "Failed to extract days from specimen_time_point: regex extract produced DataFrame, not Series"
+    if hasattr(df["specimen_time_point"], "str"):
+        # find "day" containing strings. fillna for anything that is not a string.
+        # (skip if specimen_time_point is not an object or string Series, e.g. if it's a float Series of all NaN)
+        mask_days = df["specimen_time_point"].str.contains("day").fillna(False)
+        # extract digits from "day" containing strings
+        extracted_days = (
+            df.loc[mask_days, "specimen_time_point"]
+            .str.extract("(\d+)", expand=False)
+            .astype(int)
         )
-    # set extracted days column
-    df.loc[mask_days, "specimen_time_point_days"] = extracted_days
-    # special case
-    df.loc[df["specimen_time_point"] == "00:00:00", "specimen_time_point_days"] = 0
+        # confirm correct type
+        if type(extracted_days) != pd.Series:
+            raise ValueError(
+                "Failed to extract days from specimen_time_point: regex extract produced DataFrame, not Series"
+            )
+        # set extracted days column
+        df.loc[mask_days, "specimen_time_point_days"] = extracted_days
+        # special case
+        df.loc[df["specimen_time_point"] == "00:00:00", "specimen_time_point_days"] = 0
 
-    # not all is_peak specimens actually make it into the embedding anndatas (see docstring for more details)
+    # not all is_selected_for_cv_strategy specimens actually make it into the embedding anndatas (see docstring for more details)
     # label the ones that do survive
-    specimens_kept_in_embedding_anndatas = pd.read_csv(
+    specimens_that_survived_qc_filters_in_sample_sequences_notebook = pd.read_csv(
         config.paths.dataset_specific_metadata
-        / "specimens_kept_in_embedding_anndatas.tsv",
+        / "specimens_that_survived_qc_filters_in_sample_sequences_notebook.tsv",
         sep="\t",
     )
     df = pd.merge(
         df,
-        specimens_kept_in_embedding_anndatas[["specimen_label"]].assign(
-            survived_filters=True
-        ),
+        specimens_that_survived_qc_filters_in_sample_sequences_notebook[
+            ["specimen_label"]
+        ].assign(survived_filters=True),
         on="specimen_label",
         how="left",
     )
@@ -320,35 +326,69 @@ def get_all_specimen_info(add_cv_fold_information=True):
 
     # Choose some "pure" specimens for the peak-timepoints-only training set
     # For most diseases, select specific disease-subtypes only. But for certain diseases, keep all their subtypes.
-    df["is_peak"] = (df["disease_subtype"].isin(config.subtypes_keep)) | (
-        df["disease"].isin(config.diseases_to_keep_all_subtypes)
-    )
-    # Refine peak further for some study names
-    # TODO: do we need a .copy() before the .groupby because we'll be editing as we go?
-    for study_name, grp in df[(df["survived_filters"]) & (df["is_peak"])].groupby(
-        "study_name", observed=True
-    ):
-        filtering_function_for_this_study_name = (
-            config.study_names_with_special_peak_timepoint_filtering.get(
-                study_name, None
+    df["is_selected_for_cv_strategy"] = (
+        df["data_source"].isin(
+            # Note: _load_etl_metadata sets data_source field to be a DataSource enum value, not the string name
+            # Accordingly, data_sources_keep is a list of DataSource enum values, not their string names
+            config.cross_validation_split_strategy.value.data_sources_keep
+        )
+        & (
+            (
+                df["disease_subtype"].isin(
+                    config.cross_validation_split_strategy.value.subtypes_keep
+                )
             )
+            | (
+                df["disease"].isin(
+                    config.cross_validation_split_strategy.value.diseases_to_keep_all_subtypes
+                )
+            )
+        )
+        & (
+            ~df["study_name"].isin(
+                config.cross_validation_split_strategy.value.exclude_study_names
+            )
+        )
+    )
+
+    # Refine is_selected_for_cv_strategy further for some study names
+    # TODO: do we need a .copy() before the .groupby because we'll be editing as we go?
+    for study_name, grp in df[
+        (df["survived_filters"]) & (df["is_selected_for_cv_strategy"])
+    ].groupby("study_name", observed=True):
+        filtering_function_for_this_study_name = config.cross_validation_split_strategy.value.filter_specimens_func_by_study_name.get(
+            study_name, None
         )
 
         if filtering_function_for_this_study_name is None:
-            # No filtering function for this study_name, so keep all is_peak specimens as is
+            # No filtering function for this study_name, so keep all is_selected_for_cv_strategy specimens as is
             continue
 
-        # Reset is_peak
-        df.loc[grp.index, "is_peak"] = False
+        # Reset is_selected_for_cv_strategy
+        df.loc[grp.index, "is_selected_for_cv_strategy"] = False
 
-        # Update is_peak
-        new_is_peak_subset = filtering_function_for_this_study_name(grp)
-        df.loc[new_is_peak_subset, "is_peak"] = True
+        # Update is_selected_for_cv_strategy
+        new_selected_for_cv_strategy_subset = filtering_function_for_this_study_name(
+            grp
+        )
+        df.loc[
+            new_selected_for_cv_strategy_subset, "is_selected_for_cv_strategy"
+        ] = True
 
-    # compute in_training_set = is_peak and survived_filters
-    df["in_training_set"] = df["survived_filters"] & df["is_peak"]
+    # Refine is_selected_for_cv_strategy further if any filter_specimens_funcs_global are defined
+    for (
+        filtering_function
+    ) in config.cross_validation_split_strategy.value.filter_out_specimens_funcs_global:
+        # Get index that this filtering function would keep
+        kept_index = filtering_function(df)
+        # Disable is_selected_for_cv_strategy for anything NOT in that index.
+        # Note that if something was already False due to previous filters, it will stay False.
+        df.loc[~df.index.isin(kept_index), "is_selected_for_cv_strategy"] = False
 
-    for col in ["is_peak", "survived_filters", "in_training_set"]:
+    # compute in_training_set = is_selected_for_cv_strategy and survived_filters
+    df["in_training_set"] = df["survived_filters"] & df["is_selected_for_cv_strategy"]
+
+    for col in ["is_selected_for_cv_strategy", "survived_filters", "in_training_set"]:
         if df[col].isna().any():
             raise ValueError(f"Some specimens don't have a value for {col} column.")
 
@@ -373,11 +413,111 @@ def get_all_specimen_info(add_cv_fold_information=True):
     return df
 
 
+def enrich_metadata(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Given a metadata dataframe with a specimen_label index, add any additional metadata columns that are available.
+    Will match on all other columns that are already present in df, and will throw error if there are any conflicts, detected by pandas merge validation and differences in final shape.
+    """
+    # We are enriching one dataframe with additional columns from another
+    # Using all common columns as merge keys will align the data correctly. pandas will automatically handle the merging of these columns without creating duplicates.
+
+    # Input dataframe df should be indexed by specimen_label (we will set this name for the index ourselves just in case) and there should be no other specimen_label column:
+    if "specimen_label" in df.columns:
+        raise ValueError(
+            "Input dataframe should not have a specimen_label column. It should be indexed by specimen_label."
+        )
+
+    # contains specimen_label column, but not indexed by it:
+    df_enriched = get_all_specimen_info()
+
+    # first we are going to extract the index as a column
+    df_input_reset_index = df.rename_axis(index="specimen_label").reset_index()
+    # find common columns
+    common_cols = list(
+        set(df_input_reset_index.columns).intersection(df_enriched.columns)
+    )
+    # this should include specimen_label: sanity check
+    if "specimen_label" not in common_cols:
+        raise ValueError(
+            "Enrich operation failed: both dataframes should list specimen_label."
+        )
+
+    # Merge
+    merged = pd.merge(
+        df_input_reset_index, df_enriched, on=common_cols, how="left", validate="1:1"
+    )
+
+    # Confirm no shape change
+    if merged.shape[0] != df.shape[0]:
+        raise ValueError(
+            "Enrich operation failed: shape changed after merge. This suggests that values of common columns didn't match."
+        )
+
+    # Reindex by specimen_label and return in original order
+    return merged.set_index("specimen_label").loc[df.index]
+
+
 def _load_etl_metadata():
-    df = pd.read_csv(
-        config.paths.metadata_dir / "generated_combined_specimen_metadata.tsv",
-        sep="\t",
-    ).set_index("specimen_label")
+    df = pd.concat(
+        [
+            pd.read_csv(
+                fname,
+                sep="\t",
+            ).assign(data_source=data_source)
+            # note: data_source field will be a DataSource enum value, not the string name
+            for (fname, data_source) in [
+                (
+                    config.paths.metadata_dir
+                    / "generated_combined_specimen_metadata.tsv",
+                    DataSource.in_house,
+                ),
+                (
+                    config.paths.metadata_dir
+                    / "adaptive"
+                    / "generated.adaptive_external_cohorts.tsv",
+                    DataSource.adaptive,
+                ),
+                (
+                    config.paths.metadata_dir / "generated.external_cohorts.tsv",
+                    DataSource.external_cdna,
+                ),
+            ]
+        ],
+        axis=0,
+    ).reset_index(drop=True)
+    # At this point, specimen_label is still the original specimen_label that matches the raw participant table.
+    # We need to replace it with the specimen_label that matches the processed sequences, after consolidation of fractions (e.g. CD4 and CD8) from the same specimen.
+    for col in [
+        "participant_label",
+        "specimen_label",
+        "specimen_time_point",
+        "amplification_label",
+        "replicate_label",
+    ]:
+        if col in df and f"{col}_override" in df.columns:
+            was_a_category = pd.api.types.is_categorical_dtype(df[col])
+            df[col] = df[f"{col}_override"].fillna(df[col])
+            if was_a_category:
+                # make it a category again
+                df[col] = df[col].astype("category")
+            df.drop(columns=[f"{col}_override"], inplace=True)
+
+    # Now, it's possible that we have multiple entries per specimen.
+    # Example one: if a specimen has multiple cell type fractions, we will have a CD4 replicate and a CD8 replicate.
+    # Example two: if a specimen is resequenced entirely from scratch, we will have a new amplification_label for this specimen.
+    if df["specimen_label"].duplicated().any():
+        # The entries for each specimen might have different amplification_label, replicate_label, and cell_type column values
+        # We'll just take the first entry for each specimen, and drop those columns if they exist
+        df = (
+            df.groupby("specimen_label")
+            .head(n=1)
+            .drop(
+                columns=["amplification_label", "replicate_label", "cell_type"],
+                errors="ignore",
+            )
+        )
+
+    df = df.set_index("specimen_label")
 
     def _get_colname(gene_locus: GeneLocus):
         return f"has_{gene_locus.name}"
@@ -412,6 +552,23 @@ def _load_etl_metadata():
         axis=1,
     )
 
+    # Special case: Fix study_name for Immunecode
+    # We kept it as "immunecode" for the ETL pipeline because all samples are stored under an "immunecode" folder
+    # But this is actually a set of studies from different sample sources
+    immunecode_mask = df["study_name"] == "immunecode"
+    df.loc[immunecode_mask, "study_name"] = df[immunecode_mask]["disease_subtype"].map(
+        {
+            "COVID-19-HUniv12Oct - Hospitalized": "immunecode-HUniv",
+            "COVID-19-HUniv12Oct": "immunecode-HUniv",
+            "COVID-19-HUniv12Oct - Hospitalized - ICU": "immunecode-HUniv",
+            "COVID-19-ISB": "immunecode-ISB",
+            "COVID-19-NIH/NIAID - Hospitalized - ICU": "immunecode-NIH",
+            "COVID-19-NIH/NIAID - Hospitalized": "immunecode-NIH",
+        }
+    )
+    # Confirm all study_name were set
+    assert not df[immunecode_mask]["study_name"].isna().any()
+
     # age_group deciles already created, but let's make age_group_binary too
     df.loc[df["age"] < 50, "age_group_binary"] = "under 50"
     df.loc[df["age"] >= 50, "age_group_binary"] = "50+"
@@ -421,28 +578,44 @@ def _load_etl_metadata():
     assert all(df["age_group"].isna() == df["age_group_binary"].isna())  # sanity check
 
     # same for age_group_pediatric, which is a +/- 18 years old binary variable
-    df.loc[df["age"] < 18, "age_group_pediatric"] = "under 18"
-    df.loc[df["age"] >= 18, "age_group_pediatric"] = "18+"
-    df.loc[
-        df["age_group"].isna(), "age_group_pediatric"
-    ] = np.nan  # age_group is specially nulled out for rare extreme ages
-    assert all(
-        df["age_group"].isna() == df["age_group_pediatric"].isna()
-    )  # sanity check
+    adult_age_group_str = "18+"
+    child_age_group_str = "under 18"
+    df.loc[df["age"] < 18, "age_group_pediatric"] = child_age_group_str
+    df.loc[df["age"] >= 18, "age_group_pediatric"] = adult_age_group_str
 
-    # Create a "defined CMV status" subset
-    # Note: "specimens with defined CMV status" is a subset of "healthy controls with known age/sex/ethnicity" dataset
-    # All other healthy control subsets and all other cohorts will have cmv status NaN
-    df["cmv"] = df["disease_subtype"].map(
+    # age_group was specially nulled out for rare extreme ages.
+    # apply the same filter to age_group_pediatric.
+    df.loc[df["age_group"].isna(), "age_group_pediatric"] = np.nan
+    # sanity check
+    assert all(df["age_group"].isna() == df["age_group_pediatric"].isna())
+
+    # Special case of age_group_pediatric setting logic:
+    # We know adult/child for diabetes cohort, but not specific ages for many patients
+    # So we will set age_group_pediatric but not the rest.
+    # (However, we do know ages for some patients. Sometimes they contradict the adult/child label, so we will not change age_group_pediatric for those patients.)
+    in_house_diabetes_with_unknown_age_mask = (
+        (df["disease"] == "T1D")
+        & (df["data_source"] == DataSource.in_house)
+        & (df["age"].isna())
+    )
+    df.loc[in_house_diabetes_with_unknown_age_mask, "age_group_pediatric"] = df[
+        in_house_diabetes_with_unknown_age_mask
+    ]["disease_subtype"].map(
         {
-            "Healthy/Background - CMV Negative": "CMV-",
-            "Healthy/Background - CMV Positive": "CMV+",
+            "T1D - adult": adult_age_group_str,
+            "T1D - pediatric": child_age_group_str,
         }
+    )
+    # Confirm all age_group_pediatric were set
+    assert (
+        not df[in_house_diabetes_with_unknown_age_mask]["age_group_pediatric"]
+        .isna()
+        .any()
     )
 
     # Define disease severity
-    # For now this is only defined for Covid-19
-    # All other Covid subtypes and all other cohorts will have disease_severity nan
+    # For now this is only defined for some Covid-19 and some Lupus subtypes
+    # All other Covid/Lupus subtypes and all other cohorts will have disease_severity nan
     df["disease_severity"] = df["disease_subtype"].map(
         {
             "Covid19 - Sero-negative (ICU)": "ICU",
@@ -451,30 +624,59 @@ def _load_etl_metadata():
             "Covid19 - Sero-positive (Admit)": "Admit",
             "Covid19 - Admit": "Admit",
             "Covid19 - ICU": "ICU",
+            "Pediatric SLE - nephritis": "Nephritis",
+            "Pediatric SLE - no nephritis": "No nephritis",
+            # Some subtypes of the adult lupus cohorts have nephritis tags:
+            "SLE Multiple aAbs / SLE dsDNA WITH Nephritis": "Nephritis",
+            "SLE Multiple aAbs / SLE dsDNA WITHOUT Nephritis": "No nephritis",
+            "SLE One aAbs / SLE dsDNA WITH Nephritis": "Nephritis",
+            "SLE One aAbs / SLE dsDNA WITHOUT Nephritis": "No nephritis",
         }
     )
-    # confirm we have Covid severity for the two desired study_names
+
+    # sanity checks: confirm we have severity for the desired study_names, and nowhere else
+    expected_study_names_with_severity_set_for_all = [
+        "Covid19-buffycoat",
+        "Covid19-Stanford",
+        "Lupus Pediatric",
+    ]
+    expected_study_names_with_severity_set_for_some = [
+        "Lupus",
+    ]
+
     assert (
-        not df[df["study_name"].isin(["Covid19-buffycoat", "Covid19-Stanford"])][
+        not df[df["study_name"].isin(expected_study_names_with_severity_set_for_all)][
             "disease_severity"
         ]
         .isna()
         .any()
-    ), "Disease severity should not be NaN for Covid19-buffycoat and Covid19-Stanford specimens"
+    ), f"Disease severity should not be NaN for any specimens with study_name in {expected_study_names_with_severity_set_for_all}"
+
+    available_study_names = df["study_name"].unique()
+    for study_name in set(expected_study_names_with_severity_set_for_some).intersection(
+        available_study_names
+    ):
+        assert (
+            not df[df["study_name"] == study_name]["disease_severity"].isna().all()
+        ), f"Disease severity should not be NaN for all specimens with study_name == {study_name}"
+
     assert (
-        df[~df["study_name"].isin(["Covid19-buffycoat", "Covid19-Stanford"])][
-            "disease_severity"
-        ]
+        df[
+            ~df["study_name"].isin(
+                expected_study_names_with_severity_set_for_all
+                + expected_study_names_with_severity_set_for_some
+            )
+        ]["disease_severity"]
         .isna()
         .all()
-    ), "Disease severity should be NaN except for Covid19-buffycoat and Covid19-Stanford specimens"
+    ), f"Disease severity should be NaN except for specimens with study_name in {expected_study_names_with_severity_set_for_all} or {expected_study_names_with_severity_set_for_some}"
 
     return df
 
 
 # TODO: these should be helper methods on a Repertoire subclass of AnnData in datamodels.py.
 def extract_specimen_metadata_from_anndata(
-    adata: anndata.AnnData,
+    adata: GeneralAnndataType,
     gene_locus: GeneLocus,
     target_obs_column: TargetObsColumnEnum,
 ):
@@ -493,7 +695,6 @@ def extract_specimen_metadata_from_obs_df(
         "disease_subtype",
         "disease.separate_past_exposures",
         "disease.rollup",
-        "participant_label",
         "past_exposure",
     ]
 
@@ -520,3 +721,48 @@ def extract_specimen_metadata_from_obs_df(
         .drop_duplicates()
         .set_index("specimen_label")
     )
+
+
+def find_non_rare_v_genes(adata: GeneralAnndataType) -> List[str]:
+    """Given an anndata, returns a list of V gene names that are *not* rare."""
+    # Get V gene frequencies within each disease. Combine into a dataframe (each column represents one disease)
+    v_gene_frequencies_in_each_disease = (
+        adata.obs.groupby("disease", observed=True)["v_gene"]
+        .value_counts(normalize=True)
+        .unstack(level=0)
+    )
+
+    # v_gene was a categorical column with unused categories. Remove them
+    v_gene_frequencies_in_each_disease = v_gene_frequencies_in_each_disease.loc[
+        ~(v_gene_frequencies_in_each_disease == 0).all(axis=1)
+    ]
+
+    # sanity check that each column is one disease, and v gene use proportions sum to 1 per disease column
+    assert np.allclose(v_gene_frequencies_in_each_disease.sum(axis=0), 1.0)
+
+    # Calculate max proportion a given V gene takes up of any disease. (Maximum entry per V gene row of the dataframe)
+    v_gene_max_frequency = v_gene_frequencies_in_each_disease.max(axis=1).sort_values()
+
+    # Filter to non-rare V genes using median, i.e. keep top half
+    v_gene_frequency_threshold = v_gene_max_frequency.quantile(0.5)
+    logger.debug(
+        f"Criteria for keeping a V gene: in the disease in which it is most prevalent, it must make up at least {v_gene_frequency_threshold:0.3%} of the disease dataset"
+    )
+
+    # Which V genes does this leave?
+    v_gene_overall_frequency_filter = v_gene_max_frequency >= v_gene_frequency_threshold
+    logger.debug(
+        f"V genes rejected for rarity: {', '.join(v_gene_overall_frequency_filter[~v_gene_overall_frequency_filter].index)}"
+    )
+
+    v_genes_kept = v_gene_overall_frequency_filter[
+        v_gene_overall_frequency_filter
+    ].index.tolist()
+    return v_genes_kept
+
+
+def v_gene_sort(lst: Union[List[str], np.ndarray, pd.Series]) -> List[str]:
+    """Sort V genes alphanumerically."""
+    convert = lambda text: int(text) if text.isdigit() else text
+    alphanum_key = lambda key: [convert(c) for c in re.split("([0-9]+)", key)]
+    return sorted(lst, key=alphanum_key)

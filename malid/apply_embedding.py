@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple, Type, Union
 import numpy as np
 import pandas as pd
 import anndata
@@ -6,105 +6,63 @@ import joblib
 import logging
 from sklearn.base import TransformerMixin  # describes transformation objects
 
-import malid.external.genetools_scanpy_helpers
-from malid import config, io
+import genetools.scanpy_helpers
+from malid import config, embedders, io
 from malid.datamodels import GeneLocus
-from malid.embedders.base_embedder import BaseEmbedder
+from malid.embedders.base_embedder import BaseEmbedder, BaseFineTunedEmbedder
 
 logger = logging.getLogger(__name__)
 
 
-def _get_sequences(df: pd.DataFrame) -> np.ndarray:
-    seqs_df = df[["cdr1_seq_aa_q_trim", "cdr2_seq_aa_q_trim", "cdr3_seq_aa_q_trim"]]
-
-    # Detect N/As (whether np.nan or empty string) and error out
-    if seqs_df.mask(seqs_df == "").isna().any().any():
-        raise ValueError("Sequences contain N/As or empty stirngs")
-
-    # These strings might be stored as categoricals, so cast each to str to avoid error: "ValueError: Cannot setitem on a Categorical with a new category, set the categories first"
-    sequences = (
-        seqs_df["cdr1_seq_aa_q_trim"].astype(str).fillna("")
-        + seqs_df["cdr2_seq_aa_q_trim"].astype(str).fillna("")
-        + seqs_df["cdr3_seq_aa_q_trim"].astype(str).fillna("")
-    ).astype(str)
-
-    return sequences.values
-
-
-def load_sequences_from_fold(
+def load_sequence_embedding_content_for_fold(
     fold_id: int,
     fold_label: str,
     gene_locus: GeneLocus,
-) -> np.ndarray:
-    """Load embedding and extract CDR1+2+3 sequences."""
+    embedder_class: Type[BaseEmbedder],
+) -> Tuple[np.ndarray, Optional[np.ndarray], Optional[np.ndarray]]:
+    """Load sequences and extract correct sequence region for a particular fold and gene locus."""
     df = io.load_raw_parquet_sequences_for_fold(
         fold_id=fold_id, fold_label=fold_label, gene_locus=gene_locus
     )
     if df["specimen_label"].nunique() < 2:
         raise ValueError("Parquet load did not return multiple specimens.")
 
-    return _get_sequences(df)
+    return embedder_class._get_sequences(
+        df=df, embedder_sequence_content=embedder_class.embedder_sequence_content
+    )
 
 
 def load_embedding_model(
-    gene_locus: Optional[GeneLocus] = None, fold_id: Optional[int] = None
-) -> BaseEmbedder:
-    embedder = config.choose_embedder()()
-
-    if embedder.is_fine_tuned:
-        # get fold-specific fine-tuned embedder
-        if fold_id is None or gene_locus is None:
-            raise ValueError(
-                "fold_id and gene_locus must be specified for fine-tuned embedder"
-            )
-
-        GeneLocus.validate_single_value(gene_locus)
-        embedder = embedder.load_fine_tuned_parameters(
-            fold_id=fold_id, gene_locus=gene_locus
-        )
-
-        # Validation
-        if embedder.gene_locus != gene_locus:
-            raise ValueError("Embedder locus differed")
-        if embedder.fold_id != fold_id:
-            raise ValueError(
-                f"Embedder fold_id={embedder.fold_id} did not match fold_id={fold_id}"
-            )
-
-    if config.embedder.name != embedder.name:
-        raise ValueError(
-            f"Embedder names did not match config.embedder.name={config.embedder.name}"
-        )
-
+    gene_locus: GeneLocus, fold_id: int
+) -> Union[BaseEmbedder, BaseFineTunedEmbedder]:
+    # if config.embedder is a fine-tuned embedder, this will load the fine-tuned parameters
+    # otherwise the general-purpose embedder will be loaded and the arguments are ignored.
+    embedder = config.embedder(gene_locus=gene_locus, fold_id=fold_id)
     return embedder
 
 
 def run_embedding_model(
     embedder: BaseEmbedder,
-    df: pd.DataFrame,
-    gene_locus: Optional[GeneLocus] = None,
-    fold_id: Optional[int] = None,
+    df: pd.DataFrame,  # usually df is output of io.load_raw_parquet_sequences_for_fold()
 ) -> anndata.AnnData:
     # For specimens in a certain test fold:
     # apply the embedder fine-tuned on that fold's training set,
     # or a general-purpose non-fine-tuned embedder.
 
     # Make adata.
+    # Use a lower dtype:
+    # Default is float32. Example precision: [ 0.10056811,  0.43847042,  0.36644596 ]
+    # We can use float16 instead. Example precision: [ 0.8955 , 0.969  , -0.936 ]
+    dtype = np.float16
     adata = anndata.AnnData(
-        X=embedder.embed(_get_sequences(df=df)),
+        X=embedder.embed(sequences=df, dtype=dtype),
         obs=df,
-        # Default is float32. Example precision: [ 0.10056811,  0.43847042,  0.36644596 ]
-        # We can use float16 instead. Example precision: [ 0.8955 , 0.969  , -0.936 ]
-        dtype=np.float16,
+        dtype=dtype,
     )
     adata.uns["embedded"] = embedder.name
-    if embedder.is_fine_tuned:
-        if fold_id is None or gene_locus is None:
-            raise ValueError(
-                "fold_id and gene_locus must be specified for fine-tuned embedder"
-            )
-        adata.uns["embedded_fine_tuned_on_fold_id"] = fold_id
-        adata.uns["embedded_fine_tuned_on_gene_locus"] = gene_locus.name
+    if isinstance(embedder, BaseFineTunedEmbedder):
+        adata.uns["embedded_fine_tuned_on_fold_id"] = embedder.fold_id
+        adata.uns["embedded_fine_tuned_on_gene_locus"] = embedder.gene_locus.name
 
     if adata.obs["specimen_label"].isna().any():
         raise ValueError("adata contains null specimen_label(s)")
@@ -114,6 +72,39 @@ def run_embedding_model(
     adata.obs_names_make_unique()
 
     return adata
+
+
+def verify_right_embedder_used(
+    embedder: BaseEmbedder,
+    adata: anndata.AnnData,
+    gene_locus: Optional[GeneLocus] = None,
+    fold_id: Optional[int] = None,
+) -> None:
+    """Verify that the expected embedder was used to create the embedding, else raise error"""
+    if adata.uns["embedded"] != embedder.name:
+        raise ValueError(
+            f"Expected anndata to be embedded with {embedder.name}, but got {adata.uns['embedded']}"
+        )
+    if embedder.is_fine_tuned:
+        if fold_id is None or gene_locus is None:
+            raise ValueError(
+                "fold_id and gene_locus must be specified for fine-tuned embedder"
+            )
+        if adata.uns["embedded_fine_tuned_on_fold_id"] != fold_id:
+            raise ValueError(
+                f"Expected anndata to be embedded with fold_id {fold_id}, but got {adata.uns['embedded_fine_tuned_on_fold_id']}"
+            )
+        if adata.uns["embedded_fine_tuned_on_gene_locus"] != gene_locus.name:
+            raise ValueError(
+                f"Expected anndata to be embedded with GeneLocus {gene_locus.name}, but got {adata.uns['embedded_fine_tuned_on_gene_locus']}"
+            )
+
+
+def get_embedder_used_for_embedding_anndata(
+    adata: anndata.AnnData,
+) -> Union[Type[BaseEmbedder], Type[BaseFineTunedEmbedder]]:
+    """Get the embedder used to create the embedding, else raise error"""
+    return embedders.get_embedder_by_name(adata.uns["embedded"])
 
 
 def load_transformations(
@@ -130,10 +121,11 @@ def load_transformations(
 def transform_embedded_anndata(
     transformations_to_apply: Dict[str, TransformerMixin], adata: anndata.AnnData
 ):
-    """Apply scale and PCA transformations that were created from train-smaller"""
+    """Apply scale and PCA transformations that were created from train-smaller. Runs inplace."""
 
     # Scale inplace using existing transformer - and set raw
-    adata, _ = malid.external.genetools_scanpy_helpers.scale_anndata(
+    logger.info("Scaling...")
+    adata, _ = genetools.scanpy_helpers.scale_anndata(
         adata,
         scale_transformer=transformations_to_apply["scale"],
         inplace=True,
@@ -141,7 +133,8 @@ def transform_embedded_anndata(
     )
 
     # PCA inplace using existing transformer
-    adata, _ = malid.external.genetools_scanpy_helpers.pca_anndata(
+    logger.info("Running PCA...")
+    adata, _ = genetools.scanpy_helpers.pca_anndata(
         adata,
         pca_transformer=transformations_to_apply["pca"],
         inplace=True,

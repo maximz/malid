@@ -10,13 +10,14 @@
 # %%
 from malid import config, helpers
 from malid.sample_sequences import sample_sequences
+import pandas as pd
 
 # %%
 
 # %%
 
 # %% [markdown]
-# **If regenerating, clear `config.paths.sequences_sampled` first with `rm -r`**
+# **If regenerating, this notebook should automatically overwrite `config.paths.sequences_sampled`, but you can also manually clear it first with `rm -r`**
 
 # %%
 config.paths.sequences_sampled
@@ -40,11 +41,10 @@ import time
 from dask.distributed import Client
 
 # multi-processing backend
-# access dashbaord at http://127.0.0.1:61083
 client = Client(
-    scheduler_port=61084,
-    dashboard_address=":61083",
-    n_workers=4,
+    scheduler_port=config.dask_scheduler_port,
+    dashboard_address=config.dask_dashboard_address,
+    n_workers=config.dask_n_workers,
     processes=True,
     threads_per_worker=8,
     memory_limit="125GB",  # per worker
@@ -59,13 +59,18 @@ display(client)
 desired_columns = [
     "specimen_label",
     "participant_label",
+    "amplification_label",
     "v_gene",
     "j_gene",
     "disease",
     "disease_subtype",
+    "fr1_seq_aa_q_trim",
     "cdr1_seq_aa_q_trim",
+    "fr2_seq_aa_q_trim",
     "cdr2_seq_aa_q_trim",
+    "fr3_seq_aa_q_trim",
     "cdr3_seq_aa_q_trim",
+    "post_seq_aa_q_trim",
     "cdr3_aa_sequence_trim_len",
     "extracted_isotype",
     "isotype_supergroup",
@@ -109,6 +114,9 @@ df_sampled
 # %%
 
 # %%
+config.paths.sequences_sampled
+
+# %%
 itime = time.time()
 
 # This can behave weirdly with empty partitions. https://github.com/dask/dask/issues/8832
@@ -144,6 +152,16 @@ df_sampled2
 # %%
 # check dtypes
 df_sampled2.dtypes
+
+# %%
+# compare dtypes
+pd.concat(
+    [
+        df_sampled.dtypes.rename("expected dtypes"),
+        df_sampled2.dtypes.rename("reloaded observed dtypes"),
+    ],
+    axis=1,
+)
 
 # %%
 # expected lower because losing some empty specimens
