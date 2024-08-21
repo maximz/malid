@@ -44,7 +44,10 @@ class RepertoireClassifier(ImmuneClassifierMixin, ExtendAnything):
         fold_label_train: str,
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
-        sample_weight_strategy: SampleWeightStrategy,
+        # sample_weight_strategy is currently unused in RepertoireClassifier except for the experimental CLONE_SIZE option,
+        # so let's not require it in the constructor for now.
+        # (self.sample_weight_strategy will get set to config.sample_weight_strategy in ImmuneClassifierMixin's constructor)
+        sample_weight_strategy: Optional[SampleWeightStrategy] = None,
         models_base_dir: Optional[Path] = None,
     ):
         # Control the order of superclass initialization.

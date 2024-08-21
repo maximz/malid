@@ -31,8 +31,13 @@ def run_standard_train(
     # If not provided, these will be set to base_model_train_fold_name followed by suffix "1" and "2":
     base_model_train_fold_name_for_sequence_model: Optional[str] = None,
     base_model_train_fold_name_for_aggregation_model: Optional[str] = None,
+    # Which model definitions to train (e.g. random forest):
+    chosen_models: Optional[List[str]] = None,
 ):
     GeneLocus.validate(gene_locus)  # may be a single or a composite gene locus flag
+
+    if chosen_models is None:
+        chosen_models = config.model_names_to_train
 
     # Control fold_id and cache manually so that we limit repetitive I/O
     for fold_id in fold_ids:
@@ -82,7 +87,7 @@ def run_standard_train(
                         metamodel_fold_label_test=(
                             metamodel_fold_label_test if fold_id != -1 else None
                         ),
-                        chosen_models=config.model_names_to_train,
+                        chosen_models=chosen_models,
                         n_jobs=n_jobs,
                         # control fold_id and cache manually so that we limit repetitive I/O
                         clear_cache=False,

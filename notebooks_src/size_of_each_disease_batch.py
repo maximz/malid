@@ -362,6 +362,11 @@ genetools.plots.savefig(
     / "number_of_patients_by_disease.png",
     dpi=300,
 )
+genetools.plots.savefig(
+    fig,
+    config.paths.base_output_dir_for_selected_cross_validation_strategy
+    / "number_of_patients_by_disease.pdf",
+)
 
 # %%
 # Spot check against:

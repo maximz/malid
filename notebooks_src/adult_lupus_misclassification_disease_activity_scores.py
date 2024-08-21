@@ -451,6 +451,9 @@ with sns.axes_style("ticks"):
     genetools.plots.savefig(
         fig, f"{results_output_prefix}.lupus_sledai_vs_predictions.png", dpi=300
     )
+    genetools.plots.savefig(
+        fig, f"{results_output_prefix}.lupus_sledai_vs_predictions.pdf", dpi=600
+    )
     if test_results is not None and len(test_results) > 0:
         with open(
             f"{results_output_prefix}.lupus_sledai_vs_predictions.test_results.txt",

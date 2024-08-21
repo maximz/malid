@@ -8,6 +8,7 @@ import gc
 import joblib
 from kdict import kdict
 import itertools
+import genetools
 
 # %%
 import matplotlib.pyplot as plt
@@ -187,7 +188,6 @@ genetools.plots.wrap_tick_labels(
 
 # %%
 # - option 2: normalize each specimen to sum to 1. for each disease, sum across all specimens. plot totals
-import genetools
 
 pd.concat(
     [
@@ -356,7 +356,7 @@ ax = sns.barplot(
 )
 
 sns.despine(ax=ax)
-legend_title = target_obs_column.value.obs_column_name
+legend_title = target_obs_column.value.obs_column_name.title()
 # place legend outside figure
 leg = plt.legend(
     bbox_to_anchor=(1.05, 0.5),

@@ -60,4 +60,4 @@ repos:
     hooks:
       - id: black-jupyter
         language_version: python # Should be a command that runs python3.6+, like python3
-        exclude: ^(archive/|pipeline_run_notes/) # Exclude directories: https://stackoverflow.com/a/61046953/130164
+        exclude: ^(archive/|pipeline_run_notes/|preprocessing/) # Exclude directories: https://stackoverflow.com/a/61046953/130164

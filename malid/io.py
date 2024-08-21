@@ -183,6 +183,7 @@ def _post_anndata_load_fixes(
     adata.obs = pd.merge(
         adata.obs.drop(
             columns=[
+                # Drop saved-in-raw-data-on-disk versions ahead of the possible metadata overrides below:
                 "participant_label",
                 "specimen_time_point",
                 "participant_age",
@@ -196,11 +197,16 @@ def _post_anndata_load_fixes(
         specimen_metadata[
             [
                 # Available for all
-                "study_name",
-                "participant_label",  # May be overriden
-                "specimen_time_point",  # May be overriden
-                "disease_subtype",  # May be overriden
-                # Available for some
+                "study_name",  # Not originally available in the anndata or Parquet; merged in from metadata files at runtime.
+                "participant_label",  # Originally available in the anndata or Parquet, but dropped here so it may be overriden.
+                "specimen_time_point",  # Similarly, may be overriden here
+                "disease_subtype",  # Similarly, may be overriden here
+                # (For more info on the overrides, see helpers._load_etl_metadata and helpers.get_all_specimen_info)
+                #
+                # Available for all (auto-generated):
+                "study_name_condensed",
+                #
+                # Available for some:
                 "age",
                 "sex",
                 "ethnicity_condensed",

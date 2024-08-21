@@ -3,7 +3,7 @@ from collections import defaultdict
 import functools
 import logging
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Set, Tuple, Union
+from typing import Callable, Dict, Iterable, List, Optional, Set, Tuple, Union
 import re
 
 import anndata
@@ -55,8 +55,14 @@ class MetamodelConfig:
     # Provide those additional non-gene-locus specific metadata featurizers here, along with their names (used as feature prefixes)
     extra_metadata_featurizers: Optional[Dict[str, MetadataFeaturizerMixin]] = None
 
-    # Support interaction terms
-    interaction_terms: Optional[Tuple[List[str], List[str]]] = None
+    # Support interaction terms (optional)
+    # Optional: Either None, or a tuple of two lists of feature names to interact, or a tuple of two lists of feature names to interact and a custom filter function that is passed each proposed interaction to determine which interactions to keep.
+    interaction_terms: Optional[
+        Union[
+            Tuple[List[str], List[str]],
+            Tuple[List[str], List[str], Callable[[str, str], bool]],
+        ]
+    ] = None
 
     # Support regressing out covariates from the computed features.
     regress_out_featurizers: Optional[Dict[str, MetadataFeaturizerMixin]] = None
@@ -139,8 +145,11 @@ def cartesian_product(
     features_right: List[str],
     separator="|",
     prefix="interaction",
+    filter_function: Optional[Callable[[str, str], bool]] = None,
 ) -> pd.DataFrame:
-    """Add interaction terms: Cartesian product of df[features_left] and df[features_right]"""
+    """Add interaction terms: Cartesian product of df[features_left] and df[features_right].
+    Optionally provide a filter function that is passed each proposed interaction to determine which interactions to keep.
+    """
     # TODO: Unit test: shape[0] stays the same, shape[1] expands
     def _dedupe_preserving_order(features: List[str]) -> pd.Series:
         # dedupe without changing order
@@ -151,15 +160,31 @@ def cartesian_product(
     #   np.multiply(df[_dedupe_preserving_order(features_left)].values, df[_dedupe_preserving_order(features_right)].values),
     #   columns=[separator.join([prefix, feature1, feature2]) for feature1 in _dedupe_preserving_order(features_left) for feature2 in _dedupe_preserving_order(features_right)]
     # )
+    entries = {
+        # Support the case where features_left == features_right:
+        # Avoid creating both interaction|A|B and interaction|B|A.
+        # To do so, store the created entries in a dict indexed by the unordered set {feature1, feature2}.
+        # (We use a set because {a,b} and {b,a} are the same. Actually we use a frozenset because dict keys must be hashable.)
+        #
+        # Alternative considered: create a new column name with feature1 and feature2 in sorted order.
+        # But this would be unpleasant when features_left != features_right, because the column name pattern would no longer always be interaction|leftfeature|rightfeature.
+        #
+        # Also note that cartesian_product generates feature names in feature_right|feature_left order when feeding in the same features_left and features_right.
+        # For example, "interaction|B|A" is the first feature name generated if interacting ["A", "B", "C"] with ["A", "B", "C"].
+        frozenset([feature1, feature2]): (df[feature1] * df[feature2]).rename(
+            separator.join([prefix, feature1, feature2])
+        )
+        for feature1 in _dedupe_preserving_order(features_left)
+        for feature2 in _dedupe_preserving_order(features_right)
+        if (
+            feature1 != feature2
+        )  # Don't add self-interactions (in the case that the same column name is in both features_left and features_right)
+        and (
+            filter_function is None or filter_function(feature1, feature2)
+        )  # Run filter function if provided
+    }
     return pd.concat(
-        [df]
-        + [
-            (df[feature1] * df[feature2]).rename(
-                separator.join([prefix, feature1, feature2])
-            )
-            for feature1 in _dedupe_preserving_order(features_left)
-            for feature2 in _dedupe_preserving_order(features_right)
-        ],
+        [df] + list(entries.values()),
         axis=1,
     )
 
@@ -598,8 +623,16 @@ class BlendingMetamodel(ExtendAnything):
 
             left_features = expand_wildcards(metamodel_config.interaction_terms[0])
             right_features = expand_wildcards(metamodel_config.interaction_terms[1])
+            filter_function = (
+                metamodel_config.interaction_terms[2]
+                if len(metamodel_config.interaction_terms) == 3
+                else None
+            )
             featurized.X = cartesian_product(
-                featurized.X, left_features, right_features
+                featurized.X,
+                left_features,
+                right_features,
+                filter_function=filter_function,
             )
 
         ## Optionally regress out certain metadata columns from the feature matrix.

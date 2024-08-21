@@ -1,5 +1,5 @@
 #!/bin/bash
-FILENAME=$1;
+FILENAME="$1";
 
 
 # From https://ncbi.github.io/igblast/cook/examples.html :
@@ -11,10 +11,10 @@ FILENAME=$1;
 # -germline_db_D_seqidlist human_gl_igh_seqidlist \
 # -germline_db_J_seqidlist human_gl_igh_seqidlist \
 
-$HOME/boydlab/igblast/igblastp \
+./igblastp \
 -ig_seqtype Ig -germline_db_V human_gl_V \
 -organism human -domain_system imgt -num_threads 1 -num_alignments_V 1 \
 -outfmt "7 qseqid sseqid" \
 -germline_db_V_seqidlist human_gl_igh_seqidlist \
 -num_alignments 1 \
--query ${FILENAME} >${FILENAME}.parse.txt;
+-query "${FILENAME}" > "${FILENAME}.parse.txt";

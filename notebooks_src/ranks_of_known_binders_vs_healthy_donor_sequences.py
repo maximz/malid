@@ -1169,6 +1169,8 @@ for (gene_locus, disease), (
         # Set boxplot alpha transparency: https://github.com/mwaskom/seaborn/issues/979#issuecomment-1144615001
         r, g, b, a = patch.get_facecolor()
         patch.set_facecolor((r, g, b, 0.3))
+
+    # TODO: Set seed for stripplot jitter, for consistency when rerunning: np.random.seed(123)
     sns.stripplot(
         data=combined_data_for_that_v_gene,
         x="source",
@@ -1357,6 +1359,7 @@ for (gene_locus, disease), (
     prevalences = []
 
     # Run the permutations
+    # TODO: Set seed for permutation tests for consistency when rerunning: np.random.seed(123)
     for _ in tqdm(range(n_permutations)):
         # Permute labels, keeping all sequences from the same healthy donor together
         permuted_df = permute_in_place(
@@ -1678,6 +1681,9 @@ for (gene_locus, disease), (
     output_dir.mkdir(parents=True, exist_ok=True)
     genetools.plots.savefig(
         fig, output_dir / f"known_binders.model2_vs_3.{slugify(disease)}.png", dpi=300
+    )
+    genetools.plots.savefig(
+        fig, output_dir / f"known_binders.model2_vs_3.{slugify(disease)}.pdf", dpi=600
     )
     v_gene_results_filtered.to_csv(
         output_dir / f"known_binders.model2_vs_3.{slugify(disease)}.tsv",

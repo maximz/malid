@@ -92,7 +92,7 @@ class GeneLocus(
 class CrossValidationSplitStrategyValue:
     """
     Choose which specimens should be included for each cross validation split strategy. For example, choose "peak timepoint" specimens for the peak-timepoints-only dataset.
-    Used by helpers.get_all_specimen_info().
+    The filtering logic is implemented in helpers.get_all_specimen_info().
 
     The rule is: match data_sources_keep AND {either diseases_to_keep_all_subtypes OR subtypes_keep},
     then apply filter_specimens_func_by_study_name,
@@ -106,42 +106,63 @@ class CrossValidationSplitStrategyValue:
 
     data_sources_keep: List[DataSource]
 
-    subtypes_keep: List[str]
-    diseases_to_keep_all_subtypes: List[str]
+    # Which column name to use for stratification in cross validation
+    stratify_by: str = "disease"
 
-    # Optional:
-    # Map study name to additional filtering function, e.g. some study names may have special "peak timepoint" filters
+    # For these diseases, all disease_subtypes will be kept:
+    diseases_to_keep_all_subtypes: List[str] = dataclasses.field(default_factory=list)
+
+    # Also keep these disease_subtypes from any other diseases:
+    subtypes_keep: List[str] = dataclasses.field(default_factory=list)
+
+    # Optional: map study name to additional filtering function, e.g. some study names may have special "peak timepoint" filters
     filter_specimens_func_by_study_name: Dict[
         str, Callable[[pd.DataFrame], pd.Index]
     ] = dataclasses.field(default_factory=dict)
 
-    # Optional:
-    # Which gene loci are supported by this split strategy? Are there any restrictions? (TODO: Move to DataSource?)
+    # Optional: which gene loci are supported by this split strategy? Are there any restrictions? (TODO: Move to DataSource?)
     gene_loci_supported: GeneLocus = GeneLocus.BCR | GeneLocus.TCR
 
     # Optional: exclude study names altogether. Defaults to empty list (no exclusions)
     exclude_study_names: List[str] = dataclasses.field(default_factory=list)
 
-    # Optional:
-    # Apply additional filtering functions to the entire dataset, after the other filters have been applied.
+    # Optional: whitelist specific study names. All other study names will be excluded.
+    # Defaults to None (no additional whitelisting applied).
+    # If this field is provided, exclude_study_names will be ignored.
+    include_study_names: Optional[List[str]] = None
+
+    # Optional: apply additional filtering functions to the entire dataset, after the other filters have been applied.
     filter_out_specimens_funcs_global: List[
         Callable[[pd.DataFrame], pd.Index]
     ] = dataclasses.field(default_factory=list)
 
     # Optional: "leave one cohort out"
     # Should any study names be separated out as a held-out test set?
-    # This will disable CV splitting in the traditional sense. Only one fold will be created.
-    # It will produce a *single* test set, and all other studies will be used for training.
-    # (There will still be a train/validation split for base models vs metamodel, but the key idea is we get a single CV fold)
+    # This will disable CV splitting in the traditional sense. What normally happens (when this field is not provided) is that all selected studies are used for training and testing by being divided into several cross validation folds.
+    # Instead when this field is provided, we override the divisions:
+    # - Only one fold will be created.
+    # - We will produce a *single* test set with the indicated study names.
+    # - All other studies will be used for training only.
+    # - (There will still be a train/validation split for base models vs metamodel, but the key idea is we get a single CV fold)
     # Before this separation happens, all the other filters specified in CrossValidationSplitStrategyValue will be applied. Remaining specimens must meet the other fields' criteria.
     # Each entry in this list should be a valid study_name:
     study_names_for_held_out_set: Optional[List[str]] = None
 
     def __post_init__(self):
-        # Confirm the enum values are valid
+        # Validation:
+        # This check runs when the enum is defined at runtime, meaning the first time datamodels is imported (which usually happens very early).
+        # So our automated tests will catch these errors.
+
+        # Confirm the enum values are valid.
         GeneLocus.validate(self.gene_loci_supported)
         for data_source in self.data_sources_keep:
             DataSource.validate(data_source)
+
+        # Confirm that either diseases_to_keep_all_subtypes or subtypes_keep is provided
+        if len(self.diseases_to_keep_all_subtypes) + len(self.subtypes_keep) == 0:
+            raise TypeError(
+                "Either diseases_to_keep_all_subtypes or subtypes_keep must be provided for CrossValidationSplitStrategyValue."
+            )
 
     @property
     def is_single_fold_only(self) -> bool:
@@ -187,6 +208,7 @@ class CrossValidationSplitStrategy(ValidatableEnumMixin, Enum):
     """
     Enum of configurations for which samples are included in the cross-validation training and testing sets.
     See CrossValidationSplitStrategyValue docs for details.
+    Be sure to register any new values in the map_cross_validation_split_strategy_to_default_target_obs_column dictionary, and to add new values to available_for_cross_validation_split_strategies in the relevant TargetObsColumnEnum's.
     TODO: Add test that runs each filtering strategy and confirms that the resulting dataset is non-empty and has certain expected entries.
     """
 
@@ -195,6 +217,7 @@ class CrossValidationSplitStrategy(ValidatableEnumMixin, Enum):
         data_sources_keep=[
             DataSource.in_house,
         ],
+        # For some diseases, do subtype filtering:
         subtypes_keep=[
             # Covid19-buffycoat (Cell Host + Microbe):
             "Covid19 - Sero-positive (ICU)",
@@ -204,11 +227,15 @@ class CrossValidationSplitStrategy(ValidatableEnumMixin, Enum):
             # Covid19-Stanford:
             "Covid19 - Admit",
             "Covid19 - ICU",
+            # Exclude Crohn's and ulcerative colitis remission subtypes (Yoni) or non-day-0 timepoints (Gubatan):
+            # "Crohn's disease - Flare",
+            # "Ulcerative colitis - Flare",
+            # "Crohn's disease - day 0",
+            # "Ulcerative colitis - day 0",
             # Flu vaccine:
             "Influenza vaccine 2021 - day 7",  # (day 0 can be added as healthy, pre-vaccination timepoint)
         ],
-        # Don't do any disease-subtype filtering for these diseases
-        # Keep all of their subtypes in "pure" set:
+        # Don't do any disease-subtype filtering for some other diseases — keep all of their subtypes:
         diseases_to_keep_all_subtypes=[
             healthy_label,
             "HIV",
@@ -233,6 +260,13 @@ class CrossValidationSplitStrategy(ValidatableEnumMixin, Enum):
             "Healthy-StanfordBloodCenter_included-in-resequencing",
         ],
     )
+    # Repeat the above, but leave one lupus cohort out.
+    in_house_peak_disease_leave_one_lupus_cohort_out = dataclasses.replace(
+        in_house_peak_disease_timepoints,
+        study_names_for_held_out_set=[
+            "New Lupus Paxgene",
+        ],
+    )
 
     adaptive_peak_disease_timepoints = CrossValidationSplitStrategyValue(
         # Adaptive is TCR only
@@ -242,6 +276,7 @@ class CrossValidationSplitStrategy(ValidatableEnumMixin, Enum):
             DataSource.adaptive,
         ],
         subtypes_keep=[
+            # Among RA cases: Keep seropositive RA only
             "RA - sero-positive",
         ],
         # Don't do any disease-subtype filtering for these diseases. Keep all of their subtypes:
@@ -252,7 +287,6 @@ class CrossValidationSplitStrategy(ValidatableEnumMixin, Enum):
             "HIV",
             "T1D",
         ],
-        exclude_study_names=[],
     )
 
     # Create a single CV fold with specific study names in the train and in the hold-out test sets.
@@ -268,7 +302,7 @@ class CrossValidationSplitStrategy(ValidatableEnumMixin, Enum):
         #   replace first argument of (0, (np.where(~held_out_bool_array)[0], np.where(held_out_bool_array)[0])) with something that instead does np.where(included_in_train_bool_array)
         #   also in helpers.py, change df["is_selected_for_cv_strategy"] to filter down if both study_names_for_train and study_names_for_held_out_set are provided.
         #
-        # But for now, we will achieve this with a combination of study_names_for_held_out_set and exclude_study_names.
+        # But for now, we will achieve this with a combination of study_names_for_held_out_set and include_study_names.
         # Only these study names will be loaded and passed through following filters:
         # study_names_for_train=['emerson-2017-natgen_train', 'immunecode-NIH', 'immunecode-ISB'],
         study_names_for_held_out_set=[
@@ -278,17 +312,20 @@ class CrossValidationSplitStrategy(ValidatableEnumMixin, Enum):
             # Move this to ETL metadata creation: change study_name for immunecode to include NIH, Huniv, ISB etc. there.
             "immunecode-HUniv",
         ],
-        exclude_study_names=[
-            # If we didn't list these studies here, their healthy controls would get picked up.
-            "mitchell-2022-jcii",
-            "mustjoki-2017-natcomms",
-            "ramesh-2015-ci",
-            "TCRBv4-control",
+        include_study_names=[
+            "emerson-2017-natgen_train",
+            "immunecode-NIH",
+            "immunecode-ISB",
+            "emerson-2017-natgen_validation",
+            "immunecode-HUniv",
         ],
+        # Do not pick up healthy controls from these studies:
+        # "mitchell-2022-jcii"
+        # "mustjoki-2017-natcomms"
+        # "ramesh-2015-ci"
+        # "TCRBv4-control"
         #
         #
-        # no filters on disease subtypes for these diseases:
-        subtypes_keep=[],
         diseases_to_keep_all_subtypes=["Covid19", healthy_label],
     )
 
@@ -297,10 +334,24 @@ class CrossValidationSplitStrategy(ValidatableEnumMixin, Enum):
         data_sources_keep=[
             DataSource.in_house,
         ],
-        subtypes_keep=[],
         diseases_to_keep_all_subtypes=["Lupus"],
         # Filter down to specimens with known nephritis/no-nephritis status
         filter_out_specimens_funcs_global=[keep_specimens_with_known_disease_severity],
+        stratify_by="disease_severity",
+    )
+
+    external_data = CrossValidationSplitStrategyValue(
+        data_sources_keep=[
+            DataSource.external_cdna,  # AIRR format data
+        ],
+        # List your diseases here:
+        diseases_to_keep_all_subtypes=["HIV", "Lupus"],
+        # Or mark certain disease subtypes for inclusion:
+        subtypes_keep=[
+            "Covid19 - Sero-positive (Admit)",  # Other subtypes of this disease will not be included
+        ],
+        # Adjust depending on which data types you have:
+        gene_loci_supported=GeneLocus.BCR | GeneLocus.TCR,
     )
 
 
@@ -383,10 +434,12 @@ class TargetObsColumnEnum(ValidatableEnumMixin, Enum):
         # Make model1 predict disease directly, rather than Healthy/Sick
         is_target_binary_for_repertoire_composition_classifier=False,
         available_for_cross_validation_split_strategies={
+            CrossValidationSplitStrategy.in_house_peak_disease_timepoints,
+            CrossValidationSplitStrategy.in_house_peak_disease_leave_one_cohort_out,
             CrossValidationSplitStrategy.adaptive_peak_disease_timepoints,
             CrossValidationSplitStrategy.adaptive_peak_disease_timepoints_leave_some_cohorts_out,
-            CrossValidationSplitStrategy.in_house_peak_disease_leave_one_cohort_out,
-            CrossValidationSplitStrategy.in_house_peak_disease_timepoints,
+            CrossValidationSplitStrategy.in_house_peak_disease_leave_one_lupus_cohort_out,
+            CrossValidationSplitStrategy.external_data,
         },
         limited_to_disease=None,
         require_metadata_columns_present=None,
@@ -402,12 +455,12 @@ class TargetObsColumnEnum(ValidatableEnumMixin, Enum):
     # Predict age/sex/ethnicity status for healthy specimens
     ethnicity_condensed_healthy_only = TargetObsColumn(
         obs_column_name="ethnicity_condensed",
-        available_for_cross_validation_split_strategies=set(
-            CrossValidationSplitStrategy
-        )
-        - {
-            # Remove all split strategies that don't have any healthy specimens
-            CrossValidationSplitStrategy.in_house_lupus_nephritis,
+        # Activate for split strategies that have healthy specimens
+        available_for_cross_validation_split_strategies={
+            CrossValidationSplitStrategy.in_house_peak_disease_timepoints,
+            CrossValidationSplitStrategy.in_house_peak_disease_leave_one_cohort_out,
+            CrossValidationSplitStrategy.adaptive_peak_disease_timepoints,
+            CrossValidationSplitStrategy.adaptive_peak_disease_timepoints_leave_some_cohorts_out,
         },
         limited_to_disease=[healthy_label],
         require_metadata_columns_present=DEMOGRAPHICS_COLUMNS_EXPANDED,
@@ -524,6 +577,8 @@ map_cross_validation_split_strategy_to_default_target_obs_column = {
     CrossValidationSplitStrategy.adaptive_peak_disease_timepoints: TargetObsColumnEnum.disease,
     CrossValidationSplitStrategy.adaptive_peak_disease_timepoints_leave_some_cohorts_out: TargetObsColumnEnum.disease,
     CrossValidationSplitStrategy.in_house_lupus_nephritis: TargetObsColumnEnum.lupus_nephritis,
+    CrossValidationSplitStrategy.in_house_peak_disease_leave_one_lupus_cohort_out: TargetObsColumnEnum.disease,
+    CrossValidationSplitStrategy.external_data: TargetObsColumnEnum.disease,
 }
 
 

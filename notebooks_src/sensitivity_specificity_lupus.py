@@ -100,7 +100,7 @@ results_output_prefix = output_base_dir / fname_prefix
 # See also https://stats.stackexchange.com/a/187003/297 and https://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html
 
 
-fig, ax = plt.subplots(figsize=(4, 4))
+fig, ax = plt.subplots(figsize=(3.5, 4.5))
 
 # First define a common set of specificity values along the x axis
 base_fpr = np.linspace(0, 1, 1001)
@@ -356,8 +356,21 @@ plt.text(
     style="italic",
 )
 
+from matplotlib.ticker import MultipleLocator, PercentFormatter
+
+# Same ticks for both axes
+ax.xaxis.set_major_locator(MultipleLocator(0.25))
+ax.yaxis.set_major_locator(MultipleLocator(0.25))
+
+# Format the ticks as percentages
+ax.xaxis.set_major_formatter(PercentFormatter(1))
+ax.yaxis.set_major_formatter(PercentFormatter(1))
+
 genetools.plots.savefig(
     fig, f"{results_output_prefix}.sensitivity_vs_specificity.lupus.png", dpi=300
+)
+genetools.plots.savefig(
+    fig, f"{results_output_prefix}.sensitivity_vs_specificity.lupus.pdf", dpi=600
 )
 
 # %%

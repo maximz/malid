@@ -24,6 +24,7 @@ from statannotations.Annotator import Annotator
 # %matplotlib inline
 import seaborn as sns
 from IPython.display import display, Markdown
+import joblib
 
 # %%
 from malid import config, logger, helpers
@@ -1204,10 +1205,12 @@ model: {model_name}"""
 
             # label correct/incorrect
             individual_classifications["classification_success"] = "Correct"
-            individual_classifications.loc[
+            where_wrong = (
                 individual_classifications["y_true"]
-                != individual_classifications["y_pred"],
-                "classification_success",
+                != individual_classifications["y_pred"]
+            )
+            individual_classifications.loc[
+                where_wrong, "classification_success"
             ] = "Incorrect"
 
             # Plot difference between top two predicted probabilities, p1 - p2,
@@ -1335,7 +1338,7 @@ model: {model_name}"""
                     )
                 )
 
-                plt.xlabel(f"Specimen classification\n{model_name}")
+                plt.xlabel(f"Sample classification\n{model_name}")
                 plt.ylabel(label)
                 sns.despine(ax=ax)
                 plt.tight_layout()
@@ -1344,6 +1347,25 @@ model: {model_name}"""
                     f"{highres_results_output_prefix}.errors_versus_{metric}.test_set_performance.{model_name}.with_abstention.vertical.png",
                     dpi=300,
                 )
+                genetools.plots.savefig(
+                    fig,
+                    f"{highres_results_output_prefix}.errors_versus_{metric}.test_set_performance.{model_name}.with_abstention.vertical.pdf",
+                    dpi=600,
+                )
+                to_dump = dict(
+                    individual_classifications=individual_classifications,
+                    metric=metric,
+                    label=label,
+                    filtered_order=filtered_order,
+                    model_name=model_name,
+                    test_results=test_results,
+                    plot_fname=f"{highres_results_output_prefix}.errors_versus_{metric}.test_set_performance.{model_name}.with_abstention.vertical.png",
+                )
+                joblib.dump(
+                    to_dump,
+                    f"{highres_results_output_prefix}.errors_versus_{metric}.test_set_performance.{model_name}.with_abstention.vertical.plot_components.joblib",
+                )
+
                 if test_results is not None and len(test_results) > 0:
                     with open(
                         f"{highres_results_output_prefix}.errors_versus_{metric}.test_set_performance.{model_name}.with_abstention.vertical.test_results.txt",

@@ -109,17 +109,19 @@ done < <(tail -n +2 metadata/adaptive/generated.adaptive_external_cohorts.tsv | 
 # data/external_cohorts/raw_data/adaptive_immuneaccess/study_name/sample_name.fasta.part_001.fasta -> data/external_cohorts/raw_data/adaptive_immuneaccess/study_name/sample_name.fasta.part_001.fasta.parse.txt
 tmpdir_igblast=$(mktemp -d)
 echo "$tmpdir_igblast"
-pushd "$tmpdir_igblast"
-pwd
-cp $HOME/boydlab/pipeline/run_igblast_command_tcr.sh .;
-cp $HOME/boydlab/igblast/human_gl* .;
-cp -r $HOME/boydlab/igblast/internal_data/ .;
-num_processors=200 # 55
+cp scripts/run_igblast_command_tcr.sh "$tmpdir_igblast";
+cp igblast/igblastn "$tmpdir_igblast";
+cp igblast/human_gl* "$tmpdir_igblast";
+cp -r igblast/internal_data/ "$tmpdir_igblast";
+workdir=$(pwd) # mark current directory
+pushd "$tmpdir_igblast" # switch to new directory
+
+num_processors=50
 
 # use -print0 and -0 to handle spaces in filenames
 # _ is a dummy value for $0 (the script name)
 # $1 in the sh -c command will be the filename
-find $HOME/code/immune-repertoire-classification/data/external_cohorts/raw_data/adaptive_immuneaccess/ -name "*.part_*.fasta" -print0 | xargs -0 -I {} -n 1 -P "$num_processors" sh -c './run_igblast_command_tcr.sh "$1"' _ {}
+find $workdir/data/external_cohorts/raw_data/adaptive_immuneaccess/ -name "*.part_*.fasta" -print0 | xargs -0 -I {} -n 1 -P "$num_processors" sh -c './run_igblast_command_tcr.sh "$1"' _ {}
 echo $? # exit code
 
 popd
@@ -130,21 +132,16 @@ rm -r "$tmpdir_igblast"
 find data/external_cohorts/raw_data/adaptive_immuneaccess/ -name "*.part_*.fasta" | wc -l
 find data/external_cohorts/raw_data/adaptive_immuneaccess/ -name "*.part_*.fasta.parse.txt" | wc -l
 
-
-# Parse to file (uses python2.7 pipeline code)
-conda deactivate
-source ~/boydlab/pyenv/activate
-# $HOME/boydlab/pipeline/load_igblast_parse.ireceptor_data.to_file.py --locus TCRB splits/*.parse.txt
-# parallelize in chunk size of 50 parses x num_processors=40 processes:
-num_processors=200 # 40
+# Parse to file with: scripts/parse_igblastn.py --locus TCRB splits/*.parse.txt
+# But parallelize in chunk size of 50 parses x num_processors=40 processes:
+num_processors=40
 # use -print0 and -0 to handle spaces in filenames
-find data/external_cohorts/raw_data/adaptive_immuneaccess/ -name "*.part_*.fasta.parse.txt" -print0 | xargs -0 -x -n 50 -P "$num_processors" $HOME/boydlab/pipeline/load_igblast_parse.ireceptor_data.to_file.py --locus "TCRB"
+find data/external_cohorts/raw_data/adaptive_immuneaccess/ -name "*.part_*.fasta.parse.txt" -print0 | xargs -0 -x -n 50 -P "$num_processors" scripts/parse_igblastn.py --locus "TCRB"
 echo $?
-
 
 # Monitor: these numbers must match
 find data/external_cohorts/raw_data/adaptive_immuneaccess/ -name "*.part_*.fasta.parse.txt" | wc -l
 find data/external_cohorts/raw_data/adaptive_immuneaccess/ -name "*.part_*.fasta.parse.txt.parsed.TCRB.tsv" | wc -l
-
-# We will then join IgBlast parsed output to the original Adaptive data inside etl.ipynb.
 ```
+
+We will then join IgBlast parsed output to the original Adaptive data inside `etl.ipynb`.

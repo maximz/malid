@@ -464,6 +464,7 @@ def test_train_all_models(modified_config):
                 "with_demographics_columns",
                 "demographics_regressed_out",
                 "demographics_only",
+                "demographics_only_with_interactions",
                 "demographics_only_age",
                 "demographics_only_sex",
                 "demographics_only_ethnicity_condensed",
@@ -568,6 +569,7 @@ def test_train_all_models(modified_config):
                 if metamodel_flavor in [
                     "with_demographics_columns",
                     "demographics_only",
+                    "demographics_only_with_interactions",
                     "demographics_only_age",
                 ]:
                     demographics_features.append("demographics:age")
@@ -578,6 +580,7 @@ def test_train_all_models(modified_config):
                 if metamodel_flavor in [
                     "with_demographics_columns",
                     "demographics_only",
+                    "demographics_only_with_interactions",
                     "demographics_only_sex",
                 ]:
                     one_hot_encoder_chosen_sex = (
@@ -601,6 +604,7 @@ def test_train_all_models(modified_config):
                 if metamodel_flavor in [
                     "with_demographics_columns",
                     "demographics_only",
+                    "demographics_only_with_interactions",
                     "demographics_only_ethnicity_condensed",
                 ]:
                     one_hot_encoder_chosen_ethnicities = (
@@ -644,6 +648,35 @@ def test_train_all_models(modified_config):
                     f"interaction|{disease_feature}|{demographic_feature}"
                     for disease_feature in disease_features
                     for demographic_feature in demographics_features
+                ]
+            elif metamodel_flavor == "demographics_only_with_interactions":
+                # Also add interaction terms, e.g.:
+
+                # 'interaction|demographics:sex_F|demographics:age',
+                # 'interaction|demographics:ethnicity_condensed_African|demographics:age',
+                # 'interaction|demographics:ethnicity_condensed_Caucasian|demographics:age',
+                # 'interaction|demographics:ethnicity_condensed_Hispanic/Latino|demographics:age',
+                # 'interaction|demographics:ethnicity_condensed_Asian|demographics:age',
+                # 'interaction|demographics:ethnicity_condensed_African|demographics:sex_F',
+                # 'interaction|demographics:ethnicity_condensed_Caucasian|demographics:sex_F',
+                # [...]
+
+                interaction_terms = [
+                    # See cartesian_product note about how the feature names are generated in reverse order when feeding in the same features_left and features_right
+                    f"interaction|{demographics_features[j]}|{demographics_features[i]}"
+                    # all pairs
+                    for i in range(len(demographics_features))
+                    for j in range(i + 1, len(demographics_features))
+                    # except for combinations of ethnicity categorical dummy variables
+                    # e.g. avoid 'interaction|demographics:ethnicity_condensed_Asian|demographics:ethnicity_condensed_Hispanic/Latino'
+                    if not (
+                        demographics_features[i].startswith(
+                            "demographics:ethnicity_condensed_"
+                        )
+                        and demographics_features[j].startswith(
+                            "demographics:ethnicity_condensed_"
+                        )
+                    )
                 ]
 
             # all expected feature names

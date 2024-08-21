@@ -26,6 +26,7 @@ from malid.datamodels import (
 from malid.trained_model_wrappers import BlendingMetamodel
 import genetools
 from IPython.display import display, Markdown
+from slugify import slugify
 
 # %%
 base_model_train_fold_name = "train_smaller"
@@ -384,7 +385,7 @@ for model_name, (plot_df, tuple_columns) in models_of_interest.items():
 
         ####
         # Plot OvO only as a summary figure
-        fig, ax = plt.subplots(figsize=(4, 1.5))
+        fig, ax = plt.subplots(figsize=(3, 2))
         heatmap = sns.heatmap(
             data=pd.Series(
                 plot_df.loc["Average (OvO)"].to_numpy(),
@@ -397,7 +398,7 @@ for model_name, (plot_df, tuple_columns) in models_of_interest.items():
             .loc[locus_order][model_order],
             cmap="Blues",
             square=True,
-            cbar_kws={"shrink": 0.8, "label": "AUROC"},
+            cbar_kws={"shrink": 0.5, "label": "AUROC"},
             linewidths=0,
             ax=ax,
             # force all tick labels to be drawn
@@ -406,7 +407,7 @@ for model_name, (plot_df, tuple_columns) in models_of_interest.items():
             # put values inside the heatmap
             annot=True,
             fmt=".2g",
-            annot_kws={"size": 8},  # smaller font size
+            annot_kws={"size": 7},  # smaller font size
             # make colormaps consistent
             vmin=vmin_global,
             vmax=1.0,
@@ -422,8 +423,8 @@ for model_name, (plot_df, tuple_columns) in models_of_interest.items():
         ax.set_xlabel(ax.get_xlabel(), fontweight="bold")
 
         # Move the ticks closer to plot: reduce padding
-        for axis in ["x", "y"]:
-            ax.tick_params(axis=axis, which="major", pad=0)
+        ax.tick_params(axis="x", which="major", pad=0, rotation=45)
+        ax.tick_params(axis="y", which="major", pad=0)
 
         ax.set_title(
             f"{model_name} with consistent abstentions: OvO AUROC",
@@ -435,7 +436,79 @@ for model_name, (plot_df, tuple_columns) in models_of_interest.items():
             / f"{target_obs_column.name}.roc_auc_per_class.{model_name}.ovo_summary.png",
             dpi=300,
         )
+        genetools.plots.savefig(
+            fig,
+            config.paths.second_stage_blending_metamodel_output_dir
+            / f"{target_obs_column.name}.roc_auc_per_class.{model_name}.ovo_summary.pdf",
+            dpi=600,
+        )
         plt.close(fig)
+
+        ####
+        # Plot each row (each class) one by one as additional summary figures
+        for name, row in plot_df.iterrows():
+            fig, ax = plt.subplots(figsize=(3, 2))
+            heatmap = sns.heatmap(
+                data=pd.Series(
+                    row.to_numpy(),
+                    index=pd.MultiIndex.from_tuples(
+                        tuple_columns, names=["Models", "Data"]
+                    ),
+                    name="value",
+                )
+                .unstack(level=0)
+                .loc[locus_order][model_order],
+                cmap="Blues",
+                square=True,
+                cbar_kws={"shrink": 0.5, "label": "AUROC"},
+                linewidths=0,
+                ax=ax,
+                # force all tick labels to be drawn
+                xticklabels=True,
+                yticklabels=True,
+                # put values inside the heatmap
+                annot=True,
+                fmt=".2g",
+                annot_kws={"size": 7},  # smaller font size
+                # make colormaps consistent
+                vmin=vmin_global,
+                vmax=1.0,
+            )
+            yticklabels = ax.set_yticklabels(
+                ax.get_yticklabels(),
+                rotation=0,
+            )
+
+            ax.set_ylabel(
+                ax.get_ylabel(),
+                rotation=0,
+                verticalalignment="center",
+                fontweight="bold",
+            )
+            ax.set_xlabel(ax.get_xlabel(), fontweight="bold")
+
+            # Move the ticks closer to plot: reduce padding
+            ax.tick_params(axis="x", which="major", pad=0, rotation=45)
+            ax.tick_params(axis="y", which="major", pad=0)
+
+            ax.set_title(
+                f"{model_name} with consistent abstentions: {name}",
+            )
+            genetools.plots.savefig(
+                fig,
+                config.paths.high_res_outputs_dir
+                / "metamodel"
+                / f"{target_obs_column.name}.roc_auc_per_class.{model_name}.{slugify(name)}.png",
+                dpi=300,
+            )
+            genetools.plots.savefig(
+                fig,
+                config.paths.high_res_outputs_dir
+                / "metamodel"
+                / f"{target_obs_column.name}.roc_auc_per_class.{model_name}.{slugify(name)}.pdf",
+                dpi=600,
+            )
+            plt.close(fig)
 
         ####
         # Plot final per-class AUROC of full ensemble
@@ -476,6 +549,12 @@ for model_name, (plot_df, tuple_columns) in models_of_interest.items():
                 config.paths.second_stage_blending_metamodel_output_dir
                 / f"{target_obs_column.name}.roc_auc_per_class.{model_name}.final.png",
                 dpi=300,
+            )
+            genetools.plots.savefig(
+                fig,
+                config.paths.second_stage_blending_metamodel_output_dir
+                / f"{target_obs_column.name}.roc_auc_per_class.{model_name}.final.pdf",
+                dpi=600,
             )
             plt.close(fig)
 

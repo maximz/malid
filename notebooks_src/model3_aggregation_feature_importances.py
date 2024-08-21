@@ -448,6 +448,9 @@ for gene_locus in config.gene_loci_used:
         fig_fname = _mkfname(positive_class, ".heatmap_scaled.png")
         fig_fnames.append(fig_fname)
         genetools.plots.savefig(fig, highres_output_base_dir / fig_fname, dpi=300)
+        genetools.plots.savefig(
+            fig, highres_output_base_dir / fig_fname.with_suffix(".pdf"), dpi=600
+        )
         plt.close(fig)
 
         # Also save the raw figure data
