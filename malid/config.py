@@ -80,14 +80,17 @@ sample_weight_strategy: SampleWeightStrategy = SampleWeightStrategy.ISOTYPE_USAG
 metamodel_base_model_names = SimpleNamespace()
 # Base model names used in metamodels.
 # This is set based on validation set performance of the base models.
+# Model 1:
 metamodel_base_model_names.model_name_overall_repertoire_composition = {
     GeneLocus.BCR: "elasticnet_cv0.25",
     GeneLocus.TCR: "lasso_cv",
 }
+# Model 2:
 metamodel_base_model_names.model_name_convergent_clustering = {
     GeneLocus.BCR: "ridge_cv",
     GeneLocus.TCR: "lasso_cv",
 }
+# Model 3:
 metamodel_base_model_names.base_sequence_model_name = {
     GeneLocus.BCR: "rf_multiclass",
     GeneLocus.TCR: "ridge_cv_ovr",
@@ -197,7 +200,7 @@ classification_targets = {
     )
 }
 
-# Special casing for Adaptive data:
+# Special casing for other CrossValidationSplitStrategy datasets:
 # Change metamodel base model names based on validation set performance
 if (
     cross_validation_split_strategy
@@ -214,7 +217,6 @@ if (
             GeneLocus.TCR: "ridge_cv_ovr",  # No change
         }
         metamodel_base_model_names.aggregation_sequence_model_name = {
-            # TODO: Update:
             GeneLocus.TCR: "rf_multiclass_mean_aggregated_as_binary_ovr",
         }
     else:
@@ -238,7 +240,29 @@ elif (
         }
     else:
         raise ValueError("Unsupported")
-
+elif (
+    cross_validation_split_strategy
+    == CrossValidationSplitStrategy.in_house_peak_disease_leave_one_lupus_cohort_out
+):
+    metamodel_base_model_names.model_name_overall_repertoire_composition = {
+        GeneLocus.BCR: "lasso_cv",
+        GeneLocus.TCR: "elasticnet_cv",
+    }
+    metamodel_base_model_names.model_name_convergent_clustering = {
+        GeneLocus.BCR: "elasticnet_cv",
+        GeneLocus.TCR: "elasticnet_cv0.25_lambda1se",
+    }
+    if embedder.name == "esm2_cdr3":
+        metamodel_base_model_names.base_sequence_model_name = {
+            GeneLocus.BCR: "linearsvm_ovr",
+            GeneLocus.TCR: "linearsvm_ovr",
+        }
+        metamodel_base_model_names.aggregation_sequence_model_name = {
+            GeneLocus.BCR: "elasticnet_cv_trim_bottom_five_percent_aggregated_as_binary_ovr_reweighed_by_subset_frequencies",
+            GeneLocus.TCR: "rf_multiclass_entropy_twenty_percent_cutoff_aggregated_as_binary_ovr_reweighed_by_subset_frequencies",
+        }
+    else:
+        raise ValueError("Unsupported")
 
 #######
 

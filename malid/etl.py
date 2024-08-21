@@ -103,7 +103,7 @@ dtypes_read_in = {
         **{
             # Additional BCR-only columns
             "igh_clone_id": "int64",
-            "spam_score": "float64",
+            "spam_score": "float64",  # Not used. TODO: Remove.
             "isosubtype": pd.api.types.CategoricalDtype(known_isotypes_with_suffixes),
         },
     },
@@ -327,7 +327,7 @@ def preprocess_each_participant_table(
     df = df.loc[(~pd.isnull(df["extracted_isotype"])) & (df["productive"] == True)]
     if gene_locus == GeneLocus.BCR:
         # Additional BCR-only filter
-        df = df.loc[(df["v_score"] > 200) & (df["spam_score"] <= 0.0)]
+        df = df.loc[df["v_score"] > 200]
     elif gene_locus == GeneLocus.TCR:
         # Additional TCR-only filter
         df = df.loc[df["v_score"] > 80]

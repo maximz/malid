@@ -1,0 +1,2 @@
+# install py27_requirements.txt first, then install these -- dependent on other packages to be installed first
+urlgrabber==3.9.1     # requires pycurl

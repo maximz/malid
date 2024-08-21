@@ -49,6 +49,14 @@ from malid.trained_model_wrappers.rollup_sequence_classifier import (
 logger = logging.getLogger(__name__)
 
 
+def _filter_interaction_terms_for_demographics_only_with_interactions_flavor(
+    left: str, right: str
+) -> bool:
+    # See metamodel flavor "demographics_only_with_interactions" below.
+    # This is defined out here so it can be pickled. (Nested functions and lambdas cannot be pickled.)
+    return not ("ethnicity_condensed" in left and "ethnicity_condensed" in right)
+
+
 def get_metamodel_flavors(
     gene_locus: GeneLocus,
     target_obs_column: TargetObsColumnEnum,
@@ -216,9 +224,14 @@ def get_metamodel_flavors(
     metamodel_flavors: Dict[str, MetamodelConfig] = {}
 
     # Generate "default" flavor (Models 1 + 2 + 3) and all dependent flavors.
+    submodels_included_in_default_flavor = [
+        "repertoire_stats",
+        "convergent_cluster_model",
+        "sequence_model",
+    ]
     try:
         default_config = _create_config_with_submodels(
-            ["repertoire_stats", "convergent_cluster_model", "sequence_model"]
+            submodels_included_in_default_flavor
         )
         metamodel_flavors["default"] = default_config
 
@@ -275,6 +288,24 @@ def get_metamodel_flavors(
                     )
                 },
             )
+            # - Same as above, but with interaction terms
+
+            metamodel_flavors[
+                "demographics_only_with_interactions"
+            ] = dataclasses.replace(
+                metamodel_flavors["demographics_only"],
+                interaction_terms=(
+                    # Left
+                    ["demographics:*"],
+                    # Right
+                    ["demographics:*"],
+                    # These are identical but that's fine: self-interactions and duplicate interactions will be dropped
+                    #
+                    # Add a filter function to remove interactions between dummy variables from the same categorical feature
+                    # This is relevant for the ethnicity_condensed column only, which has multiple dummy variables. All but one will be 0, so all interaction terms will be 0
+                    _filter_interaction_terms_for_demographics_only_with_interactions_flavor,
+                ),
+            )
             # - Use only a single demographics feature at a time (e.g. only sex, only age, etc.)
             for covariate_column in extra_covariate_columns[target_obs_column]:
                 metamodel_flavors[
@@ -304,11 +335,19 @@ def get_metamodel_flavors(
             config.cross_validation_split_strategy
         ]
     ):
-        # How many submodels to combine: between 1 and n-1 inclusive, where n is the total number of submodels. The n-combination case is already created (default config above)
-        for number_of_included_submodels in range(1, len(all_available_submodel_names)):
+        # How many submodels to combine: between 1 and n inclusive, where n is the total number of submodels.
+        for number_of_included_submodels in range(
+            1, len(all_available_submodel_names) + 1
+        ):
             for chosen_submodel_names in itertools.combinations(
                 all_available_submodel_names, number_of_included_submodels
             ):
+                # If this combination matches the "default" flavor, skip it as it's already been created.
+                if set(chosen_submodel_names) == set(
+                    submodels_included_in_default_flavor
+                ):
+                    continue
+
                 # Name this combination of submodels.
                 combination_name = (
                     f"subset_of_submodels_{'_'.join(chosen_submodel_names)}"

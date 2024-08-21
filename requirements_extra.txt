@@ -4,9 +4,15 @@
 ablang >= 0.2.3
 -e git+https://github.com/maximz/bio-transformers.git@sequence-positional-weights-for-fine-tuning#egg=bio-transformers
 
+# Since the release of numpy 2.x, we now have to downgrade our environment to numpy 1.x before building the wheel for fisher
+fisher == 0.1.10
+# BTW: When we are ready to upgrade to numpy 2, we'll need this change: https://github.com/brentp/fishers_exact_test/pull/49
+# but fisher package has not been updated on pypi yet (https://github.com/brentp/fishers_exact_test/issues/48), so we could use: fisher @ git+https://github.com/brentp/fishers_exact_test@5e63e96
+
 # numpy must already be installed before we install glmnet
 # https://github.com/civisanalytics/python-glmnet
 glmnet >= 2.2.1
+# TODO: Switch to this fork: https://github.com/replicahq/python-glmnet. See https://github.com/civisanalytics/python-glmnet/issues/76#issuecomment-2104878939
 
 # install jax first before installing jax-unirep
 # Our fork of jax-unirep==2.2.0:

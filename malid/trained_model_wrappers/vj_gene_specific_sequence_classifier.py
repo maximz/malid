@@ -57,7 +57,9 @@ class VJGeneSpecificSequenceClassifier(AbstractSequenceClassifier):
         fold_label_train: str,
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
-        sample_weight_strategy: SampleWeightStrategy,
+        # To make this model clearer for downstream users, we're making sample_weight_strategy optional since the default SampleWeightStrategy.ISOTYPE_USAGE doesn't have any impact on the default VGeneIsotypeSpecificSequenceClassifier (SequenceSubsetStrategy.split_Vgene_and_isotype)
+        # self.sample_weight_strategy will get set to config.sample_weight_strategy in ImmuneClassifierMixin's constructor called through super().__init__.
+        sample_weight_strategy: Optional[SampleWeightStrategy] = None,
         models_base_dir: Optional[Path] = None,
         # Optionally skip loading from disk (used in tests)
         models: Optional[Dict[SplitKeyType, Classifier]] = None,

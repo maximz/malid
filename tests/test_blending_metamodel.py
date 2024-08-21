@@ -7,6 +7,7 @@ from malid.trained_model_wrappers import BlendingMetamodel
 from malid.trained_model_wrappers.blending_metamodel import (
     DemographicsFeaturizer,
     _combine_dfs,
+    cartesian_product,
 )
 import pytest
 
@@ -342,3 +343,82 @@ def test_combine_dfs_conflicting_column_values():
         # outer merge -->
         # index becomes ['a', 'b', 'c', 'c'] --> error
         _combine_dfs(df1, df2, allow_nonequal_indexes=True)
+
+
+def test_cartesian_product():
+    df = pd.DataFrame(
+        np.random.randint(1, 5, size=(10, 4)), columns=["A", "B", "C", "D"]
+    ).assign(other="E")
+    transformed = cartesian_product(
+        df, features_left=["A", "B"], features_right=["D", "C"]
+    )
+    assert np.array_equal(
+        transformed.columns,
+        [
+            "A",
+            "B",
+            "C",
+            "D",
+            "other",
+            "interaction|A|D",
+            "interaction|A|C",
+            "interaction|B|D",
+            "interaction|B|C",
+        ],
+    )
+    assert np.array_equal(transformed["interaction|B|D"], df["B"] * df["D"])
+
+
+def test_cartesian_product_with_same_columns_on_both_sides():
+    df = pd.DataFrame(
+        np.random.randint(1, 5, size=(10, 3)), columns=["A", "B", "C"]
+    ).assign(other="D")
+    transformed = cartesian_product(
+        df, features_left=["A", "B", "C"], features_right=["A", "B", "C"]
+    )
+    assert np.array_equal(
+        transformed.columns,
+        [
+            "A",
+            "B",
+            "C",
+            "other",
+            "interaction|B|A",
+            "interaction|C|A",
+            "interaction|C|B",
+        ],
+    )
+    assert np.array_equal(transformed["interaction|C|A"], df["C"] * df["A"])
+
+
+@pytest.mark.parametrize("filter_func_enabled", [True, False])
+def test_cartesian_product_with_filter_function(filter_func_enabled: bool):
+    df = pd.DataFrame(
+        np.random.randint(1, 5, size=(10, 4)),
+        columns=["Age", "Sex_Female", "Ethnicity_A", "Ethnicity_B"],
+    )
+    expected_columns = [
+        "Age",
+        "Sex_Female",
+        "Ethnicity_A",
+        "Ethnicity_B",
+        "interaction|Sex_Female|Age",
+        "interaction|Ethnicity_A|Age",
+        "interaction|Ethnicity_B|Age",
+        "interaction|Ethnicity_A|Sex_Female",
+        "interaction|Ethnicity_B|Sex_Female",
+    ]
+    if filter_func_enabled:
+        filter_function = lambda left, right: not (
+            "Ethnicity" in left and "Ethnicity" in right
+        )  # noqa: E731
+    else:
+        filter_function = None
+        expected_columns.append("interaction|Ethnicity_B|Ethnicity_A")
+    transformed = cartesian_product(
+        df,
+        features_left=["Age", "Sex_Female", "Ethnicity_A", "Ethnicity_B"],
+        features_right=["Age", "Sex_Female", "Ethnicity_A", "Ethnicity_B"],
+        filter_function=filter_function,
+    )
+    assert np.array_equal(transformed.columns, expected_columns)

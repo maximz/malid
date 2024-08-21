@@ -262,6 +262,7 @@ def get_all_specimen_info(add_cv_fold_information=True):
                 "age_group",
                 "age_group_binary",
                 "age_group_pediatric",
+                "study_name_condensed",
                 "disease_severity",
                 "specimen_description",
             ]
@@ -345,7 +346,12 @@ def get_all_specimen_info(add_cv_fold_information=True):
             )
         )
         & (
-            ~df["study_name"].isin(
+            df["study_name"].isin(
+                config.cross_validation_split_strategy.value.include_study_names
+            )
+            if config.cross_validation_split_strategy.value.include_study_names
+            is not None
+            else ~df["study_name"].isin(
                 config.cross_validation_split_strategy.value.exclude_study_names
             )
         )
@@ -568,6 +574,17 @@ def _load_etl_metadata():
     )
     # Confirm all study_name were set
     assert not df[immunecode_mask]["study_name"].isna().any()
+
+    # Generate a study_name_condensed to group related study names together.
+    df["study_name_condensed"] = df["study_name"].replace(
+        {
+            # study_name includes both "Healthy-StanfordBloodCenter" and "Healthy-StanfordBloodCenter_included-in-resequencing" originally
+            # here we merge them into one:
+            "Healthy-StanfordBloodCenter_included-in-resequencing": "Healthy-StanfordBloodCenter",
+        }
+    )
+    # Confirm all study_name_condensed were set
+    assert not df["study_name_condensed"].isna().any()
 
     # age_group deciles already created, but let's make age_group_binary too
     df.loc[df["age"] < 50, "age_group_binary"] = "under 50"

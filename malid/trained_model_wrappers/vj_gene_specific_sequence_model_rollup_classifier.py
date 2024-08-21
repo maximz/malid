@@ -91,7 +91,9 @@ class VJGeneSpecificSequenceModelRollupClassifier(
         fold_label_train: str,  # Train fold label for this rollup model
         gene_locus: GeneLocus,
         target_obs_column: TargetObsColumnEnum,
-        sample_weight_strategy: SampleWeightStrategy,
+        # To make this model clearer for downstream users, we're making sample_weight_strategy optional since the default SampleWeightStrategy.ISOTYPE_USAGE doesn't have any impact on the default SequenceSubsetStrategy.split_Vgene_and_isotype
+        # self.sample_weight_strategy will get set to config.sample_weight_strategy in ImmuneClassifierMixin's constructor.
+        sample_weight_strategy: Optional[SampleWeightStrategy] = None,
         sequence_models_base_dir: Optional[Path] = None,
         # The default is to split by V gene and isotype, but other strategies are available, and the class is still named after the original attempt to split by V gene and J gene.
         sequence_subset_strategy: SequenceSubsetStrategy = SequenceSubsetStrategy.split_Vgene_and_isotype,

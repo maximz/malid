@@ -171,16 +171,45 @@ tcr_covid_specimens
 # %%
 
 # %% [markdown]
+# ## All of the studies we've loaded so far:
+
+# %%
+all_studies = [
+    covid_specimens,
+    healthy_specimens,
+    tcr_healthy_specimens,
+    tcr_covid_specimens,
+]
+
+# %%
+
+# %% [markdown]
+# ## Add new studies here:
+
+# %%
+# Example:
+
+# df = pd.DataFrame(
+#     {
+#         "study_name": "newstudy",
+#         "participant_label": ["patient1", "patient2", "patient3"],
+#         "specimen_label": ["sample1", "sample2", "sample3"],
+#         # Data will be loaded from data/external_cohorts/raw_data/newstudy/sample1.tsv, data/external_cohorts/raw_data/newstudy/sample2.tsv, and so on.
+#         "gene_locus": "BCR",
+#         "disease": ["Covid19", "Covid19", healthy_label],
+#     }
+# )
+# display(df)
+# all_studies.append(df)
+
+# %%
+
+# %% [markdown]
 # # Combine
 
 # %%
 dfs_external = pd.concat(
-    [
-        covid_specimens,
-        healthy_specimens,
-        tcr_healthy_specimens,
-        tcr_covid_specimens,
-    ],
+    all_studies,
     axis=0,
 )
 dfs_external
